@@ -28,6 +28,14 @@ class Article(object):
     pass
 
 mapper(Journal, metadata.tables['journals'])
-mapper(Issue, metadata.tables['issues'])
+mapper(Issue, metadata.tables['issues'], properties={
+    '_journal': metadata.tables['issues'].c.journal, 
+    'journal': relation(Journal, backref='issues'), 
+})
 mapper(Author, metadata.tables['authors'])
-mapper(Article, metadata.tables['articles'])
+mapper(Article, metadata.tables['articles'], properties={
+    '_issue': metadata.tables['articles'].c.issue, 
+    'issue': relation(Issue, backref='articles'), 
+    '_author': metadata.tables['articles'].c.author, 
+    'author': relation(Author, backref='articles')
+})

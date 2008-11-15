@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      lang="en-AU">
+<xi:include href="_commonwrapper.xml" />
+
+<head>
+    <title>${issue.journal.title} Vol. ${issue.volume}, Issue ${issue.issue}</title>
+</head>
+
+<body>
+
+<h2><a href="${req.script_name}/journals/${issue.journal.key}/">${issue.journal.title}</a> Vol. ${issue.volume}, Issue ${issue.issue}</h2>
+
+<ul>
+    <li py:for="article in sorted(issue.articles, key=lambda a: a.start_page)">
+        <a href="${article.slug}">${article.title}</a>
+        by
+        <a href="${req.script_name}/authors/${article.author.key}">${article.author.given_names} ${article.author.surname}</a>
+    </li>
+</ul>
+
+</body>
+</html>
