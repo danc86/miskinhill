@@ -16,7 +16,7 @@
 <h2><a href="${req.script_name}/journals/${issue.journal.key}/">${issue.journal.title}</a> Vol. ${issue.volume}, Issue ${issue.issue}</h2>
 
 <ul>
-    <li py:for="article in sorted(issue.articles, key=lambda a: a.start_page)">
+    <li py:for="article in issue.articles">
         <a href="${article.slug}">${article.title}</a>
         by
         <a href="${req.script_name}/authors/${article.author.key}">${article.author.given_names} ${article.author.surname}</a>
