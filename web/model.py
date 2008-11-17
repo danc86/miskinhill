@@ -6,7 +6,7 @@ import genshi
 
 from config import DB
 
-__all__ = ['DbSession', 'Journal', 'Issue']
+__all__ = ['DbSession', 'Journal', 'Issue', 'Author', 'Article']
 
 engine = create_engine(DB, convert_unicode=True,
         poolclass=SingletonThreadPool, pool_size=20,
@@ -24,7 +24,9 @@ class Issue(object):
 
 class Author(object):
 
-    pass
+    @property
+    def name(self):
+        return u'%s %s' % (self.given_names, self.surname)
 
 class Article(object):
 

@@ -40,8 +40,10 @@ class MiskinHillApplication(object):
         return iter(resp(self.environ, self.start))
 
     urls = [(r'/journals/?$', 'journals_index'), 
-            (r'/journals/(\w+)/?$', 'journal'), 
-            (r'/journals/([-\w]+)/([-\w]+)/([-\w]+)/?$', 'journal_issue')]
+            (r'/journals/([-\w]+)/?$', 'journal'), 
+            (r'/journals/([-\w]+)/([-\w]+)/([-\w]+)/?$', 'journal_issue'), 
+            (r'/journals/([-\w]+)/([-\w]+)/([-\w]+)/([-\w]+)$', 'article'), 
+            (r'/authors/([-\w]+)$', 'author')]
     urls = [(re.compile(patt), method) for patt, method in urls]
     def dispatch(self, path_info):
         for patt, method_name in self.urls:
@@ -69,6 +71,14 @@ class MiskinHillApplication(object):
     @ensure_trailing_slash
     def journal_issue(self, journal, volume, issue):
         return {'issue': self.db.get(Issue, (journal, volume, issue))}
+
+    def article(self, journal, volume, issue, slug):
+        issue = self.db.get(Issue, (journal, volume, issue))
+        article = self.db.query(Article).with_parent(issue).filter(Article.slug == slug).one()
+        return {'article': article}
+
+    def author(self, key):
+        return {'author': self.db.get(Author, key)}
 
 application = MiskinHillApplication
 
