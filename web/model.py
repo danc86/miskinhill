@@ -38,12 +38,13 @@ mapper(Journal, metadata.tables['journals'])
 mapper(Issue, metadata.tables['issues'], properties={
     '_journal': metadata.tables['issues'].c.journal, 
     'journal': relation(Journal, backref='issues'), 
+    'articles': relation(Article, order_by=metadata.tables['articles'].c.order, backref='issue')
 })
-mapper(Author, metadata.tables['authors'])
+mapper(Author, metadata.tables['authors'], properties={
+    'articles': relation(Article, backref='author')
+})
 mapper(Article, metadata.tables['articles'], properties={
     '_issue': metadata.tables['articles'].c.issue, 
-    'issue': relation(Issue, backref='articles'), 
     '_author': metadata.tables['articles'].c.author, 
-    'author': relation(Author, backref='articles'), 
     '_title': metadata.tables['articles'].c.title # moved so that it can be a Markup property
 })
