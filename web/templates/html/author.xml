@@ -15,9 +15,17 @@
 
 <h2>${author.name}</h2>
 
+<h3>Articles</h3>
 <ul>
     <li py:for="article in sorted(author.articles, key=lambda a: a.issue.publication_date)">
         <a href="${req.script_name}/journals/${article.issue.journal.key}/${article.issue.volume}/${article.issue.issue}/${article.slug}">${article.title}</a>
+    </li>
+</ul>
+
+<h3>Reviews</h3>
+<ul>
+    <li py:for="review in sorted(author.reviews, key=lambda r: r.issue.publication_date)">
+        <a href="${req.script_name}/journals/${review.issue.journal.key}/${review.issue.volume}/${review.issue.issue}/reviews">Review</a> of <a href="${req.script_name}/books/${review.book.isbn}">${review.book.title}</a> by ${review.book.author}
     </li>
 </ul>
 

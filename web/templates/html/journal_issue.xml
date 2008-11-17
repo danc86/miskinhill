@@ -23,5 +23,12 @@
     </li>
 </ul>
 
+<h3>Reviews</h3>
+<ul>
+    <li py:for="review in issue.reviews">
+        ${review.book.author}, <a href="${req.script_name}/books/${review.book.isbn}">${review.book.title}</a> (reviewed by <a href="${req.script_name}/authors/${review.author.key}">${review.author.name}</a>)
+    </li>
+</ul>
+
 </body>
 </html>
