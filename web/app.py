@@ -57,7 +57,7 @@ class MiskinHillApplication(object):
 
     def render_template(self, template_name, data):
         template = template_loader.load(template_name)
-        body = template.generate(req=self.req, **data).render('html')
+        body = template.generate(req=self.req, **data).render('xhtml')
         return Response(body, content_type='text/html')
 
     @ensure_trailing_slash
