@@ -2,12 +2,15 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.pool import SingletonThreadPool
+import genshi
 
 from config import DB
 
 __all__ = ['DbSession', 'Journal', 'Issue']
 
-engine = create_engine(DB, poolclass=SingletonThreadPool, pool_size=20, echo=True)
+engine = create_engine(DB, convert_unicode=True,
+        poolclass=SingletonThreadPool, pool_size=20,
+        echo=True)
 metadata = MetaData(bind=engine, reflect=True)
 DbSession = sessionmaker(bind=engine, autoflush=True, transactional=False)
 
@@ -25,7 +28,9 @@ class Author(object):
 
 class Article(object):
 
-    pass
+    @property
+    def title(self):
+        return genshi.Markup(self._title)
 
 mapper(Journal, metadata.tables['journals'])
 mapper(Issue, metadata.tables['issues'], properties={
@@ -37,5 +42,6 @@ mapper(Article, metadata.tables['articles'], properties={
     '_issue': metadata.tables['articles'].c.issue, 
     'issue': relation(Issue, backref='articles'), 
     '_author': metadata.tables['articles'].c.author, 
-    'author': relation(Author, backref='articles')
+    'author': relation(Author, backref='articles'), 
+    '_title': metadata.tables['articles'].c.title # moved so that it can be a Markup property
 })
