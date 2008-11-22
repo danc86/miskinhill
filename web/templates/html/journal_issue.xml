@@ -7,26 +7,33 @@
       lang="en-AU">
 <xi:include href="_commonwrapper.xml" />
 
+<?python
+issue = node
+journal = issue['mhs:isIssueOf']
+?>
+
 <head>
-    <title>${issue.journal.title} Vol. ${issue.volume}, Issue ${issue.issue}</title>
+    <title>${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
 </head>
 
 <body>
 
-<h2><a href="${req.script_name}/journals/${issue.journal.key}/">${issue.journal.title}</a> Vol. ${issue.volume}, Issue ${issue.issue}</h2>
+<h2><a href="${journal.uri}">${journal['dc:title']}</a> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</h2>
 
 <ul>
-    <li py:for="article in issue.articles">
-        <a href="${article.slug}">${article.title}</a>
+    <li py:for="article in sorted(issue.reflexive('dc:isPartOf', type='mhs:Article'), key=lambda a: a['mhs:startPage'])"
+        py:with="author = article['dc:creator']">
+        <a href="${article.uri}">${article['dc:title']}</a>
         by
-        <a href="${req.script_name}/authors/${article.author.key}">${article.author.given_names} ${article.author.surname}</a>
+        <a href="${author.uri}">${author['foaf:name']}</a>
     </li>
 </ul>
 
 <h3>Reviews</h3>
 <ul>
-    <li py:for="review in issue.reviews">
-        ${review.book.author}, <a href="${req.script_name}/books/${review.book.isbn}">${review.book.title}</a> (reviewed by <a href="${req.script_name}/authors/${review.author.key}">${review.author.name}</a>)
+    <li py:for="review in issue.reflexive('dc:isPartOf', type='mhs:Review')"
+        py:with="author = review['dc:creator']; book = review['mhs:reviews']">
+        ${', '.join(book['dc:creator'])}, <em>${book['dc:title']}</em> (reviewed by <a href="${author.uri}">${author['foaf:name']}</a>)
     </li>
 </ul>
 

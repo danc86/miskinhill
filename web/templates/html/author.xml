@@ -7,25 +7,30 @@
       lang="en-AU">
 <xi:include href="_commonwrapper.xml" />
 
+<?python
+author = node
+?>
+
 <head>
-    <title>${author.name}</title>
+    <title>${author['foaf:name']}</title>
 </head>
 
 <body>
 
-<h2>${author.name}</h2>
+<h2>${author['foaf:name']}</h2>
 
 <h3>Articles</h3>
 <ul>
-    <li py:for="article in sorted(author.articles, key=lambda a: a.issue.publication_date)">
-        <a href="${req.script_name}/journals/${article.issue.journal.key}/${article.issue.volume}/${article.issue.issue}/${article.slug}">${article.title}</a>
+    <li py:for="article in sorted(author.reflexive('dc:creator', type='mhs:Article'), key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)">
+        <a href="${article.uri}">${article['dc:title']}</a>
     </li>
 </ul>
 
 <h3>Reviews</h3>
 <ul>
-    <li py:for="review in sorted(author.reviews, key=lambda r: r.issue.publication_date)">
-        <a href="${req.script_name}/journals/${review.issue.journal.key}/${review.issue.volume}/${review.issue.issue}/reviews">Review</a> of <a href="${req.script_name}/books/${review.book.isbn}">${review.book.title}</a> by ${review.book.author}
+    <li py:for="review in sorted(author.reflexive('dc:creator', type='mhs:Review'), key=lambda r: r['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
+        py:with="book = review['mhs:reviews']">
+        <a href="${review['dc:isPartOf'].uri}">Review</a> of <em>${book['dc:title']}</em> by ${', '.join(book['dc:creator'])}
     </li>
 </ul>
 

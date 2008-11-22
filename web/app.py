@@ -1,25 +1,17 @@
 #!/usr/bin/env python
 
-import re, os
+import re, os, urllib
 
 from webob import Request, Response
 from webob import exc
 from genshi.template import TemplateLoader
 
-from model import *
+import rdfob
 
 template_loader = TemplateLoader(
         os.path.join(os.path.dirname(__file__), 'templates', 'html'), 
         variable_lookup='strict', 
         auto_reload=True)
-
-def ensure_trailing_slash(func):
-    def _ensure_trailing_slash_wrapped_func(self, *args, **kwargs):
-        if self.req.path_info[-1] != '/':
-            raise exc.HTTPMovedPermanently(location=self.req.path_url + '/')
-        else:
-            return func(self, *args, **kwargs)
-    return _ensure_trailing_slash_wrapped_func
 
 class MiskinHillApplication(object):
 
@@ -27,7 +19,7 @@ class MiskinHillApplication(object):
         self.environ = environ
         self.start = start_response
 
-        self.db = DbSession()
+        self.graph = rdfob.Graph('../rdf.nt')
 
         self.req = Request(environ)
         self.req.charset = 'utf8'
@@ -39,46 +31,26 @@ class MiskinHillApplication(object):
             resp = e
         return iter(resp(self.environ, self.start))
 
-    urls = [(r'/journals/?$', 'journals_index'), 
-            (r'/journals/([-\w]+)/?$', 'journal'), 
-            (r'/journals/([-\w]+)/([-\w]+)/([-\w]+)/?$', 'journal_issue'), 
-            (r'/journals/([-\w]+)/([-\w]+)/([-\w]+)/([-\w]+)$', 'article'), 
-            (r'/authors/([-\w]+)$', 'author')]
-    urls = [(re.compile(patt), method) for patt, method in urls]
+    TEMPLATES = {
+        rdfob.uriref('mhs:Journal'): 'journal.xml', 
+        rdfob.uriref('mhs:Issue'): 'journal_issue.xml', 
+        rdfob.uriref('mhs:Article'): 'article.xml',
+        rdfob.uriref('mhs:Author'): 'author.xml'
+    }
     def dispatch(self, path_info):
-        for patt, method_name in self.urls:
-            match = patt.match(self.req.path_info)
-            if match:
-                data = getattr(self, method_name)(
-                        *[x.decode('utf8', 'ignore') for x in match.groups()])
-                return self.render_template(method_name + '.xml', data)
-        # no matching URI found, so give a 404
-        raise exc.HTTPNotFound().exception
+        uri = rdfob.URIRef(urllib.unquote(
+                'http://miskinhill.com.au' + path_info).decode('utf8'))
+        try:
+            node = self.graph[uri]
+        except KeyError:
+            raise exc.HTTPNotFound().exception
+        return self.render_template(self.TEMPLATES[node.type], 
+                {'node': node})
 
     def render_template(self, template_name, data):
         template = template_loader.load(template_name)
         body = template.generate(req=self.req, **data).render('xhtml')
         return Response(body, content_type='text/html')
-
-    @ensure_trailing_slash
-    def journals_index(self):
-        return {'journals': self.db.query(Journal).all()}
-
-    @ensure_trailing_slash
-    def journal(self, key):
-        return {'journal': self.db.get(Journal, key)}
-
-    @ensure_trailing_slash
-    def journal_issue(self, journal, volume, issue):
-        return {'issue': self.db.get(Issue, (journal, volume, issue))}
-
-    def article(self, journal, volume, issue, slug):
-        issue = self.db.get(Issue, (journal, volume, issue))
-        article = self.db.query(Article).with_parent(issue).filter(Article.slug == slug).one()
-        return {'article': article}
-
-    def author(self, key):
-        return {'author': self.db.get(Author, key)}
 
 application = MiskinHillApplication
 

@@ -7,15 +7,23 @@
       lang="en-AU">
 <xi:include href="_commonwrapper.xml" />
 
+<?python
+article = node
+issue = article['dc:isPartOf']
+journal = issue['mhs:isIssueOf']
+?>
+
 <head>
-    <title>${article.title.striptags()} - ${article.issue.journal.title} Vol. ${article.issue.volume}, Issue ${article.issue.issue}</title>
+    <title>${Markup(article['dc:title']).striptags()} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
 </head>
 
 <body>
 
-<h2>${article.title}</h2>
+<h2>${article['dc:title']}</h2>
 
-<p>by <a href="${req.script_name}/authors/${article.author.key}">${article.author.name}</a></p>
+<p py:with="author = article['dc:creator']">
+    by <a href="${author.uri}">${author['foaf:name']}</a>
+</p>
 
 </body>
 </html>

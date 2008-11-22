@@ -7,20 +7,24 @@
       lang="en-AU">
 <xi:include href="_commonwrapper.xml" />
 
+<?python
+journal = node
+?>
+
 <head>
-    <title>${journal.title}</title>
+    <title>${journal['dc:title']}</title>
 </head>
 
 <body>
 
-<h2>${journal.title}</h2>
+<h2>${journal['dc:title']}</h2>
 
 <ul>
-    <li py:for="issue in journal.issues">
-        <a href="${issue.volume}/${issue.issue}/">
-            Vol.&nbsp;${issue.volume},
-            Issue&nbsp;${issue.issue.replace('-', '–')}
-            (${issue.date})
+    <li py:for="issue in journal.reflexive('mhs:isIssueOf')">
+        <a href="${issue.uri}">
+            Vol.&nbsp;${issue['mhs:volume']},
+            Issue&nbsp;${issue['mhs:issueNumber']}
+            (${issue['dc:coverage']})
         </a>
     </li>
 </ul>
