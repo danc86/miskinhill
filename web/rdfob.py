@@ -1,4 +1,5 @@
 
+import datetime, re
 import rdflib
 from rdflib import URIRef, Namespace, BNode
 from rdflib.Graph import ConjunctiveGraph
@@ -59,22 +60,34 @@ class GraphNode(object):
             assert isinstance(x, rdflib.Literal)
             if x.datatype == NAMESPACES['rdf']['XMLLiteral']:
                 return genshi.Markup(x)
+            elif x.datatype == NAMESPACES['xsd']['date']:
+                m = re.match('(\d{4})-(\d{2})-(\d{2})', x)
+                if m:
+                    return datetime.datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+                else:
+                    return x
             else:
                 return x.toPython()
 
-    def getone(self, predicate):
+    def getone(self, predicate, as_uriref=False):
         predicate = uriref(predicate)
         objects = self._objects[predicate]
         if len(objects) > 1:
             raise UniquenessError(objects)
-        return self._node_or_literal(objects[0])
+        if as_uriref:
+            return objects[0]
+        else:
+            return self._node_or_literal(objects[0])
 
     def __getitem__(self, key):
         return self.getone(key)
 
-    def getall(self, predicate):
+    def getall(self, predicate, as_uriref=False):
         predicate = uriref(predicate)
-        return [self._node_or_literal(x) for x in self._objects[predicate]]
+        if as_uriref:
+            return self.Objects[predicate]
+        else:
+            return [self._node_or_literal(x) for x in self._objects[predicate]]
 
     def reflexive(self, predicate, type=None):
         predicate = uriref(predicate)

@@ -18,7 +18,13 @@ journal = issue['mhs:isIssueOf']
 
 <body>
 
-<h2><a href="${journal.uri}">${journal['dc:title']}</a> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</h2>
+<div class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></div>
+
+<h2 class="journal-title"><a href="${journal.uri}">${journal['dc:title']}</a></h2>
+
+<h3 class="issue">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</h3>
+
+<p class="issue-meta">Published ${issue['mhs:publicationDate'].strftime('%d %B %Y')}</p>
 
 <ul>
     <li py:for="article in sorted(issue.reflexive('dc:isPartOf', type='mhs:Article'), key=lambda a: a['mhs:startPage'])"
