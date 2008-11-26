@@ -1,0 +1,18 @@
+
+ul.contents {
+    padding: 0;
+    clear: both;
+}
+ul.contents li {
+    list-style: none;
+    padding: 0.5em 0;
+    border-top: 1px dotted #777;
+    border-bottom: 1px dotted #777;
+}
+ul.contents li + li {
+    border-top: none;
+}
+ul.contents li .author {
+    display: block;
+    font-size: 90%;
+}

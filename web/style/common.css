@@ -1,0 +1,21 @@
+
+body {
+    line-height: 2.75ex;
+    font-family: "Liberation Serif", Georgia, serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Candara", "Lucida Grande", sans-serif;
+}
+img {
+    border: none;
+}
+
+.cover {
+    float: right;
+    margin-left: 1em;
+}
+.footnote-anchor {
+    vertical-align: super;
+    font-size: 0.75em;
+    line-height: 0;
+}

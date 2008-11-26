@@ -14,6 +14,7 @@ journal = issue['mhs:isIssueOf']
 
 <head>
     <title>${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
+    <link rel="stylesheet" type="text/css" href="/style/issue.css" />
 </head>
 
 <body>
@@ -26,12 +27,12 @@ journal = issue['mhs:isIssueOf']
 
 <p class="issue-meta">Published ${issue['mhs:publicationDate'].strftime('%d %B %Y')}</p>
 
-<ul>
+<ul class="contents">
     <li py:for="article in sorted(issue.reflexive('dc:isPartOf', type='mhs:Article'), key=lambda a: a['mhs:startPage'])"
         py:with="author = article['dc:creator']">
-        <a href="${article.uri}">${article['dc:title']}</a>
-        by
-        <a href="${author.uri}">${author['foaf:name']}</a>
+        <div class="title">${article['dc:title']}</div>
+        <div class="author">by <a href="${author.uri}">${author['foaf:name']}</a></div>
+        <div class="links"><a href="${article.uri}">HTML</a> | <a href="${article.uri}.pdf">PDF</a></div>
     </li>
 </ul>
 
