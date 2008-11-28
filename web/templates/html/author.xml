@@ -20,6 +20,8 @@ author = node
 
 <h2>${author['foaf:name']}</h2>
 
+<p py:if="'mhs:biographicalNotes' in author">${author['mhs:biographicalNotes']}</p>
+
 <p py:if="'mhs:isAffiliatedWith' in author">Affiliated with: <a href="${author['mhs:isAffiliatedWith'].uri}">${author['mhs:isAffiliatedWith']['foaf:name']}</a></p>
 
 <py:if test="author.reflexive('dc:creator', type='mhs:Article')">
@@ -36,7 +38,7 @@ author = node
 <py:if test="author.reflexive('dc:creator', type='mhs:Review')">
     <h3>Reviews</h3>
     <ul class="reviews">
-        <li py:for="review in sorted(author.reflexive('dc:creator', type='mhs:Review'), key=lambda r: r['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
+        <li py:for="review in sorted(author.reflexive('dc:creator', type='mhs:Review'), key=lambda r: (r['dc:isPartOf']['mhs:publicationDate'], r['mhs:startPage']), reverse=True)"
             py:with="book = review['mhs:reviews']; issue = review['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
             <div class="book"><a href="${review.uri}">${book['dc:creator']}, <em>${book['dc:title']}</em> (${book['dc:date'][:4]})</a></div>
             <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
