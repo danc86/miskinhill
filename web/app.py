@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
-import re, os, urllib
+import os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'lib'))
+sys.path.insert(1, os.path.dirname(__file__))
+
+import re, urllib
 
 from webob import Request, Response
 from webob import exc
@@ -19,7 +23,7 @@ class MiskinHillApplication(object):
         self.environ = environ
         self.start = start_response
 
-        self.graph = rdfob.Graph('../rdf.nt')
+        self.graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), '..', 'rdf.nt'))
 
         self.req = Request(environ)
         self.req.charset = 'utf8'
