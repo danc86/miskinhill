@@ -1,7 +1,17 @@
 
+h2 {
+    line-height: 2.75ex;
+}
+h2 .journal-title {
+    display: block;
+    font-style: italic;
+}
+h2 .issue {
+    display: block;
+}
+
 ul.contents {
     padding: 0;
-    clear: both;
 }
 ul.contents li {
     list-style: none;
@@ -15,4 +25,7 @@ ul.contents li + li {
 ul.contents li .author {
     display: block;
     font-size: 90%;
+}
+ul.contents li:hover {
+    background-color: #ddffdd;
 }

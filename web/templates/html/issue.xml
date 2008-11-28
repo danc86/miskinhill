@@ -21,18 +21,19 @@ journal = issue['mhs:isIssueOf']
 
 <div class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></div>
 
-<h2 class="journal-title"><a href="${journal.uri}">${journal['dc:title']}</a></h2>
-
-<h3 class="issue">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</h3>
+<h2>
+    <span class="journal-title">${journal['dc:title']}</span>
+    <span class="issue">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</span>
+</h2>
 
 <p class="issue-meta">Published ${issue['mhs:publicationDate'].strftime('%d %B %Y')}</p>
 
+<h3>Articles</h3>
 <ul class="contents">
     <li py:for="article in sorted(issue.reflexive('dc:isPartOf', type='mhs:Article'), key=lambda a: a['mhs:startPage'])"
         py:with="author = article['dc:creator']">
-        <div class="title">${article['dc:title']}</div>
+        <div class="title"><a href="${article.uri}">${article['dc:title']}</a></div>
         <div class="author">by <a href="${author.uri}">${author['foaf:name']}</a></div>
-        <div class="links"><a href="${article.uri}">HTML</a> | <a href="${article.uri}.pdf">PDF</a></div>
     </li>
 </ul>
 
