@@ -48,6 +48,7 @@ class MiskinHillApplication(object):
         rdfob.uriref('mhs:Journal'): 'journal.xml', 
         rdfob.uriref('mhs:Issue'): 'issue.xml', 
         rdfob.uriref('mhs:Article'): 'article.xml',
+        rdfob.uriref('mhs:Review'): 'review.xml', 
         rdfob.uriref('mhs:Author'): 'author.xml'
     }
     def dispatch_rdf(self, path_info):

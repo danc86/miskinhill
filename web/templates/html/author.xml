@@ -13,26 +13,36 @@ author = node
 
 <head>
     <title>${author['foaf:name']}</title>
+    <link rel="stylesheet" type="text/css" href="/style/author.css" />
 </head>
 
 <body>
 
 <h2>${author['foaf:name']}</h2>
 
-<h3>Articles</h3>
-<ul>
-    <li py:for="article in sorted(author.reflexive('dc:creator', type='mhs:Article'), key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)">
-        <a href="${article.uri}">${article['dc:title']}</a>
-    </li>
-</ul>
+<p py:if="'mhs:isAffiliatedWith' in author">Affiliated with: <a href="${author['mhs:isAffiliatedWith'].uri}">${author['mhs:isAffiliatedWith']['foaf:name']}</a></p>
 
-<h3>Reviews</h3>
-<ul>
-    <li py:for="review in sorted(author.reflexive('dc:creator', type='mhs:Review'), key=lambda r: r['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
-        py:with="book = review['mhs:reviews']">
-        <a href="${review['dc:isPartOf'].uri}">Review</a> of <em>${book['dc:title']}</em> by ${', '.join(book['dc:creator'])}
-    </li>
-</ul>
+<py:if test="author.reflexive('dc:creator', type='mhs:Article')">
+    <h3>Articles</h3>
+    <ul class="articles">
+        <li py:for="article in sorted(author.reflexive('dc:creator', type='mhs:Article'), key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
+            py:with="issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+            <div class="article"><a href="${article.uri}">${article['dc:title']}</a></div>
+            <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
+        </li>
+    </ul>
+</py:if>
+
+<py:if test="author.reflexive('dc:creator', type='mhs:Review')">
+    <h3>Reviews</h3>
+    <ul class="reviews">
+        <li py:for="review in sorted(author.reflexive('dc:creator', type='mhs:Review'), key=lambda r: r['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
+            py:with="book = review['mhs:reviews']; issue = review['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+            <div class="book"><a href="${review.uri}">${', '.join(book['dc:creator'])}, <em>${book['dc:title']}</em> (${book['dc:date'][:4]})</a></div>
+            <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
+        </li>
+    </ul>
+</py:if>
 
 </body>
 </html>

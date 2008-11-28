@@ -22,10 +22,9 @@ ul.contents li {
 ul.contents li + li {
     border-top: none;
 }
-ul.contents li .author {
-    display: block;
-    font-size: 90%;
-}
 ul.contents li:hover {
     background-color: #ddffdd;
+}
+ul.articles li .author, ul.reviews li .reviewed-by {
+    font-size: 90%;
 }

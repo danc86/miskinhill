@@ -29,7 +29,7 @@ journal = issue['mhs:isIssueOf']
 <p class="issue-meta">Published ${issue['mhs:publicationDate'].strftime('%d %B %Y')}</p>
 
 <h3>Articles</h3>
-<ul class="contents">
+<ul class="contents articles">
     <li py:for="article in sorted(issue.reflexive('dc:isPartOf', type='mhs:Article'), key=lambda a: a['mhs:startPage'])"
         py:with="author = article['dc:creator']">
         <div class="title"><a href="${article.uri}">${article['dc:title']}</a></div>
@@ -38,10 +38,11 @@ journal = issue['mhs:isIssueOf']
 </ul>
 
 <h3>Reviews</h3>
-<ul>
+<ul class="contents reviews">
     <li py:for="review in issue.reflexive('dc:isPartOf', type='mhs:Review')"
         py:with="author = review['dc:creator']; book = review['mhs:reviews']">
-        ${', '.join(book['dc:creator'])}, <em>${book['dc:title']}</em> (reviewed by <a href="${author.uri}">${author['foaf:name']}</a>)
+        <div class="book"><a href="${review.uri}">${', '.join(book['dc:creator'])}, <em>${book['dc:title']}</em> (${book['dc:date'][:4]})</a></div>
+        <div class="reviewed-by">Reviewed by <a href="${author.uri}">${author['foaf:name']}</a></div>
     </li>
 </ul>
 

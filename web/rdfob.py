@@ -82,6 +82,10 @@ class GraphNode(object):
     def __getitem__(self, key):
         return self.getone(key)
 
+    def __contains__(self, key):
+        predicate = uriref(key)
+        return predicate in self._objects
+
     def getall(self, predicate, as_uriref=False):
         predicate = uriref(predicate)
         if as_uriref:
