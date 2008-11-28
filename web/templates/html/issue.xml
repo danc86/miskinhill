@@ -41,7 +41,7 @@ journal = issue['mhs:isIssueOf']
 <ul class="contents reviews">
     <li py:for="review in issue.reflexive('dc:isPartOf', type='mhs:Review')"
         py:with="author = review['dc:creator']; book = review['mhs:reviews']">
-        <div class="book"><a href="${review.uri}">${', '.join(book['dc:creator'])}, <em>${book['dc:title']}</em> (${book['dc:date'][:4]})</a></div>
+        <div class="book"><a href="${review.uri}">${book['dc:creator']}, <em>${book['dc:title']}</em> (${book['dc:date'][:4]})</a></div>
         <div class="reviewed-by">Reviewed by <a href="${author.uri}">${author['foaf:name']}</a></div>
     </li>
 </ul>
