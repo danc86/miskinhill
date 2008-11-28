@@ -28,30 +28,39 @@ class MiskinHillApplication(object):
         self.req = Request(environ)
         self.req.charset = 'utf8'
 
+    METHODS = {
+        '/': 'index'
+    }
     def __iter__(self):
         try:
-            resp = self.dispatch(self.req.path_info)
+            if self.req.path_info in self.METHODS:
+                resp = getattr(self, self.METHODS[self.req.path_info])()
+            else:
+                resp = self.dispatch_rdf(self.req.path_info)
         except exc.HTTPException, e:
             resp = e
         return iter(resp(self.environ, self.start))
 
-    TEMPLATES = {
+    def index(self):
+        return self.render_template('index.xml')
+
+    RDF_TEMPLATES = {
         rdfob.uriref('mhs:Journal'): 'journal.xml', 
         rdfob.uriref('mhs:Issue'): 'issue.xml', 
         rdfob.uriref('mhs:Article'): 'article.xml',
         rdfob.uriref('mhs:Author'): 'author.xml'
     }
-    def dispatch(self, path_info):
+    def dispatch_rdf(self, path_info):
         uri = rdfob.URIRef(urllib.unquote(
                 'http://miskinhill.com.au' + path_info).decode('utf8'))
         try:
             node = self.graph[uri]
         except KeyError:
             raise exc.HTTPNotFound().exception
-        return self.render_template(self.TEMPLATES[node.type], 
+        return self.render_template(self.RDF_TEMPLATES[node.type], 
                 {'node': node})
 
-    def render_template(self, template_name, data):
+    def render_template(self, template_name, data={}):
         template = template_loader.load(template_name)
         body = template.generate(req=self.req, **data).render('xhtml')
         return Response(body, content_type='text/html')
