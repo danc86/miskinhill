@@ -1,20 +1,35 @@
 
+/*
+http://www.wellstyled.com/tools/colorscheme2/index-en.html?triad;71;0;222;0.5;-0.9;0.5;0.5;0.1;0.9;0.75;0.75;0.5;-0.9;0.5;0.5;0.1;0.9;0.75;0.75;0.5;-0.9;0.5;0.5;0.1;0.9;0.75;0.75;0.5;-0.9;0.5;0.5;0.1;0.9;0.75;0.75;0
+*/
+
 body {
     line-height: 2.75ex;
     font-family: "Liberation Serif", Georgia, serif;
 }
 h1, h2, h3, h4, h5, h6 {
+    line-height: 2.25ex;
     font-family: "Candara", "Lucida Grande", sans-serif;
+}
+a:link {
+    color: #308DBF;
+}
+a:visited {
+    color: #BF3130;
 }
 img {
     border: none;
 }
 
-.cover {
-    float: right;
-    margin-left: 1em;
+#bodywrapper {
+    margin: 1em auto;
+    max-width: 50em;
+    /* IE max-width hack: */
+    width: 50em;
+    width: auto !important;
 }
-.footnote-anchor {
+
+.footnote-anchor, .footnote-number {
     vertical-align: super;
     font-size: 0.75em;
     line-height: 0;

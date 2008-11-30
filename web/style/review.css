@@ -1,0 +1,19 @@
+
+.book-meta {
+    border: 1px solid #BF9D30;
+    background: #e6d7a8;
+    float: right;
+    margin: 0 0 1em 1em;
+    padding: 0 0.75em;
+    text-align: center;
+    max-width: 12em;
+    /* IE max-width hack: */
+    width: 12em;
+    width: auto !important;
+}
+.book-meta .title {
+    font-style: italic;
+}
+.book-meta .publication {
+    font-size: 0.9em;
+}

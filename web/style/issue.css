@@ -1,4 +1,9 @@
 
+.cover {
+    float: right;
+    margin-left: 1em;
+}
+
 h2 {
     line-height: 2.75ex;
 }
@@ -15,7 +20,7 @@ ul.contents {
 }
 ul.contents li {
     list-style: none;
-    padding: 0.5em 0;
+    padding: 0.5em;
     border-top: 1px dotted #777;
     border-bottom: 1px dotted #777;
 }
@@ -23,7 +28,7 @@ ul.contents li + li {
     border-top: none;
 }
 ul.contents li:hover {
-    background-color: #ddffdd;
+    background-color: #E6CFCF;
 }
 ul.articles li .author, ul.reviews li .reviewed-by {
     font-size: 90%;
