@@ -18,6 +18,9 @@ a:visited {
 img {
     border: none;
 }
+q {
+    quotes: none;
+}
 
 #bodywrapper {
     margin: 1em auto;
@@ -33,17 +36,31 @@ img {
 .article-body p {
     margin: 0;
 }
-.article-body p + p {
+.article-body p + p, .article-body blockquote + p {
+    text-indent: 1.5em;
+}
+.article-body blockquote p {
     text-indent: 1.5em;
 }
 .article-body h3 {
     margin: 1.5em 0 0.5em 0;
+}
+.article-body h4 {
+    margin: 1em 0 0.5em 0;
 }
 .article-body hr {
     width: 5em;
     border: none;
     border-top: 1px solid #777777;
     margin: 1.5em auto;
+}
+.article-body q {
+    display: block;
+    text-indent: 0;
+    margin: 0.75em 3em;
+}
+.article-body blockquote {
+    margin: 0.75em 3em;
 }
 .footnote {
     font-size: 0.9em;

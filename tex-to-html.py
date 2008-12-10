@@ -17,6 +17,10 @@ def tex2html(s):
     # emphasis
     s = re.compile(r'\\textit\{([^}]+)\}', re.M).sub(r'<em>\1</em>', s)
 
+    # quotes
+    s = re.sub(r'\\begin{quote}', '<q>', s)
+    s = re.sub(r'\\end{quote}', '</q>', s)
+
     # footnotes
     s += '\n\n<h3>Footnotes</h3>'
     i = 0
