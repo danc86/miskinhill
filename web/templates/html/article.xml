@@ -25,5 +25,7 @@ journal = issue['mhs:isIssueOf']
     by <a href="${author.uri}">${author['foaf:name']}</a>
 </p>
 
+<xi:include href="${article.uri.replace('http://miskinhill.com.au/', '../../../content/')}.html"><xi:fallback /></xi:include>
+
 </body>
 </html>

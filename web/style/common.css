@@ -4,11 +4,9 @@ http://www.wellstyled.com/tools/colorscheme2/index-en.html?triad;71;0;222;0.5;-0
 */
 
 body {
-    line-height: 2.75ex;
     font-family: "Liberation Serif", Georgia, serif;
 }
 h1, h2, h3, h4, h5, h6 {
-    line-height: 2.25ex;
     font-family: "Candara", "Lucida Grande", sans-serif;
 }
 a:link {
@@ -29,6 +27,29 @@ img {
     width: auto !important;
 }
 
+.article-body {
+    line-height: 2.75ex;
+}
+.article-body p {
+    margin: 0;
+}
+.article-body p + p {
+    text-indent: 1.5em;
+}
+.article-body h3 {
+    margin: 1.5em 0 0.5em 0;
+}
+.article-body hr {
+    width: 5em;
+    border: none;
+    border-top: 1px solid #777777;
+    margin: 1.5em auto;
+}
+.footnote {
+    font-size: 0.9em;
+    line-height: 3ex;
+    margin: 0.75em 0;
+}
 .footnote-anchor, .footnote-number {
     vertical-align: super;
     font-size: 0.75em;
