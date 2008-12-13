@@ -2,7 +2,7 @@
 
 import re
 
-def tex2html(s):
+def tex2html(s, type):
 
     # nbsp
     s = re.sub(r'\~', '&nbsp;', s)
@@ -22,29 +22,39 @@ def tex2html(s):
     s = re.sub(r'\\end{quote}', '</q>', s)
 
     # footnotes
-    s += '\n\n<h3>Footnotes</h3>'
-    i = 0
-    while True:
-        i += 1
-        m = re.compile(r'\\footnote\{([^}]+)\}', re.M).search(s)
-        if not m: break
-        s = s[:m.start()] + \
-            ('<a href="#fn-%d" class="footnote-anchor">%d</a>' % (i, i)) + \
-            s[m.end():] + \
-            ('\n<div id="fn-%d" class="footnote"><p><span class="footnote-number">%d</span> ' % (i, i)) + \
-            m.group(1) + \
-            '</p></div>'
+    if type == 'article':
+        s += '\n\n<h3>Footnotes</h3>'
+        i = 0
+        while True:
+            i += 1
+            m = re.compile(r'\\footnote\{([^}]+)\}', re.M).search(s)
+            if not m: break
+            s = s[:m.start()] + \
+                ('<a href="#fn-%d" class="footnote-anchor">%d</a>' % (i, i)) + \
+                s[m.end():] + \
+                ('\n<div id="fn-%d" class="footnote"><p><span class="footnote-number">%d</span> ' % (i, i)) + \
+                m.group(1) + \
+                '</p></div>'
 
     # sections
     s = re.sub(r'\\subsection\{([^}]*)\}', r'<h3>\1</h3>', s)
 
     # containing element
-    s = re.sub(r'\\begin\{article\}\{[^}]*\}\{[^}]*\}\{[^}]*\}', '', s)
-    s = re.sub(r'\\end\{article\}', '', s)
-    s = '<div xmlns="http://www.w3.org/1999/xhtml" class="article-body">' + s + '\n\n</div>'
+    if type == 'article':
+        s = re.sub(r'\\begin\{article\}\{[^}]*\}\{[^}]*\}\{[^}]*\}', '', s)
+        s = re.sub(r'\\end\{article\}', '', s)
+        s = '<div xmlns="http://www.w3.org/1999/xhtml" class="article-body">' + s + '\n\n</div>'
+    elif type == 'review':
+        s = re.sub(r'\\begin\{review\}(?:\s*\{[^}]*\}){4}', '', s)
+        s = re.sub(r'\\end\{review\}', '', s)
+        s = '<div xmlns="http://www.w3.org/1999/xhtml" class="review-body">' + s + '\n\n</div>'
 
     return s
 
 if __name__ == '__main__':
-    import sys
-    sys.stdout.write(tex2html(open(sys.argv[1], 'r').read()))
+    import sys, optparse
+    parser = optparse.OptionParser()
+    parser.add_option('-t', '--type', help='review or article [default: %default]')
+    parser.set_defaults(type='article')
+    options, args = parser.parse_args()
+    sys.stdout.write(tex2html(open(args[0], 'r').read(), options.type))
