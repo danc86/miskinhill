@@ -1,9 +1,11 @@
-package au.com.miskinhill.search.tokenizer;
+package au.com.miskinhill.search.analysis;
 
 import static org.junit.Assert.assertEquals;
 
 import org.apache.lucene.analysis.Token;
 import org.junit.Test;
+
+import au.com.miskinhill.search.analysis.StringTokenizer;
 
 @SuppressWarnings("deprecation")
 public class StringTokenizerUnitTest {

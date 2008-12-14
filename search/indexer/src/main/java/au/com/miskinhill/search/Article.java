@@ -6,8 +6,8 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 
-import au.com.miskinhill.search.tokenizer.RDFLiteralTokenizer;
-import au.com.miskinhill.search.tokenizer.RDFLiteralTokenizer.UnknownLiteralTypeException;
+import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
+import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;

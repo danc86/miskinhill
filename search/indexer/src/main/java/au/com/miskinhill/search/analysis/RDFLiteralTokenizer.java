@@ -1,4 +1,4 @@
-package au.com.miskinhill.search.tokenizer;
+package au.com.miskinhill.search.analysis;
 
 import java.util.HashMap;
 import java.util.Map;

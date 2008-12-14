@@ -1,4 +1,4 @@
-package au.com.miskinhill.search.tokenizer;
+package au.com.miskinhill.search.analysis;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -11,6 +11,9 @@ import org.apache.lucene.analysis.Token;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import au.com.miskinhill.search.analysis.IntegerLiteralTokenizer;
+import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.vocabulary.XSD;
