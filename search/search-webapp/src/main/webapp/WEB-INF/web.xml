@@ -1,0 +1,15 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Miskin Hill Search</display-name>
+  <servlet>
+  	<servlet-name>search</servlet-name>
+  	<servlet-class>au.com.miskinhill.search.webapp.SearchServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>search</servlet-name>
+  	<url-pattern>/search</url-pattern>
+  </servlet-mapping>
+</web-app>
