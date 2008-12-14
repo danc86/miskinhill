@@ -1,7 +1,10 @@
 package au.com.miskinhill.search;
 
+import java.io.IOException;
+
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexWriter;
 
 import au.com.miskinhill.search.tokenizer.RDFLiteralTokenizer;
 import au.com.miskinhill.search.tokenizer.RDFLiteralTokenizer.UnknownLiteralTypeException;
@@ -12,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
-public class Article {
+public class Article implements Indexable {
 	
 	private Document doc = new Document();
 	
@@ -28,8 +31,8 @@ public class Article {
 		}
 	}
 	
-	public String toString() {
-		return doc.toString();
+	public void addToIndex(IndexWriter iw) throws IOException {
+		iw.addDocument(doc);
 	}
 
 }
