@@ -27,6 +27,15 @@ public class StringTokenizerUnitTest {
 	}
 
 	@Test
+	public void testEnglishCurlyApostrophe() throws Exception {
+		StringTokenizer t = new StringTokenizer("Carole’s cat", "en-AU");
+		Token tok = new Token();
+		assertEquals(new Token("carol", 0, 8, "<APOSTROPHE>"), t.next(tok));
+		assertEquals(new Token("cat", 9, 12, "<ALPHANUM>"), t.next(tok));
+		assertEquals(null, t.next(tok));
+	}
+
+	@Test
 	public void testRussian() throws Exception {
 		StringTokenizer t = new StringTokenizer("Нас и судьбы безвестные ждут", "ru");
 		Token tok = new Token();

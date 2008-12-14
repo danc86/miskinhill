@@ -40,7 +40,7 @@ final class StringTokenizer extends TokenStream {
 			System.err.println("WARNING: no analyzer for language " + lang + ", using default");
 			analyzer = analyzers.get(null); // use default
 		}
-		delegate = analyzer.tokenStream(null, new StringReader(text));
+		delegate = analyzer.tokenStream(null, new StringReader(preprocess(text)));
 		this.offset = offset;
 	}
 	
@@ -51,6 +51,10 @@ final class StringTokenizer extends TokenStream {
 			retval.setEndOffset(retval.endOffset() + offset);
 		}
 		return retval;
+	}
+	
+	private String preprocess(String text) {
+		return text.replace('’', '\'');
 	}
 	
 }
