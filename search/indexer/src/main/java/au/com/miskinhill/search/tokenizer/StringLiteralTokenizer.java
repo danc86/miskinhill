@@ -26,7 +26,7 @@ public class StringLiteralTokenizer extends RDFLiteralTokenizer {
 	private TokenStream delegate;
 
 	public StringLiteralTokenizer(Literal node) {
-		Analyzer analyzer = analyzers.get(node.getLanguage());
+		Analyzer analyzer = analyzers.get(node.getLanguage().substring(0, 2));
 		if (analyzer == null)
 			analyzer = analyzers.get(null); // use default
 		delegate = analyzer.tokenStream(null, new StringReader(node.getString()));
