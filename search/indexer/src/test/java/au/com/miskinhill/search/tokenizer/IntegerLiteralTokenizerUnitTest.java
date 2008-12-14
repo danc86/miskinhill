@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.vocabulary.XSD;
 
+@SuppressWarnings("deprecation")
 public class IntegerLiteralTokenizerUnitTest {
 	
 	private Literal zero;

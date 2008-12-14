@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 
+@SuppressWarnings("deprecation")
 public class StringLiteralTokenizerUnitTest {
 
 	@Test
