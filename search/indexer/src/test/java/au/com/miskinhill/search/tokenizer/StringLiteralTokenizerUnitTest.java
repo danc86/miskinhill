@@ -10,7 +10,6 @@ import org.apache.lucene.analysis.Token;
 import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.vocabulary.RDF;
 
 @SuppressWarnings("deprecation")
 public class StringLiteralTokenizerUnitTest {
