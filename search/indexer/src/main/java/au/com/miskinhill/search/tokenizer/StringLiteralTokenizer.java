@@ -30,8 +30,10 @@ public class StringLiteralTokenizer extends RDFLiteralTokenizer {
 		if (lang.length() > 2)
 			lang = lang.substring(0, 2);
 		Analyzer analyzer = analyzers.get(lang);
-		if (analyzer == null)
+		if (analyzer == null) {
+			System.err.println("WARNING: no analyzer for language " + lang + ", using default");
 			analyzer = analyzers.get(null); // use default
+		}
 		delegate = analyzer.tokenStream(null, new StringReader(node.getString()));
 	}
 	
