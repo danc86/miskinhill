@@ -55,6 +55,21 @@ public class StringLiteralTokenizerUnitTest {
 	}
 	
 	@Test
+	public void testEmptyLanguage() throws Exception {
+		Literal text = createMock(Literal.class);
+		expect(text.getString()).andReturn("Hello to the World!").anyTimes();
+		expect(text.getLanguage()).andReturn("").anyTimes();
+		replay(text);
+		StringLiteralTokenizer t = new StringLiteralTokenizer(text);
+		Token tok = new Token();
+		assertEquals(new Token("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
+		assertEquals(new Token("to", 6, 8, "<ALPHANUM>"), t.next(tok));
+		assertEquals(new Token("the", 9, 12, "<ALPHANUM>"), t.next(tok));
+		assertEquals(new Token("world", 13, 18, "<ALPHANUM>"), t.next(tok));
+		assertEquals(null, t.next(tok));
+	}
+	
+	@Test
 	public void testLiteralTypeLookup() throws Exception {
 		Literal text = createMock(Literal.class);
 		expect(text.getString()).andReturn("0").anyTimes();
