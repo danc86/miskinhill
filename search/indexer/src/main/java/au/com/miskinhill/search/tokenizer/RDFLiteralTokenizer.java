@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.lucene.analysis.TokenStream;
 
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.XSD;
 
 public abstract class RDFLiteralTokenizer extends TokenStream {
@@ -24,6 +25,7 @@ public abstract class RDFLiteralTokenizer extends TokenStream {
 	static {
 		types.put(null /* no type means plain string */, StringLiteralTokenizer.class);
 		types.put(XSD.integer.getURI(), IntegerLiteralTokenizer.class);
+		types.put(RDF.getURI() + "XMLLiteral", XMLLiteralTokenizer.class);
 	}
 
 	public static RDFLiteralTokenizer fromLiteral(Literal literal) 

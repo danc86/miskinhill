@@ -10,6 +10,7 @@ import org.apache.lucene.analysis.Token;
 import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 @SuppressWarnings("deprecation")
 public class StringLiteralTokenizerUnitTest {
@@ -37,6 +38,21 @@ public class StringLiteralTokenizerUnitTest {
 		Token tok = new Token();
 		assertEquals(new Token("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
 		assertEquals(new Token("world", 13, 18, "<ALPHANUM>"), t.next(tok));
+		assertEquals(null, t.next(tok));
+	}
+
+	@Test
+	public void testRussian() throws Exception {
+		Literal text = createMock(Literal.class);
+		expect(text.getString()).andReturn("Нас и судьбы безвестные ждут").anyTimes();
+		expect(text.getLanguage()).andReturn("ru").anyTimes();
+		replay(text);
+		StringLiteralTokenizer t = new StringLiteralTokenizer(text);
+		Token tok = new Token();
+		assertEquals(new Token("нас", 0, 3, "<ALPHANUM>"), t.next(tok));
+		assertEquals(new Token("судьб", 6, 12, "<ALPHANUM>"), t.next(tok));
+		assertEquals(new Token("безвестн", 13, 23, "<ALPHANUM>"), t.next(tok));
+		assertEquals(new Token("ждут", 24, 28, "<ALPHANUM>"), t.next(tok));
 		assertEquals(null, t.next(tok));
 	}
 
