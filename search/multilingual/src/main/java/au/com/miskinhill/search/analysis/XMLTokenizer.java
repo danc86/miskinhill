@@ -57,14 +57,15 @@ public class XMLTokenizer extends TokenStream {
 	/** Current delegate in use (null if none currently) */
 	private TokenStream delegate = null;
 
-	public XMLTokenizer(Reader reader, PerLanguageAnalyzerWrapper analyzer) throws XMLStreamException {
+	public XMLTokenizer(Reader reader, PerLanguageAnalyzerWrapper analyzer) 
+			throws XMLStreamException {
 		this.analyzer = analyzer;
 		r = factory.createXMLEventReader(reader);
 	}
 
-	public XMLTokenizer(InputStream in) throws XMLStreamException {
-		XMLInputFactory factory = XMLInputFactory.newInstance();
-		factory.setProperty("javax.xml.stream.isCoalescing", true);
+	public XMLTokenizer(InputStream in, PerLanguageAnalyzerWrapper analyzer) 
+			throws XMLStreamException {
+		this.analyzer = analyzer;
 		r = factory.createXMLEventReader(in);
 	}
 	

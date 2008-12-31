@@ -16,6 +16,7 @@ import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexWriter;
 
+import au.com.miskinhill.search.analysis.MHAnalyzer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
 import au.com.miskinhill.search.analysis.XMLTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
@@ -74,7 +75,8 @@ public class Article implements Indexable {
 		doc.add(new Field("content", new XMLTokenizer(
 				new SequenceInputStream(
 					new ByteArrayInputStream(XHTML_STRICT_DTD_DECL), 
-					new BufferedInputStream(new FileInputStream(content))))));
+					new BufferedInputStream(new FileInputStream(content))), 
+				new MHAnalyzer())));
 	}
 	
 	public void addToIndex(IndexWriter iw) throws IOException {
