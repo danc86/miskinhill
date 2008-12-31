@@ -40,12 +40,13 @@ public class Article implements Indexable {
 		while (i.hasNext()) {
 			final Statement stmt = i.nextStatement();
 			stmt.getObject().visitWith(new RDFVisitor() {
+				@Override
 				public Object visitBlank(Resource r, AnonId id) {
 					/* pass */
 					return null;
 				}
 
-				//@Override
+				@Override
 				public Object visitLiteral(Literal literal) {
 					try {
 						doc.add(new Field(stmt.getPredicate().getURI(), 
@@ -56,7 +57,7 @@ public class Article implements Indexable {
 					return null;
 				}
 
-				//@Override
+				@Override
 				public Object visitURI(Resource r, String uri) {
 					return null;
 				}
