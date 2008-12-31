@@ -94,6 +94,8 @@ public class XMLTokenizer extends TokenStream {
 					break;
 				case XMLStreamConstants.CHARACTERS:
 					Characters chars = event.asCharacters();
+					if (chars.isWhiteSpace())
+						break; // don't care
 					delegate = new OffsetTokenFilter(
 							analyzer.tokenStream(langs.getCurrent(), 
 									null, new StringReader(chars.getData())), 

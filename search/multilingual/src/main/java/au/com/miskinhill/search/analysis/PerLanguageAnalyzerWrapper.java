@@ -45,12 +45,16 @@ public class PerLanguageAnalyzerWrapper extends Analyzer {
 
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
+		System.err.println("WARNING: " + this + " using default analyzer");
 		return tokenStream("", fieldName, reader);
 	}
 	
 	public TokenStream tokenStream(String language, String fieldName, Reader reader) {
 		if (language == null) language = "";
 		Analyzer a = analyzers.get(language);
+		if (a == analyzersList.get(0))
+			System.err.println("WARNING: " + this + 
+					" using default analyzer for language " + language);
 		return a.tokenStream(fieldName, reader);
 	}
 
