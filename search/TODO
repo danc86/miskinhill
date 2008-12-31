@@ -1,0 +1,5 @@
+- Cyrillic transliteration: probably easiest to try mapping latin back to
+  cyrillic in a few different ways (rather than cyrillic back to latin in all 
+  the various possible ways?)
+- prime for soft signs in names: does it get tokenized out? do we end up with a
+  sensible phrase query anyway? this might be good enough already
