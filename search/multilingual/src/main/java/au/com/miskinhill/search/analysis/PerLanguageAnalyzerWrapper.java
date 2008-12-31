@@ -1,6 +1,8 @@
 package au.com.miskinhill.search.analysis;
 
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -22,13 +24,23 @@ import org.apache.lucene.analysis.TokenStream;
 public class PerLanguageAnalyzerWrapper extends Analyzer {
 
 	protected Trie<Analyzer> analyzers;
+	private List<Analyzer> analyzersList = new ArrayList<Analyzer>(); // easier than traversing the trie
 	
 	public PerLanguageAnalyzerWrapper(Analyzer defaultAnalyzer) {
 		analyzers = new Trie<Analyzer>(defaultAnalyzer);
+		analyzersList.add(defaultAnalyzer);
 	}
 	
 	public void addAnalyzer(String language, Analyzer analyzer) {
 		analyzers.put(language, analyzer);
+		analyzersList.add(analyzer);
+	}
+	
+	/**
+	 * Returns a list of all sub-analyzers in this analyzer (including the default one).
+	 */
+	public List<Analyzer> getAnalyzers() {
+		return analyzersList;
 	}
 
 	public TokenStream tokenStream(String fieldName, Reader reader) {
