@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU">
+
+<head>
+	<title>Search for $q - Miskin Hill</title>
+	<link rel="stylesheet" type="text/css" href="http://miskinhill.com.au/style/common.css" />
+</head>
+
+<body>
+<div id="bodywrapper">
+
+<h2>Search for $q</h2>
+
+<ul class="searchresults">
+	#foreach( $hit in $results )
+	<li><a href="$hit.url">${hit.url}</a> ($hit.score)</li>
+	#end
+</ul>
+
+</body>
+</html>
