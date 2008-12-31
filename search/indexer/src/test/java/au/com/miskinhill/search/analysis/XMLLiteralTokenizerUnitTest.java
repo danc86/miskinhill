@@ -47,6 +47,20 @@ public class XMLLiteralTokenizerUnitTest {
 	}
 	
 	@Test
+	public void testCurlyApostrophe() throws Exception {
+		final String span = "<span xmlns=\"http://www.w3.org/1999/xhtml\" " +
+				"lang=\"en\">everyone\u2019s silly</span>";
+		Literal literal = createMock(Literal.class);
+		expect(literal.getString()).andReturn(span).anyTimes();
+		replay(literal);
+		XMLLiteralTokenizer t = new XMLLiteralTokenizer(literal);
+		Token tok = new Token();
+		assertEquals(new Token("everyon", 53, 63, "<APOSTROPHE>"), t.next(tok));
+		assertEquals(new Token("silli", 64, 69, "<ALPHANUM>"), t.next(tok));
+		assertEquals(null, t.next(new Token()));
+	}
+	
+	@Test
 	public void testLiteralTypeLookup() throws Exception {
 		Literal text = createMock(Literal.class);
 		expect(text.getString()).andReturn("<div>hi there</div>").anyTimes();

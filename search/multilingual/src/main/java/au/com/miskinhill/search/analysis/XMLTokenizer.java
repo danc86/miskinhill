@@ -3,6 +3,7 @@ package au.com.miskinhill.search.analysis;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.Stack;
 
 import javax.xml.XMLConstants;
@@ -48,14 +49,14 @@ public class XMLTokenizer extends TokenStream {
 	}
 
 	private XMLEventReader r;
-	
+	private PerLanguageAnalyzerWrapper analyzer;
 	private LangStack langs = new LangStack();
 	
 	/** Current delegate in use (null if none currently) */
-	private StringTokenizer delegate = null;
+	private TokenStream delegate = null;
 
-	public XMLTokenizer(Reader reader) throws XMLStreamException {
-		
+	public XMLTokenizer(Reader reader, PerLanguageAnalyzerWrapper analyzer) throws XMLStreamException {
+		this.analyzer = analyzer;
 		r = factory.createXMLEventReader(reader);
 	}
 
@@ -89,8 +90,9 @@ public class XMLTokenizer extends TokenStream {
 					break;
 				case XMLStreamConstants.CHARACTERS:
 					Characters chars = event.asCharacters();
-					delegate = new StringTokenizer(chars.getData(), 
-							langs.getCurrent(),  
+					delegate = new OffsetTokenFilter(
+							analyzer.tokenStream(langs.getCurrent(), 
+									null, new StringReader(chars.getData())), 
 							event.getLocation().getCharacterOffset());
 					Token retval = delegate.next(reusableToken);
 					if (retval != null)

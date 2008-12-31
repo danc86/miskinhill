@@ -89,6 +89,19 @@ public class StringLiteralTokenizerUnitTest {
 	}
 	
 	@Test
+	public void testCurlyApostrophe() throws Exception {
+		Literal text = createMock(Literal.class);
+		expect(text.getString()).andReturn("everyone\u2019s silly").anyTimes();
+		expect(text.getLanguage()).andReturn("en").anyTimes();
+		replay(text);
+		StringLiteralTokenizer t = new StringLiteralTokenizer(text);
+		Token tok = new Token();
+		assertEquals(new Token("everyon", 0, 10, "<APOSTROPHE>"), t.next(tok));
+		assertEquals(new Token("silli", 11, 16, "<ALPHANUM>"), t.next(tok));
+		assertEquals(null, t.next(tok));
+	}
+	
+	@Test
 	public void testLiteralTypeLookup() throws Exception {
 		Literal text = createMock(Literal.class);
 		expect(text.getString()).andReturn("0").anyTimes();

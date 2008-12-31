@@ -14,7 +14,7 @@ public class XMLLiteralTokenizer extends RDFLiteralTokenizer {
 	private XMLTokenizer delegate;
 
 	public XMLLiteralTokenizer(Literal literal) throws XMLStreamException {
-		delegate = new XMLTokenizer(new StringReader(literal.getString()));
+		delegate = new XMLTokenizer(new StringReader(preprocess(literal.getString())), new MHAnalyzer());
 	}
 	
 	public Token next(Token reusableToken) throws IOException {

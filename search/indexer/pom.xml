@@ -44,5 +44,10 @@
   		<artifactId>wstx-asl</artifactId>
   		<version>3.2.7</version>
   	</dependency>
+  	<dependency>
+  		<groupId>au.com.miskinhill.search</groupId>
+  		<artifactId>multilingual</artifactId>
+  		<version>1.0-SNAPSHOT</version>
+  	</dependency>
   </dependencies>
 </project>

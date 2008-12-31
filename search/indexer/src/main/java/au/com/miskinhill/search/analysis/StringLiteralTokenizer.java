@@ -1,6 +1,7 @@
 package au.com.miskinhill.search.analysis;
 
 import java.io.IOException;
+import java.io.StringReader;
 
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
@@ -12,7 +13,8 @@ public class StringLiteralTokenizer extends RDFLiteralTokenizer {
 	private TokenStream delegate;
 
 	public StringLiteralTokenizer(Literal node) {
-		delegate = new StringTokenizer(node.getString(), node.getLanguage());
+		delegate = new MHAnalyzer().tokenStream(node.getLanguage(), 
+				null, new StringReader(preprocess(node.getString())));
 	}
 	
 	public Token next(Token reuseableToken) throws IOException {
