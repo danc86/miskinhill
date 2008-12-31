@@ -43,6 +43,7 @@ public class PerLanguageAnalyzerWrapper extends Analyzer {
 		return analyzersList;
 	}
 
+	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
 		return tokenStream("", fieldName, reader);
 	}

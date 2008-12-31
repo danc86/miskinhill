@@ -17,6 +17,7 @@ public class StringLiteralTokenizer extends RDFLiteralTokenizer {
 				null, new StringReader(preprocess(node.getString())));
 	}
 	
+	@Override
 	public Token next(Token reuseableToken) throws IOException {
 		return delegate.next(reuseableToken);
 	}

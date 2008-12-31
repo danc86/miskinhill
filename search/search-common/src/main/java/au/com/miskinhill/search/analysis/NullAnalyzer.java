@@ -9,6 +9,7 @@ public class NullAnalyzer extends Analyzer {
 	
 	public static final NullAnalyzer INSTANCE = new NullAnalyzer(); 
 
+	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
 		throw new RuntimeException("Attempt to analyze field " + fieldName + " with NullAnalyzer");
 	}

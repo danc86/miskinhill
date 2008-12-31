@@ -17,6 +17,7 @@ public class XMLLiteralTokenizer extends RDFLiteralTokenizer {
 		delegate = new XMLTokenizer(new StringReader(preprocess(literal.getString())), new MHAnalyzer());
 	}
 	
+	@Override
 	public Token next(Token reusableToken) throws IOException {
 		return delegate.next(reusableToken);
 	}

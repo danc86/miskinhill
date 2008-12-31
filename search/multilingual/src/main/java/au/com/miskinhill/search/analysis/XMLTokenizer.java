@@ -32,12 +32,14 @@ public class XMLTokenizer extends TokenStream {
 	private static class LangStack extends Stack<String> {
 		private static final long serialVersionUID = 7020093255092191463L;
 		private String current = null;
+		@Override
 		public String push(String item) {
 			if (item != null)
 				current = item;
 			super.push(current);
 			return item;
 		}
+		@Override
 		public synchronized String pop() {
 			String top = super.pop();
 			current = empty() ? null : peek();
@@ -66,6 +68,7 @@ public class XMLTokenizer extends TokenStream {
 		r = factory.createXMLEventReader(in);
 	}
 	
+	@Override
 	public Token next(Token reusableToken) throws IOException {
 		// first try our current string delegate, if we have one
 		if (delegate != null) {

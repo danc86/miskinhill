@@ -13,6 +13,7 @@ public class IntegerLiteralTokenizer extends RDFLiteralTokenizer {
 		value = node.getString();
 	}
 	
+	@Override
 	public Token next(Token reusableToken) {
 		if (exhausted)
 			return null;

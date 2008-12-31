@@ -31,6 +31,7 @@ public class SearchServlet extends HttpServlet {
 		parser = new QueryParser("content", new StandardAnalyzer());
 	}
 	
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String query = req.getParameter("q");
