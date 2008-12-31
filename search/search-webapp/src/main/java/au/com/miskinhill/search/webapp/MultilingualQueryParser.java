@@ -19,13 +19,9 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import au.com.miskinhill.search.analysis.PerLanguageAnalyzerWrapper;
 
 public class MultilingualQueryParser {
-	
-	public static final String[] fieldsToSearch = {
-		"http://purl.org/dc/terms/title", 
-		"content"
-	};
 
-	public static Query parse(String q, PerLanguageAnalyzerWrapper analyzer) throws IOException {
+	public static Query parse(String q, PerLanguageAnalyzerWrapper analyzer, 
+			String[] fieldsToSearch) throws IOException {
 		BooleanQuery query = new BooleanQuery();
 		List<Analyzer> subAnalyzers = analyzer.getAnalyzers();
 		for (String token: consumeTokens(new WhitespaceTokenizer(new StringReader(q)))) {

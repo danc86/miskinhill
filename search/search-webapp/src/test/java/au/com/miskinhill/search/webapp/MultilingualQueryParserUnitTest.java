@@ -17,15 +17,17 @@ import au.com.miskinhill.search.analysis.PerLanguageAnalyzerWrapper;
  */
 public class MultilingualQueryParserUnitTest {
 	
+	private static final String[] fieldsToSearch = { "field1", "field2" };
+	
 	@Test
 	public void testParse() throws Exception {
 		PerLanguageAnalyzerWrapper analyzer = new PerLanguageAnalyzerWrapper(new KeywordAnalyzer());
 		analyzer.addAnalyzer("en", new SnowballAnalyzer("English", StopAnalyzer.ENGLISH_STOP_WORDS));
-		Query query = MultilingualQueryParser.parse("bob's a silly heads", analyzer);
-		assertEquals("+(http://purl.org/dc/terms/title:bob's content:bob's http://purl.org/dc/terms/title:bob content:bob) " + 
-				"+(http://purl.org/dc/terms/title:a content:a) " + 
-				"+(http://purl.org/dc/terms/title:silly content:silly http://purl.org/dc/terms/title:silli content:silli) " + 
-				"+(http://purl.org/dc/terms/title:heads content:heads http://purl.org/dc/terms/title:head content:head)", 
+		Query query = MultilingualQueryParser.parse("bob's a silly heads", analyzer, fieldsToSearch);
+		assertEquals("+(field1:bob's field2:bob's field1:bob field2:bob) " + 
+				"+(field1:a field2:a) " + 
+				"+(field1:silly field2:silly field1:silli field2:silli) " + 
+				"+(field1:heads field2:heads field1:head field2:head)", 
 				query.toString());
 	}
 	
@@ -36,9 +38,9 @@ public class MultilingualQueryParserUnitTest {
 	public void testParsePhrase() throws Exception {
 		PerLanguageAnalyzerWrapper analyzer = new PerLanguageAnalyzerWrapper(new KeywordAnalyzer());
 		analyzer.addAnalyzer("en", new SnowballAnalyzer("English", StopAnalyzer.ENGLISH_STOP_WORDS));
-		Query query = MultilingualQueryParser.parse("cha-cha char", analyzer);
-		assertEquals("+(http://purl.org/dc/terms/title:cha-cha content:cha-cha http://purl.org/dc/terms/title:\"cha cha\" content:\"cha cha\") " + 
-				"+(http://purl.org/dc/terms/title:char content:char http://purl.org/dc/terms/title:char content:char)", 
+		Query query = MultilingualQueryParser.parse("cha-cha char", analyzer, fieldsToSearch);
+		assertEquals("+(field1:cha-cha field2:cha-cha field1:\"cha cha\" field2:\"cha cha\") " + 
+				"+(field1:char field2:char field1:char field2:char)", 
 				query.toString());
 	}
 

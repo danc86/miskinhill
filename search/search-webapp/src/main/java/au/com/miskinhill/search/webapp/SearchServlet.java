@@ -27,6 +27,13 @@ public class SearchServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1140261890520211317L;
 	
+	private static final String[] fieldsToSearch = {
+		"http://purl.org/dc/terms/title", 
+		"http://xmlns.com/foaf/0.1/name", 
+		"http://miskinhill.com.au/rdfschema/1.0/biographicalNotes", 
+		"content"
+	};
+	
 	private static IndexReader index;
 	static {
 		try {
@@ -47,7 +54,7 @@ public class SearchServlet extends HttpServlet {
 			}
 			
 			IndexSearcher searcher = new IndexSearcher(index);
-			Query query = MultilingualQueryParser.parse(q, new MHAnalyzer());
+			Query query = MultilingualQueryParser.parse(q, new MHAnalyzer(), fieldsToSearch);
 			TopDocs topDocs = searcher.search(query, 50);
 			List<Result> results = new ArrayList<Result>();
 			for (int i = 0; i < topDocs.totalHits; i ++) {
