@@ -12,6 +12,8 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.Field.Index;
+import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexWriter;
 
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
@@ -36,6 +38,8 @@ public class Article implements Indexable {
 			.getBytes();
 	
 	public Article(Resource res) throws UnknownLiteralTypeException, FileNotFoundException, XMLStreamException {
+		doc.add(new Field("url", res.getURI(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		
 		StmtIterator i = res.listProperties();
 		while (i.hasNext()) {
 			final Statement stmt = i.nextStatement();
