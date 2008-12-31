@@ -1,4 +1,4 @@
-package au.com.miskinhill.search;
+package au.com.miskinhill.domain;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -28,7 +28,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 
-public class Article implements Indexable {
+public class Article extends GenericResource implements Indexable {
 	
 	private Document doc = new Document();
 	
@@ -39,6 +39,8 @@ public class Article implements Indexable {
 			.getBytes();
 	
 	public Article(Resource res) throws UnknownLiteralTypeException, FileNotFoundException, XMLStreamException {
+		super(res);
+		
 		doc.add(new Field("url", res.getURI(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
 		
 		StmtIterator i = res.listProperties();
@@ -46,7 +48,7 @@ public class Article implements Indexable {
 			final Statement stmt = i.nextStatement();
 			stmt.getObject().visitWith(new RDFVisitor() {
 				@Override
-				public Object visitBlank(Resource r, AnonId id) {
+				public Object visitBlank(com.hp.hpl.jena.rdf.model.Resource r, AnonId id) {
 					/* pass */
 					return null;
 				}
@@ -63,7 +65,7 @@ public class Article implements Indexable {
 				}
 
 				@Override
-				public Object visitURI(Resource r, String uri) {
+				public Object visitURI(com.hp.hpl.jena.rdf.model.Resource r, String uri) {
 					return null;
 				}
 				
