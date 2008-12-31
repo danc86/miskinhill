@@ -1,4 +1,4 @@
-package au.com.miskinhill.search;
+package au.com.miskinhill.search.analysis;
 
 import java.io.Reader;
 

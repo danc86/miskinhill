@@ -46,7 +46,7 @@
   	</dependency>
   	<dependency>
   		<groupId>au.com.miskinhill.search</groupId>
-  		<artifactId>multilingual</artifactId>
+  		<artifactId>search-common</artifactId>
   		<version>1.0-SNAPSHOT</version>
   	</dependency>
   </dependencies>
