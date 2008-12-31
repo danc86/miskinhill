@@ -45,6 +45,7 @@ public class Article implements Indexable {
 					return null;
 				}
 
+				//@Override
 				public Object visitLiteral(Literal literal) {
 					try {
 						doc.add(new Field(stmt.getPredicate().getURI(), 
@@ -55,7 +56,7 @@ public class Article implements Indexable {
 					return null;
 				}
 
-				@Override
+				//@Override
 				public Object visitURI(Resource r, String uri) {
 					return null;
 				}
