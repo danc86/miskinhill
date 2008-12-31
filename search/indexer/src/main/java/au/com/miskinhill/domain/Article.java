@@ -18,7 +18,7 @@ import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeE
 
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class Article extends GenericResource implements Indexable {
+public class Article extends GenericResource {
 	
 	public Article(Resource rdfResource) {
 		super(rdfResource);
