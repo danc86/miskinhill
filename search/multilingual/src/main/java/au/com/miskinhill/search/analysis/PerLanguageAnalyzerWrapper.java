@@ -49,6 +49,7 @@ public class PerLanguageAnalyzerWrapper extends Analyzer {
 	}
 	
 	public TokenStream tokenStream(String language, String fieldName, Reader reader) {
+		if (language == null) language = "";
 		Analyzer a = analyzers.get(language);
 		return a.tokenStream(fieldName, reader);
 	}
