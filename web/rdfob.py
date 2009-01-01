@@ -3,6 +3,7 @@ import datetime, re
 import rdflib
 from rdflib import URIRef, Namespace, BNode
 from rdflib.Graph import ConjunctiveGraph
+import RDFSClosure
 import genshi
 
 NAMESPACES = {
@@ -30,6 +31,7 @@ class Graph(object):
         self._g = ConjunctiveGraph(self.store)
         for filename in imports:
             self._g.parse(filename, format='nt')
+        RDFSClosure.create_RDFSClosure(self._g)
 
     def __getitem__(self, subject):
         subject = uriref(subject)
@@ -54,7 +56,7 @@ class GraphNode(object):
             self._objects.setdefault(p, []).append(o)
         if RDF_TYPE not in self._objects:
             raise ValueError('%r with unknown type' % uri)
-        self.type, = self._objects[RDF_TYPE]
+        self.types = frozenset(self._objects[RDF_TYPE])
 
     def __repr__(self):
         return '<rdfob.GraphNode of %r in %r >' % (self.uri, self.graph)
@@ -106,7 +108,7 @@ class GraphNode(object):
             return subjects
         else:
             type = uriref(type)
-            return [s for s in subjects if s.type == type]
+            return [s for s in subjects if type in s.types]
 
     def __iter__(self):
         assert self.type == RDF_SEQ, self.type

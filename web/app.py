@@ -23,7 +23,10 @@ class MiskinHillApplication(object):
         self.environ = environ
         self.start = start_response
 
-        self.graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), '..', 'rdf.nt'))
+        self.graph = rdfob.Graph(
+                os.path.join(os.path.dirname(__file__), '..', 'rdf.nt'), 
+                os.path.join(os.path.dirname(__file__), '..', 'rdfschema', 'foaf.nt'), 
+                os.path.join(os.path.dirname(__file__), '..', 'rdfschema', 'dcterms.nt'))
 
         self.req = Request(environ)
         self.req.charset = 'utf8'
@@ -58,9 +61,15 @@ class MiskinHillApplication(object):
         try:
             node = self.graph[rdfob.URIRef(decoded_uri)]
         except KeyError:
-            raise exc.HTTPNotFound().exception
+            raise exc.HTTPNotFound('URI not found in RDF graph').exception
         if format == 'text/html':
-            template = template_loader.load(self.RDF_TEMPLATES[node.type])
+            template_name = None
+            for type in node.types:
+                if type in self.RDF_TEMPLATES:
+                    template_name = self.RDF_TEMPLATES[type]
+            if template_name is None:
+                raise exc.HTTPNotFound('Matching template not found').exception
+            template = template_loader.load(template_name)
             body = template.generate(req=self.req, node=node).render('xhtml')
             return Response(body, content_type='text/html')
         elif format == 'text/plain':
