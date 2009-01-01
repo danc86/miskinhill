@@ -16,6 +16,14 @@
 
 <py:match path="body">
 	<body py:attrs="select('@*')">
+        <div id="banner">
+            <h1>Miskin Hill</h1>
+            <ul>
+                <li><a href="/journals/">journals</a></li>
+                <li><a href="/about/">about</a></li>
+                <li><a href="/contact/">contact</a></li>
+            </ul>
+        </div>
         <div id="bodywrapper">
             ${select('./*')}
         </div>

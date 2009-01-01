@@ -1,19 +1,20 @@
 
 /*
-http://www.wellstyled.com/tools/colorscheme2/index-en.html?triad;71;0;222;0.5;-0.9;0.5;0.5;0.1;0.9;0.75;0.75;0.5;-0.9;0.5;0.5;0.1;0.9;0.75;0.75;0.5;-0.9;0.5;0.5;0.1;0.9;0.75;0.75;0.5;-0.9;0.5;0.5;0.1;0.9;0.75;0.75;0
+http://www.wellstyled.com/tools/colorscheme2/index-en.html?triad;49;0;235;0.6458333333333334;0.3764705882352941;0.6458333333333334;0.26352941176470585;0.16145833333333334;1;0.3229166666666667;1;0.6458333333333334;0.3764705882352941;0.6458333333333334;0.26352941176470585;0.16145833333333334;1;0.3229166666666667;1;0.6458333333333334;0.3764705882352941;0.6458333333333334;0.26352941176470585;0.16145833333333334;1;0.3229166666666667;1;0.6458333333333334;0.3764705882352941;0.6458333333333334;0.26352941176470585;0.16145833333333334;1;0.3229166666666667;1;0
 */
 
 body {
     font-family: "Liberation Serif", Georgia, serif;
+    background-color: #777;
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: "Candara", "Lucida Grande", sans-serif;
 }
 a:link {
-    color: #308DBF;
+    color: #3062BF;
 }
 a:visited {
-    color: #BF3130;
+    color: #BF6330;
 }
 img {
     border: none;
@@ -23,11 +24,38 @@ q {
 }
 
 #bodywrapper {
-    margin: 1em auto;
-    max-width: 50em;
+    padding: 15px;
+    margin: auto;
+    max-width: 770px;
     /* IE max-width hack: */
-    width: 50em;
+    width: 770px;
     width: auto !important;
+    background-color: white;
+}
+
+#banner {
+    width: 770px;
+    height: 188px;
+    background-image: url(../images/banner_bg.jpg);
+    margin: 1em auto 0 auto;
+    text-align: right;
+    color: white;
+    padding: 15px;
+}
+#banner h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+#banner ul {
+    margin: 0;
+    list-style: none;
+}
+#banner ul li a {
+    font-family: "Candara", "Lucida Grande", sans-serif;
+    color: white;
+    line-height: 3ex;
+    text-decoration: none;
+    border-bottom: 1px dotted #ccc;
 }
 
 .body-text {

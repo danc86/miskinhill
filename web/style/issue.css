@@ -28,7 +28,7 @@ ul.contents li + li {
     border-top: none;
 }
 ul.contents li:hover {
-    background-color: #E6CFCF;
+    background-color: #FFF5D6;
 }
 ul.articles li .author, ul.reviews li .reviewed-by {
     font-size: 90%;

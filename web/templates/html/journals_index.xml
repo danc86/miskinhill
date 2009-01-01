@@ -16,7 +16,7 @@
 <h2>Journals</h2>
 
 <ul>
-    <li py:for="journal in journals"><a href="${journal.key}/">${journal.title}</a></li>
+    <li py:for="journal in journals"><a href="${journal.uri}">${journal['dc:title']}</a></li>
 </ul>
 
 </body>
