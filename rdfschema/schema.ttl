@@ -7,6 +7,11 @@
 
 <Journal> rdfs:subClassOf dc:BibliographicResource .
 
+<beginningDate> rdfs:subPropertyOf dc:date ;
+    rdfs:domain <Journal> .
+
+<Publisher> rdfs:subClassOf foaf:Organisation .
+
 <Issue> rdfs:subClassOf dc:BibliographicResource .
 
 <isIssueOf> a rdf:Property ;
