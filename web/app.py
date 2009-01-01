@@ -52,19 +52,33 @@ class MiskinHillApplication(object):
         rdfob.uriref('mhs:Author'): 'author.xml'
     }
     def dispatch_rdf(self, path_info):
-        uri = rdfob.URIRef(urllib.unquote(
-                'http://miskinhill.com.au' + path_info).decode('utf8'))
+        decoded_uri = urllib.unquote('http://miskinhill.com.au' + 
+                path_info).decode('utf8')
+        format, decoded_uri = self.guess_format(decoded_uri)
         try:
-            node = self.graph[uri]
+            node = self.graph[rdfob.URIRef(decoded_uri)]
         except KeyError:
             raise exc.HTTPNotFound().exception
-        return self.render_template(self.RDF_TEMPLATES[node.type], 
-                {'node': node})
+        if format == 'text/html':
+            template = template_loader.load(self.RDF_TEMPLATES[node.type])
+            body = template.generate(req=self.req, node=node).render('xhtml')
+            return Response(body, content_type='text/html')
+        elif format == 'text/plain':
+            return Response(self.graph.serialized(rdfob.URIRef(decoded_uri)), 
+                    content_type='text/plain')
+        else:
+            assert False, 'not reached'
 
-    def render_template(self, template_name, data={}):
-        template = template_loader.load(template_name)
-        body = template.generate(req=self.req, **data).render('xhtml')
-        return Response(body, content_type='text/html')
+    def guess_format(self, decoded_uri):
+        if decoded_uri.endswith(u'.nt'):
+            format = 'text/plain' # XXX actually n-triples, should distinguish it?
+            return format, decoded_uri[:-3]
+        if decoded_uri.endswith(u'.html'):
+            format = 'text/html'
+            return format, decoded_uri[:-5]
+        else:
+            # XXX should check Accept header too
+            return 'text/html', decoded_uri
 
 application = MiskinHillApplication
 

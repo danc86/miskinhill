@@ -38,6 +38,12 @@ class Graph(object):
             raise KeyError(subject)
         return GraphNode(subject, self, pos)
 
+    def serialized(self, subject):
+        subject = uriref(subject)
+        subgraph = ConjunctiveGraph()
+        subgraph += self._g.triples((subject, None, None))
+        return subgraph.serialize(format='nt')
+
 class GraphNode(object):
 
     def __init__(self, uri, graph, pos):
