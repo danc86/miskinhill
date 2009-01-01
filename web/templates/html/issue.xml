@@ -19,14 +19,21 @@ journal = issue['mhs:isIssueOf']
 
 <body>
 
-<div class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></div>
+${breadcrumbs([('/journals/', 'Journals'), 
+               (journal.uri, journal['dc:title'])])}
 
 <h2>
     <span class="journal-title">${journal['dc:title']}</span>
     <span class="issue">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</span>
 </h2>
 
-<p class="issue-meta">Published ${issue['mhs:publicationDate'].strftime('%d %B %Y')}</p>
+<div class="metabox-container">
+    <div class="issue-meta metabox">
+        <p class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
+        <p>Published ${issue['mhs:publicationDate'].strftime('%d %B %Y')}</p>
+        <p>Metadata: <a href="${issue.uri}.nt">RDF</a></p>
+    </div>
+</div>
 
 <h3>Articles</h3>
 <ul class="contents articles">

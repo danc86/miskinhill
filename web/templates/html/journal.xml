@@ -17,7 +17,16 @@ journal = node
 
 <body>
 
-<h2>${journal['dc:title']}</h2>
+${breadcrumbs([('/journals/', 'Journals')])}
+
+<h2><em>${journal['dc:title']}</em></h2>
+
+<div class="metabox-container">
+    <div class="issue-meta metabox">
+        <p class="cover"><img src="${journal.reflexive('mhs:isIssueOf')[0].getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
+        <p>Metadata: <a href="${journal.uri}.nt">RDF</a>, <a href="${journal.uri}.marcxml" title="experimental!">MARCXML</a></p>
+    </div>
+</div>
 
 <div>${journal['dc:description']}</div>
 

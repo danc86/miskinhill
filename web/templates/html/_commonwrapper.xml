@@ -11,10 +11,14 @@
 		<title py:if="not title">Miskin Hill</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="${req.script_name}/style/common.css" />
-        <script type="text/javascript" src="${req.script_name}/script/jquery-1.2.6.js" />
-        <script type="text/javascript" src="${req.script_name}/script/citation-openurl.js" />
 	</head>
 </py:match>
+
+<div py:def="breadcrumbs(crumbs)" id="breadcrumbs">
+    <py:for each="uri, label in crumbs">
+        <a href="${uri}">${label}</a> &gt;
+    </py:for>
+</div>
 
 <py:match path="body">
 	<body py:attrs="select('@*')">

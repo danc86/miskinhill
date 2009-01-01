@@ -35,7 +35,7 @@ q {
 
 #banner {
     width: 770px;
-    height: 188px;
+    height: 158px;
     background-image: url(../images/banner_bg.jpg);
     margin: 1em auto 0 auto;
     text-align: right;
@@ -58,6 +58,18 @@ q {
     border-bottom: 1px dotted #ccc;
 }
 
+/* Breadcrumbs */
+#breadcrumbs {
+    font-size: 0.85em;
+    color: #777;
+    padding-bottom: 0.5em;
+    border-bottom: 1px dotted #aaa;
+}
+#breadcrumbs a {
+    color: #777;
+}
+
+/* Body text (articles and reviews) */
 .body-text {
     line-height: 2.75ex;
 }
@@ -101,7 +113,24 @@ q {
     line-height: 0;
 }
 
+/* Metaboxes */
+.metabox-container {
+    float: right;
+}
+.metabox {
+    border: 1px solid #BF8160;
+    background: #FFD6BF;
+    margin: 0 0 1em 1em;
+    padding: 0 0.75em;
+    text-align: center;
+    width: 14em;
+    font-size: 0.9em;
+}
+.metabox input {
+    width: 100%;
+}
+
 /* Citations */
 .openurl-hover {
-    background-color: #E6CFCF;
+    background-color: #BFD5FF;
 }

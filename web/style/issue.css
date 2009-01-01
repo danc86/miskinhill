@@ -1,9 +1,4 @@
 
-.cover {
-    float: right;
-    margin-left: 1em;
-}
-
 h2 {
     line-height: 2.75ex;
 }
@@ -16,6 +11,7 @@ h2 .issue {
 }
 
 ul.contents {
+    margin-right: 16em;
     padding: 0;
 }
 ul.contents li {

@@ -21,35 +21,44 @@ journal = issue['mhs:isIssueOf']
 
 <body>
 
-<h2>Review</h2>
+${breadcrumbs([('/journals/', 'Journals'), 
+               (journal.uri, journal['dc:title']),
+               (issue.uri, 'Vol. %s, Issue %s' % (issue['mhs:volume'], issue['mhs:issueNumber']))])}
+
+<h2><em>${book['dc:title']}</em> by ${book['dc:creator']}</h2>
+
+<div class="metabox-container">
+    <div class="review-meta metabox">
+        <p>Other formats: <a href="${review.uri}.pdf">PDF</a></p>
+        <p>Metadata: <a href="${review.uri}.nt">RDF</a></p>
+    </div>
+
+    <div class="book-meta metabox">
+        <?python
+        asin = isbn = None
+        for identifier in book.getall('dc:identifier', as_uriref=True):
+            if identifier.startswith('urn:asin:'):
+                asin = identifier[9:]
+            elif identifier.startswith('urn:isbn:'):
+                isbn = identifier[9:]
+                assert len(isbn) == 13
+        ?>
+        <p class="publication">Published by ${book['dc:publisher']}, ${book['dc:date']}</p>
+        <p class="cover" py:if="asin"><img src="http://images.amazon.com/images/P/${asin}.01.MZZZZZZZ.jpg" /></p>
+        <p class="links" py:if="asin or isbn">Find this book online:
+            <py:if test="asin"><br /><a href="http://www.amazon.com/dp/${asin}/?tag=mishil-20">Amazon.com</a></py:if>
+            <py:if test="isbn">
+                <br /><a href="http://openlibrary.org/search?q=isbn_13:${isbn}">Open Library</a>
+                <br /><a href="http://www.worldcat.org/search?q=isbn:${isbn}">WorldCat</a>
+                <br /><a href="http://www.librarything.com/isbn/${isbn}">LibraryThing</a>
+            </py:if>
+        </p>
+    </div>
+</div>
 
 <p py:with="author = review['dc:creator']">
     Reviewed by <a href="${author.uri}">${author['foaf:name']}</a>
 </p>
-
-<div class="book-meta">
-    <?python
-    asin = isbn = None
-    for identifier in book.getall('dc:identifier', as_uriref=True):
-        if identifier.startswith('urn:asin:'):
-            asin = identifier[9:]
-        elif identifier.startswith('urn:isbn:'):
-            isbn = identifier[9:]
-            assert len(isbn) == 13
-    ?>
-    <p class="title">${book['dc:title']}</p>
-    <p class="author">${book['dc:creator']}</p>
-    <p class="publication">Published by ${book['dc:publisher']}, ${book['dc:date']}</p>
-    <p class="cover" py:if="asin"><img src="http://images.amazon.com/images/P/${asin}.01.MZZZZZZZ.jpg" /></p>
-    <p class="links" py:if="asin or isbn">Find this book online:
-        <py:if test="asin"><br /><a href="http://www.amazon.com/dp/${asin}/?tag=mishil-20">Amazon.com</a></py:if>
-        <py:if test="isbn">
-            <br /><a href="http://openlibrary.org/search?q=isbn_13:${isbn}">Open Library</a>
-            <br /><a href="http://www.worldcat.org/search?q=isbn:${isbn}">WorldCat</a>
-            <br /><a href="http://www.librarything.com/isbn/${isbn}">LibraryThing</a>
-        </py:if>
-    </p>
-</div>
 
 <xi:include href="${review.uri.replace('http://miskinhill.com.au/', '../../../content/')}.html"><xi:fallback /></xi:include>
 

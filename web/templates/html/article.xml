@@ -15,22 +15,31 @@ journal = issue['mhs:isIssueOf']
 
 <head>
     <title>${Markup(article['dc:title']).striptags()} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
+    <link rel="stylesheet" type="text/css" href="/style/article.css" />
+    <script type="text/javascript" src="${req.script_name}/script/jquery-1.2.6.js" />
+    <script type="text/javascript" src="${req.script_name}/script/citation-openurl.js" />
 </head>
 
 <body>
 
+${breadcrumbs([('/journals/', 'Journals'), 
+               (journal.uri, journal['dc:title']),
+               (issue.uri, 'Vol. %s, Issue %s' % (issue['mhs:volume'], issue['mhs:issueNumber']))])}
+
 <h2>${article['dc:title']}</h2>
 
-<div py:with="author = article['dc:creator']">
+<div class="metabox-container">
+    <div class="article-meta metabox">
+        <p class="other-formats">Other formats: <a href="${article.uri}.pdf">PDF</a></p>
+        <p class="metadata-links">Metadata: <a href="${article.uri}.nt">RDF</a></p>
+    </div>
+
+    <!-- openurl-control metabox goes here -->
+</div>
+
+<p py:with="author = article['dc:creator']">
     by <a href="${author.uri}">${author['foaf:name']}</a>
-</div>
-
-<div>in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</a></div>
-
-<div class="article-meta">
-    <p class="other-formats">Other formats: <a href="${article.uri}.pdf">PDF</a></p>
-    <p class="metadata-links">Metadata: <a href="${article.uri}.nt">RDF</a></p>
-</div>
+</p>
 
 <xi:include href="${article.uri.replace('http://miskinhill.com.au/', '../../../content/')}.html"><xi:fallback /></xi:include>
 
