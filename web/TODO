@@ -9,3 +9,4 @@
     - personal name added entries for editors? -- NLA doesn't have 
       this (also should it be per issue rather than on the journal 
       maybe?)
+* implement COINS in citation-openurl.js: http://ocoins.info/
