@@ -100,3 +100,8 @@ q {
     font-size: 0.75em;
     line-height: 0;
 }
+
+/* Citations */
+.openurl-hover {
+    background-color: #E6CFCF;
+}
