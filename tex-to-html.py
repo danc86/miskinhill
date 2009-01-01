@@ -43,11 +43,11 @@ def tex2html(s, type):
     if type == 'article':
         s = re.sub(r'\\begin\{article\}\{[^}]*\}\{[^}]*\}\{[^}]*\}', '', s)
         s = re.sub(r'\\end\{article\}', '', s)
-        s = '<div xmlns="http://www.w3.org/1999/xhtml" class="article-body">' + s + '\n\n</div>'
+        s = '<div xmlns="http://www.w3.org/1999/xhtml" class="body-text" lang="en">' + s + '\n\n</div>'
     elif type == 'review':
         s = re.sub(r'\\begin\{review\}(?:\s*\{[^}]*\}){4}', '', s)
         s = re.sub(r'\\end\{review\}', '', s)
-        s = '<div xmlns="http://www.w3.org/1999/xhtml" class="review-body">' + s + '\n\n</div>'
+        s = '<div xmlns="http://www.w3.org/1999/xhtml" class="body-text" lang="en">' + s + '\n\n</div>'
 
     return s
 
