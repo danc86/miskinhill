@@ -31,7 +31,7 @@ class Graph(object):
         self._g = ConjunctiveGraph(self.store)
         for filename in imports:
             self._g.parse(filename, format='nt')
-        RDFSClosure.create_RDFSClosure(self._g)
+        #RDFSClosure.create_RDFSClosure(self._g)
 
     def __getitem__(self, subject):
         subject = uriref(subject)
