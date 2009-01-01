@@ -13,7 +13,7 @@ from genshi.template import TemplateLoader
 import rdfob
 
 template_loader = TemplateLoader(
-        os.path.join(os.path.dirname(__file__), 'templates', 'html'), 
+        os.path.join(os.path.dirname(__file__), 'templates'), 
         variable_lookup='strict', 
         auto_reload=True)
 
@@ -47,13 +47,6 @@ class MiskinHillApplication(object):
     def index(self):
         return self.render_template('index.xml')
 
-    RDF_TEMPLATES = {
-        rdfob.uriref('mhs:Journal'): 'journal.xml', 
-        rdfob.uriref('mhs:Issue'): 'issue.xml', 
-        rdfob.uriref('mhs:Article'): 'article.xml',
-        rdfob.uriref('mhs:Review'): 'review.xml', 
-        rdfob.uriref('mhs:Author'): 'author.xml'
-    }
     def dispatch_rdf(self, path_info):
         decoded_uri = urllib.unquote('http://miskinhill.com.au' + 
                 path_info).decode('utf8')
@@ -62,32 +55,42 @@ class MiskinHillApplication(object):
             node = self.graph[rdfob.URIRef(decoded_uri)]
         except KeyError:
             raise exc.HTTPNotFound('URI not found in RDF graph').exception
-        if format == 'text/html':
-            template_name = None
-            for type in node.types:
-                if type in self.RDF_TEMPLATES:
-                    template_name = self.RDF_TEMPLATES[type]
-            if template_name is None:
-                raise exc.HTTPNotFound('Matching template not found').exception
-            template = template_loader.load(template_name)
+        if format == 'html':
+            template = template_loader.load(os.path.join('html', 
+                    self.template_for_type(node)))
             body = template.generate(req=self.req, node=node).render('xhtml')
             return Response(body, content_type='text/html')
-        elif format == 'text/plain':
+        if format == 'marcxml':
+            template = template_loader.load(os.path.join('marcxml', 
+                    self.template_for_type(node)))
+            body = template.generate(req=self.req, node=node).render('xml')
+            return Response(body, content_type='text/xml')
+        elif format == 'nt':
             return Response(self.graph.serialized(rdfob.URIRef(decoded_uri)), 
                     content_type='text/plain')
         else:
             assert False, 'not reached'
 
+    RDF_TEMPLATES = {
+        rdfob.uriref('mhs:Journal'): 'journal.xml', 
+        rdfob.uriref('mhs:Issue'): 'issue.xml', 
+        rdfob.uriref('mhs:Article'): 'article.xml',
+        rdfob.uriref('mhs:Review'): 'review.xml', 
+        rdfob.uriref('mhs:Author'): 'author.xml'
+    }
+    def template_for_type(self, node):
+        for type in node.types:
+            if type in self.RDF_TEMPLATES:
+                return self.RDF_TEMPLATES[type]
+        raise exc.HTTPNotFound('Matching template not found').exception
+
+    EXTENSIONS = ['.nt', '.html', '.marcxml']
     def guess_format(self, decoded_uri):
-        if decoded_uri.endswith(u'.nt'):
-            format = 'text/plain' # XXX actually n-triples, should distinguish it?
-            return format, decoded_uri[:-3]
-        if decoded_uri.endswith(u'.html'):
-            format = 'text/html'
-            return format, decoded_uri[:-5]
-        else:
-            # XXX should check Accept header too
-            return 'text/html', decoded_uri
+        for extension in self.EXTENSIONS:
+            if decoded_uri.endswith(extension):
+                return extension[1:], decoded_uri[:-len(extension)]
+        # XXX should check Accept header too
+        return 'html', decoded_uri
 
 application = MiskinHillApplication
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<collection xmlns="http://www.loc.gov/MARC21/slim"
+            xmlns:py="http://genshi.edgewall.org/"
+            xmlns:xi="http://www.w3.org/2001/XInclude">
+
+<?python
+journal = node
+issn = None
+for identifier in journal.getall('dc:identifier', as_uriref=True):
+    if identifier.startswith('urn:issn:'):
+        issn = identifier[9:]
+?>
+
+<record>
+<leader>00000nas^a2200000^^^4500</leader>
+<controlfield tag="008">^^^^^^c${journal['mhs:beginningDate'][:4]}9999at^||^p^s^^^^^|^^^|||||^d</controlfield>
+<datafield py:if="issn" tag="022" ind1=" " ind2=" ">
+    <subfield code="a">${issn}</subfield>
+</datafield>
+<datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">Miskin Hill Academic Publishing</subfield>
+</datafield>
+<datafield tag="041" ind1=" " ind2=" ">
+    <subfield code="a" py:for="language in journal.getall('dc:language')">${language}</subfield> <!-- XXX convert to MARC language code -->
+</datafield>
+<datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">${journal['dc:title']}</subfield>
+</datafield>
+<datafield tag="260" ind1=" " ind2=" " py:with="publisher = journal['dc:publisher']">
+    <subfield code="a" py:if="'contact:address' in publisher">${publisher['contact:address']['geonames:name']} :</subfield>
+    <subfield code="b">${publisher['foaf:name']},</subfield>
+    <subfield code="c">${journal['mhs:beginningDate']}-</subfield>
+</datafield>
+</record>
+
+</collection>

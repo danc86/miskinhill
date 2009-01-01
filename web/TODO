@@ -1,0 +1,11 @@
+* MARC crap:
+    - get a copy of AACR2 and make sure we adhere to it (then adjust 
+      MARC leader to say so)
+    - convert ISO language codes to MARC language codes (sigh)
+    - non-filing chars in titles!!!
+    - LCSH -- really wish lcsh.info hadn't been taken down :-(
+    - other subjects/classification? NLA has Dewey
+    - corporate name added entries for ANZSA etc? -- NLA has this
+    - personal name added entries for editors? -- NLA doesn't have 
+      this (also should it be per issue rather than on the journal 
+      maybe?)
