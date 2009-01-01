@@ -19,6 +19,9 @@ journal = node
 
 <h2>${journal['dc:title']}</h2>
 
+<div>${journal['dc:description']}</div>
+
+<h3>Issues</h3>
 <ul>
     <li py:for="issue in journal.reflexive('mhs:isIssueOf')">
         <a href="${issue.uri}">
