@@ -60,7 +60,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
     Reviewed by <a href="${author.uri}">${author['foaf:name']}</a>
 </p>
 
-<xi:include href="${review.uri.replace('http://miskinhill.com.au/', '../../../content/')}.html"><xi:fallback /></xi:include>
+<xi:include href="${review.uri.replace('http://miskinhill.com.au/', '../../../../content/')}.html"><xi:fallback /></xi:include>
 
 </body>
 </html>
