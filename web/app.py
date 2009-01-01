@@ -33,6 +33,7 @@ class MiskinHillApplication(object):
 
     METHODS = {
         '/': 'index', 
+        '/contact/': 'contact', 
         '/journals/': 'journals_index'
     }
     def __iter__(self):
@@ -47,6 +48,11 @@ class MiskinHillApplication(object):
 
     def index(self):
         template = template_loader.load(os.path.join('html', 'index.xml'))
+        body = template.generate(req=self.req).render('xhtml')
+        return Response(body, content_type='text/html')
+
+    def contact(self):
+        template = template_loader.load(os.path.join('html', 'contact.xml'))
         body = template.generate(req=self.req).render('xhtml')
         return Response(body, content_type='text/html')
 

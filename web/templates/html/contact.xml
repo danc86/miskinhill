@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      lang="en-AU">
+<xi:include href="_commonwrapper.xml" />
+
+<head>
+    <title>Contact</title>
+</head>
+
+<body>
+
+<h2>Contact</h2>
+
+<p>To get in touch, <a href="mailto:info@miskinhill.com.au">send us e-mail</a>.</p>
+
+</body>
+</html>
