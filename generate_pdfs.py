@@ -4,7 +4,7 @@ import os, cgi, subprocess, shutil
 import genshi
 import rdfob
 
-graph = rdfob.Graph('rdf.nt')
+graph = rdfob.Graph('meta.nt')
 
 def strip_html(s):
     return genshi.Markup(s).striptags()
@@ -45,5 +45,4 @@ def articles_from_issue(path, issue_filename):
                 entities(strip_html('Review of ' + review['mhs:reviews']['dc:title'])), 
                 entities(strip_html(review['dc:creator']['foaf:name'])))
 
-os.chdir('content')
 articles_from_issue('journals/asees/21:1-2/', 'final/asees07.pdf')
