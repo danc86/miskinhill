@@ -32,7 +32,8 @@ class MiskinHillApplication(object):
         self.req.charset = 'utf8'
 
     METHODS = {
-        '/': 'index'
+        '/': 'index', 
+        '/journals/': 'journals_index'
     }
     def __iter__(self):
         try:
@@ -45,7 +46,16 @@ class MiskinHillApplication(object):
         return iter(resp(self.environ, self.start))
 
     def index(self):
-        return self.render_template('index.xml')
+        template = template_loader.load(os.path.join('html', 'index.xml'))
+        body = template.generate(req=self.req).render('xhtml')
+        return Response(body, content_type='text/html')
+
+    def journals_index(self):
+        template = template_loader.load(os.path.join('html', 'journals_index.xml'))
+        body = template.generate(req=self.req, 
+                journals=[self.graph[rdfob.URIRef('http://miskinhill.com.au/journals/asees/')]] # XXX temp
+                ).render('xhtml')
+        return Response(body, content_type='text/html')
 
     def dispatch_rdf(self, path_info):
         decoded_uri = urllib.unquote('http://miskinhill.com.au' + 
