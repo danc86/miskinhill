@@ -29,8 +29,11 @@ ${breadcrumbs([('/journals/', 'Journals'),
 <h2>${article['dc:title']}</h2>
 
 <div class="metabox-container">
+    ${searchbox()}
+
     <div class="article-meta metabox">
-        <p class="other-formats">Other formats: <a href="${article.uri}.pdf">PDF</a></p>
+        <p>Published in <a href="${issue.uri}">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</a> of<br /><a href="${journal.uri}"><em>${journal['dc:title']}</em></a></p>
+        <p class="other-formats"><a href="${article.uri}.pdf">Original print version</a></p>
         <p class="metadata-links">Metadata: <a href="${article.uri}.nt">RDF</a></p>
     </div>
 

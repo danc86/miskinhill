@@ -130,16 +130,19 @@ q {
     float: right;
 }
 .metabox {
-    border: 1px solid #BF8160;
-    background: #FFD6BF;
+    border: 1px solid #BFA860;
+    background: #FFEBAD;
     margin: 0 0 1em 1em;
     padding: 0 0.75em;
-    text-align: center;
     width: 14em;
     font-size: 0.9em;
 }
 .metabox input {
     width: 100%;
+}
+.searchbox {
+    border: 1px solid #6081BF !important;
+    background: #BFD5FF !important;
 }
 
 /* Citations */

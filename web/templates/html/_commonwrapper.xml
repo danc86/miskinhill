@@ -20,6 +20,12 @@
     </py:for>
 </div>
 
+<div py:def="searchbox()" class="searchbox metabox">
+    <form method="get" action="http://search.miskinhill.com.au/search">
+    <p><input type="text" name="q" /> <button type="submit">Search</button></p>
+    </form>
+</div>
+
 <py:match path="body">
 	<body py:attrs="select('@*')">
         <div id="banner">
