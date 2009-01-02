@@ -12,4 +12,3 @@
 * implement COINS in citation-openurl.js: http://ocoins.info/
 * BibTeX citations
 * js for footnotes
-* blank nodes in serialized RDF (recur into them)

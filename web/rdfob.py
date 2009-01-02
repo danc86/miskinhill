@@ -42,11 +42,19 @@ class Graph(object):
             raise KeyError(subject)
         return GraphNode(subject, self, pos)
 
-    def serialized(self, subject):
+    def serialized(self, subject, format='nt'):
+        """ Returns serialized triples about the given graph node (triples 
+        where it appears as subject, and the transitive closure with any blank 
+        nodes encountered). """
         subject = uriref(subject)
         subgraph = ConjunctiveGraph()
-        subgraph += self._g.triples((subject, None, None))
-        return subgraph.serialize(format='nt')
+        def add_triples(subject):
+            for s, p, o in self._g.triples((subject, None, None)):
+                subgraph.add((s, p, o))
+                if isinstance(o, BNode):
+                    add_triples(o)
+        add_triples(subject)
+        return subgraph.serialize(format=format)
 
 class GraphNode(object):
 
