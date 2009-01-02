@@ -10,7 +10,7 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>search</servlet-name>
-  	<url-pattern>/</url-pattern>
+  	<url-pattern>/search</url-pattern>
   </servlet-mapping>
   <context-param>
     <param-name>au.com.miskinhill.search.indexPath</param-name>
