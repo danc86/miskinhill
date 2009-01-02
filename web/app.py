@@ -17,6 +17,8 @@ template_loader = TemplateLoader(
         variable_lookup='strict', 
         auto_reload=True)
 
+content_dir = '/home/dan/.www/miskinhill.com.au/content'
+
 class MiskinHillApplication(object):
 
     def __init__(self, environ, start_response):
@@ -24,9 +26,9 @@ class MiskinHillApplication(object):
         self.start = start_response
 
         self.graph = rdfob.Graph(
-                os.path.join(os.path.dirname(__file__), '..', 'rdf.nt'), 
-                os.path.join(os.path.dirname(__file__), '..', 'rdfschema', 'foaf.nt'), 
-                os.path.join(os.path.dirname(__file__), '..', 'rdfschema', 'dcterms.nt'))
+                os.path.join(content_dir, 'meta.nt'), 
+                os.path.join(content_dir, 'rdfschema', 'foaf.nt'), 
+                os.path.join(content_dir, 'rdfschema', 'dcterms.nt'))
 
         self.req = Request(environ)
         self.req.charset = 'utf8'
