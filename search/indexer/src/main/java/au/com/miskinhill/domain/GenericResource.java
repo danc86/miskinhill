@@ -31,15 +31,15 @@ public abstract class GenericResource {
 		types.put(MHS.Author, Author.class);
 	}
 
-	public static GenericResource fromRDF(Resource rdfResource) {
+	public static GenericResource fromRDF(Resource rdfResource, String contentPath) {
 		StmtIterator i = rdfResource.listProperties(RDF.type);
 		while (i.hasNext()) {
 			final Statement stmt = i.nextStatement();
 			Resource type = (Resource) stmt.getObject().as(Resource.class);
 			if (types.containsKey(type)) {
 				try {
-					return types.get(type).getConstructor(Resource.class)
-							.newInstance(rdfResource);
+					return types.get(type).getConstructor(Resource.class, String.class)
+							.newInstance(rdfResource, contentPath);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -49,9 +49,11 @@ public abstract class GenericResource {
 	}
 	
 	protected Resource rdfResource;
+    protected final String contentPath;
 
-	public GenericResource(Resource rdfResource) {
+	public GenericResource(Resource rdfResource, String contentPath) {
 		this.rdfResource = rdfResource;
+        this.contentPath = contentPath;
 	}
 	
 	public void addFieldsToDocument(final Document doc) 
@@ -65,7 +67,8 @@ public abstract class GenericResource {
 							(Literal) stmt.getObject().as(Literal.class))));
 			} else {
 				GenericResource o = GenericResource.fromRDF(
-						(Resource) stmt.getObject().as(Resource.class));
+						(Resource) stmt.getObject().as(Resource.class), 
+                        contentPath);
 				if (o != null)
 					o.addFieldsToDocument(doc);
 			}

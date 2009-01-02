@@ -22,17 +22,18 @@ import com.hp.hpl.jena.vocabulary.RDF;
  * 
  */
 public class App {
-	
-	public static void main(String[] args) throws Exception {
+
+    private static void writeIndex(final String contentPath, final String indexPath) 
+            throws Exception {
 		Model schemaModel = ModelFactory.createDefaultModel();
-		schemaModel.read(new FileInputStream(new File("../../rdfschema/schema.ttl")), "", "TURTLE");
+		schemaModel.read(new FileInputStream(new File(contentPath + "/rdfschema/schema.ttl")), "", "TURTLE");
 		
 		Model metadataModel = ModelFactory.createDefaultModel();
-		metadataModel.read(new FileInputStream(new File("../../rdf.nt")), "", "N-TRIPLE");
+		metadataModel.read(new FileInputStream(new File(contentPath + "/meta.nt")), "", "N-TRIPLE");
 		
 		InfModel model = ModelFactory.createRDFSModel(ModelFactory.createUnion(schemaModel, metadataModel));
 		
-		IndexWriter iw = new IndexWriter(FSDirectory.getDirectory("../index-data"), 
+		IndexWriter iw = new IndexWriter(FSDirectory.getDirectory(indexPath), 
 				NullAnalyzer.INSTANCE, 
 				/* create */ true, 
 				MaxFieldLength.UNLIMITED);
@@ -40,13 +41,17 @@ public class App {
 		
 		ResIterator articles = model.listSubjectsWithProperty(RDF.type, MHS.Article);
 		while (articles.hasNext()) {
-			Article a = new Article(articles.nextResource());
+			Article a = new Article(articles.nextResource(), contentPath);
 			a.addToIndex(iw);
 		}
 		
 		iw.commit();
 		iw.optimize();
 		iw.close();
+    }
+	
+	public static void main(String[] args) throws Exception {
+        writeIndex(args[0], args[1]);
 	}
 	
 }

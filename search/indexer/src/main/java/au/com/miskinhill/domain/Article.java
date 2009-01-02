@@ -20,8 +20,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 public class Article extends GenericResource {
 	
-	public Article(Resource rdfResource) {
-		super(rdfResource);
+	public Article(Resource rdfResource, String contentPath) {
+		super(rdfResource, contentPath);
 	}
 
 	private static final byte[] XHTML_STRICT_DTD_DECL = 
@@ -35,8 +35,8 @@ public class Article extends GenericResource {
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
 		super.addFieldsToDocument(doc);
 		
-		assert rdfResource.getURI().substring(0, 25) == "http://miskinhill.com.au/";
-		File content = new File("../../content/" + rdfResource.getURI().substring(25) + ".html");
+		assert rdfResource.getURI().substring(0, 24) == "http://miskinhill.com.au";
+		File content = new File(contentPath + rdfResource.getURI().substring(24) + ".html");
 		doc.add(new Field("content", new XMLTokenizer(
 				new SequenceInputStream(
 					new ByteArrayInputStream(XHTML_STRICT_DTD_DECL), 
