@@ -25,7 +25,7 @@ public class MultilingualQueryParserUnitTest {
 		analyzer.addAnalyzer("en", new SnowballAnalyzer("English", StopAnalyzer.ENGLISH_STOP_WORDS));
 		Query query = MultilingualQueryParser.parse("bob's a silly heads", analyzer, fieldsToSearch);
 		assertEquals("+(field1:bob's field2:bob's field1:bob field2:bob) " + 
-				"+(field1:a field2:a) " + 
+				"(field1:a field2:a) " + 
 				"+(field1:silly field2:silly field1:silli field2:silli) " + 
 				"+(field1:heads field2:heads field1:head field2:head)", 
 				query.toString());

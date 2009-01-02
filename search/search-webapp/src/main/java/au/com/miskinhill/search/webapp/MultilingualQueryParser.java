@@ -26,13 +26,21 @@ public class MultilingualQueryParser {
 		List<Analyzer> subAnalyzers = analyzer.getAnalyzers();
 		for (String token: consumeTokens(new WhitespaceTokenizer(new StringReader(q)))) {
 			BooleanQuery tokenQuery = new BooleanQuery();
+			boolean tokenRequired = true;
 			for (Analyzer subAnalyzer: subAnalyzers) {
 				for (String field: fieldsToSearch) {
 					List<String> analyzedTokens = consumeTokens(
 							subAnalyzer.tokenStream(field, new StringReader(token)));
 					switch (analyzedTokens.size()) {
 						case 0:
-							/* pass */
+							/*
+							 * If any language returns no tokens, it means it's
+							 * been stop-worded away. In this case we have to
+							 * make the entire query for this token optional,
+							 * otherwise our entire query will never match
+							 * against languages where thisis a stop-word.
+							 */
+							tokenRequired = false;
 							break;
 						case 1:
 							tokenQuery.add(new TermQuery(new Term(field, 
@@ -46,7 +54,7 @@ public class MultilingualQueryParser {
 					}
 				}
 			}
-			query.add(tokenQuery, Occur.MUST);
+			query.add(tokenQuery, tokenRequired ? Occur.MUST : Occur.SHOULD);
 		}
 		return query;
 	}
