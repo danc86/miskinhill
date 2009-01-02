@@ -34,8 +34,9 @@ public class SearchServlet extends HttpServlet {
 		"http://miskinhill.com.au/rdfschema/1.0/biographicalNotes", 
 		"content"
 	};
-	
-	private static IndexReader index;
+
+    private VelocityEngine ve;
+	private IndexReader index;
 
     public static final String INDEX_PATH_PARAM = "au.com.miskinhill.search.indexPath";
 
@@ -46,10 +47,19 @@ public class SearchServlet extends HttpServlet {
             throw new ServletException("Parameter " + INDEX_PATH_PARAM + " not set");
         }
 		try {
-			index = IndexReader.open(FSDirectory.getDirectory(indexPath), /* read-only */ true);
-		} catch (IOException e) {
-			throw new ServletException(e);
-		}
+            // Lucene index
+            index = IndexReader.open(FSDirectory.getDirectory(indexPath), /* read-only */ true);
+
+            // Velocity
+            Properties props = new Properties();
+            props.load(SearchServlet.class.getResourceAsStream("/velocity.properties"));
+            ve = new VelocityEngine();
+            ve.setApplicationAttribute(ServletContext.class.getName(), 
+                    getServletContext());
+            ve.init(props);
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
 	}
 	
 	@Override
@@ -75,7 +85,7 @@ public class SearchServlet extends HttpServlet {
 			VelocityContext context = new VelocityContext();
 			context.put("q", q);
 			context.put("results", results);
-			Template template = initVelocity().getTemplate(
+			Template template = ve.getTemplate(
 					"/au/com/miskinhill/search/webapp/SearchResultsTemplate.vm");
 			resp.setContentType("text/html; charset=utf-8");
 			template.merge(context, resp.getWriter());
@@ -83,17 +93,6 @@ public class SearchServlet extends HttpServlet {
 			// Java is lame
 			throw new ServletException(e);
 		}
-	}
-	
-	// XXX lame
-	private VelocityEngine initVelocity() throws Exception {
-		Properties props = new Properties();
-		props.load(SearchServlet.class.getResourceAsStream("/velocity.properties"));
-		VelocityEngine ve = new VelocityEngine();
-		ve.setApplicationAttribute(ServletContext.class.getName(), 
-				getServletContext());
-		ve.init(props);
-		return ve;
 	}
 	
 	public static class Result {
