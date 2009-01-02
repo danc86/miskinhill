@@ -117,8 +117,10 @@ if __name__ == '__main__':
     parser = optparse.OptionParser(usage='%prog --port=PORT')
     parser.add_option('-p', '--port', type='int',
             help='Port to serve on (default: %default)')
-    parser.set_defaults(port=8080)
+    parser.add_option('-c', '--content-dir', type='string')
+    parser.set_defaults(port=8080, content_dir=content_dir)
     options, args = parser.parse_args()
+    content_dir = options.content_dir
     from wsgiref.simple_server import make_server
     server = make_server('', options.port, application)
     try:
