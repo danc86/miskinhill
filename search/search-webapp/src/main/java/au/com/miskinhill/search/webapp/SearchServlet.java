@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,11 +36,16 @@ public class SearchServlet extends HttpServlet {
 	};
 	
 	private static IndexReader index;
-	static {
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
 		try {
-			index = IndexReader.open(FSDirectory.getDirectory("../index-data"), true);
+			index = IndexReader.open(FSDirectory.getDirectory(
+                    config.getInitParameter("au.com.miskinhill.search.indexPath")), 
+                    /* read-only */ true);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new ServletException(e);
 		}
 	}
 	
