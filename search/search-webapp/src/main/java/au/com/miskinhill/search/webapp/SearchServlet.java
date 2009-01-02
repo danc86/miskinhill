@@ -37,13 +37,16 @@ public class SearchServlet extends HttpServlet {
 	
 	private static IndexReader index;
 
+    public static final String INDEX_PATH_PARAM = "au.com.miskinhill.search.indexPath";
+
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
+    public void init() throws ServletException {
+        final String indexPath = getServletContext().getInitParameter(INDEX_PATH_PARAM);
+        if (indexPath == null) {
+            throw new ServletException("Parameter " + INDEX_PATH_PARAM + " not set");
+        }
 		try {
-			index = IndexReader.open(FSDirectory.getDirectory(
-                    config.getInitParameter("au.com.miskinhill.search.indexPath")), 
-                    /* read-only */ true);
+			index = IndexReader.open(FSDirectory.getDirectory(indexPath), /* read-only */ true);
 		} catch (IOException e) {
 			throw new ServletException(e);
 		}
