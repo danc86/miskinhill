@@ -1,0 +1,11 @@
+
+.relevance-container {
+	border: 1px solid #432718;
+	height: 14px;
+	width: 40px;
+	line-height: 14px;
+	padding: 0;
+}
+.relevance-container img {
+	height: 14px;
+}

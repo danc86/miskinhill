@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -104,6 +103,12 @@ public class SearchServlet extends HttpServlet {
 		}
 		public String getUrl() { return url; }
 		public float getScore() { return score; }
+		public int scoreWidth(int max) {
+			return (int) (Math.min(1.0, this.score) * max);
+		}
+		public String scorePercent() {
+			return String.format("%.1f%%", Math.min(1.0, this.score) * 100);
+		}
 	}
 
 }
