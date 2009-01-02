@@ -7,6 +7,16 @@
 </head>
 
 <body>
+
+<div id="banner">
+    <h1>Miskin Hill</h1>
+    <ul>
+        <li><a href="http://miskinhill.com.au/journals/">journals</a></li>
+        <li><a href="http://miskinhill.com.au/about/">about</a></li>
+        <li><a href="http://miskinhill.com.au/contact/">contact</a></li>
+    </ul>
+</div>
+
 <div id="bodywrapper">
 
 <h2>Search for $q</h2>
@@ -16,6 +26,14 @@
 	<li><a href="$hit.url">${hit.url}</a> ($hit.score)</li>
 	#end
 </ul>
+
+<div id="footer">
+    Content copyright the publishers and each contributor.
+    <a href="http://code.miskinhill.com.au/">Code</a> copyright Miskin Hill Academic Publishing.
+    Metadata is free!
+</div>
+
+</div>
 
 </body>
 </html>
