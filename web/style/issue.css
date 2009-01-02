@@ -29,7 +29,3 @@ ul.contents li:hover {
 ul.articles li .author, ul.reviews li .reviewed-by {
     font-size: 90%;
 }
-
-.cover {
-    text-align: center;
-}

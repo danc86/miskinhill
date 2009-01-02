@@ -144,6 +144,9 @@ q {
     border: 1px solid #6081BF !important;
     background: #BFD5FF !important;
 }
+.cover {
+    text-align: center;
+}
 
 /* Citations */
 .openurl-hover {
