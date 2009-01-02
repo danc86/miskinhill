@@ -1,4 +1,15 @@
 
+table.searchresults {
+	border-collapse: collapse;
+}
+table.searchresults th, table.searchresults td {
+	padding: 0.25em 0.4em;
+}
+table.searchresults th {
+	text-align: left;
+	border-bottom: 1px dotted #806759;
+}
+
 .relevance-container {
 	border: 1px solid #432718;
 	height: 14px;

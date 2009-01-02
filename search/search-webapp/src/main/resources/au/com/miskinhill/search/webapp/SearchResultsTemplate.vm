@@ -23,16 +23,26 @@
 <h2>Search for $q</h2>
 
 #if ( $results.size() > 0 )
-<h3>Articles</h3>
 <table class="searchresults">
-	#foreach( $hit in $results )
-    <tr>
-        <td>
-            <div class="relevance-container"><img width="${hit.scoreWidth(40)}" alt="${hit.scorePercent()}" src="/images/relevance_bg.png" /></div>
-        </td>
-        <td><a href="$hit.url">${hit.url}</a></td>
-    </tr>
-	#end
+	<thead>
+		<th><span title="Relevance">%</span></th>
+		<th>Article</th>
+	</thead>
+	<tbody>
+		#foreach( $hit in $results )
+	    <tr>
+	        <td>
+	            <div class="relevance-container">
+	            	<img width="${hit.scoreWidth(40)}"
+	            		 alt="${hit.scorePercent()}"
+	            		 title="${hit.scorePercent()}"
+	            		 src="/images/relevance_bg.png" />
+	            </div>
+	        </td>
+	        <td><a href="$hit.url">${hit.url}</a></td>
+	    </tr>
+		#end
+	</tbody>
 </table>
 #else
 <p>Your search returned no results.</p>
