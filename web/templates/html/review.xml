@@ -28,8 +28,6 @@ ${breadcrumbs([('/journals/', 'Journals'),
 <h2><em>${book['dc:title']}</em> by ${book['dc:creator']}</h2>
 
 <div class="metabox-container">
-    ${searchbox()}
-
     <div class="review-meta metabox">
         <p>Other formats: <a href="${review.uri}.pdf">PDF</a></p>
         <p>Metadata: <a href="${review.uri}.nt">RDF</a></p>
