@@ -28,12 +28,15 @@ var openurl_qs_from_citation = function (baseurl, citation) {
 };
 
 $(document).ready(function () {
-    $('.metabox-container:first').append(
-            '<div class="openurl-control metabox"><p>' + 
-            '   <label for="openurl-baseurl">OpenURL resolver:</label>' +
-            '   <input id="openurl-baseurl" type="text" value="' + default_baseurl + '" />' +
-            '   <button id="show-openurl">Show OpenURL links</button>' +
-            '</p></div>');
+    if ($('.citation').length) {
+        // only show the openurl-control if there are any citations we can openurlify
+        $('.metabox-container:first').append(
+                '<div class="openurl-control metabox"><p>' + 
+                '   <label for="openurl-baseurl">OpenURL resolver:</label>' +
+                '   <input id="openurl-baseurl" type="text" value="' + default_baseurl + '" />' +
+                '   <button id="show-openurl">Show OpenURL links</button>' +
+                '</p></div>');
+    }
     $('#show-openurl').click(function () {
         $('.citation').each(function () {
             openurl_qs_from_citation($('#openurl-baseurl').attr('value'), this);
