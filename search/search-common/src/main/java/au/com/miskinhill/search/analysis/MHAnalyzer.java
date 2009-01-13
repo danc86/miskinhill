@@ -11,7 +11,9 @@ public class MHAnalyzer extends PerLanguageAnalyzerWrapper {
 		addAnalyzer("ru", new SnowballAnalyzer("Russian", RUSSIAN_STOP_WORDS));
 	}
 	
-	private final static String[] RUSSIAN_STOP_WORDS = { "и", "а" }; // XXX find more?
+	private final static String[] RUSSIAN_STOP_WORDS = { 
+            "\u0438" /* i */, 
+            "\u0430" /* a */ }; // XXX find more?
 	private final static String[] ENGLISH_STOP_WORDS = {
 			// copied from StopAnalyzer.ENGLISH_STOP_WORDS
 			"a", "an", "and", "but", "of", "or", "to", "the" };
