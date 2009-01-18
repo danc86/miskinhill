@@ -9,6 +9,14 @@
     - personal name added entries for editors? -- NLA doesn't have 
       this (also should it be per issue rather than on the journal 
       maybe?)
+    - MARC at the issue level also? need to find out how libraries handle this 
+      (can holdings be represented in MARC? does e.g. INNOPAC support importing 
+      holdings?)
+    - MARC at article level??? nobody will want this though I suspect ..
 * implement COINS in citation-openurl.js: http://ocoins.info/
 * BibTeX citations
 * js for footnotes
+* article subjects from SLCCS ASEES index page
+
+eventually:
+* get into Goog Scholar, UQ catalogue, UQ's III federated search thingy?
