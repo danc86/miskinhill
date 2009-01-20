@@ -26,7 +26,12 @@ public class MultilingualQueryParser {
 		BooleanQuery query = new BooleanQuery();
 		List<Analyzer> subAnalyzers = analyzer.getAnalyzers();
 		for (String token: consumeTokens(new WhitespaceTokenizer(new StringReader(q)))) {
-			BooleanQuery tokenQuery = new BooleanQuery();
+		    /*
+             * It is unlikely that any document would match more than one
+             * component of this BooleanQuery, so we disable coord to avoid
+             * skewing the scores drastically downward.
+             */
+			BooleanQuery tokenQuery = new BooleanQuery(/* disableCoord */ true);
 			boolean tokenRequired = true;
 			for (Analyzer subAnalyzer: subAnalyzers) {
 				for (String field: fieldsToSearch) {
@@ -35,12 +40,13 @@ public class MultilingualQueryParser {
 					switch (analyzedTokens.size()) {
 						case 0:
 							/*
-							 * If any language returns no tokens, it means it's
-							 * been stop-worded away. In this case we have to
-							 * make the entire query for this token optional,
-							 * otherwise our entire query will never match
-							 * against languages where thisis a stop-word.
-							 */
+                             * If any analyzer returns nothing, it means this
+                             * token has been stop-worded away in that language.
+                             * In this case we have to make the query for this
+                             * token optional, otherwise our entire query will
+                             * never match against languages where this is a
+                             * stop-word.
+                             */
 							tokenRequired = false;
 							break;
 						case 1:
