@@ -14,6 +14,6 @@
   </servlet-mapping>
   <context-param>
     <param-name>au.com.miskinhill.search.indexPath</param-name>
-    <param-value>/home/dan/miskinhill/code/search/index-data</param-value>
+    <param-value>/home/dan/.www/miskinhill.com.au/index-data</param-value>
   </context-param>
 </web-app>
