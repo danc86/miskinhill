@@ -17,6 +17,7 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 
 import au.com.miskinhill.search.analysis.PerLanguageAnalyzerWrapper;
+import au.com.miskinhill.search.analysis.PreprocFilterReader;
 
 public class MultilingualQueryParser {
 
@@ -30,7 +31,7 @@ public class MultilingualQueryParser {
 			for (Analyzer subAnalyzer: subAnalyzers) {
 				for (String field: fieldsToSearch) {
 					List<String> analyzedTokens = consumeTokens(
-							subAnalyzer.tokenStream(field, new StringReader(token)));
+							subAnalyzer.tokenStream(field, new PreprocFilterReader(new StringReader(token))));
 					switch (analyzedTokens.size()) {
 						case 0:
 							/*

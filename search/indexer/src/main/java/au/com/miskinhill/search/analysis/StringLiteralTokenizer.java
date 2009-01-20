@@ -14,7 +14,7 @@ public class StringLiteralTokenizer extends RDFLiteralTokenizer {
 
 	public StringLiteralTokenizer(Literal node) {
 		delegate = new MHAnalyzer().tokenStream(node.getLanguage(), 
-				null, new StringReader(preprocess(node.getString())));
+				null, new StringReader(node.getString()));
 	}
 	
 	@Override

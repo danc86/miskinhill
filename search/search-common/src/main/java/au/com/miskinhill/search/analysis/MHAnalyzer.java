@@ -1,5 +1,8 @@
 package au.com.miskinhill.search.analysis;
 
+import java.io.Reader;
+
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.snowball.SnowballAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
@@ -17,5 +20,11 @@ public class MHAnalyzer extends PerLanguageAnalyzerWrapper {
 	private final static String[] ENGLISH_STOP_WORDS = {
 			// copied from StopAnalyzer.ENGLISH_STOP_WORDS
 			"a", "an", "and", "but", "of", "or", "to", "the" };
+	
+	@Override
+	public TokenStream tokenStream(String language, String fieldName,
+			Reader reader) {
+		return super.tokenStream(language, fieldName, new PreprocFilterReader(reader));
+	}
 
 }

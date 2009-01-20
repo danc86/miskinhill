@@ -40,9 +40,5 @@ public abstract class RDFLiteralTokenizer extends TokenStream {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	protected static String preprocess(String s) {
-		return s.replace('\u2019', '\'');
-	}
 
 }
