@@ -77,7 +77,9 @@ public class SearchServlet extends HttpServlet {
 			List<Result> results = new ArrayList<Result>();
 			for (int i = 0; i < topDocs.totalHits; i ++) {
 				Document doc = index.document(topDocs.scoreDocs[i].doc);
-				Result result = new Result(doc.get("url"), topDocs.scoreDocs[i].score);
+				Result result = new Result(doc.get("url"),
+						doc.get("anchor"), 
+						topDocs.scoreDocs[i].score);
 				results.add(result);
 			}
 			
@@ -96,12 +98,15 @@ public class SearchServlet extends HttpServlet {
 	
 	public static class Result {
 		private String url;
+		private String anchor;
 		private float score;
-		public Result(String url, float score) {
+		public Result(String url, String anchor, float score) {
 			this.url = url;
+			this.anchor = anchor;
 			this.score = score;
 		}
 		public String getUrl() { return url; }
+		public String getAnchor() { return anchor; }
 		public float getScore() { return score; }
 		public int scoreWidth(int max) {
 			return (int) (Math.min(1.0, this.score) * max);

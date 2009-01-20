@@ -8,6 +8,7 @@ import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.store.FSDirectory;
 
 import au.com.miskinhill.domain.Article;
+import au.com.miskinhill.domain.FulltextFetcher;
 import au.com.miskinhill.domain.vocabulary.MHS;
 import au.com.miskinhill.search.analysis.NullAnalyzer;
 
@@ -41,7 +42,7 @@ public class App {
 		
 		ResIterator articles = model.listSubjectsWithProperty(RDF.type, MHS.Article);
 		while (articles.hasNext()) {
-			Article a = new Article(articles.nextResource(), contentPath);
+			Article a = new Article(articles.nextResource(), new FulltextFetcher(contentPath));
 			a.addToIndex(iw);
 		}
 		

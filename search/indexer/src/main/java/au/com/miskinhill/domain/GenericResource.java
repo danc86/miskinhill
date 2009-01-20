@@ -17,6 +17,7 @@ import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
 
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -31,15 +32,15 @@ public abstract class GenericResource {
 		types.put(MHS.Author, Author.class);
 	}
 
-	public static GenericResource fromRDF(Resource rdfResource, String contentPath) {
+	public static GenericResource fromRDF(Resource rdfResource, FulltextFetcher fulltextFetcher) {
 		StmtIterator i = rdfResource.listProperties(RDF.type);
 		while (i.hasNext()) {
 			final Statement stmt = i.nextStatement();
 			Resource type = (Resource) stmt.getObject().as(Resource.class);
 			if (types.containsKey(type)) {
 				try {
-					return types.get(type).getConstructor(Resource.class, String.class)
-							.newInstance(rdfResource, contentPath);
+					return types.get(type).getConstructor(Resource.class, FulltextFetcher.class)
+							.newInstance(rdfResource, fulltextFetcher);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
@@ -48,39 +49,50 @@ public abstract class GenericResource {
 		return null;
 	}
 	
-	protected Resource rdfResource;
-    protected final String contentPath;
+	protected final Resource rdfResource;
+    protected final FulltextFetcher fulltextFetcher;
 
-	public GenericResource(Resource rdfResource, String contentPath) {
+	public GenericResource(Resource rdfResource, FulltextFetcher fulltextFetcher) {
 		this.rdfResource = rdfResource;
-        this.contentPath = contentPath;
+        this.fulltextFetcher = fulltextFetcher;
 	}
 	
-	public void addFieldsToDocument(final Document doc) 
+	public void addFieldsToDocument(String fieldNamePrefix, final Document doc) 
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
 		StmtIterator i = rdfResource.listProperties();
 		while (i.hasNext()) {
 			final Statement stmt = i.nextStatement();
 			if (stmt.getObject().isLiteral()) {
-				doc.add(new Field(stmt.getPredicate().getURI(), 
+				doc.add(new Field(fieldNamePrefix + stmt.getPredicate().getURI(), 
 						RDFLiteralTokenizer.fromLiteral(
 							(Literal) stmt.getObject().as(Literal.class))));
-			} else {
+			} else if (stmt.getObject().isAnon()) {
 				GenericResource o = GenericResource.fromRDF(
 						(Resource) stmt.getObject().as(Resource.class), 
-                        contentPath);
+                        fulltextFetcher);
 				if (o != null)
-					o.addFieldsToDocument(doc);
+					o.addFieldsToDocument(fieldNamePrefix + stmt.getPredicate().getURI() + " ", doc);
 			}
 		}
+		
+		// add anchor text as untokenized and stored, so that search-webapp can fetch it
+		doc.add(new Field("anchor", 
+				rdfResource.getRequiredProperty(anchorProperty()).getString(), 
+				Store.YES, Index.NO));
 	}
+
+	/**
+	 * Returns the RDF {@link Property} whose value is to be used as anchor text
+	 * in search results.
+	 */
+	protected abstract Property anchorProperty();
 
 	public void addToIndex(IndexWriter iw)
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
 		Document doc = new Document();
 		doc.add(new Field("url", rdfResource.getURI(), 
 				Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-		addFieldsToDocument(doc);
+		addFieldsToDocument("", doc);
 		iw.addDocument(doc);
 	}
 

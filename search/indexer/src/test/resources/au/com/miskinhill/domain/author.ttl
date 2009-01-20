@@ -1,0 +1,8 @@
+@prefix mhs: <http://miskinhill.com.au/rdfschema/1.0/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/TR/xmlschema-2/#> .
+@base <http://miskinhill.com.au/authors/> .
+
+<test-author> a mhs:Author ;
+	foaf:name "Aureliano Buendía" .

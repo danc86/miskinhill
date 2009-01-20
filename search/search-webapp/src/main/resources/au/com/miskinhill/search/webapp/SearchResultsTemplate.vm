@@ -42,7 +42,7 @@
 	            		 src="/images/relevance_bg.png" />
 	            </div>
 	        </td>
-	        <td><a href="$hit.url">${hit.url}</a></td>
+	        <td><a href="$hit.url">${hit.anchor}</a></td>
 	    </tr>
 		#end
 	</tbody>

@@ -1,9 +1,6 @@
 package au.com.miskinhill.domain;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.SequenceInputStream;
 
@@ -16,12 +13,14 @@ import au.com.miskinhill.search.analysis.MHAnalyzer;
 import au.com.miskinhill.search.analysis.XMLTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
 
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.vocabulary.DCTerms;
 
 public class Article extends GenericResource {
 	
-	public Article(Resource rdfResource, String contentPath) {
-		super(rdfResource, contentPath);
+	public Article(Resource rdfResource, FulltextFetcher fulltextFetcher) {
+		super(rdfResource, fulltextFetcher);
 	}
 
 	private static final byte[] XHTML_STRICT_DTD_DECL = 
@@ -31,17 +30,22 @@ public class Article extends GenericResource {
 			.getBytes();
 	
 	@Override
-	public void addFieldsToDocument(Document doc)
+	public void addFieldsToDocument(String fieldNamePrefix, Document doc)
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
-		super.addFieldsToDocument(doc);
+		super.addFieldsToDocument(fieldNamePrefix, doc);
 		
-		assert rdfResource.getURI().substring(0, 24) == "http://miskinhill.com.au";
-		File content = new File(contentPath + rdfResource.getURI().substring(24) + ".html");
-		doc.add(new Field("content", new XMLTokenizer(
+		if (!rdfResource.getURI().substring(0, 24).equals("http://miskinhill.com.au"))
+			throw new IllegalArgumentException("Cannot fetch content which is not under http://miskinhill.com.au");
+		doc.add(new Field(fieldNamePrefix + "content", new XMLTokenizer(
 				new SequenceInputStream(
 					new ByteArrayInputStream(XHTML_STRICT_DTD_DECL), 
-					new BufferedInputStream(new FileInputStream(content))), 
+					fulltextFetcher.fetch(rdfResource.getURI().substring(24) + ".html")), 
 				new MHAnalyzer())));
+	}
+	
+	@Override
+	protected Property anchorProperty() {
+		return rdfResource.getModel().createProperty(DCTerms.NS + "title");
 	}
 
 }
