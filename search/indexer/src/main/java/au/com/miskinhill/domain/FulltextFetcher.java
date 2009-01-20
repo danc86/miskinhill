@@ -18,7 +18,7 @@ public class FulltextFetcher {
 	
 	public FulltextFetcher(String basePath) {
 		if (!basePath.endsWith("/")) {
-			throw new IllegalArgumentException("basePath " + basePath + " must have a trailing slash");
+			basePath += "/";
 		}
 		this.basePath = basePath;
 	}

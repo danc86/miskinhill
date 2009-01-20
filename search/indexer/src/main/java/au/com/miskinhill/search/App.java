@@ -2,6 +2,7 @@ package au.com.miskinhill.search;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Properties;
 
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
@@ -52,7 +53,9 @@ public class App {
     }
 	
 	public static void main(String[] args) throws Exception {
-        writeIndex(args[0], args[1]);
+		Properties props = new Properties();
+		props.load(App.class.getResourceAsStream("paths.properties"));
+        writeIndex(props.getProperty("contentPath"), props.getProperty("indexPath"));
 	}
 	
 }

@@ -42,4 +42,8 @@
       </plugin>
     </plugins>
   </reporting>
+  <properties>
+    <contentPath>/home/dan/.www/miskinhill.com.au/content</contentPath>
+    <indexPath>/home/dan/.www/miskinhill.com.au/index-data</indexPath>
+  </properties>
 </project>
