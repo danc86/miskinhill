@@ -1,8 +1,6 @@
 package au.com.miskinhill.search.webapp;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
@@ -11,11 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -73,17 +69,10 @@ public class SearchServlet extends HttpServlet {
 			
 			IndexSearcher searcher = new IndexSearcher(index);
 			Query query = MultilingualQueryParser.parse(q, new MHAnalyzer(), fieldsToSearch);
-			TopDocs topDocs = searcher.search(query, 50);
-			List<Result> results = new ArrayList<Result>();
-			for (int i = 0; i < topDocs.totalHits; i ++) {
-				Document doc = index.document(topDocs.scoreDocs[i].doc);
-				Result result = new Result(doc.get("url"),
-						doc.get("anchor"), 
-						topDocs.scoreDocs[i].score);
-				results.add(result);
-			}
+			SearchResults results = SearchResults.build(searcher.search(query, 50), index);
 			
 			VelocityContext context = new VelocityContext();
+	        context.put("resultTypes", SearchResults.ResultType.values());
 			context.put("q", q);
 			context.put("results", results);
 			Template template = ve.getTemplate(
@@ -93,26 +82,6 @@ public class SearchServlet extends HttpServlet {
 		} catch (Exception e) {
 			// Java is lame
 			throw new ServletException(e);
-		}
-	}
-	
-	public static class Result {
-		private String url;
-		private String anchor;
-		private float score;
-		public Result(String url, String anchor, float score) {
-			this.url = url;
-			this.anchor = anchor;
-			this.score = score;
-		}
-		public String getUrl() { return url; }
-		public String getAnchor() { return anchor; }
-		public float getScore() { return score; }
-		public int scoreWidth(int max) {
-			return (int) (Math.min(1.0, this.score) * max);
-		}
-		public String scorePercent() {
-			return String.format("%.1f%%", Math.min(1.0, this.score) * 100);
 		}
 	}
 

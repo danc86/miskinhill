@@ -8,16 +8,14 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.store.FSDirectory;
 
-import au.com.miskinhill.domain.Article;
 import au.com.miskinhill.domain.FulltextFetcher;
-import au.com.miskinhill.domain.vocabulary.MHS;
+import au.com.miskinhill.domain.GenericResource;
 import au.com.miskinhill.search.analysis.NullAnalyzer;
 
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.ResIterator;
-import com.hp.hpl.jena.vocabulary.RDF;
 
 /**
  * Hello world!
@@ -41,10 +39,14 @@ public class App {
 				MaxFieldLength.UNLIMITED);
 		iw.setUseCompoundFile(false);
 		
-		ResIterator articles = model.listSubjectsWithProperty(RDF.type, MHS.Article);
+		FulltextFetcher fulltextFetcher = new FulltextFetcher(contentPath);
+		
+		ResIterator articles = model.listSubjects();
 		while (articles.hasNext()) {
-			Article a = new Article(articles.nextResource(), new FulltextFetcher(contentPath));
-			a.addToIndex(iw);
+			GenericResource r = GenericResource.fromRDF(articles.nextResource(), fulltextFetcher);
+			if (r != null) {
+			    r.addToIndex(iw);
+			}
 		}
 		
 		iw.commit();

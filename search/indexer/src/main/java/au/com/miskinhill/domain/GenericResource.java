@@ -12,7 +12,6 @@ import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexWriter;
 
-import au.com.miskinhill.domain.vocabulary.MHS;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
 
@@ -28,8 +27,8 @@ public abstract class GenericResource {
 	private static Map<Resource, Class<? extends GenericResource>> types = 
 			new HashMap<Resource, Class<? extends GenericResource>>();
 	static {
-		types.put(MHS.Article, Article.class);
-		types.put(MHS.Author, Author.class);
+		types.put(Article.TYPE, Article.class);
+		types.put(Author.TYPE, Author.class);
 	}
 
 	public static GenericResource fromRDF(Resource rdfResource, FulltextFetcher fulltextFetcher) {
@@ -75,6 +74,11 @@ public abstract class GenericResource {
 			}
 		}
 		
+	    doc.add(new Field("url", rdfResource.getURI(), 
+	            Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+	    doc.add(new Field("type", rdfType().getURI(), 
+	            Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		
 		// add anchor text as untokenized and stored, so that search-webapp can fetch it
 		doc.add(new Field("anchor", 
 				rdfResource.getRequiredProperty(anchorProperty()).getString(), 
@@ -86,12 +90,15 @@ public abstract class GenericResource {
 	 * in search results.
 	 */
 	protected abstract Property anchorProperty();
+	
+	/**
+	 * Returns the (most specific) RDF type associated with this class. 
+	 */
+	protected abstract Resource rdfType();
 
 	public void addToIndex(IndexWriter iw)
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
 		Document doc = new Document();
-		doc.add(new Field("url", rdfResource.getURI(), 
-				Store.YES, Index.NOT_ANALYZED_NO_NORMS));
 		addFieldsToDocument("", doc);
 		iw.addDocument(doc);
 	}

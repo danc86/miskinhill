@@ -1,13 +1,21 @@
 
+h2 {
+    margin-bottom: 0.5em;
+}
 table.searchresults {
 	border-collapse: collapse;
+	margin: 0.5em 0;
 }
 table.searchresults th, table.searchresults td {
 	padding: 0.25em 0.4em;
+	vertical-align: top;
 }
 table.searchresults th {
 	text-align: left;
 	border-bottom: 1px dotted #806759;
+}
+table.searchresults th.result-type {
+    width: 100%;
 }
 
 .relevance-container {

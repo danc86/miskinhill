@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
+import au.com.miskinhill.domain.vocabulary.MHS;
 import au.com.miskinhill.search.analysis.MHAnalyzer;
 import au.com.miskinhill.search.analysis.XMLTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
@@ -18,6 +19,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 
 public class Article extends GenericResource {
+    
+    public static final Resource TYPE = MHS.Article;
 	
 	public Article(Resource rdfResource, FulltextFetcher fulltextFetcher) {
 		super(rdfResource, fulltextFetcher);
@@ -47,5 +50,10 @@ public class Article extends GenericResource {
 	protected Property anchorProperty() {
 		return rdfResource.getModel().createProperty(DCTerms.NS + "title");
 	}
+
+    @Override
+    protected Resource rdfType() {
+        return TYPE;
+    }
 
 }

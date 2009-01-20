@@ -64,7 +64,22 @@ public class AuthorUnitTest {
 					public void describeTo(Description description) {
 						description.appendText("foaf:name field");
 					}
-				}));
+				}, 
+                new BaseMatcher<Field>() {
+                    @Override
+                    public boolean matches(Object field_) {
+                        Field field = (Field) field_;
+                        return (field.name().equals("type") &&
+                                field.stringValue().equals("http://miskinhill.com.au/rdfschema/1.0/Author") &&
+                                field.isStored() &&
+                                field.isIndexed());
+                    }
+
+                    @Override
+                    public void describeTo(Description description) {
+                        description.appendText("type field");
+                    }
+                }));
 		
 		verify(fulltextFetcher);
 	}
