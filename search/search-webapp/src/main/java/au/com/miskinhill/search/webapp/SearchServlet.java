@@ -1,6 +1,8 @@
 package au.com.miskinhill.search.webapp;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexReader.FieldOption;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.FSDirectory;
@@ -23,12 +26,7 @@ public class SearchServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1140261890520211317L;
 	
-	private static final String[] fieldsToSearch = {
-		"http://purl.org/dc/terms/title", 
-		"http://xmlns.com/foaf/0.1/name", 
-		"http://miskinhill.com.au/rdfschema/1.0/biographicalNotes", 
-		"content"
-	};
+	private static String[] fieldsToSearch;
 
     private VelocityEngine ve;
 	private IndexReader index;
@@ -44,6 +42,7 @@ public class SearchServlet extends HttpServlet {
 		try {
             // Lucene index
             index = IndexReader.open(FSDirectory.getDirectory(indexPath), /* read-only */ true);
+            fieldsToSearch = determineFieldsToSearch();
 
             // Velocity
             Properties props = new Properties();
@@ -56,6 +55,16 @@ public class SearchServlet extends HttpServlet {
             throw new ServletException(e);
         }
 	}
+    
+    @SuppressWarnings("unchecked")
+    private String[] determineFieldsToSearch() {
+        ArrayList<String> interestingFields = new ArrayList<String>();
+        for (String fieldName: (Collection<String>) index.getFieldNames(FieldOption.INDEXED)) {
+            if (!fieldName.equals("url") && !fieldName.equals("type"))
+                interestingFields.add(fieldName);
+        }
+        return interestingFields.toArray(new String[0]);
+    }
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)

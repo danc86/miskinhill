@@ -32,7 +32,7 @@ public class SearchResults {
     }
     
     public static enum ResultType {
-        Author, Article, unknown
+        Author, Article, Review, unknown
     }
 
     public static SearchResults build(TopDocs topDocs, IndexReader index) throws IOException {
