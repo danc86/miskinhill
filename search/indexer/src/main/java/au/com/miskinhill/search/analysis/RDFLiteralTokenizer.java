@@ -25,6 +25,7 @@ public abstract class RDFLiteralTokenizer extends TokenStream {
 	static {
 		types.put(null /* no type means plain string */, StringLiteralTokenizer.class);
 		types.put(XSD.integer.getURI(), IntegerLiteralTokenizer.class);
+		types.put("http://www.w3.org/TR/xmlschema-2/#date", StringLiteralTokenizer.class); // XXX use something better?
 		types.put(RDF.getURI() + "XMLLiteral", XMLLiteralTokenizer.class);
 	}
 

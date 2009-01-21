@@ -1,0 +1,35 @@
+@prefix mhs: <http://miskinhill.com.au/rdfschema/1.0/> .
+@prefix mhauthors: <http://miskinhill.com.au/authors/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/TR/xmlschema-2/#> .
+@base <http://miskinhill.com.au/journals/test/1:1/> .
+
+mhauthors:test-author a mhs:Author ;
+	foaf:name "Aureliano Buendía" .
+
+<> a mhs:Issue ;
+    mhs:isIssueOf <..> ;
+    mhs:volume 1 ;
+    mhs:issueNumber 1 ;
+    dc:coverage "2007"^^xsd:date ;
+    mhs:publicationDate "2008-01-15"^^xsd:date ;
+    mhs:frontMatterExtent 6 ;
+    mhs:cover <cover.jpg> ;
+    mhs:coverThumbnail <cover.thumb.jpg> .
+
+<reviews/test-review> a mhs:Review ;
+    dc:isPartOf <> ;
+    mhs:reviews [
+        a mhs:Book ;
+        dc:identifier <urn:isbn:9780674016972> ;
+        dc:identifier <urn:asin:0674016971> ;
+        dc:title "Stalin: a biography"@en ;
+        dc:creator "Robert Service" ;
+        dc:publisher "Belknap Press of Harvard University Press"@en ;
+        dc:date "2004"^^xsd:date
+    ] ;
+    dc:creator mhauthors:test-author ;
+    mhs:startPage 192 ;
+    mhs:endPage 194 .

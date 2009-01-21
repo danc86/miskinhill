@@ -16,13 +16,14 @@ import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeE
 
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 
-public class Article extends GenericResource {
+public class Review extends GenericResource {
     
-    public static final Resource TYPE = MHS.Article;
+    public static final Resource TYPE = MHS.Review;
 	
-	public Article(Resource rdfResource, FulltextFetcher fulltextFetcher) {
+	public Review(Resource rdfResource, FulltextFetcher fulltextFetcher) {
 		super(rdfResource, fulltextFetcher);
 	}
 
@@ -48,8 +49,18 @@ public class Article extends GenericResource {
 	
 	@Override
 	protected String getAnchorText() {
-		Property dctitle = rdfResource.getModel().createProperty(DCTerms.NS + "title");
-		return rdfResource.getRequiredProperty(dctitle).getString();
+	    StmtIterator i = rdfResource.listProperties(MHS.reviews);
+	    if (!i.hasNext())
+	        throw new IllegalArgumentException("Review does not review anything");
+	    Resource reviewed = (Resource) i.nextStatement().getObject().as(Resource.class);
+	    if (i.hasNext())
+	        throw new IllegalArgumentException("Review reviews more than one thing");
+		Property dctitle = rdfResource.getModel().createProperty(DCTerms.NS, "title");
+		Property dccreator = rdfResource.getModel().createProperty(DCTerms.NS, "creator");
+		Property dcdate = rdfResource.getModel().createProperty(DCTerms.NS, "date");
+		return reviewed.getRequiredProperty(dccreator).getString() + ", <em>" + 
+		        reviewed.getRequiredProperty(dctitle).getString() + "</em> (" + 
+		        reviewed.getRequiredProperty(dcdate).getString().substring(0, 4) + ")"; 
 	}
 
     @Override

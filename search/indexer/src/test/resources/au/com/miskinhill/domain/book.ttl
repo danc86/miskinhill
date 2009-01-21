@@ -1,0 +1,13 @@
+@prefix mhs: <http://miskinhill.com.au/rdfschema/1.0/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/TR/xmlschema-2/#> .
+@base <http://miskinhill.com.au/test-books/> .
+
+<test-book> a mhs:Book ;
+    dc:identifier <urn:isbn:9780674016972> ;
+    dc:identifier <urn:asin:0674016971> ;
+    dc:title "Stalin: a biography"@en ;
+    dc:creator "Robert Service" ;
+    dc:publisher "Belknap Press of Harvard University Press"@en ;
+    dc:date "2004"^^xsd:date .

@@ -46,7 +46,7 @@ public class App {
     		ResIterator articles = model.listSubjects();
     		while (articles.hasNext()) {
     			GenericResource r = GenericResource.fromRDF(articles.nextResource(), fulltextFetcher);
-    			if (r != null) {
+    			if (r != null && r.isTopLevel()) {
     			    r.addToIndex(iw);
     			}
     		}

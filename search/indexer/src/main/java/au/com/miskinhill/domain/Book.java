@@ -3,19 +3,18 @@ package au.com.miskinhill.domain;
 import au.com.miskinhill.domain.vocabulary.MHS;
 
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 
-public class Author extends GenericResource {
+public class Book extends GenericResource {
 
-	public static final Resource TYPE = MHS.Author;
+	public static final Resource TYPE = MHS.Book;
 
-    public Author(Resource rdfResource, FulltextFetcher fulltextFetcher) {
+    public Book(Resource rdfResource, FulltextFetcher fulltextFetcher) {
 		super(rdfResource, fulltextFetcher);
 	}
 	
 	@Override
 	protected String getAnchorText() {
-	    return rdfResource.getRequiredProperty(FOAF.name).getString();
+	    throw new UnsupportedOperationException("Books are not top-level documents");
 	}
 
     @Override
@@ -25,7 +24,7 @@ public class Author extends GenericResource {
 
     @Override
     public boolean isTopLevel() {
-        return true;
+        return false;
     }
 
 }

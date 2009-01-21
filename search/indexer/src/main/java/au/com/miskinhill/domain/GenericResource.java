@@ -16,7 +16,6 @@ import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
 
 import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -28,7 +27,9 @@ public abstract class GenericResource {
 			new HashMap<Resource, Class<? extends GenericResource>>();
 	static {
 		types.put(Article.TYPE, Article.class);
+		types.put(Review.TYPE, Review.class);
 		types.put(Author.TYPE, Author.class);
+		types.put(Book.TYPE, Book.class);
 	}
 
 	public static GenericResource fromRDF(Resource rdfResource, FulltextFetcher fulltextFetcher) {
@@ -74,22 +75,19 @@ public abstract class GenericResource {
 			}
 		}
 		
-	    doc.add(new Field("url", rdfResource.getURI(), 
+		if (!rdfResource.isAnon()) {
+    	    doc.add(new Field(fieldNamePrefix + "url", rdfResource.getURI(), 
+    	            Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		}
+	    doc.add(new Field(fieldNamePrefix + "type", rdfType().getURI(), 
 	            Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-	    doc.add(new Field("type", rdfType().getURI(), 
-	            Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-		
-		// add anchor text as untokenized and stored, so that search-webapp can fetch it
-		doc.add(new Field("anchor", 
-				rdfResource.getRequiredProperty(anchorProperty()).getString(), 
-				Store.YES, Index.NO));
 	}
 
-	/**
-	 * Returns the RDF {@link Property} whose value is to be used as anchor text
-	 * in search results.
-	 */
-	protected abstract Property anchorProperty();
+    /**
+     * Returns the anchor text (possibly with markup) to be displayed in search
+     * results when linking to this resource.
+     */
+	protected abstract String getAnchorText();
 	
 	/**
 	 * Returns the (most specific) RDF type associated with this class. 
@@ -100,7 +98,15 @@ public abstract class GenericResource {
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
 		Document doc = new Document();
 		addFieldsToDocument("", doc);
+        // add anchor text as untokenized and stored, so that search-webapp can fetch it
+        doc.add(new Field("anchor", getAnchorText(), Store.YES, Index.NO));
 		iw.addDocument(doc);
 	}
+
+    /**
+     * Indicates whether this resource type is expecting to be added as a
+     * top-level document, or only added transitively by another resource.
+     */
+    public abstract boolean isTopLevel();
 
 }

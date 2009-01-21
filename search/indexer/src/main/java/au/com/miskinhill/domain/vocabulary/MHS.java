@@ -1,5 +1,6 @@
 package au.com.miskinhill.domain.vocabulary;
 
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
@@ -23,5 +24,8 @@ public class MHS {
 			NS_URI + "Author");
 	public static final Resource Institution = ResourceFactory.createResource(
 			NS_URI + "Institution");
+	
+	public static final Property reviews = ResourceFactory.createProperty(
+	        NS_URI, "reviews");
 	
 }

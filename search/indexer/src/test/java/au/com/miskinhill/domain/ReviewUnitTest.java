@@ -5,7 +5,6 @@ import static org.easymock.EasyMock.isA;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.replay;
 import static org.easymock.classextension.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 
@@ -23,20 +22,19 @@ import org.junit.Test;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-public class ArticleUnitTest {
+public class ReviewUnitTest {
     
-    private Article article;
+    private Review review;
     
     @Before
-    public void setUpTestArticle() throws Exception {
+    public void setUpTestReview() throws Exception {
         Model model = ModelFactory.createDefaultModel();
-        model.read(this.getClass().getResourceAsStream("article.ttl"), null, "TURTLE");
+        model.read(this.getClass().getResourceAsStream("review.ttl"), null, "TURTLE");
         
         FulltextFetcher fulltextFetcher = createMock(FulltextFetcher.class);
         expect(fulltextFetcher.fetch(isA(String.class)))
                 .andReturn(new ByteArrayInputStream(
                     ("<div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"body-text\" lang=\"en\">\n" +
-                    "<h3>1. Introduction</h3>\n" +
                     "<p>An important and complex area of stress in Russian, which has to date received\n" + 
                     "insufficient attention, is variation in stress. By variation in stress is meant\n" + 
                     "the possibility of two (or more, in theory, but rarely in practice) syllables\n" + 
@@ -45,24 +43,19 @@ public class ArticleUnitTest {
                 .times(0, 1);
         replay(fulltextFetcher);
         
-        article = new Article(model.getResource("http://miskinhill.com.au/journals/test/1:1/test-article"), fulltextFetcher);
+        review = new Review(model.getResource("http://miskinhill.com.au/journals/test/1:1/reviews/test-review"), fulltextFetcher);
     }
     
     @After
     public void verifyFulltextFetcher() {
-        verify(article.fulltextFetcher);
-    }
-    
-    @Test
-    public void testAnchorText() {
-        assertEquals("One hundred years of solitude", article.getAnchorText());
+        verify(review.fulltextFetcher);
     }
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testAddFieldsToDocument() throws Exception {
 		Document doc = new Document();
-		article.addFieldsToDocument("", doc);
+		review.addFieldsToDocument("", doc);
 		
 		assertThat((List<Field>) doc.getFields(), hasItems(
 				new BaseMatcher<Field>() {
@@ -85,7 +78,7 @@ public class ArticleUnitTest {
                     public boolean matches(Object field_) {
                         Field field = (Field) field_;
                         return (field.name().equals("type") &&
-                                field.stringValue().equals("http://miskinhill.com.au/rdfschema/1.0/Article") &&
+                                field.stringValue().equals("http://miskinhill.com.au/rdfschema/1.0/Review") &&
                                 field.isStored() &&
                                 field.isIndexed());
                     }
@@ -100,7 +93,7 @@ public class ArticleUnitTest {
                     public boolean matches(Object field_) {
                         Field field = (Field) field_;
                         return (field.name().equals("url") &&
-                                field.stringValue().equals("http://miskinhill.com.au/journals/test/1:1/test-article") &&
+                                field.stringValue().equals("http://miskinhill.com.au/journals/test/1:1/reviews/test-review") &&
                                 field.isStored() &&
                                 field.isIndexed());
                     }
@@ -108,6 +101,51 @@ public class ArticleUnitTest {
                     @Override
                     public void describeTo(Description description) {
                         description.appendText("url field");
+                    }
+                }, 
+                new BaseMatcher<Field>() {
+                    @Override
+                    public boolean matches(Object field_) {
+                        Field field = (Field) field_;
+                        return (field.name().equals("http://miskinhill.com.au/rdfschema/1.0/reviews http://purl.org/dc/terms/title") &&
+                                // XXX assert content?
+                                !field.isStored() &&
+                                field.isIndexed());
+                    }
+
+                    @Override
+                    public void describeTo(Description description) {
+                        description.appendText("reviewed title field");
+                    }
+                }, 
+                new BaseMatcher<Field>() {
+                    @Override
+                    public boolean matches(Object field_) {
+                        Field field = (Field) field_;
+                        return (field.name().equals("http://miskinhill.com.au/rdfschema/1.0/reviews http://purl.org/dc/terms/creator") &&
+                                // XXX assert content?
+                                !field.isStored() &&
+                                field.isIndexed());
+                    }
+
+                    @Override
+                    public void describeTo(Description description) {
+                        description.appendText("reviewed creator field");
+                    }
+                }, 
+                new BaseMatcher<Field>() {
+                    @Override
+                    public boolean matches(Object field_) {
+                        Field field = (Field) field_;
+                        return (field.name().equals("http://miskinhill.com.au/rdfschema/1.0/reviews http://purl.org/dc/terms/date") &&
+                                // XXX assert content?
+                                !field.isStored() &&
+                                field.isIndexed());
+                    }
+
+                    @Override
+                    public void describeTo(Description description) {
+                        description.appendText("reviewed date field");
                     }
                 }));
 	}
