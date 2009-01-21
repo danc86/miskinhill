@@ -24,10 +24,10 @@ public class MultilingualQueryParserUnitTest {
 		PerLanguageAnalyzerWrapper analyzer = new PerLanguageAnalyzerWrapper(new KeywordAnalyzer());
 		analyzer.addAnalyzer("en", new SnowballAnalyzer("English", StopAnalyzer.ENGLISH_STOP_WORDS));
 		Query query = MultilingualQueryParser.parse("bob's a silly heads", analyzer, fieldsToSearch);
-		assertEquals("+(field1:bob's field2:bob's field1:bob field2:bob) " + 
+		assertEquals("+(field1:bob field1:bob's field2:bob field2:bob's) " + 
 				"(field1:a field2:a) " + 
-				"+(field1:silly field2:silly field1:silli field2:silli) " + 
-				"+(field1:heads field2:heads field1:head field2:head)", 
+				"+(field1:silli field1:silly field2:silli field2:silly) " + 
+				"+(field1:head field1:heads field2:head field2:heads)", 
 				query.toString());
 	}
 	
@@ -39,8 +39,8 @@ public class MultilingualQueryParserUnitTest {
 		PerLanguageAnalyzerWrapper analyzer = new PerLanguageAnalyzerWrapper(new KeywordAnalyzer());
 		analyzer.addAnalyzer("en", new SnowballAnalyzer("English", StopAnalyzer.ENGLISH_STOP_WORDS));
 		Query query = MultilingualQueryParser.parse("cha-cha char", analyzer, fieldsToSearch);
-		assertEquals("+(field1:cha-cha field2:cha-cha field1:\"cha cha\" field2:\"cha cha\") " + 
-				"+(field1:char field2:char field1:char field2:char)", 
+		assertEquals("+(field1:cha-cha field1:\"cha cha\" field2:cha-cha field2:\"cha cha\") " + 
+				"+(field1:char field2:char)", 
 				query.toString());
 	}
 

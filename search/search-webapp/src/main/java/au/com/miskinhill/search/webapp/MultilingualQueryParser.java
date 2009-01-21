@@ -3,7 +3,9 @@ package au.com.miskinhill.search.webapp;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
@@ -33,10 +35,19 @@ public class MultilingualQueryParser {
              */
 			BooleanQuery tokenQuery = new BooleanQuery(/* disableCoord */ true);
 			boolean tokenRequired = true;
-			for (Analyzer subAnalyzer: subAnalyzers) {
-				for (String field: fieldsToSearch) {
-					List<String> analyzedTokens = consumeTokens(
-							subAnalyzer.tokenStream(field, new PreprocFilterReader(new StringReader(token))));
+            for (String field: fieldsToSearch) {
+                /*
+                 * Build a set first, because different analyzers might return
+                 * the same tokens, e.g. "2006" analyses to the same thing for
+                 * all languages.
+                 */
+                Set<List<String>> analyzedTokensSet = new HashSet<List<String>>();
+                for (Analyzer subAnalyzer: subAnalyzers) {
+                    analyzedTokensSet.add(consumeTokens(
+                            subAnalyzer.tokenStream(field, 
+                                new PreprocFilterReader(new StringReader(token)))));
+                }
+                for (List<String> analyzedTokens: analyzedTokensSet) {
 					switch (analyzedTokens.size()) {
 						case 0:
 							/*
