@@ -1,3 +1,5 @@
+* custom stax entity resolver for XHTML entities!!?!?
+
 * index authors and reviews (and anything else?)
 * show something better than just URIs in results (dc:title for articles, 
   foaf:name for authors, ..)
