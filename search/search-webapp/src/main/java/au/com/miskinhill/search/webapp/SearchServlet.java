@@ -29,6 +29,7 @@ public class SearchServlet extends HttpServlet {
 	private static String[] fieldsToSearch;
 
     private VelocityEngine ve;
+    private Template resultsTemplate;
 	private IndexReader index;
 
     public static final String INDEX_PATH_PARAM = "au.com.miskinhill.search.indexPath";
@@ -51,6 +52,8 @@ public class SearchServlet extends HttpServlet {
             ve.setApplicationAttribute(ServletContext.class.getName(), 
                     getServletContext());
             ve.init(props);
+            resultsTemplate = ve
+                    .getTemplate("/au/com/miskinhill/search/webapp/SearchResultsTemplate.vm");
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -84,10 +87,8 @@ public class SearchServlet extends HttpServlet {
 	        context.put("resultTypes", SearchResults.ResultType.values());
 			context.put("q", q);
 			context.put("results", results);
-			Template template = ve.getTemplate(
-					"/au/com/miskinhill/search/webapp/SearchResultsTemplate.vm");
 			resp.setContentType("text/html; charset=utf-8");
-			template.merge(context, resp.getWriter());
+			resultsTemplate.merge(context, resp.getWriter());
 		} catch (Exception e) {
 			// Java is lame
 			throw new ServletException(e);
