@@ -32,7 +32,8 @@ public class App {
         Model metadataModel = ModelFactory.createDefaultModel();
         metadataModel.read(new FileInputStream(new File(contentPath + "/meta.nt")), "", "N-TRIPLE");
         
-        InfModel model = ModelFactory.createRDFSModel(ModelFactory.createUnion(schemaModel, metadataModel));
+//        InfModel model = ModelFactory.createRDFSModel(ModelFactory.createUnion(schemaModel, metadataModel));
+        Model model = ModelFactory.createUnion(schemaModel, metadataModel);
         
         IndexWriter iw = new IndexWriter(FSDirectory.getDirectory(indexPath), 
                 NullAnalyzer.INSTANCE, 

@@ -67,13 +67,16 @@ public abstract class GenericResource {
 						RDFLiteralTokenizer.fromLiteral(
 							(Literal) stmt.getObject().as(Literal.class))));
 			} else if (stmt.getObject().isAnon()) {
-				GenericResource o = GenericResource.fromRDF(
-						(Resource) stmt.getObject().as(Resource.class), 
-                        fulltextFetcher);
-				if (o != null)
-					o.addFieldsToDocument(fieldNamePrefix + stmt.getPredicate().getURI() + " ", doc);
-			}
-		}
+                /*
+                 * We attach blank nodes to this document because they won't
+                 * appear anywhere else.
+                 */
+                GenericResource o = GenericResource.fromRDF(
+                        (Resource) stmt.getObject().as(Resource.class), fulltextFetcher);
+                if (o != null)
+                    o.addFieldsToDocument(fieldNamePrefix + stmt.getPredicate().getURI() + " ", doc);
+            }
+        }
 		
 		if (!rdfResource.isAnon()) {
     	    doc.add(new Field(fieldNamePrefix + "url", rdfResource.getURI(), 
