@@ -18,10 +18,9 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 
 /**
- * Hello world!
- * 
+ * Builds the Lucene index from metadata and content.
  */
-public class App {
+public class Indexer {
 
     private static void writeIndex(final String contentPath, final String indexPath) 
             throws Exception {
@@ -61,7 +60,7 @@ public class App {
 	
 	public static void main(String[] args) throws Exception {
 		Properties props = new Properties();
-		props.load(App.class.getResourceAsStream("paths.properties"));
+		props.load(Indexer.class.getResourceAsStream("paths.properties"));
         writeIndex(props.getProperty("contentPath"), props.getProperty("indexPath"));
 	}
 	

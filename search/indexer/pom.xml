@@ -65,7 +65,7 @@
           <descriptorId>jar-with-dependencies</descriptorId>
           <archive>
             <manifest>
-              <mainClass>au.com.miskinhill.search.App</mainClass>
+              <mainClass>au.com.miskinhill.search.Indexer</mainClass>
             </manifest>
           </archive>
         </configuration>
