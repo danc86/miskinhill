@@ -35,6 +35,7 @@ class MiskinHillApplication(object):
 
     METHODS = {
         '/': 'index', 
+        '/about/': 'about', 
         '/contact/': 'contact', 
         '/journals/': 'journals_index'
     }
@@ -50,6 +51,11 @@ class MiskinHillApplication(object):
 
     def index(self):
         template = template_loader.load(os.path.join('html', 'index.xml'))
+        body = template.generate(req=self.req).render('xhtml')
+        return Response(body, content_type='text/html')
+
+    def about(self):
+        template = template_loader.load(os.path.join('html', 'about.xml'))
         body = template.generate(req=self.req).render('xhtml')
         return Response(body, content_type='text/html')
 
@@ -118,7 +124,7 @@ if __name__ == '__main__':
     parser.add_option('-p', '--port', type='int',
             help='Port to serve on (default: %default)')
     parser.add_option('-c', '--content-dir', type='string')
-    parser.set_defaults(port=8080, content_dir=content_dir)
+    parser.set_defaults(port=8082, content_dir=content_dir)
     options, args = parser.parse_args()
     content_dir = options.content_dir
     from wsgiref.simple_server import make_server

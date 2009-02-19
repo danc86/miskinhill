@@ -7,16 +7,18 @@
 <xi:include href="_commonwrapper.xml" />
 
 <head>
-    <title>Contact</title>
+    <title>About</title>
 </head>
 
 <body>
 
-<h2>Contact</h2>
+<h2>About</h2>
 
-<p>E-mail: <a href="mailto:info@miskinhill.com.au">info@miskinhill.com.au</a><br />
-Telephone: +61&thinsp;407&thinsp;379&thinsp;687<br />
-ABN: 27&thinsp;712&thinsp;504&thinsp;809</p>
+<p>Miskin Hill Academic Publishing is a <a 
+href="http://www.geonames.org/2174003/brisbane.html">Brisbane</a>-based 
+business, providing electronic publishing and editing services to academic 
+journals. To find out more about what we can do for your academic publication, 
+please <a href="mailto:info@miskinhill.com.au">get in touch with us</a>.</p>
 
 </body>
 </html>
