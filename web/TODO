@@ -1,3 +1,18 @@
+* subject headings
+    - find at least one authorized LCSH for each vol 21 article
+    - invent URLs for each, e.g. mh/subjects/lcsh/<LCCN>
+    - show subjects on article pages, in issue contents also?
+    - index (cloud? experiment with sensible presentation of hierarchy) of 
+      subjects per issue, per journal(?), and global
+    - link subjects to ll01.nla.gov.au search, also user's library? 
+      somewhere else good?
+* BibTeX citation for articles
+* Footnotes
+    - leave them in place at the bottom of the page, but use js to display 
+      footnote body in an overlay(/sidebar something?) when clicking
+* OpenURL for citations
+    - implement COINS: http://ocoins.info/
+    - better UI for selecting OpenURL resolver, save in cookie
 * MARC crap:
     - get a copy of AACR2 and make sure we adhere to it (then adjust 
       MARC leader to say so)
@@ -13,10 +28,11 @@
       (can holdings be represented in MARC? does e.g. INNOPAC support importing 
       holdings?)
     - MARC at article level??? nobody will want this though I suspect ..
-* implement COINS in citation-openurl.js: http://ocoins.info/
-* BibTeX citations
-* js for footnotes
-* article subjects from SLCCS ASEES index page
 
 eventually:
 * get into Goog Scholar, UQ catalogue, UQ's III federated search thingy?
+* subjects:
+    - go all web-2.0 and have tags/keywords/something? (any good LT 
+      tags? somewhere else?)
+    - come up with something better? 
+      http://journal.code4lib.org/articles/23
