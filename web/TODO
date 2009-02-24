@@ -1,3 +1,4 @@
+immediately:
 * subject headings
     - find at least one authorized LCSH for each vol 21 article
     - invent URLs for each, e.g. mh/subjects/lcsh/<LCCN>
@@ -6,13 +7,30 @@
       subjects per issue, per journal(?), and global
     - link subjects to ll01.nla.gov.au search, also user's library? 
       somewhere else good?
-* BibTeX citation for articles
+* other formats for article metadata:
+    - BibTex
+    - EndNote: http://www.harzing.com/pophelp/exporting.htm
 * Footnotes
     - leave them in place at the bottom of the page, but use js to display 
       footnote body in an overlay(/sidebar something?) when clicking
-* OpenURL for citations
-    - implement COINS: http://ocoins.info/
+* citations
     - better UI for selecting OpenURL resolver, save in cookie
+    - add other means of resolving citations: goog scholar, ...?
+* improve prettiness?
+    - headings on metaboxes?
+    - line-height everywhere
+* test everything in IE!
+
+eventually:
+* get into Goog Scholar, UQ catalogue, UQ's III federated search thingy?
+* online ordering of back issues
+* subjects:
+    - go all web-2.0 and have tags/keywords/something? (any good LT 
+      tags? somewhere else?)
+    - come up with something better? 
+      http://journal.code4lib.org/articles/23
+* OpenURL
+    - implement COINS: http://ocoins.info/ .. maybe
 * MARC crap:
     - get a copy of AACR2 and make sure we adhere to it (then adjust 
       MARC leader to say so)
@@ -28,11 +46,3 @@
       (can holdings be represented in MARC? does e.g. INNOPAC support importing 
       holdings?)
     - MARC at article level??? nobody will want this though I suspect ..
-
-eventually:
-* get into Goog Scholar, UQ catalogue, UQ's III federated search thingy?
-* subjects:
-    - go all web-2.0 and have tags/keywords/something? (any good LT 
-      tags? somewhere else?)
-    - come up with something better? 
-      http://journal.code4lib.org/articles/23
