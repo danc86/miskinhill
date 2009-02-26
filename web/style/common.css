@@ -22,6 +22,9 @@ img {
 q {
     quotes: none;
 }
+p, li {
+    line-height: 2.8ex;
+}
 
 #bodywrapper {
     padding: 15px;
@@ -82,9 +85,6 @@ q {
 }
 
 /* Body text (articles and reviews) */
-.body-text {
-    line-height: 2.85ex;
-}
 .body-text p {
     margin: 0;
 }
