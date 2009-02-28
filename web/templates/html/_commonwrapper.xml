@@ -4,6 +4,10 @@
      xmlns:xi="http://www.w3.org/2001/XInclude"
      py:strip="True">
 
+<?python
+import rdfob
+?>
+
 <py:match path="head">
 	<head py:attrs="select('@*')" py:with="title = unicode(select('title[1]/text()'))">
 		${select('./*[local-name() != "title"]')}
@@ -20,7 +24,12 @@
     </py:for>
 </div>
 
-<div py:def="searchbox()" class="searchbox metabox">
+<div py:def="searchbox(what)" class="searchbox metabox">
+    <h4>
+        Search
+        <py:if test="rdfob.uriref('mhs:Journal') in what.types">this journal</py:if>
+        <py:if test="rdfob.uriref('mhs:Issue') in what.types">this issue</py:if>
+    </h4>
     <form method="get" action="http://search.miskinhill.com.au/search">
     <p><input type="text" name="q" /> <button type="submit">Search</button></p>
     </form>

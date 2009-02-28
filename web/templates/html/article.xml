@@ -30,6 +30,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
 <div class="metabox-container">
     <div class="article-meta metabox">
+        <h4>Article details</h4>
         <p>Published in <a href="${issue.uri}">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</a> of<br /><a href="${journal.uri}"><em>${journal['dc:title']}</em></a></p>
         <p class="other-formats"><a href="${article.uri}.pdf">Original print version</a></p>
         <p class="metadata-links">Metadata: <a href="${article.uri}.nt">RDF</a></p>

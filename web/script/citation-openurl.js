@@ -31,11 +31,12 @@ $(document).ready(function () {
     if ($('.citation').length) {
         // only show the openurl-control if there are any citations we can openurlify
         $('.metabox-container:first').append(
-                '<div class="openurl-control metabox"><p>' + 
-                '   <label for="openurl-baseurl">OpenURL resolver:</label>' +
+                '<div class="openurl-control metabox">' + 
+                '   <h4>Citations</h4>' + 
+                '   <p><label for="openurl-baseurl">OpenURL resolver:</label>' +
                 '   <input id="openurl-baseurl" type="text" value="' + default_baseurl + '" />' +
-                '   <button id="show-openurl">Show OpenURL links</button>' +
-                '</p></div>');
+                '   <button id="show-openurl">Show OpenURL links</button></p>' +
+                '</div>');
     }
     $('#show-openurl').click(function () {
         $('.citation').each(function () {

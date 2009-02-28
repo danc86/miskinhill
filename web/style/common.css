@@ -133,9 +133,19 @@ p, li {
     border: 1px solid #BFA860;
     background: #FFEBAD;
     margin: 0 0 1em 1em;
-    padding: 0 0.75em;
-    width: 14em;
+    width: 16em;
     font-size: 0.9em;
+}
+.metabox h4 {
+    font-size: 1.05em;
+    padding: 0.25em 0.75em;
+    margin: 0;
+    color: white;
+    background: #BFA860;
+}
+.metabox p {
+    padding: 0 0.75em;
+    margin: 0.75em 0;
 }
 .metabox input {
     width: 100%;
@@ -143,6 +153,9 @@ p, li {
 .searchbox {
     border: 1px solid #6081BF !important;
     background: #BFD5FF !important;
+}
+.searchbox h4 {
+    background: #6081BF !important;
 }
 .cover {
     text-align: center;

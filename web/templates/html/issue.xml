@@ -28,9 +28,10 @@ ${breadcrumbs([('/journals/', 'Journals'),
 </h2>
 
 <div class="metabox-container">
-    ${searchbox()}
+    ${searchbox(issue)}
 
     <div class="issue-meta metabox">
+        <h4>Issue details</h4>
         <p class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
         <p>Published ${issue['mhs:publicationDate'].strftime('%d %B %Y')}</p>
         <p>Metadata: <a href="${issue.uri}.nt">RDF</a></p>

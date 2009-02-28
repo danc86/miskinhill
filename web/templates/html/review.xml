@@ -29,11 +29,13 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
 <div class="metabox-container">
     <div class="review-meta metabox">
+        <h4>Review details</h4>
         <p>Other formats: <a href="${review.uri}.pdf">PDF</a></p>
         <p>Metadata: <a href="${review.uri}.nt">RDF</a></p>
     </div>
 
     <div class="book-meta metabox">
+        <h4>Book under review</h4>
         <?python
         asin = isbn = None
         for identifier in book.getall('dc:identifier', as_uriref=True):
