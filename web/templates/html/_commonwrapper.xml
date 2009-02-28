@@ -31,7 +31,7 @@ import rdfob
         <py:if test="rdfob.uriref('mhs:Issue') in what.types">this issue</py:if>
     </h4>
     <form method="get" action="http://search.miskinhill.com.au/search">
-    <p><input type="text" name="q" /> <button type="submit">Search</button></p>
+    <p><input type="text" name="q" /> <button type="submit">Go</button></p>
     </form>
 </div>
 

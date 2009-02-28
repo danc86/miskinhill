@@ -147,8 +147,11 @@ p, li {
     padding: 0 0.75em;
     margin: 0.75em 0;
 }
-.metabox input {
-    width: 100%;
+.searchbox input {
+    width: 12em;
+}
+.searchbox button {
+    width: 3em;
 }
 .searchbox {
     border: 1px solid #6081BF !important;
