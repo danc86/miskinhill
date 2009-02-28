@@ -30,7 +30,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
 <div class="metabox-container">
     <div class="review-meta metabox">
         <h4>Review details</h4>
-        <p>Other formats: <a href="${review.uri}.pdf">PDF</a></p>
+        <p><a href="${review.uri}.pdf">Original print version</a></p>
         <p>Metadata: <a href="${review.uri}.nt">RDF</a></p>
     </div>
 
