@@ -7,18 +7,13 @@ immediately:
       subjects per issue, per journal(?), and global
     - link subjects to ll01.nla.gov.au search, also user's library? 
       somewhere else good?
-* other formats for article metadata:
-    - BibTex
-    - EndNote: http://www.harzing.com/pophelp/exporting.htm
+* add extra header crap to make application/* metadata display in the browser
 * Footnotes
     - leave them in place at the bottom of the page, but use js to display 
       footnote body in an overlay(/sidebar something?) when clicking
 * citations
     - better UI for selecting OpenURL resolver, save in cookie
     - add other means of resolving citations: goog scholar, ...?
-* improve prettiness?
-    - headings on metaboxes?
-    - line-height everywhere
 * test everything in IE!
 
 eventually:
