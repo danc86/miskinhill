@@ -88,7 +88,7 @@ class MiskinHillApplication(object):
             template = template_loader.load(os.path.join('marcxml', 
                     self.template_for_type(node) + '.xml'))
             body = template.generate(req=self.req, node=node).render('xml')
-            return Response(body, content_type='text/xml')
+            return Response(body, content_type='application/marcxml+xml')
         elif format == 'nt':
             return Response(self.graph.serialized(rdfob.URIRef(decoded_uri)), 
                     content_type='text/plain')
@@ -97,7 +97,7 @@ class MiskinHillApplication(object):
                     self.template_for_type(node) + '.txt'), 
                     cls=NewTextTemplate)
             body = template.generate(req=self.req, node=node).render()
-            return Response(body, content_type='text/plain')
+            return Response(body, content_type='text/x-bibtex')
         else:
             assert False, 'not reached'
 
