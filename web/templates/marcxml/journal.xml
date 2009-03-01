@@ -5,10 +5,7 @@
 
 <?python
 journal = node
-issn = None
-for identifier in journal.getall('dc:identifier', as_uriref=True):
-    if identifier.startswith('urn:issn:'):
-        issn = identifier[9:]
+issn = journal.identifier('urn:issn:')
 ?>
 
 <record>
