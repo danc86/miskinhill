@@ -98,6 +98,17 @@ class MiskinHillApplication(object):
                     cls=NewTextTemplate)
             body = template.generate(req=self.req, node=node).render()
             return Response(body, content_type='text/x-bibtex')
+        elif format == 'mods':
+            template = template_loader.load(os.path.join('mods', 
+                    self.template_for_type(node) + '.xml'))
+            body = template.generate(req=self.req, node=node).render('xml')
+            return Response(body, content_type='application/mods+xml')
+        elif format == 'end':
+            template = template_loader.load(os.path.join('end', 
+                    self.template_for_type(node) + '.txt'), 
+                    cls=NewTextTemplate)
+            body = template.generate(req=self.req, node=node).render()
+            return Response(body, content_type='application/x-endnote-refer')
         else:
             assert False, 'not reached'
 
@@ -114,7 +125,7 @@ class MiskinHillApplication(object):
                 return self.RDF_TEMPLATES[type]
         raise exc.HTTPNotFound('Matching template not found').exception
 
-    EXTENSIONS = ['.nt', '.html', '.marcxml', '.bib']
+    EXTENSIONS = ['.nt', '.html', '.marcxml', '.bib', '.mods', '.end']
     def guess_format(self, decoded_uri):
         for extension in self.EXTENSIONS:
             if decoded_uri.endswith(extension):

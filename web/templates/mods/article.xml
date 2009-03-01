@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modsCollection xmlns="http://www.loc.gov/mods/v3"
+                xmlns:py="http://genshi.edgewall.org/"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<mods py:with="article = node; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+    <titleInfo>
+        <!-- XXX nonSort -->
+        <title>${article['dc:title']}</title>
+        <!-- XXX subtitle -->
+    </titleInfo>
+    <name type="personal" py:with="author = article['dc:creator']">
+        <displayForm>${author['foaf:name']}</displayForm>
+        <namePart type="given">${author['foaf:givenNames']}</namePart>
+        <namePart type="family">${author['foaf:surname']}</namePart>
+        <role>
+            <roleTerm authority="marcrelator" type="text">author</roleTerm>
+        </role>
+    </name>
+    <typeOfResource>text</typeOfResource>
+    <relatedItem type="host" xlink:href="${journal.uri}.mods"> <!-- XXX -->
+        <part>
+            <date encoding="w3cdtf">${issue['dc:coverage']}</date>
+            <detail type="volume">${issue['mhs:volume']}</detail>
+            <detail type="issue">${issue['mhs:issueNumber']}</detail>
+            <extent unit="page">
+                <start>${article['mhs:startPage']}</start>
+                <end>${article['mhs:endPage']}</end>
+            </extent>
+        </part>
+    </relatedItem>
+    <identifier type="uri">${article.uri}</identifier>
+</mods>
+
+</modsCollection>

@@ -1,0 +1,13 @@
+{% with article = node; author = article['dc:creator']; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
+%0 Journal Article
+%T ${article['dc:title']}
+%A ${author['foaf:surname']}, ${author['foaf:givenNames']}
+%J ${journal['dc:title']}
+%D ${issue['dc:coverage']}
+%V ${issue['mhs:volume']}
+%N ${issue['mhs:issueNumber']}
+%I ${journal['dc:publisher']['foaf:name']}
+%@ ${journal.identifier('urn:issn:')}
+%U ${article.uri}
+%P ${article['mhs:startPage']}-${article['mhs:endPage']}
+{% end %}

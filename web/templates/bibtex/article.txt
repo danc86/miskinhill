@@ -9,7 +9,7 @@ import re
     volume = "${issue['mhs:volume']}", 
     number = "${issue['mhs:issueNumber']}", 
     year = "${issue['dc:coverage'][:4]}", 
-    author = "${author['foaf:name']}", 
+    author = "${author['foaf:givenNames']} {${author['foaf:surname']}}", 
     title = "${re.sub(r'(.)([A-Z])', r'\1{\2}', article['dc:title'])}", 
     pages = "${article['mhs:startPage']}–${article['mhs:endPage']}", 
     url = "${article.uri}"

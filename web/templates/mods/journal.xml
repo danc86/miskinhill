@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modsCollection xmlns="http://www.loc.gov/mods/v3"
+                xmlns:py="http://genshi.edgewall.org/"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<mods py:with="journal = node">
+    <titleInfo>
+        <!-- XXX nonSort -->
+        <title>${journal['dc:title']}</title>
+    </titleInfo>
+    <genre authority="marcgt">periodical</genre>
+    <genre>academic journal</genre>
+    <originInfo py:with="publisher = journal['dc:publisher']">
+        <place>
+            <placeTerm type="text">${publisher['contact:address']['geonames:name']}</placeTerm>
+        </place>
+        <publisher>${publisher['foaf:name']}</publisher>
+        <issuance>continuing</issuance>
+    </originInfo>
+    <language>
+        <languageTerm py:for="lang in journal.getall('dc:language')" type="code" authority="rfc3066">${lang}</languageTerm>
+    </language>
+    <identifier type="issn">${journal.identifier('urn:issn:')}</identifier>
+    <identifier type="uri">${journal.uri}</identifier>
+</mods>
+
+</modsCollection>

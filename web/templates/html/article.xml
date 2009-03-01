@@ -33,7 +33,12 @@ ${breadcrumbs([('/journals/', 'Journals'),
         <h4>Article details</h4>
         <p>Published in <a href="${issue.uri}">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</a> of<br /><a href="${journal.uri}"><em>${journal['dc:title']}</em></a></p>
         <p class="other-formats"><a href="${article.uri}.pdf">Original print version</a></p>
-        <p class="metadata-links">Metadata: <a href="${article.uri}.nt">RDF</a></p>
+        <p class="metadata-links">Metadata:
+            <a href="${article.uri}.nt">RDF</a>, 
+            <a href="${article.uri}.bib">BibTeX</a>, 
+            <a href="${article.uri}.mods">MODS</a>, 
+            <a href="${article.uri}.end">Endnote</a>
+        </p>
     </div>
 
     <!-- openurl-control metabox goes here -->
