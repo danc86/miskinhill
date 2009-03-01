@@ -8,7 +8,7 @@ import re, urllib
 
 from webob import Request, Response
 from webob import exc
-from genshi.template import TemplateLoader
+from genshi.template import TemplateLoader, NewTextTemplate
 
 import rdfob
 
@@ -81,26 +81,32 @@ class MiskinHillApplication(object):
             raise exc.HTTPNotFound('URI not found in RDF graph').exception
         if format == 'html':
             template = template_loader.load(os.path.join('html', 
-                    self.template_for_type(node)))
+                    self.template_for_type(node) + '.xml'))
             body = template.generate(req=self.req, node=node).render('xhtml')
             return Response(body, content_type='text/html')
         if format == 'marcxml':
             template = template_loader.load(os.path.join('marcxml', 
-                    self.template_for_type(node)))
+                    self.template_for_type(node) + '.xml'))
             body = template.generate(req=self.req, node=node).render('xml')
             return Response(body, content_type='text/xml')
         elif format == 'nt':
             return Response(self.graph.serialized(rdfob.URIRef(decoded_uri)), 
                     content_type='text/plain')
+        elif format == 'bib':
+            template = template_loader.load(os.path.join('bibtex', 
+                    self.template_for_type(node) + '.txt'), 
+                    cls=NewTextTemplate)
+            body = template.generate(req=self.req, node=node).render()
+            return Response(body, content_type='text/plain')
         else:
             assert False, 'not reached'
 
     RDF_TEMPLATES = {
-        rdfob.uriref('mhs:Journal'): 'journal.xml', 
-        rdfob.uriref('mhs:Issue'): 'issue.xml', 
-        rdfob.uriref('mhs:Article'): 'article.xml',
-        rdfob.uriref('mhs:Review'): 'review.xml', 
-        rdfob.uriref('mhs:Author'): 'author.xml'
+        rdfob.uriref('mhs:Journal'): 'journal', 
+        rdfob.uriref('mhs:Issue'): 'issue', 
+        rdfob.uriref('mhs:Article'): 'article',
+        rdfob.uriref('mhs:Review'): 'review', 
+        rdfob.uriref('mhs:Author'): 'author'
     }
     def template_for_type(self, node):
         for type in node.types:
@@ -108,7 +114,7 @@ class MiskinHillApplication(object):
                 return self.RDF_TEMPLATES[type]
         raise exc.HTTPNotFound('Matching template not found').exception
 
-    EXTENSIONS = ['.nt', '.html', '.marcxml']
+    EXTENSIONS = ['.nt', '.html', '.marcxml', '.bib']
     def guess_format(self, decoded_uri):
         for extension in self.EXTENSIONS:
             if decoded_uri.endswith(extension):

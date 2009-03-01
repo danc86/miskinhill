@@ -123,3 +123,8 @@ class GraphNode(object):
     def __iter__(self):
         assert self.type == RDF_SEQ, self.type
         return iter(self.getone(p) for p in self._objects.iterkeys() if p.startswith(NAMESPACES['rdf']['_']))
+
+    def identifier(self, scheme):
+        for identifier in self._objects[uriref('dc:identifier')]:
+            if identifier.startswith(scheme):
+                return identifier[len(scheme):]
