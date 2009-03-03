@@ -88,10 +88,11 @@ class MiskinHillApplication(object):
             template = template_loader.load(os.path.join('marcxml', 
                     self.template_for_type(node) + '.xml'))
             body = template.generate(req=self.req, node=node).render('xml')
-            return Response(body, content_type='application/marcxml+xml')
+            return Response(body, content_type='application/marcxml+xml', 
+                    headers={'Content-Disposition': 'inline'})
         elif format == 'nt':
             return Response(self.graph.serialized(rdfob.URIRef(decoded_uri)), 
-                    content_type='text/plain')
+                    content_type='text/plain; charset=UTF-8')
         elif format == 'bib':
             template = template_loader.load(os.path.join('bibtex', 
                     self.template_for_type(node) + '.txt'), 
@@ -102,7 +103,8 @@ class MiskinHillApplication(object):
             template = template_loader.load(os.path.join('mods', 
                     self.template_for_type(node) + '.xml'))
             body = template.generate(req=self.req, node=node).render('xml')
-            return Response(body, content_type='application/mods+xml')
+            return Response(body, content_type='application/mods+xml', 
+                    headers={'Content-Disposition': 'inline'})
         elif format == 'end':
             template = template_loader.load(os.path.join('end', 
                     self.template_for_type(node) + '.txt'), 
