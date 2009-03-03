@@ -8,7 +8,7 @@ import re, urllib
 
 from webob import Request, Response
 from webob import exc
-from genshi.template import TemplateLoader, NewTextTemplate
+from genshi.template import TemplateLoader, NewTextTemplate, TemplateNotFound
 
 import rdfob
 
@@ -79,40 +79,43 @@ class MiskinHillApplication(object):
             node = self.graph[rdfob.URIRef(decoded_uri)]
         except KeyError:
             raise exc.HTTPNotFound('URI not found in RDF graph').exception
-        if format == 'html':
-            template = template_loader.load(os.path.join('html', 
-                    self.template_for_type(node) + '.xml'))
-            body = template.generate(req=self.req, node=node).render('xhtml')
-            return Response(body, content_type='text/html')
-        if format == 'marcxml':
-            template = template_loader.load(os.path.join('marcxml', 
-                    self.template_for_type(node) + '.xml'))
-            body = template.generate(req=self.req, node=node).render('xml')
-            return Response(body, content_type='application/marcxml+xml', 
-                    headers={'Content-Disposition': 'inline'})
-        elif format == 'nt':
-            return Response(self.graph.serialized(rdfob.URIRef(decoded_uri)), 
-                    content_type='text/plain; charset=UTF-8')
-        elif format == 'bib':
-            template = template_loader.load(os.path.join('bibtex', 
-                    self.template_for_type(node) + '.txt'), 
-                    cls=NewTextTemplate)
-            body = template.generate(req=self.req, node=node).render()
-            return Response(body, content_type='text/x-bibtex')
-        elif format == 'mods':
-            template = template_loader.load(os.path.join('mods', 
-                    self.template_for_type(node) + '.xml'))
-            body = template.generate(req=self.req, node=node).render('xml')
-            return Response(body, content_type='application/mods+xml', 
-                    headers={'Content-Disposition': 'inline'})
-        elif format == 'end':
-            template = template_loader.load(os.path.join('end', 
-                    self.template_for_type(node) + '.txt'), 
-                    cls=NewTextTemplate)
-            body = template.generate(req=self.req, node=node).render()
-            return Response(body, content_type='application/x-endnote-refer')
-        else:
-            assert False, 'not reached'
+        try:
+            if format == 'html':
+                template = template_loader.load(os.path.join('html', 
+                        self.template_for_type(node) + '.xml'))
+                body = template.generate(req=self.req, node=node).render('xhtml')
+                return Response(body, content_type='text/html')
+            if format == 'marcxml':
+                template = template_loader.load(os.path.join('marcxml', 
+                        self.template_for_type(node) + '.xml'))
+                body = template.generate(req=self.req, node=node).render('xml')
+                return Response(body, content_type='application/marcxml+xml', 
+                        headers={'Content-Disposition': 'inline'})
+            elif format == 'nt':
+                return Response(self.graph.serialized(rdfob.URIRef(decoded_uri)), 
+                        content_type='text/plain; charset=UTF-8')
+            elif format == 'bib':
+                template = template_loader.load(os.path.join('bibtex', 
+                        self.template_for_type(node) + '.txt'), 
+                        cls=NewTextTemplate)
+                body = template.generate(req=self.req, node=node).render()
+                return Response(body, content_type='text/x-bibtex')
+            elif format == 'mods':
+                template = template_loader.load(os.path.join('mods', 
+                        self.template_for_type(node) + '.xml'))
+                body = template.generate(req=self.req, node=node).render('xml')
+                return Response(body, content_type='application/mods+xml', 
+                        headers={'Content-Disposition': 'inline'})
+            elif format == 'end':
+                template = template_loader.load(os.path.join('end', 
+                        self.template_for_type(node) + '.txt'), 
+                        cls=NewTextTemplate)
+                body = template.generate(req=self.req, node=node).render()
+                return Response(body, content_type='application/x-endnote-refer')
+            else:
+                assert False, 'not reached'
+        except TemplateNotFound:
+            raise exc.HTTPNotFound('Matching template not found').exception
 
     RDF_TEMPLATES = {
         rdfob.uriref('mhs:Journal'): 'journal', 
