@@ -1,13 +1,4 @@
 immediately:
-* subject headings
-    - find at least one authorized LCSH for each vol 21 article
-    - invent URLs for each, e.g. mh/subjects/lcsh/<LCCN>
-    - show subjects on article pages, in issue contents also?
-    - index (cloud? experiment with sensible presentation of hierarchy) of 
-      subjects per issue, per journal(?), and global
-    - link subjects to ll01.nla.gov.au search, also user's library? 
-      somewhere else good?
-* add extra header crap to make application/* metadata display in the browser
 * Footnotes
     - leave them in place at the bottom of the page, but use js to display 
       footnote body in an overlay(/sidebar something?) when clicking
@@ -16,12 +7,20 @@ immediately:
     - add other means of resolving citations: goog scholar, ...?
 * test everything in IE!
 
+once we have more than one issue:
+* author index per journal
+* index (cloud? experiment with sensible presentation of hierarchy) of subjects 
+  per issue(?), per journal, and global
+
 eventually:
 * search
     - limit to journal/issue
 * get into Goog Scholar, UQ catalogue, UQ's III federated search thingy?
 * online ordering of back issues
 * subjects:
+    - show in issue contents?
+    - link subjects to ll01.nla.gov.au search, also user's library? 
+      somewhere else good?
     - go all web-2.0 and have tags/keywords/something? (any good LT 
       tags? somewhere else?)
     - come up with something better? 
