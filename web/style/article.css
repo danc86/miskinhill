@@ -1,4 +1,11 @@
 
+.article-meta .subjects p {
+    margin-bottom: 0;
+}
+.article-meta .subjects ul {
+    margin: 0;
+}
+
 .openurl-control {
     border: 1px solid #BF8160 !important;
     background: #FFD6BF !important;

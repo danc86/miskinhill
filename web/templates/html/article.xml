@@ -33,6 +33,14 @@ ${breadcrumbs([('/journals/', 'Journals'),
         <h4>Article details</h4>
         <p>Published in <a href="${issue.uri}">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</a> of<br /><a href="${journal.uri}"><em>${journal['dc:title']}</em></a></p>
         <p class="other-formats"><a href="${article.uri}.pdf">Original print version</a></p>
+        <div class="subjects">
+            <p>Subjects:</p>
+            <ul py:with="subjects = sorted(article.getall('dc:subject'), key=lambda s: s['mhs:label'])">
+                <li py:for="subject in subjects">
+                    ${subject['mhs:label'].replace('--', ' &ndash; ')}
+                </li>
+            </ul>
+        </div>
         <p class="metadata-links">Metadata:
             <a href="${article.uri}.nt">RDF</a>, 
             <a href="${article.uri}.bib">BibTeX</a>, 
