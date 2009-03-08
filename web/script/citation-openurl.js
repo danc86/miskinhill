@@ -39,6 +39,7 @@ $(document).ready(function () {
                 '</div>');
     }
     $('#show-openurl').click(function () {
+        $('a.openurl').remove();
         $('.citation').each(function () {
             openurl_qs_from_citation($('#openurl-baseurl').attr('value'), this);
         });

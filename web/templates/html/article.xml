@@ -16,7 +16,8 @@ journal = issue['mhs:isIssueOf']
 <head>
     <title>${Markup(article['dc:title']).striptags()} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
     <link rel="stylesheet" type="text/css" href="/style/article.css" />
-    <script type="text/javascript" src="${req.script_name}/script/jquery-1.2.6.js" />
+    <script type="text/javascript" src="${req.script_name}/script/jquery-1.3.2.js" />
+    <script type="text/javascript" src="${req.script_name}/script/footnote.js" />
     <script type="text/javascript" src="${req.script_name}/script/citation-openurl.js" />
 </head>
 
