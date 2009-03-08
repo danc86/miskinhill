@@ -1,8 +1,8 @@
 immediately:
 * Footnotes
-    - leave them in place at the bottom of the page, but use js to display 
-      footnote body in an overlay(/sidebar something?) when clicking
+    - make floating ones prettier
 * citations
+    - mark up citations for all other issue 21 articles!
     - better UI for selecting OpenURL resolver, save in cookie
     - add other means of resolving citations: goog scholar, ...?
 * test everything in IE!
