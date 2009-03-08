@@ -11,7 +11,7 @@ var show_footnote = function () {
         ff.fadeOut('normal', function () { ff.remove(); });
         return false;
     });
-    ff.insertAfter($(this).parent('p'));
+    ff.insertAfter($(id)); // doesn't really matter where we insert it, but want to avoid stuffing up p + p styles
     ff.slideDown();
     return false;
 };
