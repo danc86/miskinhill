@@ -1,6 +1,4 @@
 immediately:
-* Footnotes
-    - make floating ones prettier
 * citations
     - mark up citations for all other issue 21 articles!
     - better UI for selecting OpenURL resolver, save in cookie
