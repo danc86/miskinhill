@@ -21,10 +21,14 @@
 
 /* JSified footnotes */
 .floating-footnote {
-    width: 750px; /* to match #bodywrapper */
+    width: 740px; /* to match #bodywrapper */
     position: absolute;
     z-index: 1;
     background: #E0E0E0; /* for older browsers */
     background: rgba(224, 224, 224, 0.95) !important;
-    padding: 0.5em;
+    border: 1px solid #777777;
+    padding: 0.75em;
+}
+.floating-footnote .close-button {
+    margin-left: 0.5em;
 }
