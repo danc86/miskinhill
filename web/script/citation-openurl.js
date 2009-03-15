@@ -12,6 +12,11 @@ var openurl_qs_from_citation = function (baseurl, citation) {
         openurl_args.push('rft_val_fmt=info:ofi/fmt:kev:mtx:book', 'rft.genre=bookitem');
     } else if ($(citation).hasClass('article')) {
         openurl_args.push('rft_val_fmt=info:ofi/fmt:kev:mtx:journal', 'rft.genre=article');
+    } else if ($(citation).hasClass('proceeding')) {
+        openurl_args.push('rft_val_fmt=info:ofi/fmt:kev:mtx:book', 'rft.genre=proceeding');
+    } else if ($(citation).hasClass('thesis')) {
+        // openurl has nothing for this as far as I can tell?
+        openurl_args.push('rft_val_fmt=info:ofi/fmt:kev:mtx:book', 'rft.genre=document');
     }
     $.each(fields, function () {
         var field = this;
