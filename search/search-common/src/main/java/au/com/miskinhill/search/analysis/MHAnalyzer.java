@@ -12,6 +12,8 @@ public class MHAnalyzer extends PerLanguageAnalyzerWrapper {
 		super(new StandardAnalyzer(new String[0] /* no stop words */));
 		addAnalyzer("en", new SnowballAnalyzer("English", ENGLISH_STOP_WORDS));
 		addAnalyzer("ru", new SnowballAnalyzer("Russian", RUSSIAN_STOP_WORDS));
+		addAnalyzer("de", new SnowballAnalyzer("German", GERMAN_STOP_WORDS));
+		addAnalyzer("fr", new SnowballAnalyzer("French", FRENCH_STOP_WORDS));
 	}
 	
 	private final static String[] RUSSIAN_STOP_WORDS = { 
@@ -20,6 +22,13 @@ public class MHAnalyzer extends PerLanguageAnalyzerWrapper {
 	private final static String[] ENGLISH_STOP_WORDS = {
 			// copied from StopAnalyzer.ENGLISH_STOP_WORDS
 			"a", "an", "and", "but", "of", "or", "to", "the" };
+	private final static String[] GERMAN_STOP_WORDS = {
+	        // stop words are applied before snowballification
+	        "der", "den", "des", "dem", "die", "das", 
+	        "ein", "einen", "eines", "einem", "eine", "einer",
+	        "oder", "und" };
+	private final static String[] FRENCH_STOP_WORDS = {
+	        "la", "le", "de", "des", "du", "au", "aux", "un", "une" };
 	
 	@Override
 	public TokenStream tokenStream(String language, String fieldName,
