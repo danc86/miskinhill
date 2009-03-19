@@ -10,11 +10,6 @@ import org.junit.Test;
 
 import au.com.miskinhill.search.analysis.PerLanguageAnalyzerWrapper;
 
-/**
- * In the same vein as {@link org.apache.lucene.queryParser.QueryParser}, parses
- * a free text query and returns a {@link Query} instance. Intended for search
- * which have been analysed with a {@link PerLanguageAnalyzerWrapper}.
- */
 public class MultilingualQueryParserUnitTest {
 	
 	private static final String[] fieldsToSearch = { "field1", "field2" };

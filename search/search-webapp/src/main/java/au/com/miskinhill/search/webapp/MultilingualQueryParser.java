@@ -21,6 +21,12 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import au.com.miskinhill.search.analysis.PerLanguageAnalyzerWrapper;
 import au.com.miskinhill.search.analysis.PreprocFilterReader;
 
+/**
+ * In the same vein as {@link org.apache.lucene.queryParser.QueryParser}, parses
+ * a free text query and returns a {@link Query} instance. Intended for
+ * searching indexes which have been analysed with a
+ * {@link PerLanguageAnalyzerWrapper}.
+ */
 public class MultilingualQueryParser {
 
 	public static Query parse(String q, PerLanguageAnalyzerWrapper analyzer, 
