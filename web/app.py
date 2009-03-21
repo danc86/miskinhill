@@ -9,6 +9,8 @@ import re, urllib
 from webob import Request, Response
 from webob import exc
 from genshi.template import TemplateLoader, NewTextTemplate, TemplateNotFound
+import lxml.etree
+from lxml.builder import E
 
 import rdfob
 
@@ -19,16 +21,19 @@ template_loader = TemplateLoader(
 
 content_dir = '/home/dan/.www/miskinhill.com.au/content'
 
+# for tests
+def _rdf_imports():
+    return [os.path.join(content_dir, 'meta.nt'), 
+            os.path.join(content_dir, 'rdfschema', 'foaf.nt'), 
+            os.path.join(content_dir, 'rdfschema', 'dcterms.nt')]
+
 class MiskinHillApplication(object):
 
     def __init__(self, environ, start_response):
         self.environ = environ
         self.start = start_response
 
-        self.graph = rdfob.Graph(
-                os.path.join(content_dir, 'meta.nt'), 
-                os.path.join(content_dir, 'rdfschema', 'foaf.nt'), 
-                os.path.join(content_dir, 'rdfschema', 'dcterms.nt'))
+        self.graph = rdfob.Graph(*_rdf_imports())
 
         self.req = Request(environ)
         self.req.charset = 'utf8'
@@ -37,7 +42,8 @@ class MiskinHillApplication(object):
         '/': 'index', 
         '/about/': 'about', 
         '/contact/': 'contact', 
-        '/journals/': 'journals_index'
+        '/journals/': 'journals_index', 
+        '/unapi': 'unapi'
     }
     def __iter__(self):
         try:
@@ -70,6 +76,42 @@ class MiskinHillApplication(object):
                 journals=[self.graph[rdfob.URIRef('http://miskinhill.com.au/journals/asees/')]] # XXX temp
                 ).render('xhtml')
         return Response(body, content_type='text/html')
+
+    def unapi(self):
+        # XXX centralise this somehow
+        formats = {
+            # XXX docs
+            'marcxml': E.format(name='marcxml', type='application/marcxml+xml'), 
+            'nt': E.format(name='nt', type='text/plain'), 
+            'bib': E.format(name='bib', type='text/x-bibtex'), 
+            'mods': E.format(name='mods', type='application/mods+xml'), 
+            'end': E.format(name='end', type='application/x-endnote-refer')
+        }
+        if 'id' in self.req.GET:
+            try:
+                node = self.graph[rdfob.URIRef(self.req.GET['id'])]
+            except KeyError:
+                raise exc.HTTPNotFound('URI not found in RDF graph').exception
+            if 'format' in self.req.GET:
+                raise exc.HTTPFound(location=(node.uri + '.' + self.req.GET['format']).encode('utf8'))
+            body = E.formats(id=node.uri, *[formats[f] for f in self.formats_for_type(node)])
+        else:
+            body = E.formats(*formats.itervalues())
+        return Response(lxml.etree.tostring(body, encoding='utf8', xml_declaration=True),
+                content_type='application/xml')
+
+    FORMATS = {
+        rdfob.uriref('mhs:Journal'): ['nt', 'mods', 'marcxml'], 
+        rdfob.uriref('mhs:Issue'): ['nt'], 
+        rdfob.uriref('mhs:Article'): ['nt', 'bib', 'mods', 'end'], 
+        rdfob.uriref('mhs:Review'): ['nt'], # XXX do more!
+        rdfob.uriref('mhs:Author'): ['nt']
+    }
+    def formats_for_type(self, node):
+        for type in node.types:
+            if type in self.FORMATS:
+                return self.FORMATS[type]
+        return []
 
     def dispatch_rdf(self, path_info):
         decoded_uri = urllib.unquote('http://miskinhill.com.au' + 

@@ -27,7 +27,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
                (journal.uri, journal['dc:title']),
                (issue.uri, 'Vol. %s, Issue %s' % (issue['mhs:volume'], issue['mhs:issueNumber']))])}
 
-<h2>${article['dc:title']}</h2>
+<h2>${article['dc:title']}<abbr class="unapi-id" title="${article.uri}" /></h2>
 
 <div class="metabox-container">
     <div class="article-meta metabox">

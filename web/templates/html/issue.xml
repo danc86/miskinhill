@@ -25,6 +25,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
 <h2>
     <span class="journal-title">${journal['dc:title']}</span>
     <span class="issue">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</span>
+    <abbr class="unapi-id" title="${issue.uri}" />
 </h2>
 
 <div class="metabox-container">

@@ -18,7 +18,7 @@ author = node
 
 <body>
 
-<h2>${author['foaf:name']}</h2>
+<h2>${author['foaf:name']}<abbr class="unapi-id" title="${author.uri}" /></h2>
 
 <p py:if="'mhs:biographicalNotes' in author">${author['mhs:biographicalNotes']}</p>
 

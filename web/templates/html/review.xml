@@ -25,7 +25,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
                (journal.uri, journal['dc:title']),
                (issue.uri, 'Vol. %s, Issue %s' % (issue['mhs:volume'], issue['mhs:issueNumber']))])}
 
-<h2><em>${book['dc:title']}</em> by ${book['dc:creator']}</h2>
+<h2><em>${book['dc:title']}</em> by ${book['dc:creator']}<abbr class="unapi-id" title="${review.uri}" /></h2>
 
 <div class="metabox-container">
     <div class="review-meta metabox">

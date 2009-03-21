@@ -19,7 +19,7 @@ journal = node
 
 ${breadcrumbs([('/journals/', 'Journals')])}
 
-<h2><em>${journal['dc:title']}</em></h2>
+<h2><em>${journal['dc:title']}</em><abbr class="unapi-id" title="${journal.uri}" /></h2>
 
 <div class="metabox-container">
     ${searchbox(journal)}
