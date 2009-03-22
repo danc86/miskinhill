@@ -6,6 +6,9 @@ immediately:
 
 soonish:
 * make Zotero work (needs COinS?)
+* write automated MODS checker:
+  http://wiki.dlib.indiana.edu/confluence/display/DLFAquifer/MODS+Guidelines+Levels+of+Adoption
+  and assert our level of compliance for all live records (in the same vein as webtest.sh)
 
 once we have more than one issue:
 * author index per journal
