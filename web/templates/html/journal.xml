@@ -25,6 +25,7 @@ ${breadcrumbs([('/journals/', 'Journals')])}
     <div class="issue-meta metabox">
         <h4>Journal details</h4>
         <p class="cover"><img src="${journal.reflexive('mhs:isIssueOf')[0].getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
+        <p class="issn">ISSN ${journal.identifier('urn:issn:')}</p>
         <p>Metadata:
             <a href="${journal.uri}.nt">RDF</a>, 
             <a href="${journal.uri}.mods">MODS</a>, 
