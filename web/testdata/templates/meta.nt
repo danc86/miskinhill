@@ -15,6 +15,7 @@ _:pub <http://xmlns.com/foaf/0.1/name> "Awesome Publishing House"@en .
 <http://miskinhill.com.au/journals/test/1:1/article> <http://purl.org/dc/terms/isPartOf> <http://miskinhill.com.au/journals/test/1:1/> .
 <http://miskinhill.com.au/authors/test-author> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Author> .
 <http://miskinhill.com.au/authors/test-author> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Author> .
+<http://miskinhill.com.au/authors/test-author> <http://xmlns.com/foaf/0.1/name> "Test Author" .
 <http://miskinhill.com.au/authors/test-author> <http://xmlns.com/foaf/0.1/surname> "Author" .
 <http://miskinhill.com.au/authors/test-author> <http://xmlns.com/foaf/0.1/givenNames> "Test" .
 <http://miskinhill.com.au/journals/test/1:1/article> <http://purl.org/dc/terms/creator> <http://miskinhill.com.au/authors/test-author> .

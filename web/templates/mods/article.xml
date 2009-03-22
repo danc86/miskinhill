@@ -6,7 +6,7 @@
 <mods py:with="article = node; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
     <titleInfo>
         <!-- XXX nonSort -->
-        <title>${article['dc:title']}</title>
+        <title>${Markup(article['dc:title']).striptags()}</title>
         <!-- XXX subtitle -->
     </titleInfo>
     <name type="personal" py:with="author = article['dc:creator']">

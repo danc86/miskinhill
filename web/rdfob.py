@@ -109,7 +109,7 @@ class GraphNode(object):
         if as_uriref:
             return self._objects[predicate]
         else:
-            return [self._node_or_literal(x) for x in self._objects[predicate]]
+            return [self._node_or_literal(x) for x in self._objects.get(predicate, [])]
 
     def reflexive(self, predicate, type=None):
         predicate = uriref(predicate)
