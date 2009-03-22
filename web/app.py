@@ -80,11 +80,10 @@ class MiskinHillApplication(object):
     def unapi(self):
         # XXX centralise this somehow
         formats = {
-            # XXX docs
-            'marcxml': E.format(name='marcxml', type='application/marcxml+xml'), 
-            'nt': E.format(name='nt', type='text/plain'), 
+            'marcxml': E.format(name='marcxml', type='application/marcxml+xml', docs='http://www.loc.gov/standards/marcxml/'), 
+            'nt': E.format(name='nt', type='text/plain', docs='http://www.w3.org/TR/REC-rdf-syntax/'), 
             'bib': E.format(name='bib', type='text/x-bibtex'), 
-            'mods': E.format(name='mods', type='application/mods+xml'), 
+            'mods': E.format(name='mods', type='application/mods+xml', docs='http://www.loc.gov/standards/mods/mods-userguide.html'), 
             'end': E.format(name='end', type='application/x-endnote-refer')
         }
         if 'id' in self.req.GET:
