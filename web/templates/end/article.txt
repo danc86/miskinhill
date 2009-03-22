@@ -1,6 +1,6 @@
 {% with article = node; author = article['dc:creator']; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
 %0 Journal Article
-%T ${article['dc:title']}
+%T ${Markup(article['dc:title']).striptags()}
 %A ${author['foaf:surname']}, ${author['foaf:givenNames']}
 %J ${journal['dc:title']}
 %D ${issue['dc:coverage']}

@@ -8,10 +8,10 @@ import xmlrunner
 import figleaf, figleaf2clover
 figleaf.start()
 
-import test_app
+import test_app, test_templates
 
 loader = unittest.TestLoader()
-suite = loader.loadTestsFromNames(['test_app'])
+suite = loader.loadTestsFromNames(['test_app', 'test_templates'])
 runner = xmlrunner.XMLTestRunner(open('test_results.xml', 'w'))
 runner.run(suite)
 
