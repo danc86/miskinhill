@@ -57,24 +57,24 @@ class MiskinHillApplication(object):
 
     def index(self):
         template = template_loader.load(os.path.join('html', 'index.xml'))
-        body = template.generate(req=self.req).render('xhtml')
+        body = template.generate(req=self.req).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 
     def about(self):
         template = template_loader.load(os.path.join('html', 'about.xml'))
-        body = template.generate(req=self.req).render('xhtml')
+        body = template.generate(req=self.req).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 
     def contact(self):
         template = template_loader.load(os.path.join('html', 'contact.xml'))
-        body = template.generate(req=self.req).render('xhtml')
+        body = template.generate(req=self.req).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 
     def journals_index(self):
         template = template_loader.load(os.path.join('html', 'journals_index.xml'))
         body = template.generate(req=self.req, 
                 journals=[self.graph[rdfob.URIRef('http://miskinhill.com.au/journals/asees/')]] # XXX temp
-                ).render('xhtml')
+                ).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 
     def unapi(self):
@@ -125,7 +125,7 @@ class MiskinHillApplication(object):
             if format == 'html':
                 template = template_loader.load(os.path.join('html', 
                         self.template_for_type(node) + '.xml'))
-                body = template.generate(req=self.req, node=node).render('xhtml')
+                body = template.generate(req=self.req, node=node).render('xhtml', doctype='xhtml')
                 return Response(body, content_type='text/html')
             if format == 'marcxml':
                 template = template_loader.load(os.path.join('marcxml', 
