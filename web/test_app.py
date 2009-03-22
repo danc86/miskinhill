@@ -23,7 +23,13 @@ class UnAPITest(unittest.TestCase):
         self.meta = tempfile.NamedTemporaryFile()
         self.meta.write(self.TEST_META)
         self.meta.seek(0)
+        app._original_rdf_imports = app._rdf_imports
         app._rdf_imports = lambda: [self.meta.name]
+
+    def tearDown(self):
+        app._rdf_imports = app._original_rdf_imports
+        del app._original_rdf_imports
+        del self.meta
     
     def get_response(self, req):
         return req.get_response(wsgiref.validate.validator(app.MiskinHillApplication))
