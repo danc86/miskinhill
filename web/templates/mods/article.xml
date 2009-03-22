@@ -30,7 +30,7 @@
         </part>
     </relatedItem>
     <identifier type="uri">${article.uri}</identifier>
-    <subject py:for="subject in article.getall('dc:subject')" authority="lcsh">
+    <subject py:for="subject in sorted(article.getall('dc:subject'), key=lambda s: s['mhs:label'])" authority="lcsh">
         <topic>${subject['mhs:label']}</topic>
     </subject>
 </mods>
