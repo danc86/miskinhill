@@ -41,6 +41,34 @@ class ModsArticleTemplateTest(unittest.TestCase):
         title, = title_xpath(self.root)
         self.assertEquals(0, len(title.getchildren()))
 
+    def test_volume_number(self):
+        volume_number, = lxml.etree.XPath('//mods:mods/mods:relatedItem[@type="host"]/mods:part/mods:detail[@type="volume"]/mods:number', 
+                namespaces={'mods': 'http://www.loc.gov/mods/v3'})(self.root)
+        self.assertEquals('1', volume_number.text)
+
+    def test_issue_number(self):
+        issue_number, = lxml.etree.XPath('//mods:mods/mods:relatedItem[@type="host"]/mods:part/mods:detail[@type="issue"]/mods:number', 
+                namespaces={'mods': 'http://www.loc.gov/mods/v3'})(self.root)
+        self.assertEquals('1', issue_number.text)
+
+    def test_location_urls(self):
+        urls = lxml.etree.XPath('//mods:mods/mods:location/mods:url', 
+                namespaces={'mods': 'http://www.loc.gov/mods/v3'})(self.root)
+        self.assertEquals(set([('Original print version', 'raw object', 'http://miskinhill.com.au/journals/test/1:1/article.pdf'), 
+                               ('HTML version', 'object in context', 'http://miskinhill.com.au/journals/test/1:1/article')]), 
+                set((u.get('displayLabel'), u.get('access'), u.text) for u in urls))
+
+    def test_language(self):
+        # comes from journal
+        languages = lxml.etree.XPath('//mods:mods/mods:language/mods:languageTerm[@type="code" and @authority="rfc3066"]', 
+                namespaces={'mods': 'http://www.loc.gov/mods/v3'})(self.root)
+        self.assertEquals(set(['en', 'ru']), set(l.text for l in languages))
+
+    def test_genre(self):
+        genre, = lxml.etree.XPath('//mods:mods/mods:genre[@authority="marcgt"]', 
+                namespaces={'mods': 'http://www.loc.gov/mods/v3'})(self.root)
+        self.assertEquals('periodical', genre.text)
+
 class HtmlJournalTemplateTest(unittest.TestCase):
 
     def setUp(self):

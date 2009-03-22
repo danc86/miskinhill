@@ -9,6 +9,13 @@
         <title>${Markup(article['dc:title']).striptags()}</title>
         <!-- XXX subtitle -->
     </titleInfo>
+    <location>
+        <url displayLabel="HTML version" access="object in context" usage="primary display">${article.uri}</url>
+        <url displayLabel="Original print version" access="raw object">${article.uri}.pdf</url>
+    </location>
+    <language>
+        <languageTerm py:for="lang in journal.getall('dc:language')" type="code" authority="rfc3066">${lang}</languageTerm>
+    </language>
     <name type="personal" py:with="author = article['dc:creator']">
         <displayForm>${author['foaf:name']}</displayForm>
         <namePart type="given">${author['foaf:givenNames']}</namePart>
@@ -18,11 +25,18 @@
         </role>
     </name>
     <typeOfResource>text</typeOfResource>
+    <genre authority="marcgt">periodical</genre>
+    <physicalDescription>
+        <form authority="marcform">electronic</form>
+        <!-- XXX this is lame (just look at Content-Type response header!), but is required by Aquifer guidelines?? -->
+        <internetMediaType>text/html</internetMediaType>
+        <internetMediaType>application/pdf</internetMediaType>
+    </physicalDescription>
     <relatedItem type="host" xlink:href="${journal.uri}.mods"> <!-- XXX -->
         <part>
             <date encoding="w3cdtf">${issue['dc:coverage']}</date>
-            <detail type="volume">${issue['mhs:volume']}</detail>
-            <detail type="issue">${issue['mhs:issueNumber']}</detail>
+            <detail type="volume"><number>${issue['mhs:volume']}</number></detail>
+            <detail type="issue"><number>${issue['mhs:issueNumber']}</number></detail>
             <extent unit="page">
                 <start>${article['mhs:startPage']}</start>
                 <end>${article['mhs:endPage']}</end>

@@ -5,6 +5,8 @@ _:pub <http://xmlns.com/foaf/0.1/name> "Awesome Publishing House"@en .
 <http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/publisher> _:pub .
 <http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/identifier> <urn:issn:12345678> .
 <http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/description> "A journal, you know, with some stuff in it"@en .
+<http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/language> "en" .
+<http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/language> "ru" .
 <http://miskinhill.com.au/journals/test/1:1/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Issue> .
 <http://miskinhill.com.au/journals/test/1:1/> <http://miskinhill.com.au/rdfschema/1.0/isIssueOf> <http://miskinhill.com.au/journals/test/> .
 <http://miskinhill.com.au/journals/test/1:1/> <http://miskinhill.com.au/rdfschema/1.0/volume> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
