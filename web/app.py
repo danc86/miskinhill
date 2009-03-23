@@ -13,11 +13,7 @@ import lxml.etree
 from lxml.builder import E
 
 import rdfob
-
-template_loader = TemplateLoader(
-        os.path.join(os.path.dirname(__file__), 'templates'), 
-        variable_lookup='strict', 
-        auto_reload=True)
+import representations
 
 content_dir = '/home/dan/.www/miskinhill.com.au/content'
 
@@ -78,39 +74,27 @@ class MiskinHillApplication(object):
         return Response(body, content_type='text/html')
 
     def unapi(self):
-        # XXX centralise this somehow
-        formats = {
-            'marcxml': E.format(name='marcxml', type='application/marcxml+xml', docs='http://www.loc.gov/standards/marcxml/'), 
-            'nt': E.format(name='nt', type='text/plain', docs='http://www.w3.org/TR/REC-rdf-syntax/'), 
-            'bib': E.format(name='bib', type='text/x-bibtex'), 
-            'mods': E.format(name='mods', type='application/mods+xml', docs='http://www.loc.gov/standards/mods/mods-userguide.html'), 
-            'end': E.format(name='end', type='application/x-endnote-refer')
-        }
         if 'id' in self.req.GET:
             try:
                 node = self.graph[rdfob.URIRef(self.req.GET['id'])]
             except KeyError:
-                raise exc.HTTPNotFound('URI not found in RDF graph').exception
+                return exc.HTTPNotFound('URI not found in RDF graph')
             if 'format' in self.req.GET:
-                raise exc.HTTPFound(location=(node.uri + '.' + self.req.GET['format']).encode('utf8'))
-            body = E.formats(id=node.uri, *[formats[f] for f in self.formats_for_type(node)])
+                try:
+                    r = representations.BY_FORMAT[self.req.GET['format']]
+                except KeyError:
+                    return exc.HTTPNotAcceptable('Format %r not known' % self.req.GET['format'])
+                if not node.is_any(r.rdf_types):
+                    return exc.HTTPNotAcceptable('Format %r not acceptable for this URI' % self.req.GET['format'])
+                return exc.HTTPFound(location=(node.uri + '.' + r.format).encode('utf8'))
+            else:
+                body = E.formats(id=node.uri, 
+                        *(E.format(name=r.format, type=r.content_type, docs=r.docs) 
+                          for r in representations.ALL if node.is_any(r.rdf_types)))
         else:
-            body = E.formats(*formats.itervalues())
+            body = E.formats(*(E.format(name=r.format, type=r.content_type, docs=r.docs) for r in representations.ALL))
         return Response(lxml.etree.tostring(body, encoding='utf8', xml_declaration=True),
                 content_type='application/xml')
-
-    FORMATS = {
-        rdfob.uriref('mhs:Journal'): ['nt', 'mods', 'marcxml'], 
-        rdfob.uriref('mhs:Issue'): ['nt'], 
-        rdfob.uriref('mhs:Article'): ['nt', 'bib', 'mods', 'end'], 
-        rdfob.uriref('mhs:Review'): ['nt'], # XXX do more!
-        rdfob.uriref('mhs:Author'): ['nt']
-    }
-    def formats_for_type(self, node):
-        for type in node.types:
-            if type in self.FORMATS:
-                return self.FORMATS[type]
-        return []
 
     def dispatch_rdf(self, path_info):
         decoded_uri = urllib.unquote('http://miskinhill.com.au' + 
@@ -119,63 +103,19 @@ class MiskinHillApplication(object):
         try:
             node = self.graph[rdfob.URIRef(decoded_uri)]
         except KeyError:
-            raise exc.HTTPNotFound('URI not found in RDF graph').exception
+            return exc.HTTPNotFound('URI not found in RDF graph')
         try:
-            if format == 'html':
-                template = template_loader.load(os.path.join('html', 
-                        self.template_for_type(node) + '.xml'))
-                body = template.generate(req=self.req, node=node).render('xhtml', doctype='xhtml')
-                return Response(body, content_type='text/html')
-            if format == 'marcxml':
-                template = template_loader.load(os.path.join('marcxml', 
-                        self.template_for_type(node) + '.xml'))
-                body = template.generate(req=self.req, node=node).render('xml')
-                return Response(body, content_type='application/marcxml+xml', 
-                        headers={'Content-Disposition': 'inline'})
-            elif format == 'nt':
-                return Response(self.graph.serialized(rdfob.URIRef(decoded_uri)), 
-                        content_type='text/plain; charset=UTF-8')
-            elif format == 'bib':
-                template = template_loader.load(os.path.join('bibtex', 
-                        self.template_for_type(node) + '.txt'), 
-                        cls=NewTextTemplate)
-                body = template.generate(req=self.req, node=node).render()
-                return Response(body, content_type='text/x-bibtex')
-            elif format == 'mods':
-                template = template_loader.load(os.path.join('mods', 
-                        self.template_for_type(node) + '.xml'))
-                body = template.generate(req=self.req, node=node).render('xml')
-                return Response(body, content_type='application/mods+xml', 
-                        headers={'Content-Disposition': 'inline'})
-            elif format == 'end':
-                template = template_loader.load(os.path.join('end', 
-                        self.template_for_type(node) + '.txt'), 
-                        cls=NewTextTemplate)
-                body = template.generate(req=self.req, node=node).render()
-                return Response(body, content_type='application/x-endnote-refer')
-            else:
-                assert False, 'not reached'
-        except TemplateNotFound:
-            raise exc.HTTPNotFound('Matching template not found').exception
+            r = representations.BY_FORMAT[format]
+        except KeyError:
+            return exc.HTTPNotFound('Format %r not known' % format)
+        if not node.is_any(r.rdf_types):
+            return exc.HTTPNotFound('Format %r not acceptable for this URI' % format)
+        return r(self.req, node).generate()
 
-    RDF_TEMPLATES = {
-        rdfob.uriref('mhs:Journal'): 'journal', 
-        rdfob.uriref('mhs:Issue'): 'issue', 
-        rdfob.uriref('mhs:Article'): 'article',
-        rdfob.uriref('mhs:Review'): 'review', 
-        rdfob.uriref('mhs:Author'): 'author'
-    }
-    def template_for_type(self, node):
-        for type in node.types:
-            if type in self.RDF_TEMPLATES:
-                return self.RDF_TEMPLATES[type]
-        raise exc.HTTPNotFound('Matching template not found').exception
-
-    EXTENSIONS = ['.nt', '.html', '.marcxml', '.bib', '.mods', '.end']
     def guess_format(self, decoded_uri):
-        for extension in self.EXTENSIONS:
-            if decoded_uri.endswith(extension):
-                return extension[1:], decoded_uri[:-len(extension)]
+        for r in representations.ALL:
+            if decoded_uri.endswith('.' + r.format):
+                return r.format, decoded_uri[:-(len(r.format) + 1)]
         # XXX should check Accept header too
         return 'html', decoded_uri
 

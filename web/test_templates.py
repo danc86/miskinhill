@@ -8,7 +8,7 @@ from genshi.template import NewTextTemplate
 import lxml.etree, lxml.html
 
 import rdfob
-from app import template_loader
+from representations import template_loader
 
 class MockRequest(object):
 

@@ -87,6 +87,12 @@ class GraphNode(object):
             else:
                 return x.toPython()
 
+    def is_any(self, types):
+        for type in types:
+            if type in self.types:
+                return True
+        return False
+
     def getone(self, predicate, as_uriref=False):
         predicate = uriref(predicate)
         objects = self._objects[predicate]
