@@ -42,7 +42,10 @@ class NTriplesRepresentation(Representation):
     docs = 'http://www.w3.org/TR/REC-rdf-syntax/'
 
     def generate(self):
-        return Response(self.node.graph.serialized(self.node.uri), 
+        return self.node.graph.serialized(self.node.uri)
+
+    def response(self):
+        return Response(self.generate(), 
                 content_type=self.content_type)
 
 class HTMLRepresentation(Representation):
@@ -58,8 +61,11 @@ class HTMLRepresentation(Representation):
 
     def generate(self):
         template = template_loader.load(os.path.join('html', template_for_type(self.node) + '.xml'))
-        body = template.generate(req=self.req, node=self.node).render('xhtml', doctype='xhtml')
-        return Response(body, content_type=self.content_type)
+        return template.generate(req=self.req, node=self.node)
+
+    def response(self):
+        return Response(self.generate().render('xhtml', doctype='xhtml'), 
+                content_type=self.content_type)
 
 class MODSRepresentation(Representation):
 
@@ -70,8 +76,11 @@ class MODSRepresentation(Representation):
 
     def generate(self):
         template = template_loader.load(os.path.join('mods', template_for_type(self.node) + '.xml'))
-        body = template.generate(req=self.req, node=self.node).render('xml')
-        return Response(body, content_type=self.content_type, 
+        return template.generate(req=self.req, node=self.node)
+
+    def response(self):
+        return Response(self.generate().render('xml'), 
+                content_type=self.content_type, 
                 headers={'Content-Disposition': 'inline'})
 
 class MARCXMLRepresentation(Representation):
@@ -83,8 +92,11 @@ class MARCXMLRepresentation(Representation):
 
     def generate(self):
         template = template_loader.load(os.path.join('marcxml', template_for_type(self.node) + '.xml'))
-        body = template.generate(req=self.req, node=self.node).render('xml')
-        return Response(body, content_type=self.content_type, 
+        return template.generate(req=self.req, node=self.node)
+
+    def response(self):
+        return Response(self.generate().render('xml'), 
+                content_type=self.content_type, 
                 headers={'Content-Disposition': 'inline'})
 
 class BibTeXRepresentation(Representation):
@@ -97,8 +109,10 @@ class BibTeXRepresentation(Representation):
     def generate(self):
         template = template_loader.load(os.path.join('bibtex', template_for_type(self.node) + '.txt'), 
                 cls=NewTextTemplate)
-        body = template.generate(req=self.req, node=self.node).render()
-        return Response(body, content_type=self.content_type)
+        return template.generate(req=self.req, node=self.node)
+
+    def response(self):
+        return Response(self.generate().render(), content_type=self.content_type)
         
 class EndnoteRepresentation(Representation):
 
@@ -110,8 +124,10 @@ class EndnoteRepresentation(Representation):
     def generate(self):
         template = template_loader.load(os.path.join('end', template_for_type(self.node) + '.txt'), 
                 cls=NewTextTemplate)
-        body = template.generate(req=self.req, node=self.node).render()
-        return Response(body, content_type=self.content_type)
+        return template.generate(req=self.req, node=self.node)
+
+    def response(self):
+        return Response(self.generate().render(), content_type=self.content_type)
 
 ALL = [NTriplesRepresentation, HTMLRepresentation, MODSRepresentation, 
        MARCXMLRepresentation, BibTeXRepresentation, EndnoteRepresentation]

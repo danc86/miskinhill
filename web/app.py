@@ -110,7 +110,7 @@ class MiskinHillApplication(object):
             return exc.HTTPNotFound('Format %r not known' % format)
         if not node.is_any(r.rdf_types):
             return exc.HTTPNotFound('Format %r not acceptable for this URI' % format)
-        return r(self.req, node).generate()
+        return r(self.req, node).response()
 
     def guess_format(self, decoded_uri):
         for r in representations.ALL:

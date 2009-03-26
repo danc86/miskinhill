@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <modsCollection xmlns="http://www.loc.gov/mods/v3"
-                xmlns:py="http://genshi.edgewall.org/"
-                xmlns:xlink="http://www.w3.org/1999/xlink">
+                xmlns:py="http://genshi.edgewall.org/">
+
+<?python
+from representations import MODSRepresentation
+?>
 
 <mods py:with="article = node; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
     <titleInfo>
@@ -32,7 +35,8 @@
         <internetMediaType>text/html</internetMediaType>
         <internetMediaType>application/pdf</internetMediaType>
     </physicalDescription>
-    <relatedItem type="host" xlink:href="${journal.uri}.mods"> <!-- XXX -->
+    <relatedItem type="host">
+        ${MODSRepresentation(req, journal).generate().select('.//mods/*')}
         <part>
             <date encoding="w3cdtf">${issue['dc:coverage']}</date>
             <detail type="volume"><number>${issue['mhs:volume']}</number></detail>
