@@ -33,6 +33,7 @@ class MiskinHillApplication(object):
 
         self.req = Request(environ)
         self.req.charset = 'utf8'
+        self.req.content_dir = content_dir # XXX dodgy?
 
     METHODS = {
         '/': 'index', 

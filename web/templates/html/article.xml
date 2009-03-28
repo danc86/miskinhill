@@ -6,6 +6,7 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
+import viewutils
 article = node
 issue = article['dc:isPartOf']
 journal = issue['mhs:isIssueOf']
@@ -56,7 +57,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
     by <a href="${author.uri}">${author['foaf:name']}</a>
 </p>
 
-<xi:include href="${article.uri.replace('http://miskinhill.com.au/', '../../../../content/')}.html"><xi:fallback /></xi:include>
+${viewutils.parsed_content(article.uri.replace('http://miskinhill.com.au', req.content_dir) + '.html')}
 
 </body>
 </html>
