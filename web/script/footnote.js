@@ -18,7 +18,11 @@ function FloatingFootnote(footnote_anchor) {
     FloatingFootnote.instances[this.footnote_selector] = this;
 }
 FloatingFootnote.prototype.open = function () {
-    this.div.slideDown('normal');
+    this.div.fadeIn('fast');
+    // ensure it is inside the viewport
+    var scrollTopDest = this.div.position().top + this.div.outerHeight() + 20 - $(window).height();
+    if ($(window).scrollTop() < scrollTopDest)
+        $.scrollTo(scrollTopDest, {'duration': 'normal'});
     // close all others
     for (s in FloatingFootnote.instances) {
         if (s != this.footnote_selector)
