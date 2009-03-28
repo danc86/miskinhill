@@ -4,7 +4,7 @@ from genshi import XML
 import lxml.html
 from lxml.html import builder as E
 
-WHITESPACE_PATT = re.compile(r'\s', re.UNICODE)
+WHITESPACE_PATT = re.compile(r'\s+', re.UNICODE)
 def normalize_whitespace(s):
     return WHITESPACE_PATT.sub(u' ', s)
 

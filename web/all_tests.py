@@ -11,7 +11,7 @@ figleaf.start()
 import test_app, test_templates
 
 loader = unittest.TestLoader()
-suite = loader.loadTestsFromNames(['test_app', 'test_templates'])
+suite = loader.loadTestsFromNames(['test_app', 'test_templates', 'test_viewutils'])
 runner = xmlrunner.XMLTestRunner(open('test_results.xml', 'w'))
 runner.run(suite)
 
