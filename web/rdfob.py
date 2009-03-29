@@ -42,6 +42,10 @@ class Graph(object):
             raise KeyError(subject)
         return GraphNode(subject, self, pos)
 
+    def by_type(self, type):
+        type = uriref(type)
+        return [self[s] for s in self._g.subjects(RDF_TYPE, type)]
+
     def serialized(self, subject, format='nt'):
         """ Returns serialized triples about the given graph node (triples 
         where it appears as subject, and the transitive closure with any blank 

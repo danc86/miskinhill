@@ -15,6 +15,11 @@ from lxml.builder import E
 import rdfob
 import representations
 
+template_loader = TemplateLoader(
+        os.path.join(os.path.dirname(__file__), 'templates', 'html'), 
+        variable_lookup='strict', 
+        auto_reload=True)
+
 content_dir = '/home/dan/.www/miskinhill.com.au/content'
 
 # for tests
@@ -53,24 +58,24 @@ class MiskinHillApplication(object):
         return iter(resp(self.environ, self.start))
 
     def index(self):
-        template = template_loader.load(os.path.join('html', 'index.xml'))
+        template = template_loader.load('index.xml')
         body = template.generate(req=self.req).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 
     def about(self):
-        template = template_loader.load(os.path.join('html', 'about.xml'))
+        template = template_loader.load('about.xml')
         body = template.generate(req=self.req).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 
     def contact(self):
-        template = template_loader.load(os.path.join('html', 'contact.xml'))
+        template = template_loader.load('contact.xml')
         body = template.generate(req=self.req).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 
     def journals_index(self):
-        template = template_loader.load(os.path.join('html', 'journals_index.xml'))
+        template = template_loader.load('journals_index.xml')
         body = template.generate(req=self.req, 
-                journals=[self.graph[rdfob.URIRef('http://miskinhill.com.au/journals/asees/')]] # XXX temp
+                journals=self.graph.by_type('mhs:Journal')
                 ).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 

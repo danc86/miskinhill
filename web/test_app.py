@@ -96,5 +96,32 @@ class RDFDispatchTest(AppTestCase):
         self.assertEquals(404, res.status_int)
         res.body # to keep validator happy
 
+class StaticTemplatesTest(AppTestCase):
+
+    TEST_META = '''
+<http://miskinhill.com.au/journals/test/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Journal> .
+<http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/title> "Test Journal of Good Stuff"@en .
+'''
+
+    def test_index(self):
+        res = self.get_response(Request.blank('/'))
+        self.assertEquals(200, res.status_int)
+        self.assert_('<title>Miskin Hill</title>' in res.body)
+
+    def test_about(self):
+        res = self.get_response(Request.blank('/about/'))
+        self.assertEquals(200, res.status_int)
+        self.assert_('<title>About - Miskin Hill</title>' in res.body)
+
+    def test_contact(self):
+        res = self.get_response(Request.blank('/contact/'))
+        self.assertEquals(200, res.status_int)
+        self.assert_('<title>Contact - Miskin Hill</title>' in res.body)
+
+    def test_journal_index(self):
+        res = self.get_response(Request.blank('/journals/'))
+        self.assertEquals(200, res.status_int)
+        self.assert_('<title>Journals - Miskin Hill</title>' in res.body)
+
 if __name__ == '__main__':
     unittest.main()
