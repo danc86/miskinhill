@@ -105,10 +105,7 @@ class MiskinHillApplication(object):
             node = self.graph[rdfob.URIRef(decoded_uri)]
         except KeyError:
             return exc.HTTPNotFound('URI not found in RDF graph')
-        try:
-            r = representations.BY_FORMAT[format]
-        except KeyError:
-            return exc.HTTPNotFound('Format %r not known' % format)
+        r = representations.BY_FORMAT[format]
         if not node.is_any(r.rdf_types):
             return exc.HTTPNotFound('Format %r not acceptable for this URI' % format)
         return r(self.req, node).response()
