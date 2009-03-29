@@ -4,7 +4,7 @@ rm -rf webtest.out
 
 ssh syn cat /etc/apache2/clients.d/miskinhill.com.au.conf \
     | egrep -v 'VirtualHost|CustomLog|ErrorLog' \
-    | sed -e 's@/home/dan/\.www/miskinhill\.com\.au/code/web/app\.py@app.py@' \
+    | sed -e 's@/home/dan/\.www/miskinhill\.com\.au/code/web@.@' \
     >miskinhill.com.au.conf \
 
 /usr/sbin/apache2 -d `pwd` -f apache2.webtest.conf -X &
