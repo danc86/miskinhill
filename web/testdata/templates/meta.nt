@@ -2,6 +2,9 @@
 <http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/title> "Test Journal of Good Stuff"@en .
 _:pub <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Publisher> .
 _:pub <http://xmlns.com/foaf/0.1/name> "Awesome Publishing House"@en .
+_:pub <http://www.w3.org/2000/10/swap/pim/contact#address> <http://sws.geonames.org/2150650/> .
+<http://sws.geonames.org/2150650/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.geonames.org/ontology#Feature> .
+<http://sws.geonames.org/2150650/> <http://www.geonames.org/ontology#name> "St Lucia, Qld."@en .
 <http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/publisher> _:pub .
 <http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/identifier> <urn:issn:12345678> .
 <http://miskinhill.com.au/journals/test/> <http://purl.org/dc/terms/description> "A journal, you know, with some stuff in it"@en .

@@ -32,7 +32,7 @@ class ModsArticleTemplateTest(unittest.TestCase):
     def setUp(self):
         graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), 'testdata', 'templates', 'meta.nt'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
-        result = template_loader.load(os.path.join('mods', 'article.xml')).generate(node=node).render('xml')
+        result = template_loader.load(os.path.join('mods', 'article.xml')).generate(req=None, node=node).render('xml')
         self.root = lxml.etree.fromstring(result)
 
     def test_markup_stripped(self):
