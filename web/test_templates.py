@@ -10,15 +10,18 @@ import lxml.etree, lxml.html
 import rdfob
 from representations import template_loader
 
+TESTDATA = os.path.join(os.path.dirname(__file__), 'testdata', 'templates')
+
 class MockRequest(object):
 
     def __init__(self):
         self.script_name = ''
+        self.content_dir = TESTDATA
 
 class EndnoteArticleTemplateTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), 'testdata', 'templates', 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.result = template_loader.load(os.path.join('end', 'article.txt'), 
                 cls=NewTextTemplate).generate(node=node).render(encoding=None)
@@ -30,7 +33,7 @@ class EndnoteArticleTemplateTest(unittest.TestCase):
 class ModsArticleTemplateTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), 'testdata', 'templates', 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
         result = template_loader.load(os.path.join('mods', 'article.xml')).generate(req=None, node=node).render('xml')
         self.root = lxml.etree.fromstring(result)
@@ -72,15 +75,30 @@ class ModsArticleTemplateTest(unittest.TestCase):
 class HtmlJournalTemplateTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), 'testdata', 'templates', 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/')]
         result = template_loader.load(os.path.join('html', 'journal.xml'))\
                 .generate(req=MockRequest(), node=node).render('xhtml', doctype='xhtml')
-        self.root = lxml.html.fromstring(result, parser=lxml.html.XHTMLParser())
+        self.root = lxml.html.fromstring(result)
 
     def test_issn_appears(self):
         issn, = self.root.find_class('issn')
         self.assertEquals('ISSN 12345678', issn.text.strip())
+
+class HtmlArticleTemplateTest(unittest.TestCase):
+
+    def setUp(self):
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
+        result = template_loader.load(os.path.join('html', 'article.xml'))\
+                .generate(req=MockRequest(), node=node).render('xhtml', doctype='xhtml')
+        self.root = lxml.html.fromstring(result)
+
+    def test_coins_appear(self):
+        for coins in self.root.find_class('Z3988'):
+            self.assertEquals('span', coins.tag)
+            self.assertEquals(None, coins.text)
+            self.assert_(coins.get('title'))
 
 if __name__ == '__main__':
     unittest.main()
