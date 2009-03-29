@@ -6,6 +6,7 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
+from viewutils import relative_url
 issue = node
 journal = issue['mhs:isIssueOf']
 ?>
@@ -18,7 +19,7 @@ journal = issue['mhs:isIssueOf']
 <body>
 
 ${breadcrumbs([('/journals/', 'Journals'), 
-               (journal.uri, journal['dc:title'])])}
+               (relative_url(journal.uri), journal['dc:title'])])}
 
 <h2>
     <span class="journal-title">${journal['dc:title']}</span>
@@ -33,7 +34,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
         <h4>Issue details</h4>
         <p class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
         <p>Published ${issue['mhs:publicationDate'].strftime('%d %B %Y')}</p>
-        <p>Metadata: <a href="${issue.uri}.nt">RDF</a></p>
+        <p>Metadata: <a href="${relative_url(issue.uri)}.nt">RDF</a></p>
     </div>
 </div>
 
@@ -41,8 +42,8 @@ ${breadcrumbs([('/journals/', 'Journals'),
 <ul class="contents articles">
     <li py:for="article in sorted(issue.reflexive('dc:isPartOf', type='mhs:Article'), key=lambda a: a['mhs:startPage'])"
         py:with="author = article['dc:creator']">
-        <div class="title"><a href="${article.uri}">${article['dc:title']}</a></div>
-        <div class="author">by <a href="${author.uri}">${author['foaf:name']}</a></div>
+        <div class="title"><a href="${relative_url(article.uri)}">${article['dc:title']}</a></div>
+        <div class="author">by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a></div>
     </li>
 </ul>
 
@@ -50,8 +51,8 @@ ${breadcrumbs([('/journals/', 'Journals'),
 <ul class="contents reviews">
     <li py:for="review in sorted(issue.reflexive('dc:isPartOf', type='mhs:Review'), key=lambda r: r['mhs:startPage'])"
         py:with="author = review['dc:creator']; book = review['mhs:reviews']">
-        <div class="book"><a href="${review.uri}">${book['dc:creator']}, <em>${book['dc:title']}</em> (${book['dc:date'][:4]})</a></div>
-        <div class="reviewed-by">Reviewed by <a href="${author.uri}">${author['foaf:name']}</a></div>
+        <div class="book"><a href="${relative_url(review.uri)}">${book['dc:creator']}, <em>${book['dc:title']}</em> (${book['dc:date'][:4]})</a></div>
+        <div class="reviewed-by">Reviewed by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a></div>
     </li>
 </ul>
 

@@ -6,6 +6,7 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
+from viewutils import relative_url
 journal = node
 ?>
 
@@ -27,9 +28,9 @@ ${breadcrumbs([('/journals/', 'Journals')])}
         <p class="cover"><img src="${journal.reflexive('mhs:isIssueOf')[0].getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
         <p class="issn">ISSN ${journal.identifier('urn:issn:')}</p>
         <p>Metadata:
-            <a href="${journal.uri}.nt">RDF</a>, 
-            <a href="${journal.uri}.mods">MODS</a>, 
-            <a href="${journal.uri}.marcxml" title="experimental!">MARCXML</a>
+            <a href="${relative_url(journal.uri)}.nt">RDF</a>, 
+            <a href="${relative_url(journal.uri)}.mods">MODS</a>, 
+            <a href="${relative_url(journal.uri)}.marcxml" title="experimental!">MARCXML</a>
         </p>
     </div>
 </div>
@@ -39,7 +40,7 @@ ${breadcrumbs([('/journals/', 'Journals')])}
 <h3>Issues</h3>
 <ul>
     <li py:for="issue in journal.reflexive('mhs:isIssueOf')">
-        <a href="${issue.uri}">
+        <a href="${relative_url(issue.uri)}">
             Vol.&nbsp;${issue['mhs:volume']},
             Issue&nbsp;${issue['mhs:issueNumber']}
             (${issue['dc:coverage']})

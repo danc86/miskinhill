@@ -173,5 +173,13 @@ class AddCoinsToCitationTest(unittest.TestCase):
                 'rft.epage': ['191']}, 
                 cgi.parse_qs(coins.get('title')))
 
+class RelativeURLTest(unittest.TestCase):
+
+    def test_uri(self):
+        self.assertEquals('/asdf/test', viewutils.relative_url('http://miskinhill.com.au/asdf/test'))
+
+    def test_unrelated_uri(self):
+        self.assertEquals('http://example.com/asdf', viewutils.relative_url('http://example.com/asdf'))
+
 if __name__ == '__main__':
     unittest.main()

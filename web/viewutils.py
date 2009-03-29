@@ -44,3 +44,8 @@ def parsed_content(filename):
     for citation in root.find_class('citation'):
         add_coins_to_citation(citation)
     return XML(lxml.etree.tostring(root, encoding=unicode))
+
+def relative_url(uri):
+    if uri.startswith('http://miskinhill.com.au'):
+        return uri[24:]
+    return uri

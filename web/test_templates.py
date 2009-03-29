@@ -103,9 +103,9 @@ class HtmlArticleTemplateTest(unittest.TestCase):
     def test_published_in(self):
         article_meta, = self.root.find_class('article-meta')
         published_in_links = article_meta.xpath('./p[1]/a')
-        self.assertEquals('http://miskinhill.com.au/journals/test/1:1/', published_in_links[0].get('href'))
+        self.assertEquals('/journals/test/1:1/', published_in_links[0].get('href'))
         self.assertEquals('Vol. 1, Issue 1', published_in_links[0].text_content())
-        self.assertEquals('http://miskinhill.com.au/journals/test/', published_in_links[1].get('href'))
+        self.assertEquals('/journals/test/', published_in_links[1].get('href'))
         self.assertEquals('Test Journal of Good Stuff', published_in_links[1].text_content())
 
 class HtmlReviewTemplateTest(unittest.TestCase):
@@ -120,9 +120,9 @@ class HtmlReviewTemplateTest(unittest.TestCase):
     def test_published_in(self):
         review_meta, = self.root.find_class('review-meta')
         published_in_links = review_meta.xpath('./p[1]/a')
-        self.assertEquals('http://miskinhill.com.au/journals/test/1:1/', published_in_links[0].get('href'))
+        self.assertEquals('/journals/test/1:1/', published_in_links[0].get('href'))
         self.assertEquals('Vol. 1, Issue 1', published_in_links[0].text_content())
-        self.assertEquals('http://miskinhill.com.au/journals/test/', published_in_links[1].get('href'))
+        self.assertEquals('/journals/test/', published_in_links[1].get('href'))
         self.assertEquals('Test Journal of Good Stuff', published_in_links[1].text_content())
 
 if __name__ == '__main__':

@@ -5,6 +5,10 @@
       lang="en-AU">
 <xi:include href="_commonwrapper.xml" />
 
+<?python
+from viewutils import relative_url
+?>
+
 <head>
     <title>Journals</title>
 </head>
@@ -16,7 +20,7 @@
 <p>The following scholarly journals are hosted on this site:</p>
 
 <ul>
-    <li py:for="journal in journals"><a href="${journal.uri}">${journal['dc:title']}</a></li>
+    <li py:for="journal in journals"><a href="${relative_url(journal.uri)}">${journal['dc:title']}</a></li>
 </ul>
 
 </body>
