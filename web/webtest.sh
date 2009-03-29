@@ -10,12 +10,13 @@ ssh syn cat /etc/apache2/clients.d/miskinhill.com.au.conf \
 /usr/sbin/apache2 -d `pwd` -f apache2.webtest.conf -X &
 apache_pid=$!
 function cleanup {
-    kill $apache_pid
+    kill -INT $apache_pid
+    rm apache2.webtest.pid # why doesn't apache do this?
 }
 trap cleanup SIGINT SIGTERM
 sleep 2
 
-wget -nv -r -p -l inf -P webtest.out http://localhost:9996/ 2>&1 | grep -B1 ERROR
+wget -nv -r -p -l inf -erobots=off -P webtest.out --user=demo --password=demo http://localhost:9996/ 2>&1 | grep -B1 ERROR
 grep_status=$?
 
 cleanup
