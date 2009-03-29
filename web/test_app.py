@@ -9,15 +9,7 @@ import urllib
 
 import app
 
-class UnAPITest(unittest.TestCase):
-
-    TEST_META = """
-<http://miskinhill.com.au/journals/test/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Journal> .
-<http://miskinhill.com.au/journals/test/1:1/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Issue> .
-<http://miskinhill.com.au/journals/test/1:1/one-article> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Article> .
-<http://miskinhill.com.au/journals/test/1:1/another-article> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Article> .
-<http://miskinhill.com.au/authors/test-author> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Author> .
-"""
+class AppTestCase(unittest.TestCase):
         
     def setUp(self):
         self.meta = tempfile.NamedTemporaryFile()
@@ -33,6 +25,16 @@ class UnAPITest(unittest.TestCase):
     
     def get_response(self, req):
         return req.get_response(wsgiref.validate.validator(app.MiskinHillApplication))
+
+class UnAPITest(AppTestCase):
+
+    TEST_META = """
+<http://miskinhill.com.au/journals/test/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Journal> .
+<http://miskinhill.com.au/journals/test/1:1/> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Issue> .
+<http://miskinhill.com.au/journals/test/1:1/one-article> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Article> .
+<http://miskinhill.com.au/journals/test/1:1/another-article> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Article> .
+<http://miskinhill.com.au/authors/test-author> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Author> .
+"""
 
     def test_formats(self):
         res = self.get_response(Request.blank('/unapi'))
@@ -59,11 +61,39 @@ class UnAPITest(unittest.TestCase):
         self.assertEquals(404, res.status_int)
         res.body # to keep validator happy
 
+    def test_unknown_format(self):
+        id = 'http://miskinhill.com.au/journals/test/'
+        res = self.get_response(Request.blank('/unapi?' + urllib.urlencode({'id': id, 'format': 'notexist'})))
+        self.assertEquals(406, res.status_int)
+        res.body # to keep validator happy
+
+    def test_unacceptable_format(self):
+        id = 'http://miskinhill.com.au/journals/test/1:1/one-article'
+        res = self.get_response(Request.blank('/unapi?' + urllib.urlencode({'id': id, 'format': 'marcxml'})))
+        self.assertEquals(406, res.status_int)
+        res.body # to keep validator happy
+
     def test_redirect_for_id_and_format(self):
         id = 'http://miskinhill.com.au/journals/test/'
         res = self.get_response(Request.blank('/unapi?' + urllib.urlencode({'id': id, 'format': 'nt'})))
         self.assertEquals(302, res.status_int)
         self.assertEquals(id + '.nt', res.location)
+        res.body # to keep validator happy
+
+class RDFDispatchTest(AppTestCase):
+
+    TEST_META = """
+<http://miskinhill.com.au/journals/test/1:1/one-article> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Article> .
+"""
+
+    def test_nonexistent_uri(self):
+        res = self.get_response(Request.blank('/journals/test/1:1/no-such-article'))
+        self.assertEquals(404, res.status_int)
+        res.body # to keep validator happy
+
+    def test_unacceptable_format(self):
+        res = self.get_response(Request.blank('/journals/test/1:1/one-article.marcxml'))
+        self.assertEquals(404, res.status_int)
         res.body # to keep validator happy
 
 if __name__ == '__main__':
