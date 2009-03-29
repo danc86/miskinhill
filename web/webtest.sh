@@ -2,10 +2,15 @@
 
 rm -rf webtest.out
 
-./app.py --port=9996 --content-dir=/sjkwi/home/dan/.www/miskinhill.com.au/content &
-app_pid=$!
+ssh syn cat /etc/apache2/clients.d/miskinhill.com.au.conf \
+    | egrep -v 'VirtualHost|CustomLog|ErrorLog' \
+    | sed -e 's@/home/dan/\.www/miskinhill\.com\.au/code/web/app\.py@app.py@' \
+    >miskinhill.com.au.conf \
+
+/usr/sbin/apache2 -d `pwd` -f apache2.webtest.conf -X &
+apache_pid=$!
 function cleanup {
-    kill $app_pid
+    kill $apache_pid
 }
 trap cleanup SIGINT SIGTERM
 sleep 2
