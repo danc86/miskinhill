@@ -27,3 +27,14 @@ _:pub <http://www.w3.org/2000/10/swap/pim/contact#address> <http://sws.geonames.
 <http://miskinhill.com.au/journals/test/1:1/article> <http://purl.org/dc/terms/title> "<span xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\"><em>Moscow 1937</em>: the interpreter\u2019s story</span>"^^<http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral> .
 <http://miskinhill.com.au/journals/test/1:1/article> <http://miskinhill.com.au/rdfschema/1.0/startPage> "5"^^<http://www.w3.org/2001/XMLSchema#integer> .
 <http://miskinhill.com.au/journals/test/1:1/article> <http://miskinhill.com.au/rdfschema/1.0/endPage> "35"^^<http://www.w3.org/2001/XMLSchema#integer> .
+_:book <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Book> .
+_:book <http://purl.org/dc/terms/identifier> <urn:isbn:9780415274319> .
+_:book <http://purl.org/dc/terms/identifier> <urn:asin:0415274311> .
+_:book <http://purl.org/dc/terms/title> "Slovenia: evolving loyalties"@en .
+_:book <http://purl.org/dc/terms/creator> "John K. Cox" .
+_:book <http://purl.org/dc/terms/publisher> "Routledge" .
+_:book <http://purl.org/dc/terms/date> "2005"^^<http://www.w3.org/TR/xmlschema-2/#date> .
+<http://miskinhill.com.au/journals/test/1:1/reviews/review> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Review> .
+<http://miskinhill.com.au/journals/test/1:1/reviews/review> <http://purl.org/dc/terms/isPartOf> <http://miskinhill.com.au/journals/test/1:1/> .
+<http://miskinhill.com.au/journals/test/1:1/reviews/review> <http://miskinhill.com.au/rdfschema/1.0/reviews> _:book .
+<http://miskinhill.com.au/journals/test/1:1/reviews/review> <http://purl.org/dc/terms/creator> <http://miskinhill.com.au/authors/test-author> .

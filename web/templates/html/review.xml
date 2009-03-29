@@ -28,6 +28,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
 <div class="metabox-container">
     <div class="review-meta metabox">
         <h4>Review details</h4>
+        <p>Published in <a href="${issue.uri}">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</a> of<br /><a href="${journal.uri}"><em>${journal['dc:title']}</em></a></p>
         <p><a href="${review.uri}.pdf">Original print version</a></p>
         <p>Metadata: <a href="${review.uri}.nt">RDF</a></p>
     </div>
