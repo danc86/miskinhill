@@ -10,7 +10,7 @@ import lxml.etree, lxml.html
 import rdfob
 from representations import template_loader
 
-TESTDATA = os.path.join(os.path.dirname(__file__), 'testdata', 'templates')
+TESTDATA = os.path.join(os.path.dirname(__file__), 'testdata')
 
 class MockRequest(object):
 
