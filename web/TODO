@@ -5,7 +5,6 @@ immediately:
 * test everything in IE!
 
 soonish:
-* make Zotero work (needs COinS?)
 * write automated MODS checker:
   http://wiki.dlib.indiana.edu/confluence/display/DLFAquifer/MODS+Guidelines+Levels+of+Adoption
   and assert our level of compliance for all live records (in the same vein as webtest.sh)
@@ -28,8 +27,6 @@ eventually:
       tags? somewhere else?)
     - come up with something better? 
       http://journal.code4lib.org/articles/23
-* OpenURL
-    - implement COINS: http://ocoins.info/ .. maybe
 * MARC crap:
     - get a copy of AACR2 and make sure we adhere to it (then adjust 
       MARC leader to say so)
