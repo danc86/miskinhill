@@ -22,19 +22,21 @@ template_loader = TemplateLoader(
 
 content_dir = '/home/dan/.www/miskinhill.com.au/content'
 
-# for tests
-def _rdf_imports():
-    return [os.path.join(content_dir, 'meta.nt'), 
-            os.path.join(content_dir, 'rdfschema', 'foaf.nt'), 
-            os.path.join(content_dir, 'rdfschema', 'dcterms.nt')]
+graph = None
+def maybe_initialise_graph():
+    global graph
+    if graph is None: # XXX race here
+        graph = rdfob.Graph(os.path.join(content_dir, 'meta.nt'), 
+                            os.path.join(content_dir, 'rdfschema', 'foaf.nt'), 
+                            os.path.join(content_dir, 'rdfschema', 'dcterms.nt'))
 
 class MiskinHillApplication(object):
 
     def __init__(self, environ, start_response):
+        maybe_initialise_graph()
+
         self.environ = environ
         self.start = start_response
-
-        self.graph = rdfob.Graph(*_rdf_imports())
 
         self.req = Request(environ)
         self.req.charset = 'utf8'
@@ -75,14 +77,14 @@ class MiskinHillApplication(object):
     def journals_index(self):
         template = template_loader.load('journals_index.xml')
         body = template.generate(req=self.req, 
-                journals=self.graph.by_type('mhs:Journal')
+                journals=graph.by_type('mhs:Journal')
                 ).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 
     def unapi(self):
         if 'id' in self.req.GET:
             try:
-                node = self.graph[rdfob.URIRef(self.req.GET['id'])]
+                node = graph[rdfob.URIRef(self.req.GET['id'])]
             except KeyError:
                 return exc.HTTPNotFound('URI not found in RDF graph')
             if 'format' in self.req.GET:
@@ -107,7 +109,7 @@ class MiskinHillApplication(object):
                 path_info).decode('utf8')
         format, decoded_uri = self.guess_format(decoded_uri)
         try:
-            node = self.graph[rdfob.URIRef(decoded_uri)]
+            node = graph[rdfob.URIRef(decoded_uri)]
         except KeyError:
             return exc.HTTPNotFound('URI not found in RDF graph')
         r = representations.BY_FORMAT[format]

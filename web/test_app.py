@@ -8,17 +8,18 @@ import tempfile
 import lxml.etree
 import urllib
 
+import rdfob
 import app
 
 class AppTestCase(unittest.TestCase):
         
     def setUp(self):
-        app._original_rdf_imports = app._rdf_imports
-        app._rdf_imports = lambda: [os.path.join(os.path.dirname(__file__), 'testdata', 'meta.nt')]
+        app._original_graph = app.graph
+        app.graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), 'testdata', 'meta.nt'))
 
     def tearDown(self):
-        app._rdf_imports = app._original_rdf_imports
-        del app._original_rdf_imports
+        app.graph = app._original_graph
+        del app._original_graph
     
     def get_response(self, req):
         return req.get_response(wsgiref.validate.validator(app.MiskinHillApplication))
