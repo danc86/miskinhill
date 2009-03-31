@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      lang="en-AU">
+<xi:include href="_commonwrapper.xml" />
+
+<?python
+from viewutils import relative_url
+import citations
+citation_node = node
+citation = citations.Citation.from_markup(citation_node['mhs:citationMarkup'])
+article = citation_node['dc:isPartOf']
+issue = article['dc:isPartOf']
+journal = issue['mhs:isIssueOf']
+?>
+
+<head>
+    <title>Citation - ${Markup(article['dc:title']).striptags()} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title><!-- XXX way too long? -->
+    <link rel="stylesheet" type="text/css" href="/style/citation.css" />
+</head>
+
+<body>
+
+${breadcrumbs([('/journals/', 'Journals'), 
+               (relative_url(journal.uri), journal['dc:title']),
+               (relative_url(issue.uri), 'Vol. %s, Issue %s' % (issue['mhs:volume'], issue['mhs:issueNumber'])), 
+               (relative_url(article.uri), article['dc:title'])])}
+
+<h2>Citation in ${article['dc:title']}<abbr class="unapi-id" title="${citation_node.uri}" /></h2>
+
+<div class="metabox-container">
+    <div class="metabox">
+        <h4>Find this item</h4>
+        <p py:if="citation.genre == 'article'"><a href="${citation.google_scholar_url()}">Search Google Scholar</a></p>
+    </div>
+</div>
+
+<table>
+    <tbody>
+        <py:choose test="citation.genre">
+            <py:when test="'book'">
+                <tr><th>Genre</th><td>Book</td></tr>
+                <tr py:if="citation.btitle"><th>Title</th><td>${' / '.join(citation.btitle)}</td></tr>
+            </py:when>
+            <py:when test="'bookitem'">
+                <tr><th>Genre</th><td>Book item</td></tr>
+                <tr py:if="citation.atitle"><th>Part title</th><td>${' / '.join(citation.atitle)}</td></tr>
+                <tr py:if="citation.btitle"><th>Book title</th><td>${' / '.join(citation.btitle)}</td></tr>
+            </py:when>
+            <py:when test="'proceeding'">
+                <tr><th>Genre</th><td>Conference proceeding</td></tr>
+                <tr py:if="citation.atitle"><th>Article title</th><td>${' / '.join(citation.atitle)}</td></tr>
+                <tr py:if="citation.btitle"><th>Book title</th><td>${' / '.join(citation.btitle)}</td></tr>
+            </py:when>
+            <py:when test="'thesis'">
+                <tr><th>Genre</th><td>Thesis</td></tr>
+                <tr py:if="citation.btitle"><th>Title</th><td>${' / '.join(citation.btitle)}</td></tr>
+            </py:when>
+            <py:when test="'article'">
+                <tr><th>Genre</th><td>Article</td></tr>
+                <tr py:if="citation.atitle"><th>Article title</th><td>${' / '.join(citation.atitle)}</td></tr>
+                <tr py:if="citation.jtitle"><th>Journal title</th><td>${' / '.join(citation.jtitle)}</td></tr>
+            </py:when>
+        </py:choose>
+        <tr py:if="citation.au"><th>Author${len(citation.au) > 1 and 's' or ''}</th><td>${', '.join(citation.au)}</td></tr>
+        <tr py:if="citation.place"><th>Place</th><td>${', '.join(citation.place)}</td></tr>
+        <tr py:if="citation.pub"><th>Publisher</th><td>${', '.join(citation.pub)}</td></tr>
+        <tr py:if="citation.volume"><th>Volume</th><td>${', '.join(citation.volume)}</td></tr>
+        <tr py:if="citation.issue"><th>Issue</th><td>${', '.join(citation.issue)}</td></tr>
+        <tr py:if="citation.date"><th>Date</th><td>${', '.join(citation.date)}</td></tr>
+        <tr py:if="citation.edition"><th>Edition</th><td>${', '.join(citation.edition)}</td></tr>
+        <tr py:if="citation.issn"><th>ISSN</th><td>${', '.join(citation.issn)}</td></tr>
+        <tr py:if="citation.isbn"><th>ISBN</th><td>${', '.join(citation.isbn)}</td></tr>
+        <tr py:if="citation.spage or citation.epage"><th>Pages</th><td>${citation.page_ranges()}</td></tr>
+    </tbody>
+</table>
+
+<div>${citation.coins(as_markup=True)}</div>
+
+<p>Cited as:</p>
+<blockquote><p>${citation_node['mhs:citationMarkup']}</p></blockquote>
+
+</body>
+</html>

@@ -16,7 +16,8 @@ RDF_TEMPLATES = {
     rdfob.uriref('mhs:Issue'): 'issue', 
     rdfob.uriref('mhs:Article'): 'article',
     rdfob.uriref('mhs:Review'): 'review', 
-    rdfob.uriref('mhs:Author'): 'author'
+    rdfob.uriref('mhs:Author'): 'author', 
+    rdfob.uriref('mhs:Citation'): 'citation'
 }
 def template_for_type(node):
     for type in node.types:
@@ -34,7 +35,8 @@ class NTriplesRepresentation(Representation):
 
     format = 'nt'
     content_type = 'text/plain; charset=UTF-8'
-    rdf_types = frozenset([rdfob.uriref('mhs:Author'), 
+    rdf_types = frozenset([rdfob.uriref('mhs:Citation'), 
+                           rdfob.uriref('mhs:Author'), 
                            rdfob.uriref('mhs:Article'), 
                            rdfob.uriref('mhs:Review'), 
                            rdfob.uriref('mhs:Issue'), 
@@ -52,7 +54,8 @@ class HTMLRepresentation(Representation):
 
     format = 'html'
     content_type = 'text/html'
-    rdf_types = frozenset([rdfob.uriref('mhs:Author'), 
+    rdf_types = frozenset([rdfob.uriref('mhs:Citation'), 
+                           rdfob.uriref('mhs:Author'), 
                            rdfob.uriref('mhs:Article'), 
                            rdfob.uriref('mhs:Review'), 
                            rdfob.uriref('mhs:Issue'), 

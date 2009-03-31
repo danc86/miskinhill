@@ -60,14 +60,14 @@ public class SearchResults {
     
     private final Map<ResultType, List<Result>> results;
     
-    private SearchResults() {
+    protected SearchResults() {
         results = new HashMap<ResultType, List<Result>>();
         for (ResultType type: ResultType.values()) {
             results.put(type, new ArrayList<Result>());
         }
     }
     
-    private void add(ResultType type, String url, String anchor, float score) {
+    protected void add(ResultType type, String url, String anchor, float score) {
         results.get(type).add(new Result(url, anchor, score));
     }
 

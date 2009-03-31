@@ -1,7 +1,7 @@
 
 import datetime, re
 import rdflib
-from rdflib import URIRef, Namespace, BNode
+from rdflib import URIRef, Namespace, BNode, Literal
 from rdflib.Graph import ConjunctiveGraph
 import RDFSClosure
 import genshi

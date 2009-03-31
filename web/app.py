@@ -14,6 +14,8 @@ from lxml.builder import E
 
 import rdfob
 import representations
+import viewutils
+import citations
 
 template_loader = TemplateLoader(
         os.path.join(os.path.dirname(__file__), 'templates', 'html'), 
@@ -29,6 +31,15 @@ def maybe_initialise_graph():
         graph = rdfob.Graph(os.path.join(content_dir, 'meta.nt'), 
                             os.path.join(content_dir, 'rdfschema', 'foaf.nt'), 
                             os.path.join(content_dir, 'rdfschema', 'dcterms.nt'))
+        for article in graph.by_type('mhs:Article'):
+            for citation in citations.citations_from_content(
+                    content_dir + viewutils.relative_url(article.uri) + '.html'):
+                uri = rdfob.URIRef('%s/citations/%s' % (article.uri, citation.id()))
+                if (uri, None, None) not in graph._g:
+                    graph._g.add((uri, rdfob.RDF_TYPE, rdfob.uriref('mhs:Citation')))
+                    graph._g.add((uri, rdfob.uriref('dc:isPartOf'), article.uri))
+                    graph._g.add((uri, rdfob.uriref('mhs:citationMarkup'), 
+                            rdfob.Literal(lxml.etree.tostring(citation._elem, encoding=unicode, with_tail=False), datatype=rdfob.uriref('rdf:XMLLiteral'))))
 
 class MiskinHillApplication(object):
 

@@ -18,7 +18,6 @@ journal = issue['mhs:isIssueOf']
     <script type="text/javascript" src="${req.script_name}/script/jquery-1.3.2.js" />
     <script type="text/javascript" src="${req.script_name}/script/jquery.scrollTo-1.4.1.js" />
     <script type="text/javascript" src="${req.script_name}/script/footnote.js" />
-    <script type="text/javascript" src="${req.script_name}/script/citation-openurl.js" />
 </head>
 
 <body>
@@ -49,15 +48,13 @@ ${breadcrumbs([('/journals/', 'Journals'),
             <a href="${relative_url(article.uri)}.end">Endnote</a>
         </p>
     </div>
-
-    <!-- openurl-control metabox goes here -->
 </div>
 
 <p py:with="author = article['dc:creator']">
     by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
 </p>
 
-${parsed_content(req.content_dir + relative_url(article.uri) + '.html')}
+${parsed_content(req.content_dir + relative_url(article.uri) + '.html', article.uri)}
 
 </body>
 </html>
