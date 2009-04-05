@@ -17,7 +17,8 @@ RDF_TEMPLATES = {
     rdfob.uriref('mhs:Article'): 'article',
     rdfob.uriref('mhs:Review'): 'review', 
     rdfob.uriref('mhs:Author'): 'author', 
-    rdfob.uriref('mhs:Citation'): 'citation'
+    rdfob.uriref('mhs:Citation'): 'citation', 
+    rdfob.uriref('mhs:Book'): 'book'
 }
 def template_for_type(node):
     for type in node.types:
@@ -59,7 +60,8 @@ class HTMLRepresentation(Representation):
                            rdfob.uriref('mhs:Article'), 
                            rdfob.uriref('mhs:Review'), 
                            rdfob.uriref('mhs:Issue'), 
-                           rdfob.uriref('mhs:Journal')])
+                           rdfob.uriref('mhs:Journal'), 
+                           rdfob.uriref('mhs:Book')])
     docs = 'http://www.w3.org/TR/xhtml1/'
 
     def generate(self):

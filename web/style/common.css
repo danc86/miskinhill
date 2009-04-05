@@ -160,6 +160,21 @@ p, li {
 .searchbox h4 {
     background: #6081BF !important;
 }
-.cover {
+.metabox .cover {
     text-align: center;
+}
+
+/* Book info */
+.bookinfo {
+    margin: 1em 2em;
+}
+.bookinfo .cover {
+    float: left;
+    margin: 0 10px 0 0;
+}
+.bookinfo .beside {
+    margin-left: 120px;
+}
+.bookinfo .main {
+    font-size: 1.1em;
 }
