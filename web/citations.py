@@ -17,7 +17,7 @@ def title_or_text(elem):
     return unicode(elem.get('title', elem.text_content()))
 
 OPENURL_FIELDS = 'atitle jtitle btitle date volume issue spage epage issn isbn au place pub edition'.split()
-CITATION_FIELDS = OPENURL_FIELDS + ['asin']
+CITATION_FIELDS = OPENURL_FIELDS + 'asin gbooksid'.split()
 CITATION_GENRES = 'book bookitem thesis proceeding article'.split()
 
 class Citation(object):
@@ -94,6 +94,8 @@ class Citation(object):
                 graph.add((book, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:isbn:' + isbn)))
             for asin in self.asin:
                 graph.add((book, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:asin:' + asin)))
+            for gbooksid in self.gbooksid:
+                graph.add((book, rdfob.uriref('dc:identifier'), rdfob.URIRef('http://books.google.com/books?id=' + gbooksid)))
         else:
             pass # XXX
 

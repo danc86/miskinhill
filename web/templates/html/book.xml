@@ -11,6 +11,7 @@ from viewutils import relative_url
 book = node
 isbn = book.identifier('urn:isbn:')
 asin = book.identifier('urn:asin:')
+gbooksid = book.identifier('http://books.google.com/books?id=')
 ?>
 
 <head>
@@ -28,8 +29,11 @@ asin = book.identifier('urn:asin:')
             <py:if test="isbn">ISBN ${isbn}</py:if>
         </p>
         <p class="links">Find this book online:<br />
-            <py:if test="not asin and not isbn">
+            <py:if test="not asin and not isbn and not gbooksid">
                 <a href="http://books.google.com/books?q=${urllib.quote(book['dc:title'].encode('utf8'), '')}">Google Book Search</a>
+            </py:if>
+            <py:if test="gbooksid and not isbn">
+                <a href="http://books.google.com/books?id=${gbooksid}">Google Book Search</a>
             </py:if>
             <py:if test="asin">
                 <a href="http://www.amazon.com/dp/${asin}/?tag=mishil-20">Amazon.com</a><py:if test="asin and isbn">,</py:if>
