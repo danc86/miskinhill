@@ -34,8 +34,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
 <div>${citation.coins(as_markup=True)}</div>
 
-<p>Cited as:</p>
-<blockquote><p>${citation_node['mhs:citationMarkup']}</p></blockquote>
+<p>Cited as: ${citation_node['mhs:citationMarkup']}</p>
 
 </body>
 </html>
