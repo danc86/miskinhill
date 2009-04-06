@@ -28,7 +28,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
                (relative_url(issue.uri), 'Vol. %s, Issue %s' % (issue['mhs:volume'], issue['mhs:issueNumber'])), 
                (relative_url(article.uri), article['dc:title'])])}
 
-<h2>Citation in ${article['dc:title']}<abbr class="unapi-id" title="${citation_node.uri}" /></h2>
+<h2>Citation<abbr class="unapi-id" title="${citation_node.uri}" /></h2>
 
 <div py:if="citation.genre == 'book'">${representations.HTMLRepresentation(req, citation_node['mhs:cites']).generate().select('//div[@class="bookinfo"]')}</div>
 
