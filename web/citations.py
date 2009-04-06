@@ -22,6 +22,10 @@ CITATION_GENRES = 'book bookitem thesis proceeding article'.split()
 
 class Citation(object):
 
+    def __init__(self):
+        for field in CITATION_FIELDS:
+            setattr(self, field, [])
+
     @classmethod
     def from_elem(cls, elem):
         citation = cls()
