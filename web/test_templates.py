@@ -85,6 +85,17 @@ class HtmlJournalTemplateTest(unittest.TestCase):
         issn, = self.root.find_class('issn')
         self.assertEquals('ISSN 12345678', issn.text.strip())
 
+    def test_publisher_appears(self):
+        publisher, = self.root.find_class('publisher')
+        self.assertEquals('Published by Awesome Publishing House',
+                publisher.text_content().strip())
+
+    def test_publisher_is_linked(self):
+        publisher, = self.root.find_class('publisher')
+        a, = publisher.getchildren()
+        self.assertEquals('a', a.tag)
+        self.assertEquals('http://awesome.com', a.get('href'))
+
 class HtmlArticleTemplateTest(unittest.TestCase):
 
     def setUp(self):
@@ -124,6 +135,37 @@ class HtmlReviewTemplateTest(unittest.TestCase):
         self.assertEquals('Vol. 1, Issue 1', published_in_links[0].text_content())
         self.assertEquals('/journals/test/', published_in_links[1].get('href'))
         self.assertEquals('Test Journal of Good Stuff', published_in_links[1].text_content())
+
+class HtmlBookTemplateTest(unittest.TestCase):
+
+    def test_without_publisher(self):
+        graph = rdfob.Graph()
+        node = rdfob.BNode()
+        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
+        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        graph._g.add((node, rdfob.uriref('dc:date'), rdfob.Literal('1801', datatype=rdfob.uriref('xsd:date'))))
+        result = template_loader.load(os.path.join('html', 'book.xml'))\
+                .generate(req=MockRequest(), node=graph[node]).render('xhtml', doctype='xhtml')
+        root = lxml.html.fromstring(result)
+        publication, = root.find_class('publication')
+        self.assertEquals('Published 1801', publication.text_content().strip())
+
+    def test_with_only_gbooksid(self):
+        graph = rdfob.Graph()
+        node = rdfob.BNode()
+        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
+        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        graph._g.add((node, rdfob.uriref('dc:date'), rdfob.Literal('1801', datatype=rdfob.uriref('xsd:date'))))
+        graph._g.add((node, rdfob.uriref('dc:identifier'), rdfob.URIRef('http://books.google.com/books?id=12345')))
+        result = template_loader.load(os.path.join('html', 'book.xml'))\
+                .generate(req=MockRequest(), node=graph[node]).render('xhtml', doctype='xhtml')
+        root = lxml.html.fromstring(result)
+        links, = root.find_class('links')
+        a, = links.findall('a')
+        self.assertEquals('http://books.google.com/books?id=12345', a.get('href'))
+        self.assertEquals('Google Book Search', a.text_content().strip())
 
 if __name__ == '__main__':
     unittest.main()

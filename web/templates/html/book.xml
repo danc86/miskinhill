@@ -25,7 +25,7 @@ gbooksid = book.identifier('http://books.google.com/books?id=')
     <div class="beside">
         <p class="main"><em>${book['dc:title']}</em><br />by ${', '.join(book.getall('dc:creator'))}</p>
         <p class="publication">
-            Published <py:if test="'dc:publisher' in book">by ${book['dc:publisher']},</py:if> ${book['dc:date'][:4]}<br />
+            Published <py:if test="'dc:publisher' in book">by ${book['dc:publisher']}, </py:if>${book['dc:date'][:4]}<br />
             <py:if test="isbn">ISBN ${isbn}</py:if>
         </p>
         <p class="links">Find this book online:<br />
