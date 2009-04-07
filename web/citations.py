@@ -82,7 +82,7 @@ class Citation(object):
         graph.add((self_uri, rdfob.uriref('mhs:citationMarkup'), 
                 rdfob.Literal(lxml.etree.tostring(self._elem, encoding=unicode, with_tail=False), 
                     datatype=rdfob.uriref('rdf:XMLLiteral'))))
-        if self.genre == 'book':
+        if self.genre in ('book', 'bookitem', 'proceeding'):
             book = rdfob.BNode()
             graph.add((self_uri, rdfob.uriref('mhs:cites'), book))
             graph.add((book, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))

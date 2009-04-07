@@ -40,7 +40,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
     by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
 </p>
 
-<div>${representations.HTMLRepresentation(req, book).generate().select('//div[@class="bookinfo"]')}</div>
+<div class="bookinfo">${representations.HTMLRepresentation(req, book).generate().select('//body/*')}</div>
 
 <xi:include href="../../../../content${relative_url(review.uri)}.html"><xi:fallback /></xi:include>
 

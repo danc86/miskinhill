@@ -9,6 +9,7 @@
 from viewutils import relative_url
 import citations
 import representations
+import rdfob
 citation_node = node
 citation = citations.Citation.from_markup(citation_node['mhs:citationMarkup'])
 article = citation_node['dc:isPartOf']
@@ -30,7 +31,9 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
 <h2>Citation<abbr class="unapi-id" title="${citation_node.uri}" /></h2>
 
-<div py:if="citation.genre == 'book'">${representations.HTMLRepresentation(req, citation_node['mhs:cites']).generate().select('//div[@class="bookinfo"]')}</div>
+<div py:if="citation_node.getall('mhs:cites') and rdfob.uriref('mhs:Book') in citation_node['mhs:cites'].types" class="bookinfo">
+    ${representations.HTMLRepresentation(req, citation_node['mhs:cites']).generate().select('//body/*')}
+</div>
 
 <div>${citation.coins(as_markup=True)}</div>
 

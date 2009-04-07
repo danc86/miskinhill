@@ -312,5 +312,47 @@ class CitationAddToGraphTest(unittest.TestCase):
         self.assertEquals('Navy Records Society', book['dc:publisher'])
         self.assertEquals('1959', book['dc:date'])
 
+    def test_bookitem(self):
+        citation = citations.Citation.from_elem(x(u'''
+                <span class="citation bookitem"><span class="au" title="Lydia 
+                Black">Black</span><span class="atitle" title="“The Russians were 
+                Coming…”" /><span class="au" title="Robin Inglis" /><span class="btitle" 
+                title="Spain and the North Pacific Coast" /><span class="place" 
+                title="Vancouver" /><span class="pub" title="Maritime Museum Society" 
+                /><span class="date" title="1992" />, 
+                <span class="spage">31</span>–<span class="epage">29</span></span>
+                '''))
+        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation_node, = self.graph.by_type('mhs:Citation')
+        book = citation_node['mhs:cites']
+        self.assert_(rdfob.uriref('mhs:Book') in book.types)
+        self.assertEquals(set(['Lydia Black', 'Robin Inglis']), 
+                set(book.getall('dc:creator')))
+        self.assertEquals('Spain and the North Pacific Coast', book['dc:title'])
+        self.assertEquals('Maritime Museum Society', book['dc:publisher'])
+        self.assertEquals('1992', book['dc:date'])
+
+    def test_proceeding(self):
+        citation = citations.Citation.from_elem(x(u'''
+                <span class="citation proceeding"><span class="au">Valery O. 
+                Shubin</span>, ‘<span class="atitle">Russian Settlements in the 
+                Kuril Islands in the 18th and 19th centuries</span>’, 
+                <em class="btitle">Russia in North America: Proceedings of 
+                the 2nd International Conference on Russian America</em> 
+                (<span class="place">Kingston and Fairbanks</span>: 
+                <span class="pub">Limestone Press</span>, 
+                <span class="date">1990</span>), 
+                <span class="spage">425</span>–<span class="epage">450</span></span>
+                '''))
+        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation_node, = self.graph.by_type('mhs:Citation')
+        book = citation_node['mhs:cites']
+        self.assert_(rdfob.uriref('mhs:Book') in book.types)
+        self.assertEquals('Valery O. Shubin', book['dc:creator'])
+        self.assertEquals('Russia in North America: Proceedings of the '
+                        '2nd International Conference on Russian America', book['dc:title'])
+        self.assertEquals('Limestone Press', book['dc:publisher'])
+        self.assertEquals('1990', book['dc:date'])
+
 if __name__ == '__main__':
     unittest.main()

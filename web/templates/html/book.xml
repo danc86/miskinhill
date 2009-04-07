@@ -12,6 +12,22 @@ book = node
 isbn = book.identifier('urn:isbn:')
 asin = book.identifier('urn:asin:')
 gbooksid = book.identifier('http://books.google.com/books?id=')
+
+links = []
+if asin:
+    links.append(('http://www.amazon.com/dp/%s/?tag=mishil-20' % asin, 'Amazon.com'))
+if isbn:
+    links.append(('http://openlibrary.org/search?q=isbn_13:%s' % isbn, 'Open Library'))
+if gbooksid:
+    links.append(('http://books.google.com/books?id=%s' % gbooksid, 'Google Book Search'))
+elif isbn:
+    links.append(('http://books.google.com/books?vid=ISBN%s' % isbn, 'Google Book Search'))
+else:
+    links.append(('http://books.google.com/books?q=%s' % urllib.quote(book['dc:title'].encode('utf8'), ''), 'Google Book Search'))
+if isbn:
+    links.append(('http://www.worldcat.org/search?q=isbn:%s' % isbn, 'WorldCat'))
+if isbn:
+    links.append(('http://www.librarything.com/isbn/%s' % isbn, 'LibraryThing'))
 ?>
 
 <head>
@@ -19,33 +35,19 @@ gbooksid = book.identifier('http://books.google.com/books?id=')
 
 <body>
 
-<div class="bookinfo">
-    <p class="cover" py:if="asin"><img src="http://images.amazon.com/images/P/${asin}.01.MZZZZZZZ.jpg" alt="" /></p>
+<p class="cover" py:if="asin"><img src="http://images.amazon.com/images/P/${asin}.01.MZZZZZZZ.jpg" alt="" /></p>
 
-    <div class="beside">
-        <p class="main"><em>${book['dc:title']}</em><br />by ${', '.join(book.getall('dc:creator'))}</p>
-        <p class="publication">
-            Published <py:if test="'dc:publisher' in book">by ${book['dc:publisher']}, </py:if>${book['dc:date'][:4]}<br />
-            <py:if test="isbn">ISBN ${isbn}</py:if>
-        </p>
-        <p class="links">Find this book online:<br />
-            <py:if test="not asin and not isbn and not gbooksid">
-                <a href="http://books.google.com/books?q=${urllib.quote(book['dc:title'].encode('utf8'), '')}">Google Book Search</a>
-            </py:if>
-            <py:if test="gbooksid and not isbn">
-                <a href="http://books.google.com/books?id=${gbooksid}">Google Book Search</a>
-            </py:if>
-            <py:if test="asin">
-                <a href="http://www.amazon.com/dp/${asin}/?tag=mishil-20">Amazon.com</a><py:if test="asin and isbn">,</py:if>
-            </py:if>
-            <py:if test="isbn">
-                <a href="http://openlibrary.org/search?q=isbn_13:${isbn}">Open Library</a>,
-                <a href="http://books.google.com/books?vid=ISBN${isbn}">Google Book Search</a>,
-                <a href="http://www.worldcat.org/search?q=isbn:${isbn}">WorldCat</a>,
-                <a href="http://www.librarything.com/isbn/${isbn}">LibraryThing</a>
-            </py:if>
-        </p>
-    </div>
+<div class="beside">
+    <p class="main"><em>${book['dc:title']}</em><br />by ${', '.join(book.getall('dc:creator'))}</p>
+    <p class="publication">
+        Published <py:if test="'dc:publisher' in book">by ${book['dc:publisher']}, </py:if>${book['dc:date'][:4]}<br />
+        <py:if test="isbn">ISBN ${isbn}</py:if>
+    </p>
+    <p class="links">Find this book online:<br />
+        <py:for each="n, (url, anchor) in enumerate(links)">
+            <a href="${url}">${anchor}</a><py:if test="n &lt; len(links) - 1">,</py:if>
+        </py:for>
+    </p>
 </div>
 
 </body>
