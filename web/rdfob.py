@@ -81,7 +81,7 @@ class GraphNode(object):
         else:
             assert isinstance(x, rdflib.Literal)
             if x.datatype == NAMESPACES['rdf']['XMLLiteral']:
-                return genshi.Markup(x)
+                return genshi.XML(x)
             elif x.datatype == NAMESPACES['xsd']['date']:
                 m = re.match('(\d{4})-(\d{2})-(\d{2})', x)
                 if m:

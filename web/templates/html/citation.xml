@@ -13,7 +13,7 @@ import citations
 import representations
 import rdfob
 citation_node = node
-citation = citations.Citation.from_markup(citation_node['mhs:citationMarkup'])
+citation = citations.Citation.from_markup(unicode(citation_node['mhs:citationMarkup']))
 article = citation_node['dc:isPartOf']
 issue = article['dc:isPartOf']
 journal = issue['mhs:isIssueOf']
@@ -42,7 +42,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
 <div>${citation.coins(as_markup=True)}</div>
 
-<p>Cited as: ${citation_node['mhs:citationMarkup']}</p>
+<p>Cited as: ${citation_node['mhs:citationMarkup'].select('./node()')}</p>
 
 </body>
 </html>
