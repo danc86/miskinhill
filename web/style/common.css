@@ -164,8 +164,8 @@ p, li {
     text-align: center;
 }
 
-/* Book info */
-.bookinfo {
+/* Book/article info */
+.bookinfo, .articleinfo {
     margin: 1em 2em;
 }
 .bookinfo .cover {
@@ -175,6 +175,6 @@ p, li {
 .bookinfo .beside {
     margin-left: 120px;
 }
-.bookinfo .main {
+.bookinfo .main, .articleinfo .main {
     font-size: 1.1em;
 }

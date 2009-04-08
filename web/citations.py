@@ -139,13 +139,6 @@ class Citation(object):
                 parts.append(u'%d\u2013' % s)
         return u', '.join(parts)
 
-    def google_scholar_url(self):
-        params = {'as_occt': 'title', 
-                  'as_q': u' '.join(self.atitle).encode('utf8'), 
-                  'as_sauthors': u' '.join(self.au).encode('utf8'), 
-                  'as_publication': u' '.join(self.jtitle).encode('utf8')}
-        return 'http://scholar.google.com.au/scholar?' + urllib.urlencode(params)
-
 def citations_from_content(filename):
     original_content = open(filename, 'rb').read().decode('utf8')
     root = lxml.html.fragment_fromstring(original_content)

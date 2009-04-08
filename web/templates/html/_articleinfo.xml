@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:py="http://genshi.edgewall.org/"
+     xmlns:xi="http://www.w3.org/2001/XInclude">
+
+<div py:def="articleinfo(article)" class="articleinfo">
+
+<?python
+import urllib
+issue = article['dc:isPartOf']
+journal = issue['mhs:isIssueOf']
+?>
+
+<p class="main">‘${article['dc:title']}’<br />by ${', '.join(article.getall('dc:creator'))}</p>
+<p class="issue" py:with="volume = issue.getone('mhs:volume', None);
+                          issue_number = issue.getone('mhs:issueNumber', None);
+                          coverage = issue.getone('dc:coverage', None);
+                          issn = journal.identifier('urn:issn:')">
+    Published in
+    <em>${journal['dc:title']}</em>
+    <py:if test="volume">Vol.&nbsp;${volume}</py:if><py:if test="volume and issue_number">, </py:if><py:if test="issue_number">Issue&nbsp;${issue_number}</py:if>
+    <py:if test="coverage">(${coverage})</py:if>
+    <br />
+    <py:if test="issn">ISSN ${issn}</py:if>
+</p>
+<p class="links">Find this article online:<br />
+    <a href="http://scholar.google.com.au/scholar?${urllib.urlencode({'as_q': article['dc:title'].encode('utf8'), 'as_sauthors': ' '.join(article.getall('dc:creator')).encode('utf8'), 'as_publication': journal['dc:title'].encode('utf8')})}">Google Scholar</a>
+</p>
+
+</div>
+
+</div>
