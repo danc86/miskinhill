@@ -354,5 +354,32 @@ class CitationAddToGraphTest(unittest.TestCase):
         self.assertEquals('Limestone Press', book['dc:publisher'])
         self.assertEquals('1990', book['dc:date'])
 
+    def test_article(self):
+        citation = citations.Citation.from_elem(x(u'''
+                <span class="citation article"><span class="au" lang="ru">Ал.&nbsp;П. 
+                Соколов</span>, «<span class="atitle" lang="ru">Приготовление 
+                кругосветной экспедиции 1787 года, под начальством Муловского</span>», 
+                <em class="jtitle" lang="ru">Записки Гидрографического Департамента 
+                Морского Министерства</em>, 
+                <span lang="ru">часть&nbsp;<span class="volume" title="6">VI</span></span>, 
+                <span class="date">1848</span>&nbsp;г., 
+                <span class="spage">142</span>–<span class="epage">191</span></span>
+                '''))
+        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation_node, = self.graph.by_type('mhs:Citation')
+        article = citation_node['mhs:cites']
+        self.assert_(rdfob.uriref('mhs:Article') in article.types)
+        self.assertEquals(u'Приготовление кругосветной экспедиции '
+                        u'1787 года, под начальством Муловского', article['dc:title'])
+        self.assertEquals(u'Ал. П. Соколов', article['dc:creator'])
+        issue = article['dc:isPartOf']
+        self.assert_(rdfob.uriref('mhs:Issue') in issue.types)
+        self.assertEquals('6', issue['mhs:volume'])
+        self.assertEquals('1848', issue['dc:coverage'])
+        journal = issue['mhs:isIssueOf']
+        self.assert_(rdfob.uriref('mhs:Journal') in journal.types)
+        self.assertEquals(u'Записки Гидрографического Департамента '
+                        u'Морского Министерства', journal['dc:title'])
+
 if __name__ == '__main__':
     unittest.main()

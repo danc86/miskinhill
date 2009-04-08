@@ -100,8 +100,32 @@ class Citation(object):
                 graph.add((book, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:asin:' + asin)))
             for gbooksid in self.gbooksid:
                 graph.add((book, rdfob.uriref('dc:identifier'), rdfob.URIRef('http://books.google.com/books?id=' + gbooksid)))
-        else:
-            pass # XXX
+        elif self.genre == 'article':
+            journal = rdfob.BNode()
+            graph.add((journal, rdfob.RDF_TYPE, rdfob.uriref('mhs:Journal')))
+            for jtitle in self.jtitle:
+                graph.add((journal, rdfob.uriref('dc:title'), rdfob.Literal(jtitle)))
+            for issn in self.issn:
+                graph.add((journal, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:issn:' + issn)))
+            for pub in self.pub:
+                graph.add((journal, rdfob.uriref('dc:publisher'), rdfob.Literal(pub)))
+            issue = rdfob.BNode()
+            graph.add((issue, rdfob.RDF_TYPE, rdfob.uriref('mhs:Issue')))
+            graph.add((issue, rdfob.uriref('mhs:isIssueOf'), journal))
+            for volume in self.volume:
+                graph.add((issue, rdfob.uriref('mhs:volume'), rdfob.Literal(volume)))
+            for issue_number in self.issue:
+                graph.add((issue, rdfob.uriref('mhs:issueNumber'), rdfob.Literal(issue_number)))
+            for date in self.date:
+                graph.add((issue, rdfob.uriref('dc:coverage'), rdfob.Literal(date)))
+            article = rdfob.BNode()
+            graph.add((article, rdfob.RDF_TYPE, rdfob.uriref('mhs:Article')))
+            graph.add((article, rdfob.uriref('dc:isPartOf'), issue))
+            for atitle in self.atitle:
+                graph.add((article, rdfob.uriref('dc:title'), rdfob.Literal(atitle)))
+            for au in self.au:
+                graph.add((article, rdfob.uriref('dc:creator'), rdfob.Literal(au)))
+            graph.add((self_uri, rdfob.uriref('mhs:cites'), article))
 
     def page_ranges(self):
         starts = sorted(int(x) for x in self.spage)
