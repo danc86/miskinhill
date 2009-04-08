@@ -4,7 +4,7 @@
 import os, sys
 import unittest
 import tempfile
-from genshi.template import NewTextTemplate
+from genshi.template import NewTextTemplate, MarkupTemplate
 import lxml.etree, lxml.html
 
 import rdfob
@@ -138,6 +138,20 @@ class HtmlReviewTemplateTest(unittest.TestCase):
 
 class HtmlBookTemplateTest(unittest.TestCase):
 
+    def render(self, book_node):
+        wrapper_template_file = tempfile.NamedTemporaryFile()
+        wrapper_template_file.write('''
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+<xi:include href="${templates_dir}/html/_bookinfo.xml" />
+<body>
+${bookinfo(book_node)}
+</body>
+</html>''')
+        wrapper_template_file.seek(0)
+        template = template_loader.load(wrapper_template_file.name)
+        return template.generate(templates_dir=os.path.dirname(os.path.abspath(__file__)) + '/templates',
+                book_node=book_node).render('xhtml', doctype='xhtml')
+
     def test_without_publisher(self):
         graph = rdfob.Graph()
         node = rdfob.BNode()
@@ -145,9 +159,7 @@ class HtmlBookTemplateTest(unittest.TestCase):
         graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
         graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
         graph._g.add((node, rdfob.uriref('dc:date'), rdfob.Literal('1801', datatype=rdfob.uriref('xsd:date'))))
-        result = template_loader.load(os.path.join('html', 'book.xml'))\
-                .generate(req=MockRequest(), node=graph[node]).render('xhtml', doctype='xhtml')
-        root = lxml.html.fromstring(result)
+        root = lxml.html.fromstring(self.render(graph[node]))
         publication, = root.find_class('publication')
         self.assertEquals('Published 1801', publication.text_content().strip())
 
@@ -158,9 +170,7 @@ class HtmlBookTemplateTest(unittest.TestCase):
         graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
         graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
         graph._g.add((node, rdfob.uriref('dc:publisher'), rdfob.Literal('Some Publisher')))
-        result = template_loader.load(os.path.join('html', 'book.xml'))\
-                .generate(req=MockRequest(), node=graph[node]).render('xhtml', doctype='xhtml')
-        root = lxml.html.fromstring(result)
+        root = lxml.html.fromstring(self.render(graph[node]))
         publication, = root.find_class('publication')
         self.assertEquals('Published by Some Publisher', publication.text_content().strip())
 
@@ -170,9 +180,7 @@ class HtmlBookTemplateTest(unittest.TestCase):
         graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
         graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
-        result = template_loader.load(os.path.join('html', 'book.xml'))\
-                .generate(req=MockRequest(), node=graph[node]).render('xhtml', doctype='xhtml')
-        root = lxml.html.fromstring(result)
+        root = lxml.html.fromstring(self.render(graph[node]))
         publication, = root.find_class('publication')
         self.assertEquals('', publication.text_content().strip())
 
@@ -184,9 +192,7 @@ class HtmlBookTemplateTest(unittest.TestCase):
         graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
         graph._g.add((node, rdfob.uriref('dc:date'), rdfob.Literal('1801', datatype=rdfob.uriref('xsd:date'))))
         graph._g.add((node, rdfob.uriref('dc:identifier'), rdfob.URIRef('http://books.google.com/books?id=12345')))
-        result = template_loader.load(os.path.join('html', 'book.xml'))\
-                .generate(req=MockRequest(), node=graph[node]).render('xhtml', doctype='xhtml')
-        root = lxml.html.fromstring(result)
+        root = lxml.html.fromstring(self.render(graph[node]))
         links, = root.find_class('links')
         a, = links.findall('a')
         self.assertEquals('http://books.google.com/books?id=12345', a.get('href'))
