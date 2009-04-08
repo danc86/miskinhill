@@ -83,7 +83,8 @@ class MiskinHillApplication(object):
     def journals_index(self):
         template = template_loader.load('journals_index.xml')
         body = template.generate(req=self.req, 
-                journals=graph.by_type('mhs:Journal')
+                journals=[j for j in graph.by_type('mhs:Journal') 
+                          if j.uri.startswith(u'http://miskinhill.com.au/journals/')]
                 ).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 
