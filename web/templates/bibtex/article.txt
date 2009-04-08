@@ -10,7 +10,7 @@ import re
     number = "${issue['mhs:issueNumber']}", 
     year = "${issue['dc:coverage'][:4]}", 
     author = "${author['foaf:givenNames']} {${author['foaf:surname']}}", 
-    title = "${re.sub(r'(.)([A-Z])', r'\1{\2}', article['dc:title'])}", 
+    title = "${re.sub(r'(.)([A-Z])', r'\1{\2}', Markup(article['dc:title']).striptags())}", 
     pages = "${article['mhs:startPage']}–${article['mhs:endPage']}", 
     url = "${article.uri}"
 }
