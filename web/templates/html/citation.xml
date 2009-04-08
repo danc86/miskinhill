@@ -4,6 +4,7 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       lang="en-AU">
 <xi:include href="_commonwrapper.xml" />
+<xi:include href="_bookinfo.xml" />
 
 <?python
 from viewutils import relative_url
@@ -31,9 +32,9 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
 <h2>Citation<abbr class="unapi-id" title="${citation_node.uri}" /></h2>
 
-<div py:if="citation_node.getall('mhs:cites') and rdfob.uriref('mhs:Book') in citation_node['mhs:cites'].types" class="bookinfo">
-    ${representations.HTMLRepresentation(req, citation_node['mhs:cites']).generate().select('//body/*')}
-</div>
+<py:if test="citation_node.getone('mhs:cites', None) and rdfob.uriref('mhs:Book') in citation_node['mhs:cites'].types">
+    ${bookinfo(citation_node['mhs:cites'])}
+</py:if>
 
 <div>${citation.coins(as_markup=True)}</div>
 

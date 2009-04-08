@@ -4,6 +4,7 @@
       xmlns:xi="http://www.w3.org/2001/XInclude"
       lang="en-AU">
 <xi:include href="_commonwrapper.xml" />
+<xi:include href="_bookinfo.xml" />
 
 <?python
 from viewutils import relative_url
@@ -40,7 +41,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
     by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
 </p>
 
-<div class="bookinfo">${representations.HTMLRepresentation(req, book).generate().select('//body/*')}</div>
+${bookinfo(book)}
 
 <xi:include href="../../../../content${relative_url(review.uri)}.html"><xi:fallback /></xi:include>
 
