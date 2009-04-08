@@ -97,11 +97,17 @@ class GraphNode(object):
                 return True
         return False
 
-    def getone(self, predicate, as_uriref=False):
+    _NO_DEFAULT = ()
+    def getone(self, predicate, default=_NO_DEFAULT, as_uriref=False):
         predicate = uriref(predicate)
-        objects = self._objects[predicate]
+        objects = self._objects.get(predicate, [])
         if len(objects) > 1:
             raise UniquenessError(objects)
+        if not objects:
+            if default is not self._NO_DEFAULT:
+                return default
+            else:
+                raise KeyError(predicate)
         if as_uriref:
             return objects[0]
         else:

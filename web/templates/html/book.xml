@@ -39,8 +39,10 @@ if isbn:
 
 <div class="beside">
     <p class="main"><em>${book['dc:title']}</em><br />by ${', '.join(book.getall('dc:creator'))}</p>
-    <p class="publication">
-        Published <py:if test="'dc:publisher' in book">by ${book['dc:publisher']}, </py:if>${book['dc:date'][:4]}<br />
+    <p class="publication" py:with="publisher = book.getone('dc:publisher', default=None); date = book.getone('dc:date', default=None)">
+        <py:if test="publisher or date">
+            Published <py:if test="publisher">by ${publisher}</py:if><py:if test="publisher and date">, </py:if><py:if test="date">${date}</py:if><br />
+        </py:if>
         <py:if test="isbn">ISBN ${isbn}</py:if>
     </p>
     <p class="links">Find this book online:<br />

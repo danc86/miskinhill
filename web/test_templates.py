@@ -151,6 +151,31 @@ class HtmlBookTemplateTest(unittest.TestCase):
         publication, = root.find_class('publication')
         self.assertEquals('Published 1801', publication.text_content().strip())
 
+    def test_without_date(self):
+        graph = rdfob.Graph()
+        node = rdfob.BNode()
+        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
+        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        graph._g.add((node, rdfob.uriref('dc:publisher'), rdfob.Literal('Some Publisher')))
+        result = template_loader.load(os.path.join('html', 'book.xml'))\
+                .generate(req=MockRequest(), node=graph[node]).render('xhtml', doctype='xhtml')
+        root = lxml.html.fromstring(result)
+        publication, = root.find_class('publication')
+        self.assertEquals('Published by Some Publisher', publication.text_content().strip())
+
+    def test_without_date_or_publisher(self):
+        graph = rdfob.Graph()
+        node = rdfob.BNode()
+        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
+        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        result = template_loader.load(os.path.join('html', 'book.xml'))\
+                .generate(req=MockRequest(), node=graph[node]).render('xhtml', doctype='xhtml')
+        root = lxml.html.fromstring(result)
+        publication, = root.find_class('publication')
+        self.assertEquals('', publication.text_content().strip())
+
     def test_with_only_gbooksid(self):
         graph = rdfob.Graph()
         node = rdfob.BNode()
