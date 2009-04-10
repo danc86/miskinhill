@@ -1,5 +1,5 @@
 
-import os, re, urllib, hashlib
+import os, re, urllib, hashlib, urlparse
 import lxml.html
 from genshi import Markup
 from lxml.html import builder as E
@@ -17,7 +17,7 @@ def title_or_text(elem):
     return unicode(elem.get('title', elem.text_content()))
 
 OPENURL_FIELDS = 'atitle jtitle btitle date volume issue spage epage issn isbn au place pub edition'.split()
-CITATION_FIELDS = OPENURL_FIELDS + 'asin gbooksid'.split()
+CITATION_FIELDS = OPENURL_FIELDS + ['cites']
 CITATION_GENRES = 'book bookitem thesis proceeding article'.split()
 
 class Citation(object):
@@ -82,50 +82,9 @@ class Citation(object):
         graph.add((self_uri, rdfob.uriref('mhs:citationMarkup'), 
                 rdfob.Literal(lxml.etree.tostring(self._elem, encoding=unicode, with_tail=False), 
                     datatype=rdfob.uriref('rdf:XMLLiteral'))))
-        if self.genre in ('book', 'bookitem', 'proceeding'):
-            book = rdfob.BNode()
-            graph.add((self_uri, rdfob.uriref('mhs:cites'), book))
-            graph.add((book, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-            for title in self.btitle:
-                graph.add((book, rdfob.uriref('dc:title'), rdfob.Literal(title)))
-            for au in self.au:
-                graph.add((book, rdfob.uriref('dc:creator'), rdfob.Literal(au)))
-            for pub in self.pub:
-                graph.add((book, rdfob.uriref('dc:publisher'), rdfob.Literal(pub)))
-            for date in self.date:
-                graph.add((book, rdfob.uriref('dc:date'), rdfob.Literal(date)))
-            for isbn in self.isbn:
-                graph.add((book, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:isbn:' + isbn)))
-            for asin in self.asin:
-                graph.add((book, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:asin:' + asin)))
-            for gbooksid in self.gbooksid:
-                graph.add((book, rdfob.uriref('dc:identifier'), rdfob.URIRef('http://books.google.com/books?id=' + gbooksid)))
-        elif self.genre == 'article':
-            journal = rdfob.BNode()
-            graph.add((journal, rdfob.RDF_TYPE, rdfob.uriref('mhs:Journal')))
-            for jtitle in self.jtitle:
-                graph.add((journal, rdfob.uriref('dc:title'), rdfob.Literal(jtitle)))
-            for issn in self.issn:
-                graph.add((journal, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:issn:' + issn)))
-            for pub in self.pub:
-                graph.add((journal, rdfob.uriref('dc:publisher'), rdfob.Literal(pub)))
-            issue = rdfob.BNode()
-            graph.add((issue, rdfob.RDF_TYPE, rdfob.uriref('mhs:Issue')))
-            graph.add((issue, rdfob.uriref('mhs:isIssueOf'), journal))
-            for volume in self.volume:
-                graph.add((issue, rdfob.uriref('mhs:volume'), rdfob.Literal(volume)))
-            for issue_number in self.issue:
-                graph.add((issue, rdfob.uriref('mhs:issueNumber'), rdfob.Literal(issue_number)))
-            for date in self.date:
-                graph.add((issue, rdfob.uriref('dc:coverage'), rdfob.Literal(date)))
-            article = rdfob.BNode()
-            graph.add((article, rdfob.RDF_TYPE, rdfob.uriref('mhs:Article')))
-            graph.add((article, rdfob.uriref('dc:isPartOf'), issue))
-            for atitle in self.atitle:
-                graph.add((article, rdfob.uriref('dc:title'), rdfob.Literal(atitle)))
-            for au in self.au:
-                graph.add((article, rdfob.uriref('dc:creator'), rdfob.Literal(au)))
-            graph.add((self_uri, rdfob.uriref('mhs:cites'), article))
+        for cites in self.cites:
+            graph.add((self_uri, rdfob.uriref('mhs:cites'), 
+                    rdfob.URIRef(urlparse.urljoin(u'http://private.miskinhill.com.au/cited/', cites))))
 
     def page_ranges(self):
         starts = sorted(int(x) for x in self.spage)

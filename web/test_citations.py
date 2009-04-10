@@ -300,17 +300,13 @@ class CitationAddToGraphTest(unittest.TestCase):
                 <span class="au">Christopher Lloyd</span> and 
                 <span class="au">R.&nbsp;C. Anderson</span>, (<span class="place">London</span>: 
                 <span class="pub">Navy Records Society</span>, <span class="date">1959</span>), 
-                <span class="spage">90</span>–<span class="epage">91</span></span>
+                <span class="spage">90</span>–<span class="epage">91</span>
+                <span class="cites" title="books/penrose-1959" /></span>
                 '''))
         citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
         citation_node, = self.graph.by_type('mhs:Citation')
-        book = citation_node['mhs:cites']
-        self.assert_(rdfob.uriref('mhs:Book') in book.types)
-        self.assertEquals(set(['Charles Vinicombe Penrose', 'Christopher Lloyd', 'R. C. Anderson']), 
-                set(book.getall('dc:creator')))
-        self.assertEquals('A Memoir of James Trevenen', book['dc:title'])
-        self.assertEquals('Navy Records Society', book['dc:publisher'])
-        self.assertEquals('1959', book['dc:date'])
+        self.assertEquals(u'http://private.miskinhill.com.au/cited/books/penrose-1959', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
 
     def test_bookitem(self):
         citation = citations.Citation.from_elem(x(u'''
@@ -320,17 +316,13 @@ class CitationAddToGraphTest(unittest.TestCase):
                 title="Spain and the North Pacific Coast" /><span class="place" 
                 title="Vancouver" /><span class="pub" title="Maritime Museum Society" 
                 /><span class="date" title="1992" />, 
-                <span class="spage">31</span>–<span class="epage">29</span></span>
+                <span class="spage">31</span>–<span class="epage">29</span>
+                <span class="cites" title="books/inglis-1992" /></span>
                 '''))
         citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
         citation_node, = self.graph.by_type('mhs:Citation')
-        book = citation_node['mhs:cites']
-        self.assert_(rdfob.uriref('mhs:Book') in book.types)
-        self.assertEquals(set(['Lydia Black', 'Robin Inglis']), 
-                set(book.getall('dc:creator')))
-        self.assertEquals('Spain and the North Pacific Coast', book['dc:title'])
-        self.assertEquals('Maritime Museum Society', book['dc:publisher'])
-        self.assertEquals('1992', book['dc:date'])
+        self.assertEquals(u'http://private.miskinhill.com.au/cited/books/inglis-1992', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
 
     def test_proceeding(self):
         citation = citations.Citation.from_elem(x(u'''
@@ -342,17 +334,13 @@ class CitationAddToGraphTest(unittest.TestCase):
                 (<span class="place">Kingston and Fairbanks</span>: 
                 <span class="pub">Limestone Press</span>, 
                 <span class="date">1990</span>), 
-                <span class="spage">425</span>–<span class="epage">450</span></span>
+                <span class="spage">425</span>–<span class="epage">450</span>
+                <span class="cites" title="proceedings/russian-america-1990" /></span>
                 '''))
         citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
         citation_node, = self.graph.by_type('mhs:Citation')
-        book = citation_node['mhs:cites']
-        self.assert_(rdfob.uriref('mhs:Book') in book.types)
-        self.assertEquals('Valery O. Shubin', book['dc:creator'])
-        self.assertEquals('Russia in North America: Proceedings of the '
-                        '2nd International Conference on Russian America', book['dc:title'])
-        self.assertEquals('Limestone Press', book['dc:publisher'])
-        self.assertEquals('1990', book['dc:date'])
+        self.assertEquals(u'http://private.miskinhill.com.au/cited/proceedings/russian-america-1990', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
 
     def test_article(self):
         citation = citations.Citation.from_elem(x(u'''
@@ -363,23 +351,14 @@ class CitationAddToGraphTest(unittest.TestCase):
                 Морского Министерства</em>, 
                 <span lang="ru">часть&nbsp;<span class="volume" title="6">VI</span></span>, 
                 <span class="date">1848</span>&nbsp;г., 
-                <span class="spage">142</span>–<span class="epage">191</span></span>
+                <span class="spage">142</span>–<span class="epage">191</span><span class="cites"
+                title="journals/гидро-департамента-морского-министерства/vi/приготовление" /></span>
                 '''))
         citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
         citation_node, = self.graph.by_type('mhs:Citation')
-        article = citation_node['mhs:cites']
-        self.assert_(rdfob.uriref('mhs:Article') in article.types)
-        self.assertEquals(u'Приготовление кругосветной экспедиции '
-                        u'1787 года, под начальством Муловского', article['dc:title'])
-        self.assertEquals(u'Ал. П. Соколов', article['dc:creator'])
-        issue = article['dc:isPartOf']
-        self.assert_(rdfob.uriref('mhs:Issue') in issue.types)
-        self.assertEquals('6', issue['mhs:volume'])
-        self.assertEquals('1848', issue['dc:coverage'])
-        journal = issue['mhs:isIssueOf']
-        self.assert_(rdfob.uriref('mhs:Journal') in journal.types)
-        self.assertEquals(u'Записки Гидрографического Департамента '
-                        u'Морского Министерства', journal['dc:title'])
+        self.assertEquals(u'http://private.miskinhill.com.au/cited/'
+                u'journals/гидро-департамента-морского-министерства/vi/приготовление', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
 
 if __name__ == '__main__':
     unittest.main()
