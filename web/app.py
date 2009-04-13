@@ -32,9 +32,10 @@ def maybe_initialise_graph():
                             os.path.join(content_dir, 'rdfschema', 'foaf.nt'), 
                             os.path.join(content_dir, 'rdfschema', 'dcterms.nt'))
         for article in graph.by_type('mhs:Article'):
-            for citation in citations.citations_from_content(
-                    content_dir + viewutils.relative_url(article.uri) + '.html'):
-                citation.add_to_graph(graph._g, article.uri)
+            if article.uri.startswith('http://miskinhill.com.au/'):
+                for citation in citations.citations_from_content(
+                        content_dir + viewutils.relative_url(article.uri) + '.html'):
+                    citation.add_to_graph(graph._g, article.uri)
 
 class MiskinHillApplication(object):
 
