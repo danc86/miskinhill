@@ -136,7 +136,7 @@ class HtmlReviewTemplateTest(unittest.TestCase):
         self.assertEquals('/journals/test/', published_in_links[1].get('href'))
         self.assertEquals('Test Journal of Good Stuff', published_in_links[1].text_content())
 
-class HtmlBookTemplateTest(unittest.TestCase):
+class HtmlBookinfoTemplateTest(unittest.TestCase):
 
     def render(self, book_node):
         wrapper_template_file = tempfile.NamedTemporaryFile()
@@ -205,6 +205,42 @@ ${bookinfo(book_node)}
         root = lxml.html.fromstring(self.render(graph[node]))
         main, = root.find_class('main')
         self.assertEquals('Some title', main.text_content().strip())
+
+class HtmlArticleinfoTemplateTest(unittest.TestCase):
+
+    def render(self, node):
+        wrapper_template_file = tempfile.NamedTemporaryFile()
+        wrapper_template_file.write('''
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
+<xi:include href="${templates_dir}/html/_articleinfo.xml" />
+<body>
+${articleinfo(node)}
+</body>
+</html>''')
+        wrapper_template_file.seek(0)
+        template = template_loader.load(wrapper_template_file.name)
+        return template.generate(templates_dir=os.path.dirname(os.path.abspath(__file__)) + '/templates',
+                node=node).render('xhtml', doctype='xhtml')
+
+    def test_worldcat_issn_link(self):
+        graph = rdfob.Graph()
+        journal = rdfob.BNode()
+        graph._g.add((journal, rdfob.RDF_TYPE, rdfob.uriref('mhs:Journal')))
+        graph._g.add((journal, rdfob.uriref('dc:title'), rdfob.Literal('Studies of something')))
+        graph._g.add((journal, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:issn:12345678')))
+        issue = rdfob.BNode()
+        graph._g.add((issue, rdfob.RDF_TYPE, rdfob.uriref('mhs:Issue')))
+        graph._g.add((issue, rdfob.uriref('mhs:isIssueOf'), journal))
+        graph._g.add((issue, rdfob.uriref('mhs:volume'), rdfob.Literal(1)))
+        article = rdfob.BNode()
+        graph._g.add((article, rdfob.RDF_TYPE, rdfob.uriref('mhs:Article')))
+        graph._g.add((article, rdfob.uriref('dc:isPartOf'), issue))
+        graph._g.add((article, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
+        graph._g.add((article, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        root = lxml.html.fromstring(self.render(graph[article]))
+        links, = root.find_class('links')
+        a, = links.findall('a[@href="http://www.worldcat.org/search?q=issn:12345678"]')
+        self.assertEquals('WorldCat', a.text_content().strip())
 
 if __name__ == '__main__':
     unittest.main()

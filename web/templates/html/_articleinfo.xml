@@ -9,6 +9,7 @@
 import urllib
 issue = article['dc:isPartOf']
 journal = issue['mhs:isIssueOf']
+issn = journal.identifier('urn:issn:')
 ?>
 
 <p class="main" py:with="title = article.getone('dc:title', None); authors = article.getall('dc:creator')">
@@ -30,7 +31,8 @@ journal = issue['mhs:isIssueOf']
     <py:if test="issn">ISSN ${issn}</py:if>
 </p>
 <p class="links" py:if="article.getone('dc:title', None)">Find this article online:<br />
-    <a href="http://scholar.google.com.au/scholar?${urllib.urlencode({'as_q': article['dc:title'].encode('utf8'), 'as_sauthors': ' '.join(article.getall('dc:creator')).encode('utf8'), 'as_publication': journal['dc:title'].encode('utf8')})}">Google Scholar</a>
+    <a href="http://scholar.google.com.au/scholar?${urllib.urlencode({'as_q': article['dc:title'].encode('utf8'), 'as_sauthors': ' '.join(article.getall('dc:creator')).encode('utf8'), 'as_publication': journal['dc:title'].encode('utf8')})}">Google Scholar</a>, 
+    <a py:if="issn" href="http://www.worldcat.org/search?q=issn:${issn}">WorldCat</a>
 </p>
 
 </div>
