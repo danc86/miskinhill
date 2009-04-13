@@ -12,28 +12,36 @@ journal = issue['mhs:isIssueOf']
 issn = journal.identifier('urn:issn:')
 ?>
 
-<p class="main" py:with="title = article.getone('dc:title', None); authors = article.getall('dc:creator')">
-    <py:if test="title">
-        ‘${title}’<br />
-        <py:if test="authors">by ${', '.join(authors)}</py:if>
-    </py:if>
-</p>
+<py:choose>
+    <py:when test="issue.getone('mhs:coverThumbnail', as_uriref=True, default=None)">
+        <p class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
+    </py:when>
+</py:choose>
 
-<p class="issue" py:with="volume = issue.getone('mhs:volume', None);
-                          issue_number = issue.getone('mhs:issueNumber', None);
-                          coverage = issue.getone('dc:coverage', None);
-                          issn = journal.identifier('urn:issn:')">
-    Published in
-    <em>${journal['dc:title']}</em>
-    <py:if test="volume">Vol.&nbsp;${volume}</py:if><py:if test="volume and issue_number">, </py:if><py:if test="issue_number">Issue&nbsp;${issue_number}</py:if>
-    <py:if test="coverage">(${coverage})</py:if>
-    <br />
-    <py:if test="issn">ISSN ${issn}</py:if>
-</p>
-<p class="links" py:if="article.getone('dc:title', None)">Find this article online:<br />
-    <a href="http://scholar.google.com.au/scholar?${urllib.urlencode({'as_q': article['dc:title'].encode('utf8'), 'as_sauthors': ' '.join(article.getall('dc:creator')).encode('utf8'), 'as_publication': journal['dc:title'].encode('utf8')})}">Google Scholar</a>, 
-    <a py:if="issn" href="http://www.worldcat.org/search?q=issn:${issn}">WorldCat</a>
-</p>
+<div class="beside">
+    <p class="main" py:with="title = article.getone('dc:title', None); authors = article.getall('dc:creator')">
+        <py:if test="title">
+            ‘${title}’<br />
+            <py:if test="authors">by ${', '.join(authors)}</py:if>
+        </py:if>
+    </p>
+
+    <p class="issue" py:with="volume = issue.getone('mhs:volume', None);
+                              issue_number = issue.getone('mhs:issueNumber', None);
+                              coverage = issue.getone('dc:coverage', None);
+                              issn = journal.identifier('urn:issn:')">
+        Published in
+        <em>${journal['dc:title']}</em>
+        <py:if test="volume">Vol.&nbsp;${volume}</py:if><py:if test="volume and issue_number">, </py:if><py:if test="issue_number">Issue&nbsp;${issue_number}</py:if>
+        <py:if test="coverage">(${coverage})</py:if>
+        <br />
+        <py:if test="issn">ISSN ${issn}</py:if>
+    </p>
+    <p class="links" py:if="article.getone('dc:title', None)">Find this article online:<br />
+        <a href="http://scholar.google.com.au/scholar?${urllib.urlencode({'as_q': article['dc:title'].encode('utf8'), 'as_sauthors': ' '.join(article.getall('dc:creator')).encode('utf8'), 'as_publication': journal['dc:title'].encode('utf8')})}">Google Scholar</a>, 
+        <a py:if="issn" href="http://www.worldcat.org/search?q=issn:${issn}">WorldCat</a>
+    </p>
+</div>
 
 </div>
 

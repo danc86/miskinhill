@@ -206,6 +206,18 @@ ${bookinfo(book_node)}
         main, = root.find_class('main')
         self.assertEquals('Some title', main.text_content().strip())
 
+    def test_cover_thumbnail(self):
+        graph = rdfob.Graph()
+        node = rdfob.BNode()
+        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
+        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        graph._g.add((node, rdfob.uriref('mhs:coverThumbnail'), rdfob.URIRef('http://example.com/thumb.gif')))
+        root = lxml.html.fromstring(self.render(graph[node]))
+        cover, = root.find_class('cover')
+        img = cover.find('img')
+        self.assertEquals('http://example.com/thumb.gif', img.get('src'))
+
 class HtmlArticleinfoTemplateTest(unittest.TestCase):
 
     def render(self, node):
@@ -241,6 +253,27 @@ ${articleinfo(node)}
         links, = root.find_class('links')
         a, = links.findall('a[@href="http://www.worldcat.org/search?q=issn:12345678"]')
         self.assertEquals('WorldCat', a.text_content().strip())
+
+    def test_cover_thumbnail(self):
+        graph = rdfob.Graph()
+        journal = rdfob.BNode()
+        graph._g.add((journal, rdfob.RDF_TYPE, rdfob.uriref('mhs:Journal')))
+        graph._g.add((journal, rdfob.uriref('dc:title'), rdfob.Literal('Studies of something')))
+        graph._g.add((journal, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:issn:12345678')))
+        issue = rdfob.BNode()
+        graph._g.add((issue, rdfob.RDF_TYPE, rdfob.uriref('mhs:Issue')))
+        graph._g.add((issue, rdfob.uriref('mhs:isIssueOf'), journal))
+        graph._g.add((issue, rdfob.uriref('mhs:volume'), rdfob.Literal(1)))
+        graph._g.add((issue, rdfob.uriref('mhs:coverThumbnail'), rdfob.URIRef('http://example.com/thumb.gif')))
+        article = rdfob.BNode()
+        graph._g.add((article, rdfob.RDF_TYPE, rdfob.uriref('mhs:Article')))
+        graph._g.add((article, rdfob.uriref('dc:isPartOf'), issue))
+        graph._g.add((article, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
+        graph._g.add((article, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        root = lxml.html.fromstring(self.render(graph[article]))
+        cover, = root.find_class('cover')
+        img = cover.find('img')
+        self.assertEquals('http://example.com/thumb.gif', img.get('src'))
 
 if __name__ == '__main__':
     unittest.main()

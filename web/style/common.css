@@ -168,11 +168,11 @@ p, li {
 .bookinfo, .articleinfo {
     margin: 1em 2em;
 }
-.bookinfo .cover {
+.bookinfo .cover, .articleinfo .cover {
     float: left;
     margin: 0 10px 0 0;
 }
-.bookinfo .beside {
+.bookinfo .beside, .articleinfo .beside {
     margin-left: 120px;
 }
 .bookinfo .main, .articleinfo .main {
