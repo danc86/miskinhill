@@ -197,5 +197,14 @@ ${bookinfo(book_node)}
         a, = links.findall('a[@href="http://books.google.com/books?id=12345"]')
         self.assertEquals('Google Book Search', a.text_content().strip())
 
+    def test_without_author(self):
+        graph = rdfob.Graph()
+        node = rdfob.BNode()
+        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
+        root = lxml.html.fromstring(self.render(graph[node]))
+        main, = root.find_class('main')
+        self.assertEquals('Some title', main.text_content().strip())
+
 if __name__ == '__main__':
     unittest.main()
