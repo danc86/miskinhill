@@ -184,7 +184,7 @@ ${bookinfo(book_node)}
         publication, = root.find_class('publication')
         self.assertEquals('', publication.text_content().strip())
 
-    def test_with_only_gbooksid(self):
+    def test_gbooksid(self):
         graph = rdfob.Graph()
         node = rdfob.BNode()
         graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
@@ -194,8 +194,7 @@ ${bookinfo(book_node)}
         graph._g.add((node, rdfob.uriref('dc:identifier'), rdfob.URIRef('http://books.google.com/books?id=12345')))
         root = lxml.html.fromstring(self.render(graph[node]))
         links, = root.find_class('links')
-        a, = links.findall('a')
-        self.assertEquals('http://books.google.com/books?id=12345', a.get('href'))
+        a, = links.findall('a[@href="http://books.google.com/books?id=12345"]')
         self.assertEquals('Google Book Search', a.text_content().strip())
 
 if __name__ == '__main__':

@@ -10,6 +10,7 @@ import urllib
 isbn = book.identifier('urn:isbn:')
 asin = book.identifier('urn:asin:')
 gbooksid = book.identifier('http://books.google.com/books?id=')
+oclcnum = book.identifier('info:oclcnum/')
 
 links = []
 if asin:
@@ -22,10 +23,16 @@ elif isbn:
     links.append(('http://books.google.com/books?vid=ISBN%s' % isbn, 'Google Book Search'))
 else:
     links.append(('http://books.google.com/books?q=%s' % urllib.quote(book['dc:title'].encode('utf8'), ''), 'Google Book Search'))
-if isbn:
+if oclcnum:
+    links.append(('http://www.worldcat.org/oclc/%s' % oclcnum, 'WorldCat'))
+elif isbn:
     links.append(('http://www.worldcat.org/search?q=isbn:%s' % isbn, 'WorldCat'))
+else:
+    links.append(('http://www.worldcat.org/search?q=%s' % urllib.quote(book['dc:title'].encode('utf8'), ''), 'WorldCat'))
 if isbn:
     links.append(('http://www.librarything.com/isbn/%s' % isbn, 'LibraryThing'))
+else:
+    links.append(('http://www.librarything.com/title/%s' % urllib.quote(book['dc:title'].encode('utf8'), ''), 'LibraryThing'))
 ?>
 
 <p class="cover" py:if="asin"><img src="http://images.amazon.com/images/P/${asin}.01.MZZZZZZZ.jpg" alt="" /></p>
