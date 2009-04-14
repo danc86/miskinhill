@@ -11,13 +11,14 @@ h2 .issue {
 }
 
 ul.contents {
-    margin-right: 16em;
+    margin: 0 16em 0 0;
     padding: 0;
 }
 ul.contents li {
     list-style: none;
     padding: 0.5em;
-    border-top: 1px dotted #777;
+    border-top: 1px dotted #777 !important;
+    border-top: none; /* this one for IE */
     border-bottom: 1px dotted #777;
 }
 ul.contents li + li {
