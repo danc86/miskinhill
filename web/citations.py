@@ -84,7 +84,7 @@ class Citation(object):
                     datatype=rdfob.uriref('rdf:XMLLiteral'))))
         for cites in self.cites:
             graph.add((self_uri, rdfob.uriref('mhs:cites'), 
-                    rdfob.URIRef(urlparse.urljoin(u'http://private.miskinhill.com.au/cited/', cites))))
+                    rdfob.URIRef(urlparse.urljoin('http://private.miskinhill.com.au/cited/', cites.encode('utf8')).decode('utf8')))) # XXX dodgy
 
     def page_ranges(self):
         starts = sorted(int(x) for x in self.spage)
