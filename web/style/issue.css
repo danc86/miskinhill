@@ -22,7 +22,7 @@ ul.contents li {
     border-bottom: 1px dotted #777;
 }
 ul.contents li + li {
-    border-top: none;
+    border-top: none !important;
 }
 ul.contents li:hover {
     background-color: #FFF5D6;
