@@ -7,6 +7,7 @@
 
 <?python
 import urllib
+import viewutils
 issue = article['dc:isPartOf']
 journal = issue['mhs:isIssueOf']
 issn = journal.identifier('urn:issn:')
