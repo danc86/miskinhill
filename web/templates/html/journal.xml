@@ -26,7 +26,9 @@ ${breadcrumbs([('/journals/', 'Journals')])}
 
     <div class="issue-meta metabox">
         <h4>Journal details</h4>
-        <p class="cover"><img src="${journal.reflexive('mhs:isIssueOf')[0].getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
+        <p class="cover">
+            <img src="${sorted(journal.reflexive('mhs:isIssueOf'), key=lambda i: (i['mhs:volume'], i['mhs:issueNumber']), reverse=True)[0].getone('mhs:coverThumbnail', as_uriref=True)}" alt="" />
+        </p>
         <p class="publisher">Published by <a href="${publisher.getone('foaf:homepage', as_uriref=True)}">${publisher['foaf:name']}</a></p>
         <p class="issn">ISSN ${journal.identifier('urn:issn:')}</p>
         <p>Metadata:
@@ -41,7 +43,7 @@ ${breadcrumbs([('/journals/', 'Journals')])}
 
 <h3>Issues</h3>
 <ul>
-    <li py:for="issue in journal.reflexive('mhs:isIssueOf')">
+    <li py:for="issue in journal.reflexive('mhs:isIssueOf')" py:if="issue.uri.startswith('http://miskinhill.com.au')">
         <a href="${relative_url(issue.uri)}">
             Vol.&nbsp;${issue['mhs:volume']},
             Issue&nbsp;${issue['mhs:issueNumber']}
