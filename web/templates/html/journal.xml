@@ -27,7 +27,7 @@ ${breadcrumbs([('/journals/', 'Journals')])}
     <div class="issue-meta metabox">
         <h4>Journal details</h4>
         <p class="cover">
-            <img src="${sorted(journal.reflexive('mhs:isIssueOf'), key=lambda i: (i['mhs:volume'], i['mhs:issueNumber']), reverse=True)[0].getone('mhs:coverThumbnail', as_uriref=True)}" alt="" />
+            <img src="${sorted(journal.reflexive('mhs:isIssueOf'), key=lambda i: i['mhs:publicationDate'], reverse=True)[0].getone('mhs:coverThumbnail', as_uriref=True)}" alt="" />
         </p>
         <p class="publisher">Published by <a href="${publisher.getone('foaf:homepage', as_uriref=True)}">${publisher['foaf:name']}</a></p>
         <p class="issn">ISSN ${journal.identifier('urn:issn:')}</p>
