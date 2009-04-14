@@ -7,7 +7,8 @@
 
 <?python
 author = node
-articles = [a for a in author.reflexive('dc:creator', type='mhs:Article') if a.uri.startswith('http://miskinhill.com.au/')]
+#articles = [a for a in author.reflexive('dc:creator', type='mhs:Article') if a.uri.startswith('http://miskinhill.com.au/')]
+articles = []
 reviews = [r for r in author.reflexive('dc:creator', type='mhs:Review') if a.uri.startswith('http://miskinhill.com.au/')]
 ?>
 
