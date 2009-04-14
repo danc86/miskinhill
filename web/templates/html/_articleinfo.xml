@@ -22,7 +22,7 @@ issn = journal.identifier('urn:issn:')
     <p class="main" py:with="title = article.getone('dc:title', None); authors = article.getall('dc:creator')">
         <py:if test="title">
             ‘${title}’<br />
-            <py:if test="authors">by ${', '.join(authors)}</py:if>
+            <py:if test="authors">by ${Markup(', ').join(viewutils.linked_author(a) for a in authors)}</py:if>
         </py:if>
     </p>
 

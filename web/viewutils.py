@@ -1,5 +1,5 @@
 
-from genshi import XML
+from genshi import XML, Markup
 import lxml.html
 from lxml.html import builder as E
 
@@ -21,3 +21,9 @@ def relative_url(uri):
     if uri.startswith('http://miskinhill.com.au'):
         return uri[24:]
     return uri
+
+def linked_author(author_node):
+    if isinstance(author_node, unicode):
+        return author_node
+    else:
+        return Markup(u'<a href="%s">%s</a>' % (relative_url(author_node.uri), author_node['foaf:name']))

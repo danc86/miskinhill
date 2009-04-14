@@ -7,6 +7,7 @@
 
 <?python
 import urllib
+import viewutils
 isbn = book.identifier('urn:isbn:')
 asin = book.identifier('urn:asin:')
 gbooksid = book.identifier('http://books.google.com/books?id=')
@@ -47,7 +48,7 @@ else:
 <div class="beside">
     <p class="main">
         <em>${book['dc:title']}</em><br />
-        <py:if test="book.getall('dc:creator')">by ${', '.join(book.getall('dc:creator'))}</py:if>
+        <py:if test="book.getall('dc:creator')">by ${Markup(', ').join(viewutils.linked_author(c) for c in book.getall('dc:creator'))}</py:if>
     </p>
     <p class="publication" py:with="publisher = book.getone('dc:publisher', default=None); date = book.getone('dc:date', default=None)">
         <py:if test="publisher or date">
