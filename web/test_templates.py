@@ -139,7 +139,7 @@ class HtmlReviewTemplateTest(unittest.TestCase):
 class HtmlBookinfoTemplateTest(unittest.TestCase):
 
     def render(self, book_node):
-        wrapper_template_file = tempfile.NamedTemporaryFile()
+        wrapper_template_file = tempfile.NamedTemporaryFile(suffix='.xml')
         wrapper_template_file.write('''
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 <xi:include href="${templates_dir}/html/_bookinfo.xml" />
@@ -221,7 +221,7 @@ ${bookinfo(book_node)}
 class HtmlArticleinfoTemplateTest(unittest.TestCase):
 
     def render(self, node):
-        wrapper_template_file = tempfile.NamedTemporaryFile()
+        wrapper_template_file = tempfile.NamedTemporaryFile(suffix='.xml')
         wrapper_template_file.write('''
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:xi="http://www.w3.org/2001/XInclude">
 <xi:include href="${templates_dir}/html/_articleinfo.xml" />
