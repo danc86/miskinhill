@@ -79,6 +79,7 @@ p, li {
     padding-top: 0.5em;
     margin-top: 1em;
     border-top: 1px dotted #aaa;
+    clear: both;
 }
 #footer a {
     color: #777;
