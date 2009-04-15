@@ -234,28 +234,8 @@ ${articleinfo(node)}
         return template.generate(templates_dir=os.path.dirname(os.path.abspath(__file__)) + '/templates',
                 node=node).render('xhtml', doctype='xhtml')
 
-    def test_worldcat_issn_link(self):
-        graph = rdfob.Graph()
-        journal = rdfob.BNode()
-        graph._g.add((journal, rdfob.RDF_TYPE, rdfob.uriref('mhs:Journal')))
-        graph._g.add((journal, rdfob.uriref('dc:title'), rdfob.Literal('Studies of something')))
-        graph._g.add((journal, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:issn:12345678')))
-        issue = rdfob.BNode()
-        graph._g.add((issue, rdfob.RDF_TYPE, rdfob.uriref('mhs:Issue')))
-        graph._g.add((issue, rdfob.uriref('mhs:isIssueOf'), journal))
-        graph._g.add((issue, rdfob.uriref('mhs:volume'), rdfob.Literal(1)))
-        article = rdfob.BNode()
-        graph._g.add((article, rdfob.RDF_TYPE, rdfob.uriref('mhs:Article')))
-        graph._g.add((article, rdfob.uriref('dc:isPartOf'), issue))
-        graph._g.add((article, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
-        graph._g.add((article, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
-        root = lxml.html.fromstring(self.render(graph[article]))
-        links, = root.find_class('links')
-        a, = links.findall('a[@href="http://www.worldcat.org/search?q=issn:12345678"]')
-        self.assertEquals('WorldCat', a.text_content().strip())
-
-    def test_cover_thumbnail(self):
-        graph = rdfob.Graph()
+    def setup_article(self, graph):
+        # XXX just use meta.nt?
         journal = rdfob.BNode()
         graph._g.add((journal, rdfob.RDF_TYPE, rdfob.uriref('mhs:Journal')))
         graph._g.add((journal, rdfob.uriref('dc:title'), rdfob.Literal('Studies of something')))
@@ -270,10 +250,33 @@ ${articleinfo(node)}
         graph._g.add((article, rdfob.uriref('dc:isPartOf'), issue))
         graph._g.add((article, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
         graph._g.add((article, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        return article
+
+    def test_worldcat_issn_link(self):
+        graph = rdfob.Graph()
+        article = self.setup_article(graph)
+        root = lxml.html.fromstring(self.render(graph[article]))
+        links, = root.find_class('links')
+        a, = links.findall('a[@href="http://www.worldcat.org/search?q=issn:12345678"]')
+        self.assertEquals('WorldCat', a.text_content().strip())
+
+    def test_cover_thumbnail(self):
+        graph = rdfob.Graph()
+        article = self.setup_article(graph)
         root = lxml.html.fromstring(self.render(graph[article]))
         cover, = root.find_class('cover')
         img = cover.find('img')
         self.assertEquals('http://example.com/thumb.gif', img.get('src'))
+
+    def test_article_available_from(self):
+        graph = rdfob.Graph()
+        article = self.setup_article(graph)
+        graph._g.add((article, rdfob.uriref('mhs:availableFrom'), rdfob.URIRef('http://example.com/teh-article')))
+        root = lxml.html.fromstring(self.render(graph[article]))
+        main, = root.find_class('main')
+        title = main.findall('a')[0]
+        self.assertEquals('http://example.com/teh-article', title.get('href'))
+        self.assertEquals('Some title', title.text_content().strip())
 
 if __name__ == '__main__':
     unittest.main()

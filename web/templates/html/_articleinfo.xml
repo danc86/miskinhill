@@ -22,7 +22,7 @@ issn = journal.identifier('urn:issn:')
 <div class="beside">
     <p class="main" py:with="title = article.getone('dc:title', None); authors = article.getall('dc:creator')">
         <py:if test="title">
-            ‘${title}’<br />
+            ‘<a py:strip="not article.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${article.getone('mhs:availableFrom', as_uriref=True)}">${title}</a>’<br />
             <py:if test="authors">by ${Markup(', ').join(viewutils.linked_author(a) for a in authors)}</py:if>
         </py:if>
     </p>
