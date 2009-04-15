@@ -16,6 +16,7 @@ _:pub <http://www.w3.org/2000/10/swap/pim/contact#address> <http://sws.geonames.
 <http://miskinhill.com.au/journals/test/1:1/> <http://miskinhill.com.au/rdfschema/1.0/volume> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .
 <http://miskinhill.com.au/journals/test/1:1/> <http://miskinhill.com.au/rdfschema/1.0/issueNumber> "1" .
 <http://miskinhill.com.au/journals/test/1:1/> <http://purl.org/dc/terms/coverage> "2007"^^<http://www.w3.org/TR/xmlschema-2/#date> .
+<http://miskinhill.com.au/journals/test/1:1/> <http://miskinhill.com.au/rdfschema/1.0/publicationDate> "2008-02-01"^^<http://www.w3.org/TR/xmlschema-2/#date> .
 <http://miskinhill.com.au/journals/test/1:1/> <http://miskinhill.com.au/rdfschema/1.0/coverThumbnail> <http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg> .
 <http://miskinhill.com.au/journals/test/1:1/article> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Article> .
 <http://miskinhill.com.au/journals/test/1:1/article> <http://purl.org/dc/terms/isPartOf> <http://miskinhill.com.au/journals/test/1:1/> .
