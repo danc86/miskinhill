@@ -15,7 +15,15 @@ oclcnum = book.identifier('info:oclcnum/')
 
 links = []
 if asin:
-    links.append(('http://www.amazon.com/dp/%s/?tag=mishil-20' % asin, 'Amazon.com'))
+    if asin.startswith('2'):
+        domain = 'fr'
+    elif asin.startswith('3'):
+        domain = 'de'
+    else:
+        domain = 'com'
+    links.append(('http://www.amazon.%s/dp/%s/?tag=mishil-20' % (domain, asin), 'Amazon.%s' % domain))
+if book['dc:title'].language == u'ru':
+    links.append(('http://www.ozon.ru/?context=search&text=%s' % urllib.quote(u' '.join([book['dc:title']] + book.getall('dc:creator')).encode('cp1251'), ''), 'Ozon.ru'))
 if isbn:
     links.append(('http://openlibrary.org/search?q=isbn_13:%s' % isbn, 'Open Library'))
 if gbooksid:
