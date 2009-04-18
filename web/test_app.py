@@ -84,11 +84,6 @@ class RDFDispatchTest(AppTestCase):
 
 class StaticTemplatesTest(AppTestCase):
 
-    def test_index(self):
-        res = self.get_response(Request.blank('/'))
-        self.assertEquals(200, res.status_int)
-        self.assert_('<title>Miskin Hill</title>' in res.body)
-
     def test_about(self):
         res = self.get_response(Request.blank('/about/'))
         self.assertEquals(200, res.status_int)
