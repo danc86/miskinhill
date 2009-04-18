@@ -218,6 +218,30 @@ ${bookinfo(book_node)}
         img = cover.find('img')
         self.assertEquals('http://example.com/thumb.gif', img.get('src'))
 
+    def test_russian_link(self):
+        graph = rdfob.Graph()
+        node = rdfob.BNode()
+        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal(u'Русская книга', lang='ru')))
+        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        root = lxml.html.fromstring(self.render(graph[node]))
+        links, = root.find_class('links')
+        a = links.find('a[@href="http://www.ozon.ru/?context=search&text=%D0%F3%F1%F1%EA%E0%FF%20%EA%ED%E8%E3%E0%20Some%20Dude"]')
+        self.assertEquals('Ozon.ru', a.text_content())
+
+    def test_russian_link(self):
+        graph = rdfob.Graph()
+        node = rdfob.BNode()
+        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.add((node, rdfob.uriref('dc:title'), 
+                rdfob.Literal(u'<span xmlns="http://www.w3.org/1999/xhtml" lang="ru">'
+                    u'<em>Русская</em> книга</span>', datatype=rdfob.uriref('rdf:XMLLiteral'))))
+        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        root = lxml.html.fromstring(self.render(graph[node]))
+        links, = root.find_class('links')
+        a = links.find('a[@href="http://www.ozon.ru/?context=search&text=%D0%F3%F1%F1%EA%E0%FF%20%EA%ED%E8%E3%E0%20Some%20Dude"]')
+        self.assertEquals('Ozon.ru', a.text_content())
+
 class HtmlArticleinfoTemplateTest(unittest.TestCase):
 
     def render(self, node):
