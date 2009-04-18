@@ -31,6 +31,8 @@ class Graph(object):
         self.store = rdflib.plugin.get('IOMemory', rdflib.store.Store)('rdfstore')
         self.store.open('')
         self._g = ConjunctiveGraph(self.store)
+        for prefix, namespace in NAMESPACES.iteritems():
+            self._g.bind(prefix, namespace)
         for filename in imports:
             self._g.parse(filename, format='nt')
         #RDFSClosure.create_RDFSClosure(self._g)
@@ -50,8 +52,13 @@ class Graph(object):
         """ Returns serialized triples about the given graph node (triples 
         where it appears as subject, and the transitive closure with any blank 
         nodes encountered). """
+        # XXX make serialized output order predictable/consistent!
         subject = uriref(subject)
         subgraph = ConjunctiveGraph()
+        # copy namespace prefixes from _g
+        for prefix, namespace in self._g.namespaces():
+            subgraph.bind(prefix, namespace)
+        # recursively add interesting triples
         def add_triples(subject):
             for s, p, o in self._g.triples((subject, None, None)):
                 subgraph.add((s, p, o))

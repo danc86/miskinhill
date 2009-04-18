@@ -50,6 +50,25 @@ class NTriplesRepresentation(Representation):
         return Response(self.generate(), 
                 content_type=self.content_type)
 
+class RDFXMLRepresentation(Representation):
+
+    format = 'xml'
+    content_type = 'application/rdf+xml'
+    rdf_types = frozenset([rdfob.uriref('mhs:Citation'), 
+                           rdfob.uriref('mhs:Author'), 
+                           rdfob.uriref('mhs:Article'), 
+                           rdfob.uriref('mhs:Review'), 
+                           rdfob.uriref('mhs:Issue'), 
+                           rdfob.uriref('mhs:Journal')])
+    docs = 'http://www.w3.org/TR/REC-rdf-syntax/'
+
+    def generate(self):
+        return self.node.graph.serialized(self.node.uri, format='xml')
+
+    def response(self):
+        return Response(self.generate(), 
+                content_type=self.content_type)
+
 class HTMLRepresentation(Representation):
 
     format = 'html'
@@ -132,6 +151,6 @@ class EndnoteRepresentation(Representation):
     def response(self):
         return Response(self.generate().render(), content_type=self.content_type)
 
-ALL = [NTriplesRepresentation, HTMLRepresentation, MODSRepresentation, 
+ALL = [NTriplesRepresentation, RDFXMLRepresentation, HTMLRepresentation, MODSRepresentation, 
        MARCXMLRepresentation, BibTeXRepresentation, EndnoteRepresentation]
 BY_FORMAT = dict((r.format, r) for r in ALL)
