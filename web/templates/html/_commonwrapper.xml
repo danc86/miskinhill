@@ -39,7 +39,7 @@ import rdfob
 <py:match path="body">
 	<body py:attrs="select('@*')">
         <div id="banner">
-            <h1>Miskin Hill</h1>
+            <h1><a href="/">Miskin Hill</a></h1>
             <ul>
                 <li><a href="/journals/">journals</a></li>
                 <li><a href="/about/">about</a></li>

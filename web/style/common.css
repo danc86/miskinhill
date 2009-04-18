@@ -49,6 +49,10 @@ p, li {
     font-size: 2.5em;
     margin: 0;
 }
+#banner h1 a {
+    color: white;
+    text-decoration: none;
+}
 #banner ul {
     margin: 0;
     list-style: none;
