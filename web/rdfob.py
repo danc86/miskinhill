@@ -59,11 +59,17 @@ class Graph(object):
         for prefix, namespace in self._g.namespaces():
             subgraph.bind(prefix, namespace)
         # recursively add interesting triples
+        visited = set()
         def add_triples(subject):
+            if subject in visited: return
+            visited.add(subject)
             for s, p, o in self._g.triples((subject, None, None)):
                 subgraph.add((s, p, o))
                 if isinstance(o, BNode):
                     add_triples(o)
+            for s, p, o in self._g.triples((None, None, subject)):
+                if isinstance(s, BNode):
+                    add_triples(s)
         add_triples(subject)
         return subgraph.serialize(format=format)
 
