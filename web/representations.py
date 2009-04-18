@@ -18,6 +18,7 @@ RDF_TEMPLATES = {
     rdfob.uriref('mhs:Review'): 'review', 
     rdfob.uriref('mhs:Author'): 'author', 
     rdfob.uriref('mhs:Citation'): 'citation', 
+    rdfob.uriref('sioc:Forum'): 'forum', 
 }
 def template_for_type(node):
     for type in node.types:
@@ -35,7 +36,8 @@ class NTriplesRepresentation(Representation):
 
     format = 'nt'
     content_type = 'text/plain; charset=UTF-8'
-    rdf_types = frozenset([rdfob.uriref('mhs:Citation'), 
+    rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
+                           rdfob.uriref('mhs:Citation'), 
                            rdfob.uriref('mhs:Author'), 
                            rdfob.uriref('mhs:Article'), 
                            rdfob.uriref('mhs:Review'), 
@@ -54,7 +56,8 @@ class RDFXMLRepresentation(Representation):
 
     format = 'xml'
     content_type = 'application/rdf+xml'
-    rdf_types = frozenset([rdfob.uriref('mhs:Citation'), 
+    rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
+                           rdfob.uriref('mhs:Citation'), 
                            rdfob.uriref('mhs:Author'), 
                            rdfob.uriref('mhs:Article'), 
                            rdfob.uriref('mhs:Review'), 
@@ -73,7 +76,8 @@ class HTMLRepresentation(Representation):
 
     format = 'html'
     content_type = 'text/html'
-    rdf_types = frozenset([rdfob.uriref('mhs:Citation'), 
+    rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
+                           rdfob.uriref('mhs:Citation'), 
                            rdfob.uriref('mhs:Author'), 
                            rdfob.uriref('mhs:Article'), 
                            rdfob.uriref('mhs:Review'), 
@@ -151,6 +155,20 @@ class EndnoteRepresentation(Representation):
     def response(self):
         return Response(self.generate().render(), content_type=self.content_type)
 
+class AtomRepresentation(Representation):
+
+    format = 'atom'
+    content_type = 'application/atom+xml'
+    rdf_types = frozenset([rdfob.uriref('sioc:Forum')])
+    docs = 'http://www.ietf.org/rfc/rfc4287.txt'
+
+    def generate(self):
+        template = template_loader.load(os.path.join('atom', template_for_type(self.node) + '.xml'))
+        return template.generate(req=self.req, node=self.node)
+
+    def response(self):
+        return Response(self.generate().render(), content_type=self.content_type)
+
 ALL = [NTriplesRepresentation, RDFXMLRepresentation, HTMLRepresentation, MODSRepresentation, 
-       MARCXMLRepresentation, BibTeXRepresentation, EndnoteRepresentation]
+       MARCXMLRepresentation, BibTeXRepresentation, EndnoteRepresentation, AtomRepresentation]
 BY_FORMAT = dict((r.format, r) for r in ALL)

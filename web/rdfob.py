@@ -5,6 +5,7 @@ from rdflib import URIRef, Namespace, BNode, Literal
 from rdflib.Graph import ConjunctiveGraph
 import RDFSClosure
 import genshi
+import iso8601
 
 NAMESPACES = {
     'mhs': Namespace('http://miskinhill.com.au/rdfschema/1.0/'), 
@@ -13,7 +14,9 @@ NAMESPACES = {
     'rdf': Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#'), 
     'xsd': Namespace('http://www.w3.org/TR/xmlschema-2/#'), 
     'contact': Namespace('http://www.w3.org/2000/10/swap/pim/contact#'), 
-    'geonames': Namespace('http://www.geonames.org/ontology#')
+    'geonames': Namespace('http://www.geonames.org/ontology#'), 
+    'sioc': Namespace('http://rdfs.org/sioc/ns#'), 
+    'awol': Namespace('http://bblfish.net/work/atom-owl/2006-06-06/#')
 }
 RDF_TYPE = NAMESPACES['rdf']['type']
 RDF_SEQ = NAMESPACES['rdf']['Seq']
@@ -95,6 +98,8 @@ class GraphNode(object):
             assert isinstance(x, rdflib.Literal)
             if x.datatype == NAMESPACES['rdf']['XMLLiteral']:
                 return genshi.XML(x)
+            elif x.datatype == NAMESPACES['xsd']['datetime']:
+                return iso8601.parse_date(x)
             elif x.datatype == NAMESPACES['xsd']['date']:
                 m = re.match('(\d{4})-(\d{2})-(\d{2})', x)
                 if m:

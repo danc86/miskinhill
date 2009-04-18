@@ -51,7 +51,6 @@ class MiskinHillApplication(object):
         self.req.content_dir = content_dir # XXX dodgy?
 
     METHODS = {
-        '/': 'index', 
         '/about/': 'about', 
         '/contact/': 'contact', 
         '/journals/': 'journals_index', 
@@ -66,11 +65,6 @@ class MiskinHillApplication(object):
         except exc.HTTPException, e:
             resp = e
         return iter(resp(self.environ, self.start))
-
-    def index(self):
-        template = template_loader.load('index.xml')
-        body = template.generate(req=self.req).render('xhtml', doctype='xhtml')
-        return Response(body, content_type='text/html')
 
     def about(self):
         template = template_loader.load('about.xml')

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      lang="en-AU">
+<xi:include href="_commonwrapper.xml" />
+
+<?python
+from viewutils import relative_url
+forum = node
+posts = sorted(forum.reflexive('sioc:has_container'), key=lambda p: p['dc:created'], reverse=True)
+?>
+
+<head>
+    <title>${forum['dc:title']}</title>
+    <link rel="feed" type="application/atom+xml" title="Atom feed" href="${relative_url(forum.uri)}.atom" />
+    <link rel="stylesheet" type="text/css" href="/style/forum.css" />
+</head>
+
+<body>
+
+<h2>${forum['dc:title']}</h2>
+
+<div py:for="post in posts" class="post" py:with="content = post['sioc:content']">
+    <h3>${post['dc:title']}</h3>
+    <p class="created">${post['dc:created'].strftime('%d %B %Y')}</p>
+    <div class="content" py:if="content['awol:type'] == 'application/xhtml+xml'">
+        ${Markup(content['awol:body'])}
+    </div>
+</div>
+
+</body>
+</html>
