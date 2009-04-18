@@ -113,7 +113,7 @@ class MiskinHillApplication(object):
         body = template.generate(req=self.req, 
                 nodes=[s for s in graph.subjects()
                           if s.uri.startswith(u'http://miskinhill.com.au/')]
-                ).render('xhtml', doctype='xhtml')
+                ).render('xml')
         return Response(body, content_type='application/xml')
 
     def dispatch_rdf(self, path_info):
