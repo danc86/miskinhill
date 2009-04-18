@@ -54,7 +54,8 @@ class MiskinHillApplication(object):
         '/about/': 'about', 
         '/contact/': 'contact', 
         '/journals/': 'journals_index', 
-        '/unapi': 'unapi'
+        '/unapi': 'unapi', 
+        '/sitemap.xml': 'sitemap'
     }
     def __iter__(self):
         try:
@@ -106,6 +107,14 @@ class MiskinHillApplication(object):
             body = E.formats(*(E.format(name=r.format, type=r.content_type, docs=r.docs) for r in representations.ALL))
         return Response(lxml.etree.tostring(body, encoding='utf8', xml_declaration=True),
                 content_type='application/xml')
+
+    def sitemap(self):
+        template = template_loader.load('sitemap.xml')
+        body = template.generate(req=self.req, 
+                nodes=[s for s in graph.subjects()
+                          if s.uri.startswith(u'http://miskinhill.com.au/')]
+                ).render('xhtml', doctype='xhtml')
+        return Response(body, content_type='application/xml')
 
     def dispatch_rdf(self, path_info):
         decoded_uri = urllib.unquote('http://miskinhill.com.au' + 

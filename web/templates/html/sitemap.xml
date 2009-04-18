@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:py="http://genshi.edgewall.org/">
+
+<?python
+import representations, rdfob
+NEVER_TYPES = frozenset(rdfob.uriref(x) for x in ['mhs:Article', 'mhs:Review', 'mhs:Citation'])
+?>
+
+<url>
+    <loc>http://miskinhill.com.au/about/</loc>
+</url>
+
+<url>
+    <loc>http://miskinhill.com.au/contact/</loc>
+</url>
+
+<url>
+    <loc>http://miskinhill.com.au/journals/</loc>
+</url>
+
+<py:for each="node in nodes">
+    <url py:for="r in representations.ALL" py:if="r.rdf_types.intersection(node.types)">
+        <loc>${node.uri}<py:if test="r is not representations.HTMLRepresentation">.${r.format}</py:if></loc>
+        <changefreq py:if="NEVER_TYPES.intersection(node.types)">never</changefreq>
+    </url>
+</py:for>
+
+</urlset>
