@@ -61,6 +61,8 @@ class MiskinHillApplication(object):
         try:
             if self.req.path_info in self.METHODS:
                 resp = getattr(self, self.METHODS[self.req.path_info])()
+            elif self.req.path_info[-1] != '/' and (self.req.path_info + '/') in self.METHODS:
+                resp = exc.HTTPFound(location='http://miskinhill.com.au' + self.req.path_info + '/')
             else:
                 resp = self.dispatch_rdf(self.req.path_info)
         except exc.HTTPException, e:
@@ -123,6 +125,8 @@ class MiskinHillApplication(object):
         try:
             node = graph[rdfob.URIRef(decoded_uri)]
         except KeyError:
+            if decoded_uri[-1] != '/' and rdfob.URIRef(decoded_uri + '/') in graph:
+                return exc.HTTPFound(location=(decoded_uri + '/').encode('utf8'))
             return exc.HTTPNotFound('URI not found in RDF graph')
         r = representations.BY_FORMAT[format]
         if not node.is_any(r.rdf_types):

@@ -47,6 +47,10 @@ class Graph(object):
             raise KeyError(subject)
         return GraphNode(subject, self, pos)
 
+    def __contains__(self, subject):
+        subject = uriref(subject)
+        return bool(list(self._g.predicate_objects(subject))) # XXX avoid list()?
+
     def by_type(self, type):
         type = uriref(type)
         return [self[s] for s in self._g.subjects(RDF_TYPE, type)]

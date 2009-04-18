@@ -82,6 +82,12 @@ class RDFDispatchTest(AppTestCase):
         self.assertEquals(404, res.status_int)
         res.body # to keep validator happy
 
+    def test_slash_redirect(self):
+        res = self.get_response(Request.blank('/journals/test'))
+        self.assertEquals(302, res.status_int)
+        self.assertEquals('http://miskinhill.com.au/journals/test/', res.location)
+        res.body # to keep validator happy
+
 class StaticTemplatesTest(AppTestCase):
 
     def test_about(self):
@@ -89,15 +95,33 @@ class StaticTemplatesTest(AppTestCase):
         self.assertEquals(200, res.status_int)
         self.assert_('<title>About - Miskin Hill</title>' in res.body)
 
+    def test_about_without_slash(self):
+        res = self.get_response(Request.blank('/about'))
+        self.assertEquals(302, res.status_int)
+        self.assertEquals('http://miskinhill.com.au/about/', res.location)
+        res.body
+
     def test_contact(self):
         res = self.get_response(Request.blank('/contact/'))
         self.assertEquals(200, res.status_int)
         self.assert_('<title>Contact - Miskin Hill</title>' in res.body)
 
+    def test_contact_without_slash(self):
+        res = self.get_response(Request.blank('/contact'))
+        self.assertEquals(302, res.status_int)
+        self.assertEquals('http://miskinhill.com.au/contact/', res.location)
+        res.body
+
     def test_journal_index(self):
         res = self.get_response(Request.blank('/journals/'))
         self.assertEquals(200, res.status_int)
         self.assert_('<title>Journals - Miskin Hill</title>' in res.body)
+
+    def test_journal_index_without_slash(self):
+        res = self.get_response(Request.blank('/journals'))
+        self.assertEquals(302, res.status_int)
+        self.assertEquals('http://miskinhill.com.au/journals/', res.location)
+        res.body
 
 if __name__ == '__main__':
     unittest.main()
