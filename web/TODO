@@ -1,9 +1,3 @@
-immediately:
-* citations
-    - better UI for selecting OpenURL resolver, save in cookie
-    - add other means of resolving citations: goog scholar, ...?
-* test everything in IE!
-
 soonish:
 * write automated MODS checker:
   http://wiki.dlib.indiana.edu/confluence/display/DLFAquifer/MODS+Guidelines+Levels+of+Adoption
