@@ -23,7 +23,7 @@ RDF_TYPE = NAMESPACES['rdf']['type']
 RDF_SEQ = NAMESPACES['rdf']['Seq']
 
 def uriref(qname):
-    if isinstance(qname, (URIRef, BNode)): return qname
+    if isinstance(qname, (URIRef, BNode, Literal)): return qname
     ns, name = qname.split(':', 1)
     return NAMESPACES[ns][name]
 
