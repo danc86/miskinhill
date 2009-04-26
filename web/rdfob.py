@@ -12,6 +12,7 @@ NAMESPACES = {
     'dc': Namespace('http://purl.org/dc/terms/'), 
     'foaf': Namespace('http://xmlns.com/foaf/0.1/'), 
     'rdf': Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#'), 
+    'rdfs': Namespace('http://www.w3.org/2000/01/rdf-schema#'), 
     'xsd': Namespace('http://www.w3.org/TR/xmlschema-2/#'), 
     'contact': Namespace('http://www.w3.org/2000/10/swap/pim/contact#'), 
     'geonames': Namespace('http://www.geonames.org/ontology#'), 

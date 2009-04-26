@@ -55,7 +55,8 @@ class MiskinHillApplication(object):
         '/contact/': 'contact', 
         '/journals/': 'journals_index', 
         '/unapi': 'unapi', 
-        '/sitemap.xml': 'sitemap'
+        '/sitemap.xml': 'sitemap', 
+        '/rdfschema/1.0/': 'rdfschema_index'
     }
     def __iter__(self):
         try:
@@ -84,6 +85,16 @@ class MiskinHillApplication(object):
         body = template.generate(req=self.req, 
                 journals=[j for j in graph.by_type('mhs:Journal') 
                           if j.uri.startswith(u'http://miskinhill.com.au/journals/')]
+                ).render('xhtml', doctype='xhtml')
+        return Response(body, content_type='text/html')
+
+    def rdfschema_index(self):
+        template = template_loader.load('rdfschema_index.xml')
+        body = template.generate(req=self.req, 
+                classes=[c for c in graph.by_type('rdfs:Class') 
+                        if c.uri.startswith(u'http://miskinhill.com.au/rdfschema/')], 
+                properties=[p for p in graph.by_type('rdf:Property') 
+                        if p.uri.startswith(u'http://miskinhill.com.au/rdfschema/')]
                 ).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 

@@ -19,6 +19,8 @@ RDF_TEMPLATES = {
     rdfob.uriref('mhs:Author'): 'author', 
     rdfob.uriref('mhs:Citation'): 'citation', 
     rdfob.uriref('sioc:Forum'): 'forum', 
+    rdfob.uriref('rdfs:Class'): 'class', 
+    rdfob.uriref('rdf:Property'): 'property', 
 }
 def template_for_type(node):
     for type in node.types:
@@ -42,7 +44,9 @@ class NTriplesRepresentation(Representation):
                            rdfob.uriref('mhs:Article'), 
                            rdfob.uriref('mhs:Review'), 
                            rdfob.uriref('mhs:Issue'), 
-                           rdfob.uriref('mhs:Journal')])
+                           rdfob.uriref('mhs:Journal'), 
+                           rdfob.uriref('rdfs:Class'), 
+                           rdfob.uriref('rdf:Property')])
     docs = 'http://www.w3.org/TR/REC-rdf-syntax/'
 
     def generate(self):
@@ -62,7 +66,9 @@ class RDFXMLRepresentation(Representation):
                            rdfob.uriref('mhs:Article'), 
                            rdfob.uriref('mhs:Review'), 
                            rdfob.uriref('mhs:Issue'), 
-                           rdfob.uriref('mhs:Journal')])
+                           rdfob.uriref('mhs:Journal'), 
+                           rdfob.uriref('rdfs:Class'), 
+                           rdfob.uriref('rdf:Property')])
     docs = 'http://www.w3.org/TR/REC-rdf-syntax/'
 
     def generate(self):
@@ -82,7 +88,9 @@ class HTMLRepresentation(Representation):
                            rdfob.uriref('mhs:Article'), 
                            rdfob.uriref('mhs:Review'), 
                            rdfob.uriref('mhs:Issue'), 
-                           rdfob.uriref('mhs:Journal')])
+                           rdfob.uriref('mhs:Journal'), 
+                           rdfob.uriref('rdfs:Class'), 
+                           rdfob.uriref('rdf:Property')])
     docs = 'http://www.w3.org/TR/xhtml1/'
 
     def generate(self):

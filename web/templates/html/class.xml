@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      lang="en-AU">
+<xi:include href="_commonwrapper.xml" />
+
+<?python
+from viewutils import relative_url
+cls = node
+superclasses = [c for c in cls.getall('rdfs:subClassOf', as_uriref=True) if c != cls.uri]
+?>
+
+<head>
+    <title>${cls['rdfs:label']} - RDF Schema</title>
+    <link rel="stylesheet" type="text/css" href="/style/rdfschema.css" />
+</head>
+
+<body>
+
+${breadcrumbs([('/rdfschema/1.0/', 'RDF Schema')])}
+
+<h2>${cls['rdfs:label']}</h2>
+
+<div class="metabox-container">
+    <div class="rdfschema-meta metabox">
+        <h4>Other formats</h4>
+        <p><a href="${relative_url(cls.uri)}.xml">RDF/XML</a>, <a href="${relative_url(cls.uri)}.nt">NTriples</a></p>
+    </div>
+</div>
+
+<table>
+    <tbody>
+        <tr><th>URI</th><td><code>${cls.uri}</code></td></tr>
+        <tr><th>Type</th><td>
+            <py:for each="type in cls.types">
+                <a href="${type}"><code>${type}</code></a><br />
+            </py:for>
+        </td></tr>
+        <tr py:if="superclasses">
+            <th>Subclass of</th>
+            <td>
+                <py:for each="superclass in superclasses">
+                    <a href="${superclass}"><code>${superclass}</code></a><br />
+                </py:for>
+            </td>
+        </tr>
+        <tr><th>Description</th><td>${cls['dc:description']}</td></tr>
+    </tbody>
+</table>
+
+</body>
+</html>

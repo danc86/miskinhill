@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      lang="en-AU">
+<xi:include href="_commonwrapper.xml" />
+
+<?python
+from viewutils import relative_url
+property = node
+superproperties = [p for p in property.getall('rdfs:subPropertyOf', as_uriref=True) if p != property.uri]
+?>
+
+<head>
+    <title>${property['rdfs:label']} - RDF Schema</title>
+    <link rel="stylesheet" type="text/css" href="/style/rdfschema.css" />
+</head>
+
+<body>
+
+${breadcrumbs([('/rdfschema/1.0/', 'RDF Schema')])}
+
+<h2>${property['rdfs:label']}</h2>
+
+<div class="metabox-container">
+    <div class="rdfschema-meta metabox">
+        <h4>Other formats</h4>
+        <p><a href="${relative_url(property.uri)}.xml">RDF/XML</a>, <a href="${relative_url(property.uri)}.nt">NTriples</a></p>
+    </div>
+</div>
+
+<table>
+    <tbody>
+        <tr><th>URI</th><td><code>${property.uri}</code></td></tr>
+        <tr><th>Type</th><td>
+            <py:for each="type in property.types">
+                <a href="${type}"><code>${type}</code></a><br />
+            </py:for>
+        </td></tr>
+        <tr py:if="superproperties">
+            <th>Sub-property of</th>
+            <td>
+                <py:for each="superproperty in superproperties">
+                    <a href="${superproperty}"><code>${superproperty}</code></a><br />
+                </py:for>
+            </td>
+        </tr>
+        <tr py:if="'rdfs:domain' in property">
+            <th>Domain</th>
+            <td><a href="${property.getone('rdfs:domain', as_uriref=True)}"><code>${property.getone('rdfs:domain', as_uriref=True)}</code></a></td>
+        </tr>
+        <tr py:if="'rdfs:range' in property">
+            <th>Range</th>
+            <td><a href="${property.getone('rdfs:range', as_uriref=True)}"><code>${property.getone('rdfs:range', as_uriref=True)}</code></a></td>
+        </tr>
+        <tr><th>Description</th><td>${property['dc:description']}</td></tr>
+    </tbody>
+</table>
+
+</body>
+</html>
