@@ -1964,6 +1964,8 @@ class Response(object):
         for name, value in kw.items():
             setattr(cache_control, name, value)
 
+    content_disposition = header_getter('Content-Disposition', rfc_section='19.5.1')
+
     content_encoding = header_getter('Content-Encoding', rfc_section='14.11')
 
     def encode_content(self, encoding='gzip'):
