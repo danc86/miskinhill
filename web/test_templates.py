@@ -78,7 +78,7 @@ class HtmlJournalTemplateTest(unittest.TestCase):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/')]
         result = template_loader.load(os.path.join('html', 'journal.xml'))\
-                .generate(req=MockRequest(), node=node).render('xhtml', doctype='xhtml')
+                .generate(req=MockRequest(), node=node).render('xhtml', doctype='xhtml', encoding=None)
         self.root = lxml.html.fromstring(result)
 
     def test_issn_appears(self):
@@ -102,7 +102,7 @@ class HtmlArticleTemplateTest(unittest.TestCase):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
         result = template_loader.load(os.path.join('html', 'article.xml'))\
-                .generate(req=MockRequest(), node=node).render('xhtml', doctype='xhtml')
+                .generate(req=MockRequest(), node=node).render('xhtml', doctype='xhtml', encoding=None)
         self.root = lxml.html.fromstring(result)
 
     def test_coins_appear(self):
@@ -125,7 +125,7 @@ class HtmlReviewTemplateTest(unittest.TestCase):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/reviews/review')]
         result = template_loader.load(os.path.join('html', 'review.xml'))\
-                .generate(req=MockRequest(), node=node).render('xhtml', doctype='xhtml')
+                .generate(req=MockRequest(), node=node).render('xhtml', doctype='xhtml', encoding=None)
         self.root = lxml.html.fromstring(result)
 
     def test_published_in(self):
@@ -150,7 +150,7 @@ ${bookinfo(book_node)}
         wrapper_template_file.seek(0)
         template = template_loader.load(wrapper_template_file.name)
         return template.generate(templates_dir=os.path.dirname(os.path.abspath(__file__)) + '/templates',
-                book_node=book_node).render('xhtml', doctype='xhtml')
+                book_node=book_node).render('xhtml', doctype='xhtml', encoding=None)
 
     def test_without_publisher(self):
         graph = rdfob.Graph()
@@ -256,7 +256,7 @@ ${articleinfo(node)}
         wrapper_template_file.seek(0)
         template = template_loader.load(wrapper_template_file.name)
         return template.generate(templates_dir=os.path.dirname(os.path.abspath(__file__)) + '/templates',
-                node=node).render('xhtml', doctype='xhtml')
+                node=node).render('xhtml', encoding=None, doctype='xhtml')
 
     def setup_article(self, graph):
         # XXX just use meta.nt?
@@ -274,11 +274,11 @@ ${articleinfo(node)}
         graph._g.add((article, rdfob.uriref('dc:isPartOf'), issue))
         graph._g.add((article, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
         graph._g.add((article, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
-        return article
+        return article, issue, journal
 
     def test_worldcat_issn_link(self):
         graph = rdfob.Graph()
-        article = self.setup_article(graph)
+        article, issue, journal = self.setup_article(graph)
         root = lxml.html.fromstring(self.render(graph[article]))
         links, = root.find_class('links')
         a, = links.findall('a[@href="http://www.worldcat.org/search?q=issn:12345678"]')
@@ -286,7 +286,7 @@ ${articleinfo(node)}
 
     def test_cover_thumbnail(self):
         graph = rdfob.Graph()
-        article = self.setup_article(graph)
+        article, issue, journal = self.setup_article(graph)
         root = lxml.html.fromstring(self.render(graph[article]))
         cover, = root.find_class('cover')
         img = cover.find('img')
@@ -294,13 +294,29 @@ ${articleinfo(node)}
 
     def test_article_available_from(self):
         graph = rdfob.Graph()
-        article = self.setup_article(graph)
+        article, issue, journal = self.setup_article(graph)
         graph._g.add((article, rdfob.uriref('mhs:availableFrom'), rdfob.URIRef('http://example.com/teh-article')))
         root = lxml.html.fromstring(self.render(graph[article]))
         main, = root.find_class('main')
         title = main.findall('a')[0]
         self.assertEquals('http://example.com/teh-article', title.get('href'))
         self.assertEquals('Some title', title.text_content().strip())
+
+    def test_issue_available_from(self):
+        graph = rdfob.Graph()
+        article, issue, journal = self.setup_article(graph)
+        graph._g.add((issue, rdfob.uriref('mhs:availableFrom'), rdfob.URIRef('http://example.com/teh-issue')))
+        root = lxml.html.fromstring(self.render(graph[article]))
+        issue_details, = root.find_class('issue')
+        self.assertEquals(u'Vol.\u00a01', issue_details.find('a[@href="http://example.com/teh-issue"]').text_content().strip())
+
+    def test_journal_available_from(self):
+        graph = rdfob.Graph()
+        article, issue, journal = self.setup_article(graph)
+        graph._g.add((journal, rdfob.uriref('mhs:availableFrom'), rdfob.URIRef('http://example.com/teh-journal')))
+        root = lxml.html.fromstring(self.render(graph[article]))
+        issue_details, = root.find_class('issue')
+        self.assertEquals('Studies of something', issue_details.find('a[@href="http://example.com/teh-journal"]').text_content())
 
 if __name__ == '__main__':
     unittest.main()

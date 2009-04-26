@@ -32,9 +32,9 @@ issn = journal.identifier('urn:issn:')
                               coverage = issue.getone('dc:coverage', None);
                               issn = journal.identifier('urn:issn:')">
         Published in
-        <em>${journal['dc:title']}</em>
-        <py:if test="volume">Vol.&nbsp;${volume}</py:if><py:if test="volume and issue_number">, </py:if><py:if test="issue_number">Issue&nbsp;${issue_number}</py:if>
-        <py:if test="coverage">(${coverage})</py:if>
+        <a py:strip="not journal.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${journal.getone('mhs:availableFrom', as_uriref=True)}"><em>${journal['dc:title']}</em></a>
+        <a py:strip="not issue.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${issue.getone('mhs:availableFrom', as_uriref=True)}"><py:if test="volume">Vol.&nbsp;${volume}</py:if><py:if test="volume and issue_number">, </py:if><py:if test="issue_number">Issue&nbsp;${issue_number}</py:if>
+        <py:if test="coverage">(${coverage})</py:if></a>
         <br />
         <py:if test="issn">ISSN ${issn}</py:if>
     </p>
