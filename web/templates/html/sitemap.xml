@@ -7,8 +7,13 @@
 
 <?python
 import representations, rdfob
-NEVER_TYPES = frozenset(rdfob.uriref(x) for x in ['mhs:Article', 'mhs:Review', 'mhs:Citation'])
+NEVER_TYPES = frozenset(rdfob.uriref(x) for x in ['mhs:Article', 'mhs:Review', 'mhs:Citation', 'rdf:Property', 'rdfs:Class'])
 ?>
+
+<url>
+    <loc>http://miskinhill.com.au/</loc>
+    <changefreq>weekly</changefreq>
+</url>
 
 <url>
     <loc>http://miskinhill.com.au/about/</loc>
