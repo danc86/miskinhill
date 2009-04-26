@@ -38,6 +38,10 @@ class ModsArticleRepresentationTest(unittest.TestCase):
         self.response = representations.MODSRepresentation(MockRequest(), node).response()
         self.root = lxml.etree.fromstring(self.response.body)
 
+    def test_content_type(self):
+        self.assertEquals('application/mods+xml', self.response.content_type)
+        self.assertEquals('inline', self.response.content_disposition)
+
     def test_markup_stripped(self):
         title_xpath = lxml.etree.XPath('//mods:mods/mods:titleInfo/mods:title', 
                 namespaces={'mods': 'http://www.loc.gov/mods/v3'})
@@ -71,6 +75,18 @@ class ModsArticleRepresentationTest(unittest.TestCase):
         genre, = lxml.etree.XPath('//mods:mods/mods:genre[@authority="marcgt"]', 
                 namespaces={'mods': 'http://www.loc.gov/mods/v3'})(self.root)
         self.assertEquals('periodical', genre.text)
+
+class MarcxmlJournalRepresentationTest(unittest.TestCase):
+
+    def setUp(self):
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/')]
+        self.response = representations.MARCXMLRepresentation(MockRequest(), node).response()
+        self.root = lxml.etree.fromstring(self.response.body)
+
+    def test_content_type(self):
+        self.assertEquals('application/marcxml+xml', self.response.content_type)
+        self.assertEquals('inline', self.response.content_disposition)
 
 class HtmlJournalRepresentationTest(unittest.TestCase):
 

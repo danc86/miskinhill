@@ -107,7 +107,7 @@ class MODSRepresentation(Representation):
     def response(self):
         return Response(self.generate().render('xml'), 
                 content_type=self.content_type, 
-                headers={'Content-Disposition': 'inline'})
+                content_disposition='inline')
 
 class MARCXMLRepresentation(Representation):
 
@@ -123,7 +123,7 @@ class MARCXMLRepresentation(Representation):
     def response(self):
         return Response(self.generate().render('xml'), 
                 content_type=self.content_type, 
-                headers={'Content-Disposition': 'inline'})
+                content_disposition='inline')
 
 class BibTeXRepresentation(Representation):
 
