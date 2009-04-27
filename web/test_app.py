@@ -11,15 +11,21 @@ import urllib
 import rdfob
 import app
 
+TESTDATA = os.path.join(os.path.dirname(__file__), 'testdata')
+
 class AppTestCase(unittest.TestCase):
         
     def setUp(self):
         app._original_graph = app.graph
         app.graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), 'testdata', 'meta.nt'))
+        app._original_content_dir = app.content_dir
+        app.content_dir = TESTDATA
 
     def tearDown(self):
         app.graph = app._original_graph
         del app._original_graph
+        app.content_dir = app._original_content_dir
+        del app._original_content_dir
     
     def get_response(self, req):
         return req.get_response(wsgiref.validate.validator(app.MiskinHillApplication))
@@ -71,6 +77,39 @@ class UnAPITest(AppTestCase):
         res.body # to keep validator happy
 
 class RDFDispatchTest(AppTestCase):
+
+    def test_extension_style(self):
+        res = self.get_response(Request.blank('/journals/test/1:1/article.xml'))
+        self.assertEquals(200, res.status_int)
+        self.assertEquals('application/rdf+xml', res.content_type)
+        res.body # to keep validator happy
+
+    def test_content_negotiation(self):
+        res = self.get_response(Request.blank('/journals/test/1:1/article', 
+                accept='text/html; q=0.5, application/rdf+xml'))
+        self.assertEquals(200, res.status_int)
+        self.assertEquals('application/rdf+xml', res.content_type)
+        res.body # to keep validator happy
+
+    def test_accepting_no_known_types(self):
+        res = self.get_response(Request.blank('/journals/test/1:1/article', 
+                accept='application/foobar, text/vcard'))
+        self.assertEquals(200, res.status_int)
+        self.assertEquals('text/html', res.content_type)
+        res.body # to keep validator happy
+
+    def test_accepting_only_types_which_are_known_but_not_applicable(self):
+        res = self.get_response(Request.blank('/journals/test/', 
+                accept='application/atom+xml, application/x-endnote-refer'))
+        self.assertEquals(200, res.status_int)
+        self.assertEquals('text/html', res.content_type)
+        res.body # to keep validator happy
+
+    def test_default_content_type_is_html(self):
+        res = self.get_response(Request.blank('/journals/test/1:1/article'))
+        self.assertEquals(200, res.status_int)
+        self.assertEquals('text/html', res.content_type)
+        res.body # to keep validator happy
 
     def test_nonexistent_uri(self):
         res = self.get_response(Request.blank('/journals/test/1:1/no-such-article'))

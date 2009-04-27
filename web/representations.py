@@ -201,9 +201,11 @@ class AtomRepresentation(Representation):
     def response(self):
         return Response(self.generate().render(), content_type=self.content_type)
 
-ALL = [NTriplesRepresentation, RDFXMLRepresentation, HTMLRepresentation, MODSRepresentation, 
+# these are ordered by our preference, i.e. HTML first
+ALL = [HTMLRepresentation, NTriplesRepresentation, RDFXMLRepresentation, MODSRepresentation, 
        MARCXMLRepresentation, BibTeXRepresentation, EndnoteRepresentation, AtomRepresentation]
 BY_FORMAT = dict((r.format, r) for r in ALL)
+BY_CONTENT_TYPE = dict((r.content_type, r) for r in ALL)
 
 def for_types(types):
     return [r for r in ALL if r.rdf_types.intersection(types)]

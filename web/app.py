@@ -130,26 +130,36 @@ class MiskinHillApplication(object):
         return Response(body, content_type='application/xml')
 
     def dispatch_rdf(self, path_info):
-        decoded_uri = urllib.unquote('http://miskinhill.com.au' + 
-                path_info).decode('utf8')
-        format, decoded_uri = self.guess_format(decoded_uri)
+        decoded_uri = urllib.unquote('http://miskinhill.com.au' + path_info).decode('utf8')
+        representation_cls = None
+
+        # check for extension-style URL
+        for r in representations.ALL:
+            if decoded_uri.endswith('.' + r.format):
+                representation_cls = r
+                decoded_uri = decoded_uri[:-(len(r.format) + 1)]
+                break
+
         try:
             node = graph[rdfob.URIRef(decoded_uri)]
         except KeyError:
             if decoded_uri[-1] != '/' and rdfob.URIRef(decoded_uri + '/') in graph:
                 return exc.HTTPFound(location=(decoded_uri + '/').encode('utf8'))
             return exc.HTTPNotFound('URI not found in RDF graph')
-        r = representations.BY_FORMAT[format]
-        if not node.is_any(r.rdf_types):
-            return exc.HTTPNotFound('Format %r not acceptable for this URI' % format)
-        return r(self.req, node).response()
 
-    def guess_format(self, decoded_uri):
-        for r in representations.ALL:
-            if decoded_uri.endswith('.' + r.format):
-                return r.format, decoded_uri[:-(len(r.format) + 1)]
-        # XXX should check Accept header too
-        return 'html', decoded_uri
+        if representation_cls is not None:
+            # extension-style URL was given, can we do it?
+            if not node.is_any(representation_cls.rdf_types):
+                return exc.HTTPNotFound('Format %r not acceptable for this URI' % representation_cls.format)
+        else:
+            # do content negotiation
+            best_content_type = self.req.accept.best_match(r.content_type for r in representations.for_types(node.types))
+            if best_content_type is not None:
+                representation_cls = representations.BY_CONTENT_TYPE[best_content_type]
+            else:
+                representation_cls = representations.for_types(node.types)[0]
+
+        return representation_cls(self.req, node).response()
 
 application = MiskinHillApplication
 
