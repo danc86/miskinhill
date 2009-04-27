@@ -54,7 +54,7 @@ class NTriplesRepresentation(Representation):
 
     format = 'nt'
     label = 'NTriples'
-    content_type = 'text/plain; charset=UTF-8'
+    content_type = 'text/plain'
     rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
                            rdfob.uriref('mhs:Citation'), 
                            rdfob.uriref('mhs:Author'), 

@@ -16,6 +16,17 @@ class MockRequest(object):
         self.script_name = ''
         self.content_dir = TESTDATA
 
+class NTriplesArticleRepresentationTest(unittest.TestCase):
+
+    def setUp(self):
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
+        self.response = representations.NTriplesRepresentation(MockRequest(), node).response()
+
+    def test_content_type(self):
+        self.assertEquals('text/plain', self.response.content_type)
+        self.assertEquals('UTF-8', self.response.charset)
+
 class EndnoteArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
