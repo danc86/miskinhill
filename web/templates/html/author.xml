@@ -6,6 +6,7 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
+import representations
 author = node
 articles = [a for a in author.reflexive('dc:creator', type='mhs:Article') if a.uri.startswith('http://miskinhill.com.au/')]
 reviews = [r for r in author.reflexive('dc:creator', type='mhs:Review') if r.uri.startswith('http://miskinhill.com.au/')]
@@ -13,6 +14,9 @@ reviews = [r for r in author.reflexive('dc:creator', type='mhs:Review') if r.uri
 
 <head>
     <title>${author['foaf:name']}</title>
+    <py:for each="r in representations.for_types(node.types)" py:if="r.format != 'html'">
+        ${r(req, node).link()}
+    </py:for>
     <link rel="stylesheet" type="text/css" href="/style/author.css" />
 </head>
 
@@ -20,9 +24,17 @@ reviews = [r for r in author.reflexive('dc:creator', type='mhs:Review') if r.uri
 
 <h2>${author['foaf:name']}<abbr class="unapi-id" title="${author.uri}" /></h2>
 
-<p py:if="'mhs:biographicalNotes' in author">${author['mhs:biographicalNotes']}</p>
+<div class="metabox-container">
+    <div class="author-meta metabox">
+        <h4>Author details</h4>
+        <p class="affiliation" py:if="'mhs:isAffiliatedWith' in author">Affiliated with <a href="${author['mhs:isAffiliatedWith'].uri}">${author['mhs:isAffiliatedWith']['foaf:name']}</a></p>
+        <p class="metadata-links">Metadata:
+            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_types(node.types) if r.format != 'html')}
+        </p>
+    </div>
+</div>
 
-<p py:if="'mhs:isAffiliatedWith' in author">Affiliated with: <a href="${author['mhs:isAffiliatedWith'].uri}">${author['mhs:isAffiliatedWith']['foaf:name']}</a></p>
+<p py:if="'mhs:biographicalNotes' in author">${author['mhs:biographicalNotes']}</p>
 
 <py:if test="articles">
     <h3>Articles</h3>

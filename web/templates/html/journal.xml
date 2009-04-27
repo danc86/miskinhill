@@ -7,12 +7,16 @@
 
 <?python
 from viewutils import relative_url
+import representations
 journal = node
 publisher = journal['dc:publisher']
 ?>
 
 <head>
     <title>${journal['dc:title']}</title>
+    <py:for each="r in representations.for_types(node.types)" py:if="r.format != 'html'">
+        ${r(req, node).link()}
+    </py:for>
 </head>
 
 <body>
@@ -32,9 +36,7 @@ ${breadcrumbs([('/journals/', 'Journals')])}
         <p class="publisher">Published by <a href="${publisher.getone('foaf:homepage', as_uriref=True)}">${publisher['foaf:name']}</a></p>
         <p class="issn">ISSN ${journal.identifier('urn:issn:')}</p>
         <p>Metadata:
-            <a href="${relative_url(journal.uri)}.nt">RDF</a>, 
-            <a href="${relative_url(journal.uri)}.mods">MODS</a>, 
-            <a href="${relative_url(journal.uri)}.marcxml" title="experimental!">MARCXML</a>
+            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_types(node.types) if r.format != 'html')}
         </p>
     </div>
 </div>

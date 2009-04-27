@@ -7,13 +7,16 @@
 
 <?python
 from viewutils import relative_url
+import representations
 forum = node
 posts = sorted(forum.reflexive('sioc:has_container'), key=lambda p: p['dc:created'], reverse=True)
 ?>
 
 <head>
     <title>${forum['dc:title']}</title>
-    <link rel="feed" type="application/atom+xml" title="Atom feed" href="${relative_url(forum.uri)}.atom" />
+    <py:for each="r in representations.for_types(node.types)" py:if="r.format != 'html'">
+        ${r(req, node).link()}
+    </py:for>
     <link rel="stylesheet" type="text/css" href="/style/forum.css" />
 </head>
 

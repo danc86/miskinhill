@@ -2,6 +2,7 @@
 import os
 
 from webob import Response
+from genshi import Markup, XML
 from genshi.template import TemplateLoader, NewTextTemplate
 
 import rdfob
@@ -34,9 +35,25 @@ class Representation(object):
         self.req = req
         self.node = node
 
+    def anchor(self):
+        if self.node.uri.startswith('http://miskinhill.com.au/'):
+            href = self.node.uri[24:]
+        else:
+            href = self.node.uri
+        return Markup(u'<a href="%s.%s">%s</a>' % (href, self.format, self.label))
+
+    def link(self):
+        if self.node.uri.startswith('http://miskinhill.com.au/'):
+            href = self.node.uri[24:]
+        else:
+            href = self.node.uri
+        return XML(u'<link rel="alternate" type="%s" title="%s" href="%s.%s" />'
+                % (self.content_type, self.label, href, self.format))
+
 class NTriplesRepresentation(Representation):
 
     format = 'nt'
+    label = 'NTriples'
     content_type = 'text/plain; charset=UTF-8'
     rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
                            rdfob.uriref('mhs:Citation'), 
@@ -59,6 +76,7 @@ class NTriplesRepresentation(Representation):
 class RDFXMLRepresentation(Representation):
 
     format = 'xml'
+    label = 'RDF/XML'
     content_type = 'application/rdf+xml'
     rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
                            rdfob.uriref('mhs:Citation'), 
@@ -81,6 +99,7 @@ class RDFXMLRepresentation(Representation):
 class HTMLRepresentation(Representation):
 
     format = 'html'
+    label = 'HTML'
     content_type = 'text/html'
     rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
                            rdfob.uriref('mhs:Citation'), 
@@ -104,6 +123,7 @@ class HTMLRepresentation(Representation):
 class MODSRepresentation(Representation):
 
     format = 'mods'
+    label = 'MODS'
     content_type = 'application/mods+xml'
     rdf_types = frozenset([rdfob.uriref('mhs:Journal'), rdfob.uriref('mhs:Article')])
     docs = 'http://www.loc.gov/standards/mods/mods-userguide.html'
@@ -120,6 +140,7 @@ class MODSRepresentation(Representation):
 class MARCXMLRepresentation(Representation):
 
     format = 'marcxml'
+    label = 'MARCXML'
     content_type = 'application/marcxml+xml'
     rdf_types = frozenset([rdfob.uriref('mhs:Journal')])
     docs = 'http://www.loc.gov/standards/marcxml/'
@@ -136,6 +157,7 @@ class MARCXMLRepresentation(Representation):
 class BibTeXRepresentation(Representation):
 
     format = 'bib'
+    label = 'BibTeX'
     content_type = 'text/x-bibtex'
     rdf_types = frozenset([rdfob.uriref('mhs:Article')])
     docs = 'http://en.wikipedia.org/wiki/BibTeX'
@@ -151,6 +173,7 @@ class BibTeXRepresentation(Representation):
 class EndnoteRepresentation(Representation):
 
     format = 'end'
+    label = 'Endnote'
     content_type = 'application/x-endnote-refer'
     rdf_types = frozenset([rdfob.uriref('mhs:Article')])
     docs = 'http://www.harzing.com/pophelp/exporting.htm'
@@ -166,6 +189,7 @@ class EndnoteRepresentation(Representation):
 class AtomRepresentation(Representation):
 
     format = 'atom'
+    label = 'Atom'
     content_type = 'application/atom+xml'
     rdf_types = frozenset([rdfob.uriref('sioc:Forum')])
     docs = 'http://www.ietf.org/rfc/rfc4287.txt'
@@ -180,3 +204,6 @@ class AtomRepresentation(Representation):
 ALL = [NTriplesRepresentation, RDFXMLRepresentation, HTMLRepresentation, MODSRepresentation, 
        MARCXMLRepresentation, BibTeXRepresentation, EndnoteRepresentation, AtomRepresentation]
 BY_FORMAT = dict((r.format, r) for r in ALL)
+
+def for_types(types):
+    return [r for r in ALL if r.rdf_types.intersection(types)]

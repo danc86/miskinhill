@@ -7,12 +7,16 @@
 
 <?python
 from viewutils import relative_url
+import representations
 issue = node
 journal = issue['mhs:isIssueOf']
 ?>
 
 <head>
     <title>${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
+    <py:for each="r in representations.for_types(node.types)" py:if="r.format != 'html'">
+        ${r(req, node).link()}
+    </py:for>
     <link rel="stylesheet" type="text/css" href="/style/issue.css" />
 </head>
 
@@ -34,7 +38,9 @@ ${breadcrumbs([('/journals/', 'Journals'),
         <h4>Issue details</h4>
         <p class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
         <p>Published ${issue['mhs:publicationDate'].strftime('%d %B %Y')}</p>
-        <p>Metadata: <a href="${relative_url(issue.uri)}.nt">RDF</a></p>
+        <p class="metadata-links">Metadata:
+            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_types(node.types) if r.format != 'html')}
+        </p>
     </div>
 </div>
 
