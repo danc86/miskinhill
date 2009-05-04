@@ -42,7 +42,8 @@ def articles_from_issue(path, issue_filename):
                 os.path.join(path, 'reviews', review.uri.rsplit('/', 1)[1] + '.pdf'), 
                 review['mhs:startPage'] + issue['mhs:frontMatterExtent'], 
                 review['mhs:endPage'] + issue['mhs:frontMatterExtent'], 
-                entities(strip_html('Review of ' + review['mhs:reviews']['dc:title'])), 
+                entities('Review of ' + strip_html(review['mhs:reviews']['dc:title'])), 
                 entities(strip_html(review['dc:creator']['foaf:name'])))
 
 articles_from_issue('journals/asees/21:1-2/', 'final/asees07.pdf')
+articles_from_issue('journals/asees/22:1-2/', 'final/asees08.pdf')
