@@ -113,7 +113,7 @@ class GraphNode(object):
             elif x.datatype == NAMESPACES['xsd']['date']:
                 m = re.match('(\d{4})-(\d{2})-(\d{2})', x)
                 if m:
-                    return datetime.datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+                    return datetime.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
                 else:
                     return x
             else:
