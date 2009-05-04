@@ -49,7 +49,10 @@ ${breadcrumbs([('/journals/', 'Journals'),
     <li py:for="article in sorted(issue.reflexive('dc:isPartOf', type='mhs:Article'), key=lambda a: a['mhs:startPage'])"
         py:with="author = article['dc:creator']">
         <div class="title"><a href="${relative_url(article.uri)}">${article['dc:title']}</a></div>
-        <div class="author">by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a></div>
+        <div class="author">
+            by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
+            <py:if test="article.getone('mhs:translator', default=None)">(translated by <a href="${relative_url(article['mhs:translator'].uri)}">${article['mhs:translator']['foaf:name']}</a>)</py:if>
+        </div>
     </li>
 </ul>
 
@@ -57,8 +60,11 @@ ${breadcrumbs([('/journals/', 'Journals'),
 <ul class="contents reviews">
     <li py:for="review in sorted(issue.reflexive('dc:isPartOf', type='mhs:Review'), key=lambda r: r['mhs:startPage'])"
         py:with="author = review['dc:creator']; book = review['mhs:reviews']">
-        <div class="book"><a href="${relative_url(review.uri)}">${book['dc:creator']}, <em>${book['dc:title']}</em> (${book['dc:date'][:4]})</a></div>
-        <div class="reviewed-by">Reviewed by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a></div>
+        <div class="book"><a href="${relative_url(review.uri)}">${', '.join(book.getall('dc:creator'))}, <em>${book['dc:title']}</em> (${str(book['dc:date'])[:4]})</a></div>
+        <div class="reviewed-by">
+            Reviewed by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
+            <py:if test="review.getone('mhs:translator', default=None)">(translated by <a href="${relative_url(review['mhs:translator'].uri)}">${review['mhs:translator']['foaf:name']}</a>)</py:if>
+        </div>
     </li>
 </ul>
 
