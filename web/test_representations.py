@@ -24,8 +24,7 @@ class NTriplesArticleRepresentationTest(unittest.TestCase):
         self.response = representations.NTriplesRepresentation(MockRequest(), node).response()
 
     def test_content_type(self):
-        self.assertEquals('text/plain', self.response.content_type)
-        self.assertEquals('UTF-8', self.response.charset)
+        self.assertEquals('application/x-turtle', self.response.content_type)
 
 class EndnoteArticleRepresentationTest(unittest.TestCase):
 

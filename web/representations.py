@@ -54,7 +54,7 @@ class NTriplesRepresentation(Representation):
 
     format = 'nt'
     label = 'NTriples'
-    content_type = 'text/plain'
+    content_type = 'application/x-turtle' # XXX should we actually serve turtle then?
     rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
                            rdfob.uriref('mhs:Citation'), 
                            rdfob.uriref('mhs:Author'), 
