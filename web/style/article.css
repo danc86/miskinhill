@@ -7,6 +7,24 @@
     margin-bottom: 0;
 }
 
+.epigraph {
+    margin: 0.75em 0;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.incompleteness-warning {
+    clear: both;
+    border: 1px solid #BF8160;
+    margin: 1em;
+    padding: 1em;
+    background-color: #FFD6BF;
+}
+.incompleteness-warning p {
+    background: url(../images/silk/exclamation.png) no-repeat center left;
+    padding-left: 26px;
+}
+
 /* Citations */
 .citation-hover {
     background-color: #BFD5FF;
