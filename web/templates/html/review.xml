@@ -48,7 +48,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
 ${bookinfo(book)}
 
-<xi:include href="../../../../content${relative_url(review.uri)}.html"><xi:fallback /></xi:include>
+<xi:include href="../../../../content${relative_url(review.uri)}.html" />
 
 </body>
 </html>
