@@ -7,7 +7,7 @@
 <xi:include href="_bookinfo.xml" />
 
 <?python
-from viewutils import relative_url
+from viewutils import relative_url, parsed_content
 import representations
 review = node
 book = review['mhs:reviews']
@@ -48,7 +48,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
 ${bookinfo(book)}
 
-<xi:include href="../../../../content${relative_url(review.uri)}.html" />
+${parsed_content(req.content_dir + relative_url(review.uri) + '.html', review.uri)}
 
 </body>
 </html>
