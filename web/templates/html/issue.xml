@@ -10,6 +10,7 @@ from viewutils import relative_url
 import representations
 issue = node
 journal = issue['mhs:isIssueOf']
+obituaries = issue.reflexive('dc:isPartOf', type='mhs:Obituary')
 ?>
 
 <head>
@@ -43,6 +44,20 @@ ${breadcrumbs([('/journals/', 'Journals'),
         </p>
     </div>
 </div>
+
+<py:if test="obituaries">
+    <h3>Obituary</h3> <?python assert len(obituaries) <= 1 ?>
+    <ul class="contents obituaries">
+        <li py:for="obituary in obituaries" 
+            py:with="author = obituary['dc:creator']">
+            <div class="title"><a href="${relative_url(obituary.uri)}">${obituary['dc:title']}</a></div>
+            <div class="author">
+                by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
+                <py:if test="obituary.getone('mhs:translator', default=None)">(translated by <a href="${relative_url(obituary['mhs:translator'].uri)}">${obituary['mhs:translator']['foaf:name']}</a>)</py:if>
+            </div>
+        </li>
+    </ul>
+</py:if>
 
 <h3>Articles</h3>
 <ul class="contents articles">

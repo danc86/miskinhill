@@ -16,6 +16,7 @@ RDF_TEMPLATES = {
     rdfob.uriref('mhs:Journal'): 'journal', 
     rdfob.uriref('mhs:Issue'): 'issue', 
     rdfob.uriref('mhs:Article'): 'article',
+    rdfob.uriref('mhs:Obituary'): 'obituary',
     rdfob.uriref('mhs:Review'): 'review', 
     rdfob.uriref('mhs:Author'): 'author', 
     rdfob.uriref('mhs:Citation'): 'citation', 
@@ -27,7 +28,7 @@ def template_for_type(node):
     for type in node.types:
         if type in RDF_TEMPLATES:
             return RDF_TEMPLATES[type]
-    raise exc.HTTPNotFound('Matching template not found').exception
+    raise ValueError('Matching template not found')
 
 class Representation(object):
 
@@ -59,6 +60,7 @@ class NTriplesRepresentation(Representation):
                            rdfob.uriref('mhs:Citation'), 
                            rdfob.uriref('mhs:Author'), 
                            rdfob.uriref('mhs:Article'), 
+                           rdfob.uriref('mhs:Obituary'), 
                            rdfob.uriref('mhs:Review'), 
                            rdfob.uriref('mhs:Issue'), 
                            rdfob.uriref('mhs:Journal'), 
@@ -82,6 +84,7 @@ class RDFXMLRepresentation(Representation):
                            rdfob.uriref('mhs:Citation'), 
                            rdfob.uriref('mhs:Author'), 
                            rdfob.uriref('mhs:Article'), 
+                           rdfob.uriref('mhs:Obituary'), 
                            rdfob.uriref('mhs:Review'), 
                            rdfob.uriref('mhs:Issue'), 
                            rdfob.uriref('mhs:Journal'), 
@@ -105,6 +108,7 @@ class HTMLRepresentation(Representation):
                            rdfob.uriref('mhs:Citation'), 
                            rdfob.uriref('mhs:Author'), 
                            rdfob.uriref('mhs:Article'), 
+                           rdfob.uriref('mhs:Obituary'), 
                            rdfob.uriref('mhs:Review'), 
                            rdfob.uriref('mhs:Issue'), 
                            rdfob.uriref('mhs:Journal'), 

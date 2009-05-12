@@ -168,5 +168,24 @@ class HtmlReviewRepresentationTest(unittest.TestCase):
         self.assertEquals('/journals/test/', published_in_links[1].get('href'))
         self.assertEquals('Test Journal of Good Stuff', published_in_links[1].text_content())
 
+class HtmlObituaryRepresentationTest(unittest.TestCase):
+
+    def setUp(self):
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe')]
+        self.response = representations.HTMLRepresentation(MockRequest(), node).response()
+        self.root = lxml.html.fromstring(self.response.body)
+
+    def test_content_type(self):
+        self.assertEquals('text/html', self.response.content_type)
+
+    def test_published_in(self):
+        article_meta, = self.root.find_class('obituary-meta')
+        published_in_links = article_meta.xpath('./p[1]/a')
+        self.assertEquals('/journals/test/1:1/', published_in_links[0].get('href'))
+        self.assertEquals('Vol. 1, Issue 1', published_in_links[0].text_content())
+        self.assertEquals('/journals/test/', published_in_links[1].get('href'))
+        self.assertEquals('Test Journal of Good Stuff', published_in_links[1].text_content())
+
 if __name__ == '__main__':
     unittest.main()

@@ -41,3 +41,12 @@ _:book <http://purl.org/dc/terms/date> "2005"^^<http://www.w3.org/TR/xmlschema-2
 <http://miskinhill.com.au/journals/test/1:1/reviews/review> <http://purl.org/dc/terms/isPartOf> <http://miskinhill.com.au/journals/test/1:1/> .
 <http://miskinhill.com.au/journals/test/1:1/reviews/review> <http://miskinhill.com.au/rdfschema/1.0/reviews> _:book .
 <http://miskinhill.com.au/journals/test/1:1/reviews/review> <http://purl.org/dc/terms/creator> <http://miskinhill.com.au/authors/test-author> .
+<http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://miskinhill.com.au/rdfschema/1.0/Obituary> .
+<http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe> <http://purl.org/dc/terms/title> "In memoriam John Doe"@en .
+<http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe> <http://purl.org/dc/terms/isPartOf> <http://miskinhill.com.au/journals/test/1:1/> .
+<http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe> <http://purl.org/dc/terms/creator> <http://miskinhill.com.au/authors/test-author> .
+_:person <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+_:person <http://xmlns.com/foaf/0.1/name> "John Doe" .
+_:person <http://miskinhill.com.au/rdfschema/1.0/dateOfBirth> "1990-01-01"^^<http://www.w3.org/TR/xmlschema-2/#date> .
+_:person <http://miskinhill.com.au/rdfschema/1.0/dateOfDeath> "1991-12-31"^^<http://www.w3.org/TR/xmlschema-2/#date> .
+<http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe> <http://miskinhill.com.au/rdfschema/1.0/obituaryOf> _:person .
