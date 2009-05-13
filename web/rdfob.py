@@ -121,7 +121,7 @@ class GraphNode(object):
 
     def is_any(self, types):
         for type in types:
-            if type in self.types:
+            if uriref(type) in self.types:
                 return True
         return False
 

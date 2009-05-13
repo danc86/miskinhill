@@ -27,6 +27,6 @@ ul.contents li + li {
 ul.contents li:hover {
     background-color: #FFF5D6;
 }
-ul.obituaries li .author, ul.articles li .author, ul.reviews li .reviewed-by {
+ul.contents li .author {
     font-size: 90%;
 }
