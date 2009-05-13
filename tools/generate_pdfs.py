@@ -44,6 +44,14 @@ def articles_from_issue(path, issue_filename):
                 review['mhs:endPage'] + issue['mhs:frontMatterExtent'], 
                 entities('Review of ' + strip_html(review['mhs:reviews']['dc:title'])), 
                 entities(strip_html(review['dc:creator']['foaf:name'])))
+    for obituary in issue.reflexive('dc:isPartOf', type='mhs:Obituary'):
+        assert obituary.uri.startswith(issue.uri), obituary.uri
+        generate_pdf(os.path.join(path, issue_filename),
+                os.path.join(path, obituary.uri.rsplit('/', 1)[1] + '.pdf'), 
+                obituary['mhs:startPageInFrontMatter'],
+                obituary['mhs:endPageInFrontMatter'], 
+                entities(strip_html(obituary['dc:title'])), 
+                entities(strip_html(obituary['dc:creator']['foaf:name'])))
 
 articles_from_issue('journals/asees/21:1-2/', 'final/asees07.pdf')
 articles_from_issue('journals/asees/22:1-2/', 'final/asees08.pdf')
