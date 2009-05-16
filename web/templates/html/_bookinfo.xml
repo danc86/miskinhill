@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:py="http://genshi.edgewall.org/"
-     xmlns:xi="http://www.w3.org/2001/XInclude">
+     xmlns:xi="http://www.w3.org/2001/XInclude"
+     py:strip="True">
 
 <div py:def="bookinfo(book)" class="bookinfo">
 
