@@ -24,7 +24,7 @@ public class SearchResults {
     	public String getUrl() { return url; }
         public String getAnchor() { return anchor; }
         public int scoreWidth(int max) {
-    		return (int) (Math.min(1.0, this.score) * max);
+    		return (int) Math.round(Math.min(1.0, this.score) * max);
     	}
     	public String scorePercent() {
     		return String.format("%.1f%%", Math.min(1.0, this.score) * 100);

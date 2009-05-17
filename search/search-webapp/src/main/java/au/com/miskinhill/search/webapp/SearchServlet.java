@@ -1,9 +1,9 @@
 package au.com.miskinhill.search.webapp;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Properties;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.util.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,19 +16,17 @@ import org.apache.lucene.index.IndexReader.FieldOption;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 
 import au.com.miskinhill.search.analysis.MHAnalyzer;
+import groovy.text.SimpleTemplateEngine;
+import groovy.text.Template;
 
 public class SearchServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1140261890520211317L;
+	private static final long serialVersionUID = 1140261890520211318L;
 	
 	private static String[] fieldsToSearch;
 
-    private VelocityEngine ve;
     private Template resultsTemplate;
 	private IndexReader index;
 
@@ -45,15 +43,9 @@ public class SearchServlet extends HttpServlet {
             index = IndexReader.open(FSDirectory.getDirectory(indexPath), /* read-only */ true);
             fieldsToSearch = determineFieldsToSearch();
 
-            // Velocity
-            Properties props = new Properties();
-            props.load(SearchServlet.class.getResourceAsStream("/velocity.properties"));
-            ve = new VelocityEngine();
-            ve.setApplicationAttribute(ServletContext.class.getName(), 
-                    getServletContext());
-            ve.init(props);
-            resultsTemplate = ve
-                    .getTemplate("/au/com/miskinhill/search/webapp/SearchResultsTemplate.vm");
+            SimpleTemplateEngine engine = new SimpleTemplateEngine();
+            resultsTemplate = engine.createTemplate(new InputStreamReader(
+                this.getClass().getResourceAsStream("SearchResults.html"), "UTF-8"));
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -82,13 +74,13 @@ public class SearchServlet extends HttpServlet {
 			IndexSearcher searcher = new IndexSearcher(index);
 			Query query = MultilingualQueryParser.parse(q, new MHAnalyzer(), fieldsToSearch);
 			SearchResults results = SearchResults.build(searcher.search(query, 50), index);
-			
-			VelocityContext context = new VelocityContext();
+
+            Map<String, Object> context = new HashMap<String, Object>();
 	        context.put("resultTypes", SearchResults.ResultType.values());
 			context.put("q", q);
 			context.put("results", results);
 			resp.setContentType("text/html; charset=utf-8");
-			resultsTemplate.merge(context, resp.getWriter());
+            resultsTemplate.make(context).writeTo(resp.getWriter());
 		} catch (Exception e) {
 			// Java is lame
 			throw new ServletException(e);
