@@ -2,15 +2,18 @@ package au.com.miskinhill.search.webapp;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import groovy.text.SimpleTemplateEngine;
+import groovy.text.Template;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexReader.FieldOption;
 import org.apache.lucene.search.IndexSearcher;
@@ -18,8 +21,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.store.FSDirectory;
 
 import au.com.miskinhill.search.analysis.MHAnalyzer;
-import groovy.text.SimpleTemplateEngine;
-import groovy.text.Template;
 
 public class SearchServlet extends HttpServlet {
 
