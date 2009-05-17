@@ -58,8 +58,8 @@ public class Review extends GenericResource {
 		Property dctitle = rdfResource.getModel().createProperty(DCTerms.NS, "title");
 		Property dccreator = rdfResource.getModel().createProperty(DCTerms.NS, "creator");
 		Property dcdate = rdfResource.getModel().createProperty(DCTerms.NS, "date");
-		return reviewed.getRequiredProperty(dccreator).getString() + ", <em>" + 
-		        reviewed.getRequiredProperty(dctitle).getString() + "</em> (" + 
+		return toHTML(reviewed.getRequiredProperty(dccreator).getLiteral()) + ", <em>" + 
+		        toHTML(reviewed.getRequiredProperty(dctitle).getLiteral()) + "</em> (" + 
 		        reviewed.getRequiredProperty(dcdate).getString().substring(0, 4) + ")"; 
 	}
 

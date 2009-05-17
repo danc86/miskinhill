@@ -15,7 +15,7 @@ public class Author extends GenericResource {
 	
 	@Override
 	protected String getAnchorText() {
-	    return rdfResource.getRequiredProperty(FOAF.name).getString();
+	    return toHTML(rdfResource.getRequiredProperty(FOAF.name).getLiteral());
 	}
 
     @Override

@@ -33,6 +33,8 @@ public abstract class GenericResource {
 	}
 
 	public static GenericResource fromRDF(Resource rdfResource, FulltextFetcher fulltextFetcher) {
+        if (!rdfResource.isAnon() && !rdfResource.getURI().startsWith("http://miskinhill.com.au"))
+            return null;
 		StmtIterator i = rdfResource.listProperties(RDF.type);
 		while (i.hasNext()) {
 			final Statement stmt = i.nextStatement();
@@ -105,6 +107,18 @@ public abstract class GenericResource {
         doc.add(new Field("anchor", getAnchorText(), Store.YES, Index.NO));
 		iw.addDocument(doc);
 	}
+    
+    public static String toHTML(Literal literal) {
+        if (literal.getDatatypeURI() == null) {
+            /* untyped literal, so needs escaping */
+            return literal.getString().replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+        } else if (literal.getDatatypeURI().equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral")) {
+            /* XML literal, so return as is */
+            return literal.getString();
+        } else {
+            throw new IllegalArgumentException("Anchor text is neither untyped nor XML literal");
+        }
+    }
 
     /**
      * Indicates whether this resource type is expecting to be added as a
