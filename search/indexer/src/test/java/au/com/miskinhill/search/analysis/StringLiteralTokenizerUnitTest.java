@@ -14,8 +14,7 @@ import au.com.miskinhill.search.analysis.StringLiteralTokenizer;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 
-@SuppressWarnings("deprecation")
-public class StringLiteralTokenizerUnitTest {
+public class StringLiteralTokenizerUnitTest extends AbstractTokenizerUnitTest {
 
 	@Test
 	public void testEnglish() throws Exception {
@@ -25,8 +24,8 @@ public class StringLiteralTokenizerUnitTest {
 		replay(text);
 		StringLiteralTokenizer t = new StringLiteralTokenizer(text);
 		Token tok = new Token();
-		assertEquals(new Token("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("world", 13, 18, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("world", 13, 18, "<ALPHANUM>"), t.next(tok));
 		assertEquals(null, t.next(tok));
 	}
 
@@ -38,8 +37,8 @@ public class StringLiteralTokenizerUnitTest {
 		replay(text);
 		StringLiteralTokenizer t = new StringLiteralTokenizer(text);
 		Token tok = new Token();
-		assertEquals(new Token("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("world", 13, 18, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("world", 13, 18, "<ALPHANUM>"), t.next(tok));
 		assertEquals(null, t.next(tok));
 	}
 
@@ -51,10 +50,14 @@ public class StringLiteralTokenizerUnitTest {
 		replay(text);
 		StringLiteralTokenizer t = new StringLiteralTokenizer(text);
 		Token tok = new Token();
-		assertEquals(new Token("нас", 0, 3, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("судьб", 6, 12, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("безвестн", 13, 23, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("ждут", 24, 28, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("нас", 0, 3, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("nas", 0, 3, "<ALPHANUM>", 0), t.next(tok));
+		assertEquals(buildToken("судьб", 6, 12, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("sud'by", 6, 12, "<ALPHANUM>", 0), t.next(tok));
+		assertEquals(buildToken("безвестн", 13, 23, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("bezvestnye", 13, 23, "<ALPHANUM>", 0), t.next(tok));
+		assertEquals(buildToken("ждут", 24, 28, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("zhdut", 24, 28, "<ALPHANUM>", 0), t.next(tok));
 		assertEquals(null, t.next(tok));
 	}
 
@@ -66,10 +69,10 @@ public class StringLiteralTokenizerUnitTest {
 		replay(text);
 		StringLiteralTokenizer t = new StringLiteralTokenizer(text);
 		Token tok = new Token();
-		assertEquals(new Token("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("to", 6, 8, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("the", 9, 12, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("world", 13, 18, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("to", 6, 8, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("the", 9, 12, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("world", 13, 18, "<ALPHANUM>"), t.next(tok));
 		assertEquals(null, t.next(tok));
 	}
 	
@@ -81,10 +84,10 @@ public class StringLiteralTokenizerUnitTest {
 		replay(text);
 		StringLiteralTokenizer t = new StringLiteralTokenizer(text);
 		Token tok = new Token();
-		assertEquals(new Token("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("to", 6, 8, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("the", 9, 12, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("world", 13, 18, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("hello", 0, 5, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("to", 6, 8, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("the", 9, 12, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("world", 13, 18, "<ALPHANUM>"), t.next(tok));
 		assertEquals(null, t.next(tok));
 	}
 	
@@ -96,8 +99,8 @@ public class StringLiteralTokenizerUnitTest {
 		replay(text);
 		StringLiteralTokenizer t = new StringLiteralTokenizer(text);
 		Token tok = new Token();
-		assertEquals(new Token("everyon", 0, 10, "<APOSTROPHE>"), t.next(tok));
-		assertEquals(new Token("silli", 11, 16, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("everyon", 0, 10, "<APOSTROPHE>"), t.next(tok));
+		assertEquals(buildToken("silli", 11, 16, "<ALPHANUM>"), t.next(tok));
 		assertEquals(null, t.next(tok));
 	}
 	

@@ -15,8 +15,7 @@ import au.com.miskinhill.search.analysis.XMLLiteralTokenizer;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-@SuppressWarnings("deprecation")
-public class XMLLiteralTokenizerUnitTest {
+public class XMLLiteralTokenizerUnitTest extends AbstractTokenizerUnitTest {
 	
 	@Test
 	public void testSpan() throws Exception {
@@ -29,20 +28,25 @@ public class XMLLiteralTokenizerUnitTest {
 		replay(literal);
 		XMLLiteralTokenizer t = new XMLLiteralTokenizer(literal);
 		Token tok = new Token();
-		assertEquals(new Token("nabat", 57, 62, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("it", 72, 75, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("editor", 76, 83, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("1919", 89, 93, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("swansong", 94, 102, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("brisban", 110, 118, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("russian", 119, 126, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("socialist", 127, 136, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("press", 137, 142, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("нас", 161, 164, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("ещ", 165, 168, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("судьб", 169, 175, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("безвестн", 176, 186, "<ALPHANUM>"), t.next(tok));
-		assertEquals(new Token("ждут", 187, 191, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("nabat", 57, 62, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("it", 72, 75, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("editor", 76, 83, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("1919", 89, 93, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("swansong", 94, 102, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("brisban", 110, 118, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("russian", 119, 126, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("socialist", 127, 136, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("press", 137, 142, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("нас", 161, 164, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("nas", 161, 164, "<ALPHANUM>", 0), t.next(tok));
+		assertEquals(buildToken("ещ", 165, 168, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("eshche", 165, 168, "<ALPHANUM>", 0), t.next(tok));
+		assertEquals(buildToken("судьб", 169, 175, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("sud'by", 169, 175, "<ALPHANUM>", 0), t.next(tok));
+		assertEquals(buildToken("безвестн", 176, 186, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("bezvestnye", 176, 186, "<ALPHANUM>", 0), t.next(tok));
+		assertEquals(buildToken("ждут", 187, 191, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("zhdut", 187, 191, "<ALPHANUM>", 0), t.next(tok));
 		assertEquals(null, t.next(new Token()));
 	}
 	
@@ -55,8 +59,8 @@ public class XMLLiteralTokenizerUnitTest {
 		replay(literal);
 		XMLLiteralTokenizer t = new XMLLiteralTokenizer(literal);
 		Token tok = new Token();
-		assertEquals(new Token("everyon", 53, 63, "<APOSTROPHE>"), t.next(tok));
-		assertEquals(new Token("silli", 64, 69, "<ALPHANUM>"), t.next(tok));
+		assertEquals(buildToken("everyon", 53, 63, "<APOSTROPHE>"), t.next(tok));
+		assertEquals(buildToken("silli", 64, 69, "<ALPHANUM>"), t.next(tok));
 		assertEquals(null, t.next(new Token()));
 	}
 	

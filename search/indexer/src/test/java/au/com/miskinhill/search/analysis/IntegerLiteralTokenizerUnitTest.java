@@ -18,8 +18,7 @@ import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.vocabulary.XSD;
 
-@SuppressWarnings("deprecation")
-public class IntegerLiteralTokenizerUnitTest {
+public class IntegerLiteralTokenizerUnitTest extends AbstractTokenizerUnitTest {
 	
 	private Literal zero;
 	
@@ -39,7 +38,7 @@ public class IntegerLiteralTokenizerUnitTest {
 	@Test
 	public void testInteger() {
 		IntegerLiteralTokenizer t = new IntegerLiteralTokenizer(zero);
-		assertEquals(new Token("0", 0, 1, "integer"), t.next(new Token()));
+		assertEquals(buildToken("0", 0, 1, "integer"), t.next(new Token()));
 		assertEquals(null, t.next(new Token()));
 	}
 	
