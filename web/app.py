@@ -28,9 +28,7 @@ graph = None
 def maybe_initialise_graph():
     global graph
     if graph is None: # XXX race here
-        graph = rdfob.Graph(os.path.join(content_dir, 'meta.nt'), 
-                            os.path.join(content_dir, 'rdfschema', 'foaf.nt'), 
-                            os.path.join(content_dir, 'rdfschema', 'dcterms.nt'))
+        graph = rdfob.Graph(os.path.join(content_dir, 'meta.xml'))
         for article in graph.by_type('mhs:Article'):
             if article.uri.startswith('http://miskinhill.com.au/'):
                 content = content_dir + viewutils.relative_url(article.uri) + '.html'

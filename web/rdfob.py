@@ -3,7 +3,6 @@ import datetime, re
 import rdflib
 from rdflib import URIRef, Namespace, BNode, Literal
 from rdflib.Graph import ConjunctiveGraph
-import RDFSClosure
 import genshi
 import iso8601
 
@@ -38,8 +37,7 @@ class Graph(object):
         for prefix, namespace in NAMESPACES.iteritems():
             self._g.bind(prefix, namespace)
         for filename in imports:
-            self._g.parse(filename, format='nt')
-        RDFSClosure.create_RDFSClosure(self._g)
+            self._g.parse(filename)
 
     def __getitem__(self, subject):
         subject = uriref(subject)
