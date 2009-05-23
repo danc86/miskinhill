@@ -174,3 +174,6 @@ class GraphNode(object):
         for identifier in self._objects.get(uriref('dc:identifier'), []):
             if identifier.startswith(scheme):
                 return identifier[len(scheme):]
+
+    def __eq__(self, other):
+        return (self.graph is other.graph and self.uri == other.uri)

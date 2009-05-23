@@ -45,8 +45,8 @@ ${breadcrumbs([('/journals/', 'Journals'),
     </div>
 </div>
 
-<py:for each="section_heading, items in groupby(sorted(issue.reflexive('dc:isPartOf', type='mhs:IssueContent'), key=lambda c: c['mhs:startPage']), key=lambda c: c['mhs:inSection']['mhs:sectionHeading'])">
-    <h3>${section_heading}</h3>
+<py:for each="section, items in groupby(sorted(issue.reflexive('dc:isPartOf', type='mhs:IssueContent'), key=lambda c: c['mhs:startPage']), key=lambda c: c['mhs:inSection'])">
+    <h3 id="${section.uri[section.uri.index('#') + 1:]}">${section['mhs:sectionHeading']}</h3>
     <ul class="contents">
         <py:for each="item in items">
             <py:choose>
