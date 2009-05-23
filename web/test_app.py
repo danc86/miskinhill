@@ -17,7 +17,7 @@ class AppTestCase(unittest.TestCase):
         
     def setUp(self):
         app._original_graph = app.graph
-        app.graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), 'testdata', 'meta.nt'))
+        app.graph = rdfob.Graph(os.path.join(os.path.dirname(__file__), 'testdata', 'meta.xml'))
         app._original_content_dir = app.content_dir
         app.content_dir = TESTDATA
 

@@ -19,7 +19,7 @@ class MockRequest(object):
 class NTriplesArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.response = representations.NTriplesRepresentation(MockRequest(), node).response()
 
@@ -29,7 +29,7 @@ class NTriplesArticleRepresentationTest(unittest.TestCase):
 class EndnoteArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.response = representations.EndnoteRepresentation(MockRequest(), node).response()
 
@@ -43,7 +43,7 @@ class EndnoteArticleRepresentationTest(unittest.TestCase):
 class ModsArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.response = representations.MODSRepresentation(MockRequest(), node).response()
         self.root = lxml.etree.fromstring(self.response.body)
@@ -89,7 +89,7 @@ class ModsArticleRepresentationTest(unittest.TestCase):
 class MarcxmlJournalRepresentationTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/')]
         self.response = representations.MARCXMLRepresentation(MockRequest(), node).response()
         self.root = lxml.etree.fromstring(self.response.body)
@@ -101,7 +101,7 @@ class MarcxmlJournalRepresentationTest(unittest.TestCase):
 class HtmlJournalRepresentationTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/')]
         self.response = representations.HTMLRepresentation(MockRequest(), node).response()
         self.root = lxml.html.fromstring(self.response.body)
@@ -127,7 +127,7 @@ class HtmlJournalRepresentationTest(unittest.TestCase):
 class HtmlArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.response = representations.HTMLRepresentation(MockRequest(), node).response()
         self.root = lxml.html.fromstring(self.response.body)
@@ -152,7 +152,7 @@ class HtmlArticleRepresentationTest(unittest.TestCase):
 class HtmlReviewRepresentationTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/reviews/review')]
         self.response = representations.HTMLRepresentation(MockRequest(), node).response()
         self.root = lxml.html.fromstring(self.response.body)
@@ -171,7 +171,7 @@ class HtmlReviewRepresentationTest(unittest.TestCase):
 class HtmlObituaryRepresentationTest(unittest.TestCase):
 
     def setUp(self):
-        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.nt'))
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
         node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe')]
         self.response = representations.HTMLRepresentation(MockRequest(), node).response()
         self.root = lxml.html.fromstring(self.response.body)
