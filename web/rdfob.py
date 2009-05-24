@@ -81,9 +81,11 @@ class Graph(object):
             for s, p, o in self._g.triples((None, None, subject)):
                 if isinstance(s, BNode):
                     add_triples(s)
-        for s in self._g.subjects():
-            if self._g.absolutize(s, defrag=True) == subject:
-                add_triples(s)
+        # XXX need to figure out an efficient way to do this
+        #for s in self._g.subjects():
+        #    if self._g.absolutize(s, defrag=True) == subject:
+        #        add_triples(s)
+        add_triples(subject)
         return subgraph.serialize(format=format)
 
 class GraphNode(object):
