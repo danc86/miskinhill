@@ -33,8 +33,8 @@ def maybe_initialise_graph():
             if article.uri.startswith('http://miskinhill.com.au/'):
                 content = content_dir + viewutils.relative_url(article.uri) + '.html'
                 if os.path.exists(content):
-                    for citation in citations.citations_from_content(content):
-                        citation.add_to_graph(graph._g, article.uri)
+                    for citation in citations.citations_from_content(content, article.uri):
+                        citation.add_to_graph(graph._g)
 
 class MiskinHillApplication(object):
 

@@ -8,13 +8,16 @@ import citations
 def parsed_content(filename, article_uri):
     original_content = open(filename, 'rb').read().decode('utf8')
     root = lxml.html.fragment_fromstring(original_content)
+    counter = 0
     for elem in root.find_class('citation'):
-        citation = citations.Citation.from_elem(elem)
+        counter += 1
+        elem.set('id', 'citation-%d' % counter)
+        citation = citations.Citation.from_elem(article_uri, counter, elem)
         elem.getchildren()[-1].tail = (elem.getchildren()[-1].tail or u'') + u' '
         elem.append(citation.coins())
-        elem.append(E.A(E.IMG(src='/images/silk/world_link.png', alt='[Citation details]'), 
-                E.CLASS('citation-link'), 
-                href='%s/citations/%s' % (relative_url(article_uri), citation.id())))
+        for uri in citation.cites_urirefs():
+            elem.append(E.A(E.IMG(src='/images/silk/world_link.png', alt='[Citation details]'), 
+                    E.CLASS('citation-link'), href=relative_url(uri)))
     return XML(lxml.etree.tostring(root, encoding=unicode))
 
 def relative_url(uri):

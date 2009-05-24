@@ -22,14 +22,15 @@ CITATION_GENRES = 'book bookitem thesis proceeding article'.split()
 
 class Citation(object):
 
-    def __init__(self):
+    def __init__(self, article_uri, number):
+        self.article_uri = article_uri
+        self.number = number
         for field in CITATION_FIELDS:
             setattr(self, field, [])
 
     @classmethod
-    def from_elem(cls, elem):
-        citation = cls()
-        citation._elem = elem
+    def from_elem(cls, article_uri, number, elem):
+        citation = cls(article_uri, number)
         for field in CITATION_FIELDS:
             setattr(citation, field, [normalize_whitespace(title_or_text(e))
                     for e in elem.find_class(field)])
@@ -39,8 +40,8 @@ class Citation(object):
         return citation
 
     @classmethod
-    def from_markup(cls, markup):
-        return cls.from_elem(lxml.html.fragment_fromstring(markup))
+    def from_markup(cls, article_uri, number, markup):
+        return cls.from_elem(article_uri, number, lxml.html.fragment_fromstring(markup))
 
     def __repr__(self):
         return '<Citation %s %r>' % (self.id(), self.__dict__)
@@ -64,27 +65,16 @@ class Citation(object):
         else:
             return elem
 
-    def id(self):
-        h = hashlib.sha1()
-        for k, vs in self.__dict__.iteritems():
-            if not k.startswith('_'):
-                h.update(k)
-                for v in vs:
-                    h.update(v.encode('utf16'))
-        return h.hexdigest()
-
-    def add_to_graph(self, graph, article_uri):
-        self_uri = rdfob.URIRef('%s/citations/%s' % (article_uri, self.id()))
-        if (self_uri, None, None) in graph:
-            return
+    def add_to_graph(self, graph):
+        self_uri = rdfob.URIRef('%s#citation-%d' % (self.article_uri, self.number))
         graph.add((self_uri, rdfob.RDF_TYPE, rdfob.uriref('mhs:Citation')))
-        graph.add((self_uri, rdfob.uriref('dc:isPartOf'), article_uri))
-        graph.add((self_uri, rdfob.uriref('mhs:citationMarkup'), 
-                rdfob.Literal(lxml.etree.tostring(self._elem, encoding=unicode, with_tail=False), 
-                    datatype=rdfob.uriref('rdf:XMLLiteral'))))
-        for cites in self.cites:
-            graph.add((self_uri, rdfob.uriref('mhs:cites'), 
-                    rdfob.URIRef(urlparse.urljoin('http://private.miskinhill.com.au/cited/', cites.encode('utf8')).decode('utf8')))) # XXX dodgy
+        graph.add((self_uri, rdfob.uriref('dc:isPartOf'), rdfob.URIRef(self.article_uri)))
+        for cites in self.cites_urirefs():
+            graph.add((self_uri, rdfob.uriref('mhs:cites'), rdfob.URIRef(cites.decode('utf8'))))
+
+    def cites_urirefs(self):
+        return [urlparse.urljoin('http://miskinhill.com.au/cited/', cites.encode('utf8'))
+                for cites in self.cites]
 
     def page_ranges(self):
         starts = sorted(int(x) for x in self.spage)
@@ -98,7 +88,7 @@ class Citation(object):
                 parts.append(u'%d\u2013' % s)
         return u', '.join(parts)
 
-def citations_from_content(filename):
+def citations_from_content(filename, article_uri):
     original_content = open(filename, 'rb').read().decode('utf8')
     root = lxml.html.fragment_fromstring(original_content)
-    return [Citation.from_elem(e) for e in root.find_class('citation')]
+    return [Citation.from_elem(article_uri, n + 1, e) for n, e in enumerate(root.find_class('citation'))]

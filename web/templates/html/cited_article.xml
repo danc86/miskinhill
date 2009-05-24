@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      lang="en-AU">
+<xi:include href="_commonwrapper.xml" />
+<xi:include href="_articleinfo.xml" />
+
+<?python
+from viewutils import relative_url
+article = node
+issue = article['dc:isPartOf']
+journal = issue['mhs:isIssueOf']
+?>
+
+<head>
+    <title>${Markup(article['dc:title']).striptags()} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
+    <link rel="stylesheet" type="text/css" href="/style/cited.css" />
+</head>
+
+<body>
+
+<h2>Article<abbr class="unapi-id" title="${article.uri}" /></h2>
+
+${articleinfo(article)}
+
+<h3 class="cited-in">Cited in</h3>
+<ul class="articles">
+    <li py:for="article in sorted(set(c['dc:isPartOf'] for c in article.reflexive('mhs:cites')), key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
+        py:with="issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+        <div class="article"><a href="${relative_url(article.uri)}">${article['dc:title']}</a></div>
+        <div class="issue">in <a href="${relative_url(issue.uri)}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
+    </li>
+</ul>
+
+</body>
+</html>
