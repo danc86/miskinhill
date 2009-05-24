@@ -17,7 +17,7 @@ def parsed_content(filename, article_uri):
         elem.append(citation.coins())
         for uri in citation.cites_urirefs():
             elem.append(E.A(E.IMG(src='/images/silk/world_link.png', alt='[Citation details]'), 
-                    E.CLASS('citation-link'), href=relative_url(uri)))
+                    E.CLASS('citation-link'), href=relative_url(uri.decode('utf8'))))
     return XML(lxml.etree.tostring(root, encoding=unicode))
 
 def relative_url(uri):
