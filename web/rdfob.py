@@ -173,5 +173,8 @@ class GraphNode(object):
             if identifier.startswith(scheme):
                 return identifier[len(scheme):]
 
+    def __hash__(self):
+        return hash((self.graph, self.uri))
+
     def __eq__(self, other):
         return (self.graph is other.graph and self.uri == other.uri)
