@@ -47,7 +47,7 @@ Exception
         * 406 - HTTPNotAcceptable
         * 407 - HTTPProxyAuthenticationRequired
         * 408 - HTTPRequestTimeout
-        * 409 - HTTPConfict
+        * 409 - HTTPConflict
         * 410 - HTTPGone
         * 411 - HTTPLengthRequired
         * 412 - HTTPPreconditionFailed
@@ -174,10 +174,10 @@ ${body}''')
     empty_body = False
 
     def __init__(self, detail=None, headers=None, comment=None,
-                 body_template=None):
+                 body_template=None, **kw):
         Response.__init__(self,
                           status='%s %s' % (self.code, self.title),
-                          content_type='text/html')
+                          content_type='text/html', **kw)
         Exception.__init__(self, detail)
         if headers:
             self.headers.update(headers)

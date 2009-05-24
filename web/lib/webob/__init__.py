@@ -56,6 +56,8 @@ def html_escape(s):
     """
     if s is None:
         return ''
+    if hasattr(s, '__html__'):
+        return s.__html__()
     if not isinstance(s, basestring):
         if hasattr(s, '__unicode__'):
             s = unicode(s)
@@ -183,6 +185,34 @@ class header_getter(object):
 
     def __repr__(self):
         return '<Proxy for header %s>' % self.header
+
+class set_via_call(object):
+    def __init__(self, func, adapt_args=None):
+        self.func = func
+        self.adapt_args = adapt_args
+    def __get__(self, obj, type=None):
+        return self.__class__(self.func.__get__(obj, type))
+    def __set__(self, obj, value):
+        if self.adapt_args is None:
+            args, kw = (value,), {}
+        else:
+            result = self.adapt_args(value)
+            if result is None:
+                return
+            args, kw = result
+        self.func(obj, *args, **kw)
+    def __repr__(self):
+        return 'set_via_call(%r)' % self.func
+    def __call__(self, *args, **kw):
+        return self.func(*args, **kw)
+
+def _adapt_cache_expires(value):
+    if value is False:
+        return None
+    if value is True:
+        return (0,), {}
+    else:
+        return (value,), {}
 
 class converter(object):
     """
@@ -484,30 +514,26 @@ class Request(object):
 
     def __init__(self, environ=None, environ_getter=None, charset=NoDefault, unicode_errors=NoDefault,
                  decode_param_names=NoDefault, **kw):
-        if environ is None and environ_getter is None:
-            raise TypeError(
-                "You must provide one of environ or environ_getter")
-        if environ is not None and environ_getter is not None:
-            raise TypeError(
-                "You can only provide one of the environ and environ_getter arguments")
+        if environ_getter is not None:
+            raise ValueError('The environ_getter argument is no longer '
+                             'supported')
         if environ is None:
-            self._environ_getter = environ_getter
-        else:
-            if not isinstance(environ, dict):
-                raise TypeError(
-                    "Bad type for environ: %s" % type(environ))
-            self._environ = environ
+            raise TypeError("You must provide an environ arg")
+        d = self.__dict__
+        d['environ'] = environ
         if charset is not NoDefault:
-            self.__dict__['charset'] = charset
+            d['charset'] = charset
         if unicode_errors is not NoDefault:
-            self.__dict__['unicode_errors'] = unicode_errors
+            d['unicode_errors'] = unicode_errors
         if decode_param_names is not NoDefault:
-            self.__dict__['decode_param_names'] = decode_param_names
-        for name, value in kw.items():
-            if not hasattr(self.__class__, name):
-                raise TypeError(
-                    "Unexpected keyword: %s=%r" % name, value)
-            setattr(self, name, value)
+            d['decode_param_names'] = decode_param_names
+        if kw:
+            my_class = self.__class__
+            for name, value in kw.iteritems():
+                if not hasattr(my_class, name):
+                    raise TypeError(
+                        "Unexpected keyword: %s=%r" % (name, value))
+                setattr(self, name, value)
 
     def __setattr__(self, attr, value, DEFAULT=[]):
         ## FIXME: I don't know why I need this guard (though experimentation says I do)
@@ -533,16 +559,6 @@ class Request(object):
             del self.environ['webob.adhoc_attrs'][attr]
         except KeyError:
             raise AttributeError(attr)
-
-    def environ(self):
-        """
-        The WSGI environment dictionary for this request
-        """
-        return self._environ_getter()
-    environ = property(environ, doc=environ.__doc__)
-
-    def _environ_getter(self):
-        return self._environ
 
     def _body_file__get(self):
         """
@@ -827,16 +843,19 @@ class Request(object):
         except ValueError:
             return ''
         c = self.body_file.read(length)
-        tempfile_limit = self.request_body_tempfile_limit
-        if tempfile_limit and len(c) > tempfile_limit:
-            fileobj = tempfile.TemporaryFile()
-            fileobj.write(c)
-            fileobj.seek(0)
+        if hasattr(self.body_file, 'seek'):
+            self.body_file.seek(0)
         else:
-            fileobj = StringIO(c)
-        # We don't want/need to lose CONTENT_LENGTH here (as setting
-        # self.body_file would do):
-        self.environ['wsgi.input'] = fileobj
+            tempfile_limit = self.request_body_tempfile_limit
+            if tempfile_limit and len(c) > tempfile_limit:
+                fileobj = tempfile.TemporaryFile()
+                fileobj.write(c)
+                fileobj.seek(0)
+            else:
+                fileobj = StringIO(c)
+            # We don't want/need to lose CONTENT_LENGTH here (as setting
+            # self.body_file would do):
+            self.environ['wsgi.input'] = fileobj
         return c
 
     def _body__set(self, value):
@@ -887,10 +906,9 @@ class Request(object):
             # Not an HTML form submission
             return NoVars('Not an HTML form submission (Content-Type: %s)'
                           % content_type)
-        if 'CONTENT_LENGTH' not in env:
-            # FieldStorage assumes a default CONTENT_LENGTH of -1, but a
-            # default of 0 is better:
-            env['CONTENT_TYPE'] = '0'
+        # FieldStorage assumes a default CONTENT_LENGTH of -1, but a
+        # default of 0 is better:
+        env.setdefault('CONTENT_LENGTH', 0)
         fs_environ = env.copy()
         fs_environ['QUERY_STRING'] = ''
         fs = cgi.FieldStorage(fp=self.body_file,
@@ -1087,7 +1105,7 @@ class Request(object):
             ## FIXME: Should we use .tell() to try to put the body
             ## back to its previous position?
             input.seek(0)
-        if length == -1:
+        if length in (-1, None):
             body = self.body
             length = len(body)
             self.content_length = length
@@ -1233,7 +1251,7 @@ class Request(object):
     user_agent = environ_getter('HTTP_USER_AGENT', rfc_section='14.43')
 
     def __repr__(self):
-        msg = '<%s at %x %s %s>' % (
+        msg = '<%s at 0x%x %s %s>' % (
             self.__class__.__name__,
             abs(id(self)), self.method, self.url)
         return msg
@@ -1410,7 +1428,7 @@ class Response(object):
     unicode_errors = 'strict'
     default_conditional_response = False
 
-    def __init__(self, body=None, status='200 OK', headerlist=None, app_iter=None,
+    def __init__(self, body=None, status=None, headerlist=None, app_iter=None,
                  request=None, content_type=None, conditional_response=NoDefault,
                  **kw):
         if app_iter is None:
@@ -1419,7 +1437,10 @@ class Response(object):
         elif body is not None:
             raise TypeError(
                 "You may only give one of the body and app_iter arguments")
-        self.status = status
+        if status is None:
+            self._status = '200 OK'
+        else:
+            self.status = status
         if headerlist is None:
             self._headerlist = []
         else:
@@ -1434,34 +1455,44 @@ class Response(object):
                 self._request = None
         else:
             self._environ = self._request = None
-        if content_type is not None:
-            self.content_type = content_type
-        elif self.default_content_type is not None and headerlist is None:
-            self.content_type = self.default_content_type
+        if content_type is None:
+            content_type = self.default_content_type
+        charset = None
+        if 'charset' in kw:
+            charset = kw.pop('charset')
+        elif self.default_charset and headerlist is None:
+            if content_type and (content_type == 'text/html'
+                                 or content_type.startswith('text/')
+                                 or content_type.startswith('application/xml')
+                                 or (content_type.startswith('application/')
+                                     and content_type.endswith('+xml'))):
+                charset = self.default_charset
+        if content_type and charset:
+            content_type += '; charset=' + charset
+        elif self._headerlist and charset:
+            self.charset = charset
+        if not self._headerlist and content_type:
+            self._headerlist.append(('Content-Type', content_type))
         if conditional_response is NoDefault:
             self.conditional_response = self.default_conditional_response
         else:
             self.conditional_response = conditional_response
-        if 'charset' in kw:
-            # We set this early, so something like unicode_body works later
-            value = kw.pop('charset')
-            if value:
-                self.charset = value
-        elif self.default_charset and not self.charset and headerlist is None:
-            ct = self.content_type
-            if ct and (ct.startswith('text/') or ct.startswith('application/xml')
-                       or (ct.startswith('application/') and ct.endswith('+xml'))):
-                self.charset = self.default_charset
         if app_iter is not None:
             self._app_iter = app_iter
             self._body = None
         else:
             if isinstance(body, unicode):
-                self.unicode_body = body
+                if charset is None:
+                    raise TypeError(
+                        "You cannot set the body to a unicode value without a charset")
+                body = body.encode(charset)
+            self._body = body
+            if headerlist is None:
+                self._headerlist.append(('Content-Length', str(len(body))))
             else:
-                self.body = body
+                self.headers['Content-Length'] = str(len(body))
             self._app_iter = None
-        for name, value in kw.items():
+        for name, value in kw.iteritems():
             if not hasattr(self.__class__, name):
                 # Not a basic attribute
                 raise TypeError(
@@ -1469,7 +1500,7 @@ class Response(object):
             setattr(self, name, value)
 
     def __repr__(self):
-        return '<%s %x %s>' % (
+        return '<%s at 0x%x %s>' % (
             self.__class__.__name__,
             abs(id(self)),
             self.status)
@@ -1480,6 +1511,19 @@ class Response(object):
                              for name, value in self.headerlist])
                 + '\n\n'
                 + self.body)
+
+    def copy(self):
+        """Makes a copy of the response"""
+        if self._app_iter is not None:
+            app_iter = self._app_iter
+        else:
+            app_iter = [self._body]
+        return self.__class__(
+            content_type=False,
+            status=self._status,
+            headerlist=self._headerlist,
+            app_iter=app_iter,
+            conditional_response=self.conditional_response)
 
     def _status__get(self):
         """
@@ -1864,6 +1908,11 @@ class Response(object):
         return location
 
     def _location__set(self, value):
+        if value is None:
+            del self.location
+            return
+        if isinstance(value, unicode):
+            value = value.encode('ISO-8859-1')
         if not _SCHEME_RE.search(value):
             # Not absolute, see if we can make it absolute
             if self.request is not None:
@@ -1934,7 +1983,7 @@ class Response(object):
 
     cache_control = property(_cache_control__get, _cache_control__set, _cache_control__del, doc=_cache_control__get.__doc__)
 
-    def cache_expires(self, seconds=0, **kw):
+    def _cache_expires(self, seconds=0, **kw):
         """
         Set expiration on this request.  This sets the response to
         expire in the given seconds, and any other attributes are used
@@ -1964,7 +2013,7 @@ class Response(object):
         for name, value in kw.items():
             setattr(cache_control, name, value)
 
-    content_disposition = header_getter('Content-Disposition', rfc_section='19.5.1')
+    cache_expires = set_via_call(_cache_expires, _adapt_cache_expires)
 
     content_encoding = header_getter('Content-Encoding', rfc_section='14.11')
 
@@ -2133,7 +2182,7 @@ class Response(object):
         start_response(self.status, self.headerlist)
         if environ['REQUEST_METHOD'] == 'HEAD':
             # Special case here...
-            return []
+            return EmptyResponse(self.app_iter)
         return self.app_iter
 
     _safe_methods = ('GET', 'HEAD')
@@ -2160,10 +2209,10 @@ class Response(object):
                     status304 = False
         if status304:
             start_response('304 Not Modified', self.headerlist)
-            return []
+            return EmptyResponse(self.app_iter)
         if req.method == 'HEAD':
             start_response(self.status, self.headerlist)
-            return []
+            return EmptyResponse(self.app_iter)
         if (req.range and req.if_range.match_response(self)
             and self.content_range is None
             and req.method == 'GET'
@@ -2264,7 +2313,7 @@ class FakeCGIBody(object):
         inner = repr(self.vars)
         if len(inner) > 20:
             inner = inner[:15] + '...' + inner[-5:]
-        return '<%s at %x viewing %s>' % (
+        return '<%s at 0x%x viewing %s>' % (
             self.__class__.__name__,
             abs(id(self)), inner)
 
@@ -2383,3 +2432,23 @@ class AppIterRange(object):
         self._served += len(chunk)
         return chunk
 
+class EmptyResponse(object):
+
+    """An empty WSGI response.
+
+    An iterator that immediately stops. Optionally provides a close
+    method to close an underlying app_iter it replaces.
+    """
+
+    def __init__(self, app_iter=None):
+        if app_iter and hasattr(app_iter, 'close'):
+            self.close = app_iter.close
+
+    def __iter__(self):
+        return self
+
+    def __len__(self):
+        return 0
+
+    def next(self):
+        raise StopIteration()

@@ -27,6 +27,7 @@ docs/modules/webob.txt
 docs/wiki-example-code/example.py
 tests/__init__.py
 tests/conftest.py
+tests/performance_test.py
 tests/test_request.py
 tests/test_request.txt
 tests/test_response.py
