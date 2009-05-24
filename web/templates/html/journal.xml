@@ -43,7 +43,7 @@ ${breadcrumbs([('/journals/', 'Journals')])}
 
 <h3>Issues available online</h3>
 <ul>
-    <li py:for="issue in journal.reflexive('mhs:isIssueOf')" py:if="issue.uri.startswith('http://miskinhill.com.au')">
+    <li py:for="issue in sorted((i for i in journal.reflexive('mhs:isIssueOf') if i.uri.startswith('http://miskinhill.com.au/journals/')), key=lambda i: i['mhs:publicationDate'], reverse=True)">
         <a href="${relative_url(issue.uri)}">
             Vol.&nbsp;${issue['mhs:volume']},
             Issue&nbsp;${issue['mhs:issueNumber']}
