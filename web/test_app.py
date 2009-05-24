@@ -111,6 +111,13 @@ class RDFDispatchTest(AppTestCase):
         self.assertEquals('text/html', res.content_type)
         res.body # to keep validator happy
 
+    def test_default_content_type_with_wildcard_accept_is_html(self):
+        res = self.get_response(Request.blank('/journals/test/1:1/article',
+                accept='*/*'))
+        self.assertEquals(200, res.status_int)
+        self.assertEquals('text/html', res.content_type)
+        res.body # to keep validator happy
+
     def test_nonexistent_uri(self):
         res = self.get_response(Request.blank('/journals/test/1:1/no-such-article'))
         self.assertEquals(404, res.status_int)
