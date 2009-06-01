@@ -63,7 +63,7 @@ else:
 
 <div class="beside">
     <p class="main">
-        <em>${book['dc:title']}</em><br />
+        <em><a py:strip="'mhs:availableFrom' not in book" href="${book.getone('mhs:availableFrom', as_uriref=True)}">${book['dc:title']}</a></em><br />
         <py:if test="book.getall('dc:creator')">by ${Markup(', ').join(viewutils.linked_author(c) for c in book.getall('dc:creator'))}</py:if>
     </p>
     <p class="publication" py:with="publisher = book.getone('dc:publisher', default=None); date = book.getone('dc:date', default=None)">

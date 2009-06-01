@@ -117,6 +117,19 @@ ${bookinfo(book_node)}
         a = links.find('a[@href="http://www.ozon.ru/?context=search&text=%D0%F3%F1%F1%EA%E0%FF%20%EA%ED%E8%E3%E0%20Some%20Dude"]')
         self.assertEquals('Ozon.ru', a.text_content())
 
+    def test_available_from_link(self):
+        graph = rdfob.Graph()
+        node = rdfob.BNode()
+        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
+        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        graph._g.add((node, rdfob.uriref('dc:date'), rdfob.Literal('1801', datatype=rdfob.uriref('xsd:date'))))
+        graph._g.add((node, rdfob.uriref('mhs:availableFrom'), rdfob.URIRef('http://example.com/teh-book')))
+        root = lxml.html.fromstring(self.render(graph[node]))
+        main, = root.find_class('main')
+        a, = main.findall('.//a[@href="http://example.com/teh-book"]')
+        self.assertEquals('Some title', a.text_content().strip())
+
 class HtmlArticleinfoTemplateTest(unittest.TestCase):
 
     def render(self, node):
