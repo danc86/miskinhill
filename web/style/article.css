@@ -13,6 +13,12 @@
     font-size: 0.9em;
 }
 
+.postscript {
+    margin: 0.75em 0;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
 .incompleteness-warning {
     clear: both;
     border: 1px solid #BF8160;
