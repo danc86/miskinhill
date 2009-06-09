@@ -10,10 +10,10 @@ from viewutils import relative_url
 import representations
 import rdfob
 author = node
-articles = [a for a in author.reflexive('dc:creator', type='mhs:Article') if a.uri.startswith('http://miskinhill.com.au/')]
-reviews = [r for r in author.reflexive('dc:creator', type='mhs:Review') if r.uri.startswith('http://miskinhill.com.au/')]
-obituaries = [r for r in author.reflexive('dc:creator', type='mhs:Obituary') if r.uri.startswith('http://miskinhill.com.au/')]
-translations = [t for t in author.reflexive('mhs:translator') if t.uri.startswith('http://miskinhill.com.au/')]
+articles = [a for a in author.reflexive('dc:creator', type='mhs:Article') if a.uri.startswith('http://miskinhill.com.au/journals/')]
+reviews = [r for r in author.reflexive('dc:creator', type='mhs:Review') if r.uri.startswith('http://miskinhill.com.au/journals/')]
+obituaries = [r for r in author.reflexive('dc:creator', type='mhs:Obituary') if r.uri.startswith('http://miskinhill.com.au/journals/')]
+translations = [t for t in author.reflexive('mhs:translator') if t.uri.startswith('http://miskinhill.com.au/journals/')]
 ?>
 
 <head>
