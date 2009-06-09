@@ -29,8 +29,7 @@ issn = journal.identifier('urn:issn:')
 
     <p class="issue" py:with="volume = issue.getone('mhs:volume', None);
                               issue_number = issue.getone('mhs:issueNumber', None);
-                              coverage = issue.getone('dc:coverage', None);
-                              issn = journal.identifier('urn:issn:')">
+                              coverage = issue.getone('dc:coverage', None)">
         Published in
         <a py:strip="not journal.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${journal.getone('mhs:availableFrom', as_uriref=True)}"><em>${journal['dc:title']}</em></a>
         <a py:strip="not issue.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${issue.getone('mhs:availableFrom', as_uriref=True)}"><py:if test="volume">Vol.&nbsp;${volume}</py:if><py:if test="volume and issue_number">, </py:if><py:if test="issue_number">Issue&nbsp;${issue_number}</py:if>
@@ -40,7 +39,7 @@ issn = journal.identifier('urn:issn:')
     </p>
     <p class="links" py:if="article.getone('dc:title', None)">Find this article online:<br />
         <a href="http://scholar.google.com.au/scholar?q=${urllib.quote(Markup(article['dc:title']).striptags().encode('utf8'), '')}">Google Scholar</a>, 
-        <a py:if="issn" href="http://www.worldcat.org/search?q=issn:${issn}">WorldCat</a>
+        <a py:if="issn" href="http://www.worldcat.org/search?q=issn:${'%s-%s' % (issn[0:4], issn[4:])}">WorldCat</a>
     </p>
 </div>
 
