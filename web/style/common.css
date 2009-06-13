@@ -22,7 +22,7 @@ img {
 q {
     quotes: none;
 }
-p, li {
+p, li, caption {
     line-height: 2.8ex;
 }
 
@@ -93,7 +93,7 @@ p, li {
 .body-text p {
     margin: 0;
 }
-.body-text p + p, .body-text blockquote + p {
+.body-text p + p, .body-text blockquote + p, .body-text table + p {
     text-indent: 1.5em;
 }
 .body-text blockquote p {

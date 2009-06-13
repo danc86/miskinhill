@@ -49,3 +49,39 @@
 .floating-footnote .close-button {
     margin-left: 0.5em;
 }
+
+/* Tabular data */
+table.data caption {
+    text-align: left;
+    margin-top: 1.5em;
+}
+table.data {
+    margin: 1.5em;
+    border-collapse: collapse;
+}
+table.data th, table.data td {
+    padding: 0.25em;
+}
+table.data thead {
+    border-top: 2px solid #aaa;
+}
+table.data tbody {
+    border-top: 1px solid #777;
+    border-bottom: 2px solid #aaa;
+}
+table.data th {
+    text-align: left;
+}
+table.data th + th {
+    text-align: right;
+}
+table.data th.group {
+    text-align: center;
+    border-bottom: 1px solid #777;
+}
+table.data td + td {
+    text-align: right;
+}
+table.data .total {
+    border-top: 1px solid #777;
+}
