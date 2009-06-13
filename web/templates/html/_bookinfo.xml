@@ -10,7 +10,7 @@
 import urllib
 from genshi import Stream
 import rdfob
-import viewutils
+from viewutils import linked_author, author_name
 isbn = book.identifier('urn:isbn:')
 asin = book.identifier('urn:asin:')
 gbooksid = book.identifier('http://books.google.com/books?id=')
@@ -29,9 +29,9 @@ if asin:
         domain = 'com'
     links.append(('http://www.amazon.%s/dp/%s/?tag=mishil-20' % (domain, asin), 'Amazon.%s' % domain))
 if isinstance(book['dc:title'], Stream) and unicode(book['dc:title'].select('./@lang')) == u'ru':
-    links.append(('http://www.ozon.ru/?context=search&text=%s' % urllib.quote(u' '.join([title] + book.getall('dc:creator')).encode('cp1251'), ''), 'Ozon.ru'))
+    links.append(('http://www.ozon.ru/?context=search&text=%s' % urllib.quote(u' '.join([title] + [author_name(c) for c in book.getall('dc:creator')]).encode('cp1251', 'replace'), ''), 'Ozon.ru'))
 elif isinstance(book['dc:title'], rdfob.Literal) and book['dc:title'].language == u'ru':
-    links.append(('http://www.ozon.ru/?context=search&text=%s' % urllib.quote(u' '.join([title] + book.getall('dc:creator')).encode('cp1251'), ''), 'Ozon.ru'))
+    links.append(('http://www.ozon.ru/?context=search&text=%s' % urllib.quote(u' '.join([title] + [author_name(c) for c in book.getall('dc:creator')]).encode('cp1251', 'replace'), ''), 'Ozon.ru'))
 if isbn:
     links.append(('http://openlibrary.org/search?q=isbn_13:%s' % isbn, 'Open Library'))
 if gbooksid:
@@ -64,7 +64,7 @@ else:
 <div class="beside">
     <p class="main">
         <em><a py:strip="'mhs:availableFrom' not in book" href="${book.getone('mhs:availableFrom', as_uriref=True)}">${book['dc:title']}</a></em><br />
-        <py:if test="book.getall('dc:creator')">by ${Markup(', ').join(viewutils.linked_author(c) for c in book.getall('dc:creator'))}</py:if>
+        <py:if test="book.getall('dc:creator')">by ${Markup(', ').join(linked_author(c) for c in book.getall('dc:creator'))}</py:if>
     </p>
     <p class="publication" py:with="publisher = book.getone('dc:publisher', default=None); date = book.getone('dc:date', default=None)">
         <py:if test="publisher or date">

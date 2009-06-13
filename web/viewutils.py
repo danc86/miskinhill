@@ -30,3 +30,10 @@ def linked_author(author_node):
         return author_node
     else:
         return Markup(u'<a href="%s">%s</a>' % (relative_url(author_node.uri), author_node['foaf:name']))
+
+def author_name(author_node):
+    # XXX this sucks
+    if isinstance(author_node, unicode):
+        return author_node
+    else:
+        return author_node['foaf:name']
