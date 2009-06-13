@@ -169,7 +169,7 @@ ${articleinfo(node)}
         article, issue, journal = self.setup_article(graph)
         root = lxml.html.fromstring(self.render(graph[article]))
         links, = root.find_class('links')
-        a, = links.findall('a[@href="http://www.worldcat.org/search?q=issn:12345678"]')
+        a, = links.findall('a[@href="http://www.worldcat.org/search?q=issn:1234-5678"]')
         self.assertEquals('WorldCat', a.text_content().strip())
 
     def test_cover_thumbnail(self):
