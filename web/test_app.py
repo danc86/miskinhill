@@ -169,5 +169,19 @@ class StaticTemplatesTest(AppTestCase):
         self.assertEquals('http://miskinhill.com.au/journals/', res.location)
         res.body
 
+class FeedsTest(AppTestCase):
+
+    def test_issues_atom(self):
+        res = self.get_response(Request.blank('/feeds/issues'))
+        self.assertEquals(200, res.status_int)
+        self.assertEquals('application/atom+xml', res.content_type)
+        self.assert_('<title type="text">Miskin Hill Journal Issues</title' in res.body)
+
+    def test_world_rdf(self):
+        res = self.get_response(Request.blank('/feeds/world'))
+        self.assertEquals(200, res.status_int)
+        self.assertEquals('application/rdf+xml', res.content_type)
+        res.body
+
 if __name__ == '__main__':
     unittest.main()

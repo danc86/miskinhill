@@ -54,7 +54,9 @@ class MiskinHillApplication(object):
         '/journals/': 'journals_index', 
         '/unapi': 'unapi', 
         '/sitemap.xml': 'sitemap', 
-        '/rdfschema/1.0/': 'rdfschema_index'
+        '/rdfschema/1.0/': 'rdfschema_index',
+        '/feeds/issues': 'issues_feed',
+        '/feeds/world': 'world_rdf'
     }
     def __iter__(self):
         try:
@@ -126,6 +128,19 @@ class MiskinHillApplication(object):
                           if s.uri.startswith(u'http://miskinhill.com.au/')]
                 ).render('xml')
         return Response(body, content_type='application/xml')
+
+    def issues_feed(self):
+        template = template_loader.load('../atom/issues_feed.xml')
+        body = template.generate(req=self.req, 
+                issues=sorted((i for i in graph.by_type('mhs:Issue') 
+                               if i.uri.startswith(u'http://miskinhill.com.au/journals/')),
+                              key=lambda i: i['mhs:onlinePublicationDate'], reverse=True)
+                ).render('xml')
+        return Response(body, content_type='application/atom+xml')
+
+    def world_rdf(self):
+        return Response(graph._g.serialize(format='xml'),
+                content_type='application/rdf+xml')
 
     def dispatch_rdf(self, path_info):
         decoded_uri = urllib.unquote('http://miskinhill.com.au' + path_info).decode('utf8')

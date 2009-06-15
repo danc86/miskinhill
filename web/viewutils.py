@@ -1,4 +1,6 @@
 
+import datetime
+import pytz
 from genshi import XML, Markup
 import lxml.html
 from lxml.html import builder as E
@@ -37,3 +39,6 @@ def author_name(author_node):
         return author_node
     else:
         return author_node['foaf:name']
+
+def datetime_from_date(date):
+    return datetime.datetime.combine(date, datetime.time(tzinfo=pytz.utc))
