@@ -1,5 +1,6 @@
 
 import os
+import re
 
 from webob import Response
 from genshi import Markup, XML
@@ -11,26 +12,6 @@ template_loader = TemplateLoader(
         os.path.join(os.path.dirname(__file__), 'templates'), 
         variable_lookup='strict', 
         auto_reload=True)
-
-RDF_TEMPLATES = {
-    rdfob.uriref('mhs:Journal'): 'journal', 
-    rdfob.uriref('mhs:Issue'): 'issue', 
-    rdfob.uriref('mhs:Article'): 'article',
-    rdfob.uriref('mhs:CitedArticle'): 'cited_article',
-    rdfob.uriref('mhs:Book'): 'book',
-    rdfob.uriref('mhs:Obituary'): 'obituary',
-    rdfob.uriref('mhs:Review'): 'review', 
-    rdfob.uriref('mhs:Author'): 'author', 
-    rdfob.uriref('mhs:Citation'): 'citation', 
-    rdfob.uriref('sioc:Forum'): 'forum', 
-    rdfob.uriref('rdfs:Class'): 'class', 
-    rdfob.uriref('rdf:Property'): 'property', 
-}
-def template_for_type(node):
-    for type in node.types:
-        if type in RDF_TEMPLATES:
-            return RDF_TEMPLATES[type]
-    raise ValueError('Matching template not found')
 
 class Representation(object):
 
@@ -111,10 +92,8 @@ class HTMLRepresentation(Representation):
     label = 'HTML'
     content_type = 'text/html'
     rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
-                           rdfob.uriref('mhs:Citation'), 
                            rdfob.uriref('mhs:Author'), 
                            rdfob.uriref('mhs:Article'), 
-                           rdfob.uriref('mhs:CitedArticle'), 
                            rdfob.uriref('mhs:Book'), 
                            rdfob.uriref('mhs:Obituary'), 
                            rdfob.uriref('mhs:Review'), 
@@ -125,7 +104,14 @@ class HTMLRepresentation(Representation):
     docs = 'http://www.w3.org/TR/xhtml1/'
 
     def generate(self):
-        template = template_loader.load(os.path.join('html', template_for_type(self.node) + '.xml'))
+        for rdf_type in self.rdf_types:
+            if rdf_type in self.node.types:
+                # XXX dodgy?
+                template_filename = re.match(r'.*?([A-Za-z]*)$', rdf_type).group(1).lower() + '.xml'
+                break
+        if template_filename == 'article.xml' and self.node.uri.startswith('http://miskinhill.com.au/cited/'):
+            template_filename = 'cited_article.xml' # XXX dodgier?
+        template = template_loader.load(os.path.join('html', template_filename))
         return template.generate(req=self.req, node=self.node)
 
     def response(self):
@@ -141,7 +127,11 @@ class MODSRepresentation(Representation):
     docs = 'http://www.loc.gov/standards/mods/mods-userguide.html'
 
     def generate(self):
-        template = template_loader.load(os.path.join('mods', template_for_type(self.node) + '.xml'))
+        if rdfob.uriref('mhs:Journal') in self.node.types:
+            template_filename = 'journal.xml'
+        elif rdfob.uriref('mhs:Article') in self.node.types:
+            template_filename = 'article.xml'
+        template = template_loader.load(os.path.join('mods', template_filename))
         return template.generate(req=self.req, node=self.node)
 
     def response(self):
@@ -158,7 +148,7 @@ class MARCXMLRepresentation(Representation):
     docs = 'http://www.loc.gov/standards/marcxml/'
 
     def generate(self):
-        template = template_loader.load(os.path.join('marcxml', template_for_type(self.node) + '.xml'))
+        template = template_loader.load(os.path.join('marcxml', 'journal.xml'))
         return template.generate(req=self.req, node=self.node)
 
     def response(self):
@@ -175,7 +165,7 @@ class BibTeXRepresentation(Representation):
     docs = 'http://en.wikipedia.org/wiki/BibTeX'
 
     def generate(self):
-        template = template_loader.load(os.path.join('bibtex', template_for_type(self.node) + '.txt'), 
+        template = template_loader.load(os.path.join('bibtex', 'article.txt'), 
                 cls=NewTextTemplate)
         return template.generate(req=self.req, node=self.node)
 
@@ -191,7 +181,7 @@ class EndnoteRepresentation(Representation):
     docs = 'http://www.harzing.com/pophelp/exporting.htm'
 
     def generate(self):
-        template = template_loader.load(os.path.join('end', template_for_type(self.node) + '.txt'), 
+        template = template_loader.load(os.path.join('end', 'article.txt'), 
                 cls=NewTextTemplate)
         return template.generate(req=self.req, node=self.node)
 
@@ -207,7 +197,7 @@ class AtomRepresentation(Representation):
     docs = 'http://www.ietf.org/rfc/rfc4287.txt'
 
     def generate(self):
-        template = template_loader.load(os.path.join('atom', template_for_type(self.node) + '.xml'))
+        template = template_loader.load(os.path.join('atom', 'forum.xml'))
         return template.generate(req=self.req, node=self.node)
 
     def response(self):
