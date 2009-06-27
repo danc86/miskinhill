@@ -211,7 +211,7 @@ class AtomRepresentation(Representation):
         return Response(self.generate().render(), content_type=self.content_type)
 
 # these are ordered by our preference, i.e. HTML first
-ALL = [HTMLRepresentation, NTriplesRepresentation, RDFXMLRepresentation, MODSRepresentation, 
+ALL = [HTMLRepresentation, RDFXMLRepresentation, NTriplesRepresentation, MODSRepresentation, 
        MARCXMLRepresentation, BibTeXRepresentation, EndnoteRepresentation, AtomRepresentation]
 BY_FORMAT = dict((r.format, r) for r in ALL)
 BY_CONTENT_TYPE = dict((r.content_type, r) for r in ALL)
