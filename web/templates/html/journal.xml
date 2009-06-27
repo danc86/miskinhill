@@ -14,7 +14,7 @@ publisher = journal['dc:publisher']
 
 <head>
     <title>${journal['dc:title']}</title>
-    <py:for each="r in representations.for_types(node.types)" py:if="r.format != 'html'">
+    <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
         ${r(req, node).link()}
     </py:for>
 </head>
@@ -36,7 +36,7 @@ ${breadcrumbs([('/journals/', 'Journals')])}
         <p class="publisher">Published by <a href="${publisher.getone('foaf:homepage', as_uriref=True)}">${publisher['foaf:name']}</a></p>
         <p class="issn">ISSN ${journal.identifier('urn:issn:')}</p>
         <p>Metadata:
-            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_types(node.types) if r.format != 'html')}
+            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
         </p>
     </div>
 </div>

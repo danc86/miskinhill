@@ -34,24 +34,20 @@ class Representation(object):
         return XML(u'<link rel="alternate" type="%s" title="%s" href="%s.%s" />'
                 % (self.content_type, self.label, href, self.format))
 
+    @classmethod
+    def can_represent(cls, node):
+        return bool(cls.rdf_types.intersection(node.types))
+
 class NTriplesRepresentation(Representation):
 
     format = 'nt'
     label = 'NTriples'
     content_type = 'application/x-turtle' # XXX should we actually serve turtle then?
-    rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
-                           rdfob.uriref('mhs:Citation'), 
-                           rdfob.uriref('mhs:Author'), 
-                           rdfob.uriref('mhs:Article'), 
-                           rdfob.uriref('mhs:CitedArticle'), 
-                           rdfob.uriref('mhs:Book'), 
-                           rdfob.uriref('mhs:Obituary'), 
-                           rdfob.uriref('mhs:Review'), 
-                           rdfob.uriref('mhs:Issue'), 
-                           rdfob.uriref('mhs:Journal'), 
-                           rdfob.uriref('rdfs:Class'), 
-                           rdfob.uriref('rdf:Property')])
     docs = 'http://www.w3.org/TR/REC-rdf-syntax/'
+
+    @classmethod
+    def can_represent(cls, node):
+        return True
 
     def generate(self):
         return self.node.graph.serialized(self.node.uri)
@@ -65,19 +61,11 @@ class RDFXMLRepresentation(Representation):
     format = 'xml'
     label = 'RDF/XML'
     content_type = 'application/rdf+xml'
-    rdf_types = frozenset([rdfob.uriref('sioc:Forum'), 
-                           rdfob.uriref('mhs:Citation'), 
-                           rdfob.uriref('mhs:Author'), 
-                           rdfob.uriref('mhs:Article'), 
-                           rdfob.uriref('mhs:CitedArticle'), 
-                           rdfob.uriref('mhs:Book'), 
-                           rdfob.uriref('mhs:Obituary'), 
-                           rdfob.uriref('mhs:Review'), 
-                           rdfob.uriref('mhs:Issue'), 
-                           rdfob.uriref('mhs:Journal'), 
-                           rdfob.uriref('rdfs:Class'), 
-                           rdfob.uriref('rdf:Property')])
     docs = 'http://www.w3.org/TR/REC-rdf-syntax/'
+
+    @classmethod
+    def can_represent(cls, node):
+        return True
 
     def generate(self):
         return self.node.graph.serialized(self.node.uri, format='xml')
@@ -103,6 +91,13 @@ class HTMLRepresentation(Representation):
                            rdfob.uriref('rdf:Property')])
     docs = 'http://www.w3.org/TR/xhtml1/'
 
+    _cited_types = frozenset([rdfob.uriref('mhs:Article'), rdfob.uriref('mhs:Book')])
+    @classmethod
+    def can_represent(cls, node):
+        if node.uri.startswith('http://miskinhill.com.au/cited/') and not cls._cited_types.intersection(node.types):
+            return False
+        return super(HTMLRepresentation, cls).can_represent(node)
+
     def generate(self):
         for rdf_type in self.rdf_types:
             if rdf_type in self.node.types:
@@ -126,6 +121,12 @@ class MODSRepresentation(Representation):
     rdf_types = frozenset([rdfob.uriref('mhs:Journal'), rdfob.uriref('mhs:Article')])
     docs = 'http://www.loc.gov/standards/mods/mods-userguide.html'
 
+    @classmethod
+    def can_represent(cls, node):
+        if not node.uri.startswith('http://miskinhill.com.au/journals/'):
+            return False
+        return super(MODSRepresentation, cls).can_represent(node)
+
     def generate(self):
         if rdfob.uriref('mhs:Journal') in self.node.types:
             template_filename = 'journal.xml'
@@ -146,6 +147,12 @@ class MARCXMLRepresentation(Representation):
     content_type = 'application/marcxml+xml'
     rdf_types = frozenset([rdfob.uriref('mhs:Journal')])
     docs = 'http://www.loc.gov/standards/marcxml/'
+
+    @classmethod
+    def can_represent(cls, node):
+        if not node.uri.startswith('http://miskinhill.com.au/journals/'):
+            return False
+        return super(MARCXMLRepresentation, cls).can_represent(node)
 
     def generate(self):
         template = template_loader.load(os.path.join('marcxml', 'journal.xml'))
@@ -209,5 +216,5 @@ ALL = [HTMLRepresentation, NTriplesRepresentation, RDFXMLRepresentation, MODSRep
 BY_FORMAT = dict((r.format, r) for r in ALL)
 BY_CONTENT_TYPE = dict((r.content_type, r) for r in ALL)
 
-def for_types(types):
-    return [r for r in ALL if r.rdf_types.intersection(types)]
+def for_node(node):
+    return [r for r in ALL if r.can_represent(node)]

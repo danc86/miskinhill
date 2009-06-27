@@ -109,13 +109,13 @@ class MiskinHillApplication(object):
                     r = representations.BY_FORMAT[self.req.GET['format']]
                 except KeyError:
                     return exc.HTTPNotAcceptable('Format %r not known' % self.req.GET['format'])
-                if not node.is_any(r.rdf_types):
+                if not r.can_represent(node):
                     return exc.HTTPNotAcceptable('Format %r not acceptable for this URI' % self.req.GET['format'])
                 return exc.HTTPFound(location=(node.uri + '.' + r.format).encode('utf8'))
             else:
                 body = E.formats(id=node.uri, 
                         *(E.format(name=r.format, type=r.content_type, docs=r.docs) 
-                          for r in representations.ALL if node.is_any(r.rdf_types)))
+                          for r in representations.ALL if r.can_represent(node)))
         else:
             body = E.formats(*(E.format(name=r.format, type=r.content_type, docs=r.docs) for r in representations.ALL))
         return Response(lxml.etree.tostring(body, encoding='utf8', xml_declaration=True),
@@ -162,15 +162,15 @@ class MiskinHillApplication(object):
 
         if representation_cls is not None:
             # extension-style URL was given, can we do it?
-            if not node.is_any(representation_cls.rdf_types):
+            if not representation_cls.can_represent(node):
                 return exc.HTTPNotFound('Format %r not acceptable for this URI' % representation_cls.format)
         else:
             # do content negotiation
-            best_content_type = self.req.accept.best_match(r.content_type for r in representations.for_types(node.types))
+            best_content_type = self.req.accept.best_match(r.content_type for r in representations.for_node(node))
             if best_content_type is not None:
                 representation_cls = representations.BY_CONTENT_TYPE[best_content_type]
             else:
-                representation_cls = representations.for_types(node.types)[0]
+                representation_cls = representations.for_node(node)[0]
 
         return representation_cls(self.req, node).response()
 

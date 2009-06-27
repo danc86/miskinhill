@@ -15,7 +15,7 @@ journal = issue['mhs:isIssueOf']
 
 <head>
     <title>${Markup(article['dc:title']).striptags()} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
-    <py:for each="r in representations.for_types(node.types)" py:if="r.format != 'html'">
+    <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
         ${r(req, node).link()}
     </py:for>
     <link rel="stylesheet" type="text/css" href="/style/article.css" />
@@ -47,7 +47,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
             </ul>
         </div>
         <p class="metadata-links">Metadata:
-            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_types(node.types) if r.format != 'html')}
+            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
         </p>
     </div>
 </div>

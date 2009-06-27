@@ -14,7 +14,7 @@ posts = sorted(forum.reflexive('sioc:has_container'), key=lambda p: p['dc:create
 
 <head>
     <title>${forum['dc:title']}</title>
-    <py:for each="r in representations.for_types(node.types)" py:if="r.format != 'html'">
+    <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
         ${r(req, node).link()}
     </py:for>
     <link rel="stylesheet" type="text/css" href="/style/forum.css" />

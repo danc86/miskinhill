@@ -18,7 +18,7 @@ translations = [t for t in author.reflexive('mhs:translator') if t.uri.startswit
 
 <head>
     <title>${author['foaf:name']}</title>
-    <py:for each="r in representations.for_types(node.types)" py:if="r.format != 'html'">
+    <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
         ${r(req, node).link()}
     </py:for>
     <link rel="stylesheet" type="text/css" href="/style/author.css" />
@@ -33,7 +33,7 @@ translations = [t for t in author.reflexive('mhs:translator') if t.uri.startswit
         <h4>Author details</h4>
         <p class="affiliation" py:if="'mhs:isAffiliatedWith' in author">Affiliated with <a href="${author['mhs:isAffiliatedWith'].uri}">${author['mhs:isAffiliatedWith']['foaf:name']}</a></p>
         <p class="metadata-links">Metadata:
-            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_types(node.types) if r.format != 'html')}
+            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
         </p>
     </div>
 </div>
