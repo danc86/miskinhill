@@ -16,7 +16,7 @@ function cleanup {
 trap cleanup SIGINT SIGTERM
 sleep 2
 
-wget -nv -r -p -l inf -erobots=off -P webtest.out --user=demo --password=demo http://localhost:9996/ 2>&1 | grep -B1 ERROR
+wget -nv -r -p -l inf -erobots=off -P webtest.out http://localhost:9996/ 2>&1 | grep -B1 ERROR
 grep_status=$?
 
 cleanup
