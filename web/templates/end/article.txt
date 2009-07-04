@@ -1,13 +1,31 @@
+{% python
+from viewutils import name_or_literal
+%}\
 {% with article = node; author = article['dc:creator']; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
 %0 Journal Article
 %T ${Markup(article['dc:title']).striptags()}
-%A ${author['foaf:surname']}, ${author['foaf:givenNames']}
-%J ${journal['dc:title']}
-%D ${issue['dc:coverage']}
-%V ${issue['mhs:volume']}
-%N ${issue['mhs:issueNumber']}
-%I ${journal['dc:publisher']['foaf:name']}
-%@ ${journal.identifier('urn:issn:')}
-%U ${article.uri}
-%P ${article['mhs:startPage']}-${article['mhs:endPage']}
+%A {% choose %}\
+{% when isinstance(author, unicode) %}${author}{% end %}\
+{% otherwise %}${author['foaf:surname']}, ${author['foaf:givenNames']}{% end %}\
 {% end %}
+%J ${journal['dc:title']}
+{% if 'dc:coverage' in issue %}\
+%D ${issue['dc:coverage']}
+{% end %}\
+{% if 'mhs:volume' in issue %}\
+%V ${issue['mhs:volume']}
+{% end %}\
+{% if 'mhs:issueNumber' in issue %}\
+%N ${issue['mhs:issueNumber']}
+{% end %}\
+{% if 'dc:publisher' in journal %}\
+%I ${name_or_literal(journal['dc:publisher'])}
+{% end %}\
+{% if journal.identifier('urn:issn:') %}\
+%@ ${journal.identifier('urn:issn:')}
+{% end %}\
+%U ${article.uri}
+{% if 'mhs:startPage' in article and 'mhs:endPage' in article %}\
+%P ${article['mhs:startPage']}-${article['mhs:endPage']}
+{% end %}\
+{% end %}\

@@ -1,17 +1,24 @@
 {% python
 import re
+from viewutils import name_or_literal
 %}\
 {% with article = node; author = article['dc:creator']; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
-@article{${re.sub(r'\W', '', author['foaf:surname'])}:${issue['dc:coverage'][:4]}, 
+@article{${re.sub(r'\W', '', author['foaf:surname'])}:${issue['dc:coverage'][-4:]}, 
     journal = "${journal['dc:title']}", 
+{% if journal.identifier('urn:issn:') %}\
     issn = "${journal.identifier('urn:issn:')}", 
-    publisher = "${journal['dc:publisher']['foaf:name']}", 
+{% end %}\
+{% if 'dc:publisher' in journal %}\
+    publisher = "${name_or_literal(journal['dc:publisher'])}", 
+{% end %}\
     volume = "${issue['mhs:volume']}", 
     number = "${issue['mhs:issueNumber']}", 
-    year = "${issue['dc:coverage'][:4]}", 
-    author = "${author['foaf:givenNames']} {${author['foaf:surname']}}", 
+    year = "${issue['dc:coverage'][-4:]}", 
+    author = "${name_or_literal(author)}", 
     title = "${re.sub(r'(.)([A-Z])', r'\1{\2}', Markup(article['dc:title']).striptags())}", 
+{% if 'mhs:startPage' in article and 'mhs:endPage' in article %}\
     pages = "${article['mhs:startPage']}–${article['mhs:endPage']}", 
+{% end %}\
     url = "${article.uri}"
 }
 {% end %}
