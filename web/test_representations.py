@@ -40,6 +40,41 @@ class EndnoteArticleRepresentationTest(unittest.TestCase):
         title, = [line for line in self.response.body.decode('utf8').splitlines() if line.startswith('%T')]
         self.assertEquals(u'%T Moscow 1937: the interpreter’s story', title)
 
+class BibTeXArticleRepresentationTest(unittest.TestCase):
+
+    def setUp(self):
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
+        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
+        self.response = representations.BibTeXRepresentation(MockRequest(), node).response()
+
+    def test_content_type(self):
+        self.assertEquals('text/x-bibtex', self.response.content_type)
+
+    def test_id(self):
+        self.assert_(self.response.body.startswith('@article{Author2007,'))
+
+    def test_url(self):
+        self.assert_('url = "http://miskinhill.com.au/journals/test/1:1/article"' in self.response.body)
+
+class BibTeXCitedArticleRepresentationTest(unittest.TestCase):
+
+    def setUp(self):
+        graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
+        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/cited/journals/asdf/1:1/article')]
+        self.response = representations.BibTeXRepresentation(MockRequest(), node).response()
+
+    def test_content_type(self):
+        self.assertEquals('text/x-bibtex', self.response.content_type)
+
+    def test_id(self):
+        self.assert_(self.response.body.startswith('@article{Author,'))
+
+    def test_authors(self):
+        self.assert_('author = "Test Author and Another Author"' in self.response.body)
+
+    def test_availableFrom_url(self):
+        self.assert_('url = "http://example.com/teh-cited-article"' in self.response.body)
+
 class ModsArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
@@ -97,6 +132,11 @@ class MarcxmlJournalRepresentationTest(unittest.TestCase):
     def test_content_type(self):
         self.assertEquals('application/marcxml+xml', self.response.content_type)
         self.assertEquals('inline', self.response.content_disposition)
+
+    def test_language(self):
+        languages = lxml.etree.XPath('//marcxml:datafield[@tag="041"]/marcxml:subfield[@code="a"]',
+                namespaces={'marcxml': 'http://www.loc.gov/MARC21/slim'})(self.root)
+        self.assertEquals(set(['eng', 'rus']), set(l.text for l in languages))
 
 class HtmlJournalRepresentationTest(unittest.TestCase):
 
