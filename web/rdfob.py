@@ -168,7 +168,7 @@ class GraphNode(object):
             return [s for s in subjects if type in s.types]
 
     def __iter__(self):
-        assert self.type == RDF_SEQ, self.type
+        assert RDF_SEQ in self.types, self.types
         return iter(self.getone(p) for p in self._objects.iterkeys() if p.startswith(NAMESPACES['rdf']['_']))
 
     def identifier(self, scheme):
