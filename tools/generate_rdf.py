@@ -9,6 +9,8 @@ import RDF
 RDF_NS = RDF.NS('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
 RDFS_NS = RDF.NS('http://www.w3.org/2000/01/rdf-schema#')
 OWL_NS = RDF.NS('http://www.w3.org/2002/07/owl#')
+DCTERMS_NS = RDF.NS('http://purl.org/dc/terms/')
+PRISM_NS = RDF.NS('http://prismstandard.org/namespaces/1.2/basic/')
 
 def load():
     g = RDF.Model()
@@ -23,19 +25,30 @@ def load():
 def _types(g, s):
     return g.get_targets(source=s, predicate=RDF_NS.type)
 
+_memo = {}
 def transitive_objects(g, subject, predicate):
+    if (g, subject, predicate) in _memo:
+        return _memo[(g, subject, predicate)]
     os = frozenset(g.get_targets(source=subject, predicate=predicate))
-    return reduce(frozenset.union, [os] + [transitive_objects(g, o, predicate) for o in os])
+    retval = reduce(frozenset.union, [os] + [transitive_objects(g, o, predicate) for o in os])
+    _memo[(g, subject, predicate)] = retval
+    return retval
 
-def close(g):
-    print >>sys.stderr, 'Computing closure ...'
-    for s in frozenset(n.subject for n in g):
+def infer(g):
+    print >>sys.stderr, 'Inferring superclasses/superproperties ...'
+    for s in frozenset(stmt.subject for stmt in g):
         for t in list(_types(g, s)):
             for ct in transitive_objects(g, t, RDFS_NS.subClassOf):
                 g.append(RDF.Statement(s, RDF_NS.type, ct))
+    for stmt in g:
+        for cp in transitive_objects(g, stmt.predicate, RDFS_NS.subPropertyOf):
+            g.append(RDF.Statement(stmt.subject, cp, stmt.object))
+
+RANGE_PROPERTY_EXCEPTIONS = frozenset([DCTERMS_NS.publisher, DCTERMS_NS.identifier, DCTERMS_NS.coverage, PRISM_NS.publicationDate])
+RANGE_OBJECT_EXCEPTIONS = frozenset([RDF.Node(uri_string='http://www.w3.org/TR/2000/CR-rdf-schema-20000327#Literal')])
 
 def validate(g):
-    print >>sys.stderr, 'Validating ...'
+    print >>sys.stderr, 'Validating domains/ranges ...'
     for domain_constraint in RDF.Query('SELECT ?s ?o WHERE (?s <http://www.w3.org/2000/01/rdf-schema#domain> ?o)').execute(g):
         if not domain_constraint['s'].is_resource() or not domain_constraint['o'].is_resource():
             continue # for now
@@ -49,8 +62,10 @@ def validate(g):
             continue # for now
         if range_constraint['o'] == OWL_NS.Thing:
             continue # ugh
+        if range_constraint['s'] in RANGE_PROPERTY_EXCEPTIONS or range_constraint['o'] in RANGE_OBJECT_EXCEPTIONS:
+            continue
         for x in RDF.Query('SELECT ?o WHERE (?s <%s> ?o)' % range_constraint['s'].uri).execute(g):
-            if range_constraint['o'] == RDFS_NS.Literal:
+            if range_constraint['o'] in (RDF_NS.Literal, RDFS_NS.Literal):
                 if not x['o'].is_literal():
                     raise ValueError('property %s to %s violates rdfs:range constraint of %s (not is_literal())' % (range_constraint['s'], x['o'], range_constraint['o']))
             else:
@@ -59,7 +74,7 @@ def validate(g):
 
 def main():
     g = load()
-    close(g)
+    infer(g)
     validate(g)
     sys.stdout.write(g.to_string())
 
