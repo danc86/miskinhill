@@ -17,7 +17,7 @@ from representations import MODSRepresentation
         <url displayLabel="Original print version" access="raw object">${article.uri}.pdf</url>
     </location>
     <language>
-        <languageTerm py:for="lang in journal.getall('dc:language')" type="code" authority="rfc3066">${lang}</languageTerm>
+        <languageTerm py:for="lang in journal.getall('dc:language')" type="code" authority="rfc3066">${lang['lingvoj:iso1']}</languageTerm>
     </language>
     <name type="personal" py:with="author = article['dc:creator']">
         <displayForm>${author['foaf:name']}</displayForm>
