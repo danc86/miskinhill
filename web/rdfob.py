@@ -16,7 +16,8 @@ NAMESPACES = {
     'contact': Namespace('http://www.w3.org/2000/10/swap/pim/contact#'), 
     'geonames': Namespace('http://www.geonames.org/ontology#'), 
     'sioc': Namespace('http://rdfs.org/sioc/ns#'), 
-    'awol': Namespace('http://bblfish.net/work/atom-owl/2006-06-06/#')
+    'awol': Namespace('http://bblfish.net/work/atom-owl/2006-06-06/#'),
+    'lingvoj': Namespace('http://www.lingvoj.org/ontology#')
 }
 RDF_TYPE = NAMESPACES['rdf']['type']
 RDF_SEQ = NAMESPACES['rdf']['Seq']
