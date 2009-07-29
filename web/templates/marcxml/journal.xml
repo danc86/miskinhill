@@ -18,7 +18,7 @@ issn = journal.identifier('urn:issn:')
     <subfield code="a">Miskin Hill Academic Publishing</subfield>
 </datafield>
 <datafield tag="041" ind1=" " ind2=" ">
-    <subfield code="a" py:for="language in journal.getall('dc:language')">${language}</subfield> <!-- XXX convert to MARC language code -->
+    <subfield code="a" py:for="language in journal.getall('dc:language')">${language['lingvoj:iso2b']}</subfield>
 </datafield>
 <datafield tag="245" ind1="0" ind2="0">
     <subfield code="a">${journal['dc:title']}</subfield>
