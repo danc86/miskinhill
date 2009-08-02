@@ -20,7 +20,7 @@ class NTriplesArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.response = representations.NTriplesRepresentation(MockRequest(), node).response()
 
     def test_content_type(self):
@@ -30,7 +30,7 @@ class EndnoteArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.response = representations.EndnoteRepresentation(MockRequest(), node).response()
 
     def test_content_type(self):
@@ -44,7 +44,7 @@ class BibTeXArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.response = representations.BibTeXRepresentation(MockRequest(), node).response()
 
     def test_content_type(self):
@@ -60,7 +60,7 @@ class BibTeXCitedArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/cited/journals/asdf/1:1/article')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/cited/journals/asdf/1:1/article')]
         self.response = representations.BibTeXRepresentation(MockRequest(), node).response()
 
     def test_content_type(self):
@@ -79,7 +79,7 @@ class ModsArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.response = representations.MODSRepresentation(MockRequest(), node).response()
         self.root = lxml.etree.fromstring(self.response.body)
 
@@ -125,7 +125,7 @@ class MarcxmlJournalRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/journals/test/')]
         self.response = representations.MARCXMLRepresentation(MockRequest(), node).response()
         self.root = lxml.etree.fromstring(self.response.body)
 
@@ -142,7 +142,7 @@ class HtmlJournalRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/journals/test/')]
         self.response = representations.HTMLRepresentation(MockRequest(), node).response()
         self.root = lxml.html.fromstring(self.response.body)
 
@@ -168,7 +168,7 @@ class HtmlArticleRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/article')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/journals/test/1:1/article')]
         self.response = representations.HTMLRepresentation(MockRequest(), node).response()
         self.root = lxml.html.fromstring(self.response.body)
 
@@ -193,7 +193,7 @@ class HtmlReviewRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/reviews/review')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/journals/test/1:1/reviews/review')]
         self.response = representations.HTMLRepresentation(MockRequest(), node).response()
         self.root = lxml.html.fromstring(self.response.body)
 
@@ -212,7 +212,7 @@ class HtmlObituaryRepresentationTest(unittest.TestCase):
 
     def setUp(self):
         graph = rdfob.Graph(os.path.join(TESTDATA, 'meta.xml'))
-        node = graph[rdfob.URIRef(u'http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe')]
+        node = graph[rdfob.Uri(u'http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe')]
         self.response = representations.HTMLRepresentation(MockRequest(), node).response()
         self.root = lxml.html.fromstring(self.response.body)
 

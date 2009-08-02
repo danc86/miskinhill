@@ -20,6 +20,10 @@ links = []
 title = book['dc:title']
 if isinstance(title, Stream):
     title = Markup(title).striptags()
+title_node = book.getone('dc:title', as_uriref=True)
+responsibility = book.getone('mhs:responsibility', default=None)
+if isinstance(responsibility, Stream):
+    responsibility = Markup(responsibility).striptags()
 if asin:
     if asin.startswith('2'):
         domain = 'fr'
@@ -29,9 +33,9 @@ if asin:
         domain = 'com'
     links.append(('http://www.amazon.%s/dp/%s/?tag=mishil-20' % (domain, asin), 'Amazon.%s' % domain))
 if isinstance(book['dc:title'], Stream) and unicode(book['dc:title'].select('./@lang')) == u'ru':
-    links.append(('http://www.ozon.ru/?context=search&text=%s' % urllib.quote(u' '.join([title] + [name_or_literal(c) for c in book.getall('dc:creator')]).encode('cp1251', 'replace'), ''), 'Ozon.ru'))
-elif isinstance(book['dc:title'], rdfob.Literal) and book['dc:title'].language == u'ru':
-    links.append(('http://www.ozon.ru/?context=search&text=%s' % urllib.quote(u' '.join([title] + [name_or_literal(c) for c in book.getall('dc:creator')]).encode('cp1251', 'replace'), ''), 'Ozon.ru'))
+    links.append(('http://www.ozon.ru/?context=search&text=%s' % urllib.quote((u'%s %s' % (title, responsibility)).encode('cp1251', 'replace'), ''), 'Ozon.ru'))
+elif title_node.is_literal() and title_node.literal_value['language'] == u'ru':
+    links.append(('http://www.ozon.ru/?context=search&text=%s' % urllib.quote((u'%s %s' % (title, responsibility)).encode('cp1251', 'replace'), ''), 'Ozon.ru'))
 if isbn:
     links.append(('http://openlibrary.org/search?q=isbn_13:%s' % isbn, 'Open Library'))
 if gbooksid:
@@ -54,7 +58,7 @@ else:
 
 <py:choose>
     <py:when test="book.getone('mhs:coverThumbnail', as_uriref=True, default=None)">
-        <p class="cover"><img src="${book.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
+        <p class="cover"><img src="${book.getone('mhs:coverThumbnail', as_uriref=True).uri}" alt="" /></p>
     </py:when>
     <py:when test="asin">
         <p class="cover"><img src="http://images.amazon.com/images/P/${asin}.01.MZZZZZZZ.jpg" alt="" /></p>
@@ -63,8 +67,8 @@ else:
 
 <div class="beside">
     <p class="main">
-        <em><a py:strip="'mhs:availableFrom' not in book" href="${book.getone('mhs:availableFrom', as_uriref=True)}">${book['dc:title']}</a></em><br />
-        <py:if test="book.getall('dc:creator')">by ${Markup(', ').join(linked_author(c) for c in book.getall('dc:creator'))}</py:if>
+        <em class="title"><a py:strip="'mhs:availableFrom' not in book" href="${book.getone('mhs:availableFrom', as_uriref=True).uri}">${book['dc:title']}</a></em><br />
+        <span class="responsibility">${book.getone('mhs:responsibility', default=None)}</span>
     </p>
     <p class="publication" py:with="publisher = book.getone('dc:publisher', default=None); date = book.getone('dc:date', default=None)">
         <py:if test="publisher or date">

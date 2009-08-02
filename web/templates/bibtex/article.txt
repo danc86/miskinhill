@@ -25,11 +25,11 @@ from viewutils import name_or_literal
 {% if 'mhs:startPage' in article and 'mhs:endPage' in article %}\
     pages = "${article['mhs:startPage']}–${article['mhs:endPage']}", 
 {% end %}\
-{% if article.uri.startswith('http://miskinhill.com.au/journals/') %}\
+{% if unicode(article.uri).startswith('http://miskinhill.com.au/journals/') %}\
     url = "${article.uri}"
 {% end %}\
-{% if not article.uri.startswith('http://miskinhill.com.au/journals/') and 'mhs:availableFrom' in article %}\
-    url = "${article.getone('mhs:availableFrom', as_uriref=True)}"
+{% if not unicode(article.uri).startswith('http://miskinhill.com.au/journals/') and 'mhs:availableFrom' in article %}\
+    url = "${article.getone('mhs:availableFrom', as_uriref=True).uri}"
 {% end %}\
 }
 {% end %}

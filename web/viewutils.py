@@ -23,9 +23,9 @@ def parsed_content(filename, article_uri):
     return XML(lxml.etree.tostring(root, encoding=unicode))
 
 def relative_url(uri):
-    if uri.startswith('http://miskinhill.com.au'):
-        return uri[24:]
-    return uri
+    if unicode(uri).startswith('http://miskinhill.com.au'):
+        return unicode(uri)[24:]
+    return unicode(uri)
 
 def linked_author(author_node):
     if isinstance(author_node, unicode):

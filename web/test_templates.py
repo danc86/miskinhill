@@ -7,6 +7,7 @@ import tempfile
 import lxml.etree, lxml.html
 
 import rdfob
+from RDF import Uri, Node, Statement
 from representations import template_loader
 
 TESTDATA = os.path.join(os.path.dirname(__file__), 'testdata')
@@ -27,67 +28,71 @@ ${bookinfo(book_node)}
         return template.generate(templates_dir=os.path.dirname(os.path.abspath(__file__)) + '/templates',
                 book_node=book_node).render('xhtml', doctype='xhtml', encoding=None)
 
+    def test_responsibility(self):
+        graph = rdfob.Graph()
+        node = Node(blank='1')
+        graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
+        graph._g.append(Statement(node, rdfob.uriref('mhs:responsibility'), 
+                Node(u'<span xmlns="http://www.w3.org/1999/xhtml" lang="en">'
+                    u'<a href="http://miskinhill.com.au/authors/dude">Some Dude</a></span>',
+                    is_wf_xml=True)))
+        graph._g.append(Statement(node, rdfob.uriref('dc:date'), Node('1801', datatype=rdfob.uriref('xsd:date').uri)))
+        root = lxml.html.fromstring(self.render(graph[node]))
+        responsibility, = root.find_class('responsibility')
+        self.assertEquals('Some Dude', responsibility.text_content().strip())
+
     def test_without_publisher(self):
         graph = rdfob.Graph()
-        node = rdfob.BNode()
-        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
-        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
-        graph._g.add((node, rdfob.uriref('dc:date'), rdfob.Literal('1801', datatype=rdfob.uriref('xsd:date'))))
+        node = Node(blank='1')
+        graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
+        graph._g.append(Statement(node, rdfob.uriref('mhs:responsibility'), 
+                Node(u'<span xmlns="http://www.w3.org/1999/xhtml" lang="en">'
+                    u'<a href="http://miskinhill.com.au/authors/dude">Some Dude</a></span>',
+                    is_wf_xml=True)))
+        graph._g.append(Statement(node, rdfob.uriref('dc:date'), Node('1801', datatype=rdfob.uriref('xsd:date').uri)))
         root = lxml.html.fromstring(self.render(graph[node]))
         publication, = root.find_class('publication')
         self.assertEquals('Published 1801', publication.text_content().strip())
 
     def test_without_date(self):
         graph = rdfob.Graph()
-        node = rdfob.BNode()
-        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
-        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
-        graph._g.add((node, rdfob.uriref('dc:publisher'), rdfob.Literal('Some Publisher')))
+        node = Node(blank='1')
+        graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:publisher'), Node('Some Publisher')))
         root = lxml.html.fromstring(self.render(graph[node]))
         publication, = root.find_class('publication')
         self.assertEquals('Published by Some Publisher', publication.text_content().strip())
 
     def test_without_date_or_publisher(self):
         graph = rdfob.Graph()
-        node = rdfob.BNode()
-        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
-        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        node = Node(blank='1')
+        graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
         root = lxml.html.fromstring(self.render(graph[node]))
         publication, = root.find_class('publication')
         self.assertEquals('', publication.text_content().strip())
 
     def test_gbooksid(self):
         graph = rdfob.Graph()
-        node = rdfob.BNode()
-        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
-        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
-        graph._g.add((node, rdfob.uriref('dc:date'), rdfob.Literal('1801', datatype=rdfob.uriref('xsd:date'))))
-        graph._g.add((node, rdfob.uriref('dc:identifier'), rdfob.URIRef('http://books.google.com/books?id=12345')))
+        node = Node(blank='1')
+        graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:date'), Node('1801', datatype=rdfob.uriref('xsd:date').uri)))
+        graph._g.append(Statement(node, rdfob.uriref('dc:identifier'), Uri('http://books.google.com/books?id=12345')))
         root = lxml.html.fromstring(self.render(graph[node]))
         links, = root.find_class('links')
         a, = links.findall('a[@href="http://books.google.com/books?id=12345"]')
         self.assertEquals('Google Book Search', a.text_content().strip())
 
-    def test_without_author(self):
-        graph = rdfob.Graph()
-        node = rdfob.BNode()
-        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
-        root = lxml.html.fromstring(self.render(graph[node]))
-        main, = root.find_class('main')
-        self.assertEquals('Some title', main.text_content().strip())
-
     def test_cover_thumbnail(self):
         graph = rdfob.Graph()
-        node = rdfob.BNode()
-        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
-        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
-        graph._g.add((node, rdfob.uriref('mhs:coverThumbnail'), rdfob.URIRef('http://example.com/thumb.gif')))
+        node = Node(blank='1')
+        graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
+        graph._g.append(Statement(node, rdfob.uriref('mhs:coverThumbnail'), Uri('http://example.com/thumb.gif')))
         root = lxml.html.fromstring(self.render(graph[node]))
         cover, = root.find_class('cover')
         img = cover.find('img')
@@ -95,23 +100,30 @@ ${bookinfo(book_node)}
 
     def test_russian_link(self):
         graph = rdfob.Graph()
-        node = rdfob.BNode()
-        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal(u'Русская книга', lang='ru')))
-        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        node = Node(blank='1')
+        graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node(u'Русская книга', language='ru')))
+        graph._g.append(Statement(node, rdfob.uriref('mhs:responsibility'), 
+                Node(u'<span xmlns="http://www.w3.org/1999/xhtml" lang="en">'
+                    u'<a href="http://miskinhill.com.au/authors/dude">Some Dude</a></span>',
+                    is_wf_xml=True)))
         root = lxml.html.fromstring(self.render(graph[node]))
         links, = root.find_class('links')
         a = links.find('a[@href="http://www.ozon.ru/?context=search&text=%D0%F3%F1%F1%EA%E0%FF%20%EA%ED%E8%E3%E0%20Some%20Dude"]')
         self.assertEquals('Ozon.ru', a.text_content())
 
-    def test_russian_link(self):
+    def test_russian_link_cyrillic_title(self):
         graph = rdfob.Graph()
-        node = rdfob.BNode()
-        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-        graph._g.add((node, rdfob.uriref('dc:title'), 
-                rdfob.Literal(u'<span xmlns="http://www.w3.org/1999/xhtml" lang="ru">'
-                    u'<em>Русская</em> книга</span>', datatype=rdfob.uriref('rdf:XMLLiteral'))))
-        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        node = Node(blank='1')
+        graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:title'), 
+                Node(u'<span xmlns="http://www.w3.org/1999/xhtml" lang="ru">'
+                    u'<em>Русская</em> книга</span>', 
+                    is_wf_xml=True)))
+        graph._g.append(Statement(node, rdfob.uriref('mhs:responsibility'), 
+                Node(u'<span xmlns="http://www.w3.org/1999/xhtml" lang="en">'
+                    u'<a href="http://miskinhill.com.au/authors/dude">Some Dude</a></span>',
+                    is_wf_xml=True)))
         root = lxml.html.fromstring(self.render(graph[node]))
         links, = root.find_class('links')
         a = links.find('a[@href="http://www.ozon.ru/?context=search&text=%D0%F3%F1%F1%EA%E0%FF%20%EA%ED%E8%E3%E0%20Some%20Dude"]')
@@ -119,12 +131,11 @@ ${bookinfo(book_node)}
 
     def test_available_from_link(self):
         graph = rdfob.Graph()
-        node = rdfob.BNode()
-        graph._g.add((node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
-        graph._g.add((node, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
-        graph._g.add((node, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
-        graph._g.add((node, rdfob.uriref('dc:date'), rdfob.Literal('1801', datatype=rdfob.uriref('xsd:date'))))
-        graph._g.add((node, rdfob.uriref('mhs:availableFrom'), rdfob.URIRef('http://example.com/teh-book')))
+        node = Node(blank='1')
+        graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
+        graph._g.append(Statement(node, rdfob.uriref('dc:date'), Node('1801', datatype=rdfob.uriref('xsd:date').uri)))
+        graph._g.append(Statement(node, rdfob.uriref('mhs:availableFrom'), Uri('http://example.com/teh-book')))
         root = lxml.html.fromstring(self.render(graph[node]))
         main, = root.find_class('main')
         a, = main.findall('.//a[@href="http://example.com/teh-book"]')
@@ -148,20 +159,20 @@ ${articleinfo(node)}
 
     def setup_article(self, graph):
         # XXX just use meta.nt?
-        journal = rdfob.BNode()
-        graph._g.add((journal, rdfob.RDF_TYPE, rdfob.uriref('mhs:Journal')))
-        graph._g.add((journal, rdfob.uriref('dc:title'), rdfob.Literal('Studies of something')))
-        graph._g.add((journal, rdfob.uriref('dc:identifier'), rdfob.URIRef('urn:issn:12345678')))
-        issue = rdfob.BNode()
-        graph._g.add((issue, rdfob.RDF_TYPE, rdfob.uriref('mhs:Issue')))
-        graph._g.add((issue, rdfob.uriref('mhs:isIssueOf'), journal))
-        graph._g.add((issue, rdfob.uriref('mhs:volume'), rdfob.Literal(1)))
-        graph._g.add((issue, rdfob.uriref('mhs:coverThumbnail'), rdfob.URIRef('http://example.com/thumb.gif')))
-        article = rdfob.BNode()
-        graph._g.add((article, rdfob.RDF_TYPE, rdfob.uriref('mhs:Article')))
-        graph._g.add((article, rdfob.uriref('dc:isPartOf'), issue))
-        graph._g.add((article, rdfob.uriref('dc:title'), rdfob.Literal('Some title')))
-        graph._g.add((article, rdfob.uriref('dc:creator'), rdfob.Literal('Some Dude')))
+        journal = Node(blank='journal')
+        graph._g.append(Statement(journal, rdfob.RDF_TYPE, rdfob.uriref('mhs:Journal')))
+        graph._g.append(Statement(journal, rdfob.uriref('dc:title'), Node('Studies of something')))
+        graph._g.append(Statement(journal, rdfob.uriref('dc:identifier'), Uri('urn:issn:12345678')))
+        issue = Node(blank='issue')
+        graph._g.append(Statement(issue, rdfob.RDF_TYPE, rdfob.uriref('mhs:Issue')))
+        graph._g.append(Statement(issue, rdfob.uriref('mhs:isIssueOf'), journal))
+        graph._g.append(Statement(issue, rdfob.uriref('mhs:volume'), Node(1)))
+        graph._g.append(Statement(issue, rdfob.uriref('mhs:coverThumbnail'), Uri('http://example.com/thumb.gif')))
+        article = Node(blank='article')
+        graph._g.append(Statement(article, rdfob.RDF_TYPE, rdfob.uriref('mhs:Article')))
+        graph._g.append(Statement(article, rdfob.uriref('dc:isPartOf'), issue))
+        graph._g.append(Statement(article, rdfob.uriref('dc:title'), Node('Some title')))
+        graph._g.append(Statement(article, rdfob.uriref('dc:creator'), Node('Some Dude')))
         return article, issue, journal
 
     def test_worldcat_issn_link(self):
@@ -183,7 +194,7 @@ ${articleinfo(node)}
     def test_article_available_from(self):
         graph = rdfob.Graph()
         article, issue, journal = self.setup_article(graph)
-        graph._g.add((article, rdfob.uriref('mhs:availableFrom'), rdfob.URIRef('http://example.com/teh-article')))
+        graph._g.append(Statement(article, rdfob.uriref('mhs:availableFrom'), Uri('http://example.com/teh-article')))
         root = lxml.html.fromstring(self.render(graph[article]))
         main, = root.find_class('main')
         title = main.findall('a')[0]
@@ -193,7 +204,7 @@ ${articleinfo(node)}
     def test_issue_available_from(self):
         graph = rdfob.Graph()
         article, issue, journal = self.setup_article(graph)
-        graph._g.add((issue, rdfob.uriref('mhs:availableFrom'), rdfob.URIRef('http://example.com/teh-issue')))
+        graph._g.append(Statement(issue, rdfob.uriref('mhs:availableFrom'), Uri('http://example.com/teh-issue')))
         root = lxml.html.fromstring(self.render(graph[article]))
         issue_details, = root.find_class('issue')
         self.assertEquals(u'Vol.\u00a01', issue_details.find('a[@href="http://example.com/teh-issue"]').text_content().strip())
@@ -201,7 +212,7 @@ ${articleinfo(node)}
     def test_journal_available_from(self):
         graph = rdfob.Graph()
         article, issue, journal = self.setup_article(graph)
-        graph._g.add((journal, rdfob.uriref('mhs:availableFrom'), rdfob.URIRef('http://example.com/teh-journal')))
+        graph._g.append(Statement(journal, rdfob.uriref('mhs:availableFrom'), Uri('http://example.com/teh-journal')))
         root = lxml.html.fromstring(self.render(graph[article]))
         issue_details, = root.find_class('issue')
         self.assertEquals('Studies of something', issue_details.find('a[@href="http://example.com/teh-journal"]').text_content())

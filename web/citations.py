@@ -5,6 +5,7 @@ from genshi import Markup
 from lxml.html import builder as E
 
 import rdfob
+import RDF
 
 WHITESPACE_PATT = re.compile(r'\s+', re.UNICODE)
 def normalize_whitespace(s):
@@ -66,11 +67,11 @@ class Citation(object):
             return elem
 
     def add_to_graph(self, graph):
-        self_uri = rdfob.URIRef('%s#citation-%d' % (self.article_uri, self.number))
-        graph.add((self_uri, rdfob.RDF_TYPE, rdfob.uriref('mhs:Citation')))
-        graph.add((self_uri, rdfob.uriref('dc:isPartOf'), rdfob.URIRef(self.article_uri)))
+        self_uri = rdfob.Uri('%s#citation-%d' % (self.article_uri, self.number))
+        graph.append(RDF.Statement(self_uri, rdfob.RDF_TYPE, rdfob.uriref('mhs:Citation')))
+        graph.append(RDF.Statement(self_uri, rdfob.uriref('dc:isPartOf'), rdfob.Uri(self.article_uri)))
         for cites in self.cites_urirefs():
-            graph.add((self_uri, rdfob.uriref('mhs:cites'), rdfob.URIRef(cites.decode('utf8'))))
+            graph.append(RDF.Statement(self_uri, rdfob.uriref('mhs:cites'), rdfob.Uri(cites.decode('utf8'))))
 
     def cites_urirefs(self):
         return [urlparse.urljoin('http://miskinhill.com.au/cited/', cites.encode('utf8'))

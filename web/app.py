@@ -30,7 +30,7 @@ def maybe_initialise_graph():
     if graph is None: # XXX race here
         graph = rdfob.Graph(os.path.join(content_dir, 'meta.xml'))
         for article in graph.by_type('mhs:Article'):
-            if article.uri.startswith('http://miskinhill.com.au/'):
+            if unicode(article.uri).startswith('http://miskinhill.com.au/'):
                 content = content_dir + viewutils.relative_url(article.uri) + '.html'
                 if os.path.exists(content):
                     for citation in citations.citations_from_content(content, article.uri):
@@ -133,13 +133,13 @@ class MiskinHillApplication(object):
         template = template_loader.load('../atom/issues_feed.xml')
         body = template.generate(req=self.req, 
                 issues=sorted((i for i in graph.by_type('mhs:Issue') 
-                               if i.uri.startswith(u'http://miskinhill.com.au/journals/')),
+                               if unicode(i.uri).startswith(u'http://miskinhill.com.au/journals/')),
                               key=lambda i: i['mhs:onlinePublicationDate'], reverse=True)
                 ).render('xml')
         return Response(body, content_type='application/atom+xml')
 
     def world_rdf(self):
-        return Response(graph._g.serialize(format='xml'),
+        return Response(graph._g.to_string(name='rdfxml'),
                 content_type='application/rdf+xml')
 
     def dispatch_rdf(self, path_info):
@@ -154,9 +154,9 @@ class MiskinHillApplication(object):
                 break
 
         try:
-            node = graph[rdfob.URIRef(decoded_uri)]
+            node = graph[rdfob.Uri(decoded_uri)]
         except KeyError:
-            if decoded_uri[-1] != '/' and rdfob.URIRef(decoded_uri + '/') in graph:
+            if decoded_uri[-1] != '/' and rdfob.Uri(decoded_uri + '/') in graph:
                 return exc.HTTPFound(location=(decoded_uri + '/').encode('utf8'))
             return exc.HTTPNotFound('URI not found in RDF graph')
 
