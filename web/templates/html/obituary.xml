@@ -6,7 +6,7 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
-from viewutils import parsed_content, relative_url
+from viewutils import parsed_content
 import representations
 obituary = node
 issue = obituary['dc:isPartOf']
@@ -24,16 +24,16 @@ journal = issue['mhs:isIssueOf']
 <body>
 
 ${breadcrumbs([('/journals/', 'Journals'), 
-               (relative_url(journal.uri), journal['dc:title']),
-               (relative_url(issue.uri), 'Vol. %s, Issue %s' % (issue['mhs:volume'], issue['mhs:issueNumber']))])}
+               (journal.uri, journal['dc:title']),
+               (issue.uri, 'Vol. %s, Issue %s' % (issue['mhs:volume'], issue['mhs:issueNumber']))])}
 
 <h2>†${obituary['mhs:obituaryOf']['foaf:name']} (${obituary['mhs:obituaryOf']['mhs:dateOfBirth'].strftime('%-1d %B %Y')} – ${obituary['mhs:obituaryOf']['mhs:dateOfDeath'].strftime('%-1d %B %Y')})<abbr class="unapi-id" title="${obituary.uri}" /></h2>
 
 <div class="metabox-container">
     <div class="obituary-meta metabox">
         <h4>Obituary details</h4>
-        <p>Published in <a href="${relative_url(issue.uri)}">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</a> of<br /><a href="${relative_url(journal.uri)}"><em>${journal['dc:title']}</em></a></p>
-        <p class="other-formats"><a href="${relative_url(obituary.uri)}.pdf">Original print version</a></p>
+        <p>Published in <a href="${issue.uri}">Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</a> of<br /><a href="${journal.uri}"><em>${journal['dc:title']}</em></a></p>
+        <p class="other-formats"><a href="${obituary.uri}.pdf">Original print version</a></p>
         <p class="metadata-links">Metadata:
             ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
         </p>
@@ -42,10 +42,10 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
 <h3><em lang="la">In memoriam</em></h3>
 
-${parsed_content(req.content_dir + relative_url(obituary.uri) + '.html', obituary.uri)}
+${parsed_content(req.content_dir + unicode(obituary.uri)[24:] + '.html', obituary.uri)}
 
 <p py:with="author = obituary['dc:creator']" class="author">
-    <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
+    <a href="${author.uri}">${author['foaf:name']}</a>
 </p>
 
 </body>

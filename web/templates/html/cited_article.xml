@@ -7,7 +7,6 @@
 <xi:include href="_articleinfo.xml" />
 
 <?python
-from viewutils import relative_url
 article = node
 issue = article['dc:isPartOf']
 journal = issue['mhs:isIssueOf']
@@ -28,8 +27,8 @@ ${articleinfo(article)}
 <ul class="articles">
     <li py:for="article in sorted(set(c['dc:isPartOf'] for c in article.reflexive('mhs:cites')), key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
         py:with="issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
-        <div class="article"><a href="${relative_url(article.uri)}">${article['dc:title']}</a></div>
-        <div class="issue">in <a href="${relative_url(issue.uri)}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
+        <div class="article"><a href="${article.uri}">${article['dc:title']}</a></div>
+        <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
     </li>
 </ul>
 

@@ -9,12 +9,11 @@ import re, urllib
 from webob import Request, Response
 from webob import exc
 from genshi.template import TemplateLoader, NewTextTemplate, TemplateNotFound
-import lxml.etree
+import lxml.etree, lxml.html
 from lxml.builder import E
 
 import rdfob
 import representations
-import viewutils
 import citations
 
 template_loader = TemplateLoader(
@@ -31,7 +30,7 @@ def maybe_initialise_graph():
         graph = rdfob.Graph(os.path.join(content_dir, 'meta.xml'))
         for article in graph.by_type('mhs:Article'):
             if unicode(article.uri).startswith('http://miskinhill.com.au/'):
-                content = content_dir + viewutils.relative_url(article.uri) + '.html'
+                content = content_dir + unicode(article.uri)[24:] + '.html'
                 if os.path.exists(content):
                     for citation in citations.citations_from_content(content, article.uri):
                         citation.add_to_graph(graph._g)
@@ -174,7 +173,25 @@ class MiskinHillApplication(object):
 
         return representation_cls(self.req, node).response()
 
-application = MiskinHillApplication
+class Relativizer(object):
+
+    def __init__(self, wrapped):
+        self.wrapped = wrapped
+
+    def __call__(self, environ, start_response):
+        res = Request(environ).get_response(self.wrapped)
+        if res.status_int == 200 and res.content_type == 'text/html':
+            tree = lxml.html.fromstring(res.body, parser=lxml.html.XHTMLParser())
+            tree.rewrite_links(self.do_it)
+            res.body = lxml.html.tostring(tree, method='xml', encoding='utf8')
+        return res(environ, start_response)
+
+    def do_it(self, link):
+        if link.startswith('http://miskinhill.com.au'):
+            return link[24:]
+        return link
+
+application = Relativizer(MiskinHillApplication)
 
 if __name__ == '__main__':
     import optparse

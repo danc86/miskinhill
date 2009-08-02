@@ -6,7 +6,6 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
-from viewutils import relative_url
 import representations
 forum = node
 posts = sorted(forum.reflexive('sioc:has_container'), key=lambda p: p['dc:created'], reverse=True)
