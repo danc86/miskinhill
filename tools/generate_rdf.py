@@ -8,6 +8,8 @@ import RDF
 import lxml.etree, lxml.html
 from itertools import chain
 
+import citations
+
 RDF_NS = RDF.NS('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
 RDFS_NS = RDF.NS('http://www.w3.org/2000/01/rdf-schema#')
 OWL_NS = RDF.NS('http://www.w3.org/2002/07/owl#')
@@ -25,8 +27,8 @@ def load():
                 print >>sys.stderr, '%d triples' % len(g)
     return g
 
-def extract(g):
-    print >>sys.stderr, 'Extracting ...',
+def extract_responsibility(g):
+    print >>sys.stderr, 'Extracting responsible roles ...',
     for stmt in chain(g.find_statements(RDF.Statement(subject=None, predicate=MHS_NS.responsibility, object=None)),
             g.find_statements(RDF.Statement(subject=None, predicate=DCTERMS_NS.title, object=None))):
         responsibility = lxml.html.fromstring(stmt.object.literal_value['string'])
@@ -41,6 +43,16 @@ def extract(g):
                 else:
                     predicate = DCTERMS_NS.creator
                 g.append(RDF.Statement(stmt.subject, predicate=predicate, object=href))
+    print >>sys.stderr, '%d triples' % len(g)
+
+def extract_citations(g):
+    print >>sys.stderr, 'Extracting citation metadata ...',
+    for article in g.get_sources(RDF_NS.type, MHS_NS.Article):
+        if unicode(article.uri).startswith('http://miskinhill.com.au/journals/'):
+            content = unicode(article.uri)[25:] + '.html'
+            if os.path.exists(content):
+                for citation in citations.citations_from_content(content, article.uri):
+                    citation.add_to_graph(g)
     print >>sys.stderr, '%d triples' % len(g)
 
 def _types(g, s):
@@ -96,7 +108,8 @@ def validate(g):
 
 def main():
     g = load()
-    extract(g)
+    extract_responsibility(g)
+    extract_citations(g)
     infer(g)
     validate(g)
     sys.stdout.write(g.to_string())

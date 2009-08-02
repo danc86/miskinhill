@@ -28,12 +28,6 @@ def maybe_initialise_graph():
     global graph
     if graph is None: # XXX race here
         graph = rdfob.Graph(os.path.join(content_dir, 'meta.xml'))
-        for article in graph.by_type('mhs:Article'):
-            if unicode(article.uri).startswith('http://miskinhill.com.au/'):
-                content = content_dir + unicode(article.uri)[24:] + '.html'
-                if os.path.exists(content):
-                    for citation in citations.citations_from_content(content, article.uri):
-                        citation.add_to_graph(graph._g)
 
 class MiskinHillApplication(object):
 
