@@ -11,6 +11,7 @@ from webob import exc
 from genshi.template import TemplateLoader, NewTextTemplate, TemplateNotFound
 import lxml.etree, lxml.html
 from lxml.builder import E
+import RDF
 
 import rdfob
 import representations
@@ -132,7 +133,10 @@ class MiskinHillApplication(object):
         return Response(body, content_type='application/atom+xml')
 
     def world_rdf(self):
-        return Response(graph._g.to_string(name='rdfxml'),
+        ser = RDF.Serializer(name='rdfxml-abbrev')
+        for prefix, namespace in rdfob.NAMESPACES.iteritems():
+            ser.set_namespace(prefix, namespace[''].uri)
+        return Response(ser.serialize_model_to_string(graph._g),
                 content_type='application/rdf+xml')
 
     def dispatch_rdf(self, path_info):

@@ -8,6 +8,7 @@ import iso8601
 NAMESPACES = {
     'mhs': RDF.NS('http://miskinhill.com.au/rdfschema/1.0/'), 
     'dc': RDF.NS('http://purl.org/dc/terms/'), 
+    'old-dc': RDF.NS('http://purl.org/dc/elements/1.1/'), # mainly exists for namespace prefix mapping in serialized XML
     'foaf': RDF.NS('http://xmlns.com/foaf/0.1/'), 
     'rdf': RDF.NS('http://www.w3.org/1999/02/22-rdf-syntax-ns#'), 
     'rdfs': RDF.NS('http://www.w3.org/2000/01/rdf-schema#'), 
@@ -17,7 +18,9 @@ NAMESPACES = {
     'geonames': RDF.NS('http://www.geonames.org/ontology#'), 
     'sioc': RDF.NS('http://rdfs.org/sioc/ns#'), 
     'awol': RDF.NS('http://bblfish.net/work/atom-owl/2006-06-06/#'),
-    'lingvoj': RDF.NS('http://www.lingvoj.org/ontology#')
+    'lingvoj': RDF.NS('http://www.lingvoj.org/ontology#'), 
+    'prism': RDF.NS('http://prismstandard.org/namespaces/1.2/basic/'), 
+    'owl': RDF.NS('http://www.w3.org/2002/07/owl#')
 }
 RDF_TYPE = NAMESPACES['rdf']['type']
 RDF_SEQ = NAMESPACES['rdf']['Seq']
@@ -80,11 +83,7 @@ class Graph(object):
         #    if self._g.absolutize(s, defrag=True) == subject:
         #        add_triples(s)
         add_triples(subject)
-        if format == 'xml':
-            ser = RDF.RDFXMLSerializer()
-        elif format == 'nt':
-            ser = RDF.NTriplesSerializer()
-        else: assert False, 'not reached'
+        ser = RDF.Serializer(name={'xml': 'rdfxml-abbrev', 'nt': 'ntriples'}[format])
         for prefix, namespace in NAMESPACES.iteritems():
             ser.set_namespace(prefix, namespace[''].uri)
         return ser.serialize_model_to_string(subgraph)

@@ -8,6 +8,7 @@ import RDF
 import lxml.etree, lxml.html
 from itertools import chain
 
+import rdfob
 import citations
 
 RDF_NS = RDF.NS('http://www.w3.org/1999/02/22-rdf-syntax-ns#')
@@ -82,7 +83,7 @@ RANGE_PROPERTY_EXCEPTIONS = frozenset([DCTERMS_NS.publisher, DCTERMS_NS.identifi
 RANGE_OBJECT_EXCEPTIONS = frozenset([RDF.Node(uri_string='http://www.w3.org/TR/2000/CR-rdf-schema-20000327#Literal')])
 
 def validate(g):
-    print >>sys.stderr, 'Validating domains/ranges ...'
+    print >>sys.stderr, 'Validating domains/ranges ...',
     for domain_constraint in RDF.Query('SELECT ?s ?o WHERE (?s <http://www.w3.org/2000/01/rdf-schema#domain> ?o)').execute(g):
         if not domain_constraint['s'].is_resource() or not domain_constraint['o'].is_resource():
             continue # for now
@@ -105,6 +106,16 @@ def validate(g):
             else:
                 if range_constraint['o'] not in _types(g, x['o']):
                     raise ValueError('property %s to %s violates rdfs:range constraint of %s (found %r)' % (range_constraint['s'], x['o'], range_constraint['o'], [str(x) for x in _types(g, x['o'])]))
+    print >>sys.stderr, 'done'
+
+def serialize(g):
+    print >>sys.stderr, 'Serializing ...',
+    ser = RDF.Serializer(name='rdfxml-abbrev')
+    for prefix, namespace in rdfob.NAMESPACES.iteritems():
+        ser.set_namespace(prefix, namespace[''].uri)
+    s = ser.serialize_model_to_string(g)
+    print >>sys.stderr, 'done'
+    return s
 
 def main():
     g = load()
@@ -112,7 +123,7 @@ def main():
     extract_citations(g)
     infer(g)
     validate(g)
-    sys.stdout.write(g.to_string())
+    sys.stdout.write(serialize(g))
 
 if __name__ == '__main__':
     main()
