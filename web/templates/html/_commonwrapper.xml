@@ -9,7 +9,7 @@ import rdfob
 ?>
 
 <py:match path="head">
-	<head py:attrs="select('@*')" py:with="title = unicode(select('title[1]/text()'))">
+	<head py:attrs="select('@*')" py:with="title = select('title[1]/text()')">
 		${select('./*[local-name() != "title"]')}
         <title py:if="title">${title} - Miskin Hill</title>
 		<title py:if="not title">Miskin Hill</title>
