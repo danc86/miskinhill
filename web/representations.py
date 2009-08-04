@@ -20,17 +20,17 @@ class Representation(object):
         self.node = node
 
     def anchor(self):
-        if self.node.uri.startswith('http://miskinhill.com.au/'):
-            href = self.node.uri[24:]
+        if unicode(self.node.uri).startswith('http://miskinhill.com.au/'):
+            href = unicode(self.node.uri)[24:]
         else:
-            href = self.node.uri
+            href = unicode(self.node.uri)
         return Markup(u'<a href="%s.%s">%s</a>' % (href, self.format, self.label))
 
     def link(self):
-        if self.node.uri.startswith('http://miskinhill.com.au/'):
-            href = self.node.uri[24:]
+        if unicode(self.node.uri).startswith('http://miskinhill.com.au/'):
+            href = unicode(self.node.uri)[24:]
         else:
-            href = self.node.uri
+            href = unicode(self.node.uri)
         return XML(u'<link rel="alternate" type="%s" title="%s" href="%s.%s" />'
                 % (self.content_type, self.label, href, self.format))
 
@@ -50,7 +50,7 @@ class NTriplesRepresentation(Representation):
         return True
 
     def generate(self):
-        return self.node.graph.serialized(self.node.uri)
+        return self.node.graph.serialized(self.node.node)
 
     def response(self):
         return Response(self.generate(), 
@@ -94,7 +94,7 @@ class HTMLRepresentation(Representation):
     _cited_types = frozenset([rdfob.uriref('mhs:Article'), rdfob.uriref('mhs:Book')])
     @classmethod
     def can_represent(cls, node):
-        if node.uri.startswith('http://miskinhill.com.au/cited/') and not cls._cited_types.intersection(node.types):
+        if unicode(node.uri).startswith('http://miskinhill.com.au/cited/') and not cls._cited_types.intersection(node.types):
             return False
         return super(HTMLRepresentation, cls).can_represent(node)
 
@@ -102,9 +102,9 @@ class HTMLRepresentation(Representation):
         for rdf_type in self.rdf_types:
             if rdf_type in self.node.types:
                 # XXX dodgy?
-                template_filename = re.match(r'.*?([A-Za-z]*)$', rdf_type).group(1).lower() + '.xml'
+                template_filename = re.match(r'.*?([A-Za-z]*)$', unicode(rdf_type.uri)).group(1).lower() + '.xml'
                 break
-        if template_filename == 'article.xml' and self.node.uri.startswith('http://miskinhill.com.au/cited/'):
+        if template_filename == 'article.xml' and unicode(self.node.uri).startswith('http://miskinhill.com.au/cited/'):
             template_filename = 'cited_article.xml' # XXX dodgier?
         template = template_loader.load(os.path.join('html', template_filename))
         return template.generate(req=self.req, node=self.node)
@@ -123,7 +123,7 @@ class MODSRepresentation(Representation):
 
     @classmethod
     def can_represent(cls, node):
-        if not node.uri.startswith('http://miskinhill.com.au/journals/'):
+        if not unicode(node.uri).startswith('http://miskinhill.com.au/journals/'):
             return False
         return super(MODSRepresentation, cls).can_represent(node)
 
@@ -150,7 +150,7 @@ class MARCXMLRepresentation(Representation):
 
     @classmethod
     def can_represent(cls, node):
-        if not node.uri.startswith('http://miskinhill.com.au/journals/'):
+        if not unicode(node.uri).startswith('http://miskinhill.com.au/journals/'):
             return False
         return super(MARCXMLRepresentation, cls).can_represent(node)
 

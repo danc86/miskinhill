@@ -60,7 +60,7 @@ import rdfob
 
 <py:match path="div[@class='incompleteness-warning']">
     <div class="incompleteness-warning" lang="en">
-        <p>The full HTML version of this article is not currently available online. Please refer to the <a href="${relative_url(article.uri)}.pdf">original print version</a>.</p>
+        <p>The full HTML version of this article is not currently available online. Please refer to the <a href="${article.uri}.pdf">original print version</a>.</p>
     </div>
 </py:match>
 

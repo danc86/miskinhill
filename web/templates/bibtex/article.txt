@@ -2,8 +2,8 @@
 import re
 from viewutils import name_or_literal
 %}\
-{% with article = node; author = article['dc:creator']; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
-@article{${re.sub(r'\W', '', author['foaf:surname'])}:${issue['dc:coverage'][-4:]}, 
+{% with article = node; authors = article.getall('dc:creator'); issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
+@article{${re.sub(r'\W', '', authors[0]['foaf:surname'])}{% if 'dc:coverage' in issue %}${issue['dc:coverage'][-4:]}{% end %}, 
     journal = "${journal['dc:title']}", 
 {% if journal.identifier('urn:issn:') %}\
     issn = "${journal.identifier('urn:issn:')}", 
@@ -11,14 +11,25 @@ from viewutils import name_or_literal
 {% if 'dc:publisher' in journal %}\
     publisher = "${name_or_literal(journal['dc:publisher'])}", 
 {% end %}\
+{% if 'mhs:volume' in issue %}\
     volume = "${issue['mhs:volume']}", 
+{% end %}\
+{% if 'mhs:issueNumber' in issue %}\
     number = "${issue['mhs:issueNumber']}", 
+{% end %}\
+{% if 'dc:coverage' in issue %}\
     year = "${issue['dc:coverage'][-4:]}", 
-    author = "${name_or_literal(author)}", 
-    title = "${re.sub(r'(.)([A-Z])', r'\1{\2}', Markup(article['dc:title']).striptags())}", 
+{% end %}\
+    author = "${' and '.join(a['foaf:name'] for a in authors)}", 
+    title = "${re.sub(r'(.)([A-Z]+)', r'\1{\2}', Markup(article['dc:title']).striptags())}", 
 {% if 'mhs:startPage' in article and 'mhs:endPage' in article %}\
     pages = "${article['mhs:startPage']}–${article['mhs:endPage']}", 
 {% end %}\
+{% if unicode(article.uri).startswith('http://miskinhill.com.au/journals/') %}\
     url = "${article.uri}"
+{% end %}\
+{% if not unicode(article.uri).startswith('http://miskinhill.com.au/journals/') and 'mhs:availableFrom' in article %}\
+    url = "${article.getone('mhs:availableFrom', as_uriref=True).uri}"
+{% end %}\
 }
 {% end %}

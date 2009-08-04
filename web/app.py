@@ -9,12 +9,12 @@ import re, urllib
 from webob import Request, Response
 from webob import exc
 from genshi.template import TemplateLoader, NewTextTemplate, TemplateNotFound
-import lxml.etree
+import lxml.etree, lxml.html
 from lxml.builder import E
+import RDF
 
 import rdfob
 import representations
-import viewutils
 import citations
 
 template_loader = TemplateLoader(
@@ -29,12 +29,6 @@ def maybe_initialise_graph():
     global graph
     if graph is None: # XXX race here
         graph = rdfob.Graph(os.path.join(content_dir, 'meta.xml'))
-        for article in graph.by_type('mhs:Article'):
-            if article.uri.startswith('http://miskinhill.com.au/'):
-                content = content_dir + viewutils.relative_url(article.uri) + '.html'
-                if os.path.exists(content):
-                    for citation in citations.citations_from_content(content, article.uri):
-                        citation.add_to_graph(graph._g)
 
 class MiskinHillApplication(object):
 
@@ -133,13 +127,16 @@ class MiskinHillApplication(object):
         template = template_loader.load('../atom/issues_feed.xml')
         body = template.generate(req=self.req, 
                 issues=sorted((i for i in graph.by_type('mhs:Issue') 
-                               if i.uri.startswith(u'http://miskinhill.com.au/journals/')),
+                               if unicode(i.uri).startswith(u'http://miskinhill.com.au/journals/')),
                               key=lambda i: i['mhs:onlinePublicationDate'], reverse=True)
                 ).render('xml')
         return Response(body, content_type='application/atom+xml')
 
     def world_rdf(self):
-        return Response(graph._g.serialize(format='xml'),
+        ser = RDF.Serializer(name='rdfxml-abbrev')
+        for prefix, namespace in rdfob.NAMESPACES.iteritems():
+            ser.set_namespace(prefix, namespace[''].uri)
+        return Response(ser.serialize_model_to_string(graph._g),
                 content_type='application/rdf+xml')
 
     def dispatch_rdf(self, path_info):
@@ -154,9 +151,9 @@ class MiskinHillApplication(object):
                 break
 
         try:
-            node = graph[rdfob.URIRef(decoded_uri)]
+            node = graph[rdfob.Uri(decoded_uri)]
         except KeyError:
-            if decoded_uri[-1] != '/' and rdfob.URIRef(decoded_uri + '/') in graph:
+            if decoded_uri[-1] != '/' and rdfob.Uri(decoded_uri + '/') in graph:
                 return exc.HTTPFound(location=(decoded_uri + '/').encode('utf8'))
             return exc.HTTPNotFound('URI not found in RDF graph')
 
@@ -174,7 +171,25 @@ class MiskinHillApplication(object):
 
         return representation_cls(self.req, node).response()
 
-application = MiskinHillApplication
+class Relativizer(object):
+
+    def __init__(self, wrapped):
+        self.wrapped = wrapped
+
+    def __call__(self, environ, start_response):
+        res = Request(environ).get_response(self.wrapped)
+        if res.status_int == 200 and res.content_type == 'text/html':
+            tree = lxml.html.fromstring(res.body, parser=lxml.html.XHTMLParser())
+            tree.rewrite_links(self.do_it)
+            res.body = lxml.html.tostring(tree, method='xml', encoding='utf8')
+        return res(environ, start_response)
+
+    def do_it(self, link):
+        if link.startswith('http://miskinhill.com.au'):
+            return link[24:]
+        return link
+
+application = Relativizer(MiskinHillApplication)
 
 if __name__ == '__main__':
     import optparse

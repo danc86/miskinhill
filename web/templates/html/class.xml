@@ -6,7 +6,6 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
-from viewutils import relative_url
 import representations
 cls = node
 superclasses = [c for c in cls.getall('rdfs:subClassOf', as_uriref=True) if c != cls.uri]

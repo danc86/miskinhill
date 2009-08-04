@@ -6,7 +6,6 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
-from viewutils import relative_url
 import representations
 journal = node
 publisher = journal['dc:publisher']
@@ -31,9 +30,9 @@ ${breadcrumbs([('/journals/', 'Journals')])}
     <div class="issue-meta metabox">
         <h4>Journal details</h4>
         <p class="cover">
-            <img src="${sorted(journal.reflexive('mhs:isIssueOf'), key=lambda i: i['mhs:publicationDate'], reverse=True)[0].getone('mhs:coverThumbnail', as_uriref=True)}" alt="" />
+            <img src="${sorted(journal.reflexive('mhs:isIssueOf'), key=lambda i: i['mhs:publicationDate'], reverse=True)[0].getone('mhs:coverThumbnail', as_uriref=True).uri}" alt="" />
         </p>
-        <p class="publisher">Published by <a href="${publisher.getone('foaf:homepage', as_uriref=True)}">${publisher['foaf:name']}</a></p>
+        <p class="publisher">Published by <a href="${publisher.getone('foaf:homepage', as_uriref=True).uri}">${publisher['foaf:name']}</a></p>
         <p class="issn">ISSN ${journal.identifier('urn:issn:')}</p>
         <p>Metadata:
             ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
@@ -43,8 +42,8 @@ ${breadcrumbs([('/journals/', 'Journals')])}
 
 <h3>Issues available online</h3>
 <ul>
-    <li py:for="issue in sorted((i for i in journal.reflexive('mhs:isIssueOf') if i.uri.startswith('http://miskinhill.com.au/journals/')), key=lambda i: i['mhs:publicationDate'], reverse=True)">
-        <a href="${relative_url(issue.uri)}">
+    <li py:for="issue in sorted((i for i in journal.reflexive('mhs:isIssueOf') if unicode(i.uri).startswith('http://miskinhill.com.au/journals/')), key=lambda i: i['mhs:publicationDate'], reverse=True)">
+        <a href="${issue.uri}">
             Vol.&nbsp;${issue['mhs:volume']},
             Issue&nbsp;${issue['mhs:issueNumber']}
             (${issue['dc:coverage']})

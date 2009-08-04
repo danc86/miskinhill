@@ -6,7 +6,6 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
-from viewutils import relative_url
 import representations
 property = node
 superproperties = [p for p in property.getall('rdfs:subPropertyOf', as_uriref=True) if p != property.uri]

@@ -5,10 +5,6 @@
       lang="en-AU">
 <xi:include href="_commonwrapper.xml" />
 
-<?python
-from viewutils import relative_url
-?>
-
 <head>
     <title>RDF Schema</title>
 </head>
@@ -21,7 +17,7 @@ from viewutils import relative_url
 
 <ul>
     <li py:for="cls in sorted(classes, key=lambda c: c.uri)">
-        <a href="${relative_url(cls.uri)}">${cls.uri.split('/')[-1]}</a>
+        <a href="${cls.uri}">${cls.uri.split('/')[-1]}</a>
     </li>
 </ul>
 
@@ -29,7 +25,7 @@ from viewutils import relative_url
 
 <ul>
     <li py:for="property in sorted(properties, key=lambda p: p.uri)">
-        <a href="${relative_url(property.uri)}">${property.uri.split('/')[-1]}</a>
+        <a href="${property.uri}">${property.uri.split('/')[-1]}</a>
     </li>
 </ul>
 

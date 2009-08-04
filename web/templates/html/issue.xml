@@ -7,7 +7,6 @@
 
 <?python
 from itertools import groupby
-from viewutils import relative_url
 import representations
 issue = node
 journal = issue['mhs:isIssueOf']
@@ -24,7 +23,7 @@ journal = issue['mhs:isIssueOf']
 <body>
 
 ${breadcrumbs([('/journals/', 'Journals'), 
-               (relative_url(journal.uri), journal['dc:title'])])}
+               (journal.uri, journal['dc:title'])])}
 
 <h2>
     <span class="journal-title">${journal['dc:title']}</span>
@@ -37,7 +36,7 @@ ${breadcrumbs([('/journals/', 'Journals'),
 
     <div class="issue-meta metabox">
         <h4>Issue details</h4>
-        <p class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
+        <p class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True).uri}" alt="" /></p>
         <p>Published ${issue['mhs:publicationDate'].strftime('%-1d %B %Y')}</p>
         <p class="metadata-links">Metadata:
             ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
@@ -46,32 +45,32 @@ ${breadcrumbs([('/journals/', 'Journals'),
 </div>
 
 <py:for each="section, items in groupby(sorted(issue.reflexive('dc:isPartOf', type='mhs:IssueContent'), key=lambda c: c['mhs:startPage']), key=lambda c: c['mhs:inSection'])">
-    <h3 id="${section.uri[section.uri.index('#') + 1:]}">${section['mhs:sectionHeading']}</h3>
+    <h3 id="${unicode(section.uri)[unicode(section.uri).index('#') + 1:]}">${section['mhs:sectionHeading']}</h3>
     <ul class="contents">
         <py:for each="item in items">
             <py:choose>
                 <li py:when="item.is_any(['mhs:Obituary'])"
                     py:with="obituary = item; author = obituary['dc:creator']">
-                    <div class="title"><a href="${relative_url(obituary.uri)}">${obituary['dc:title']}</a></div>
+                    <div class="title"><a href="${obituary.uri}">${obituary['dc:title']}</a></div>
                     <div class="author">
-                        by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
-                        <py:if test="obituary.getone('mhs:translator', default=None)">(translated by <a href="${relative_url(obituary['mhs:translator'].uri)}">${obituary['mhs:translator']['foaf:name']}</a>)</py:if>
+                        by <a href="${author.uri}">${author['foaf:name']}</a>
+                        <py:if test="obituary.getone('mhs:translator', default=None)">(translated by <a href="${obituary['mhs:translator'].uri}">${obituary['mhs:translator']['foaf:name']}</a>)</py:if>
                     </div>
                 </li>
                 <li py:when="item.is_any(['mhs:Article'])"
                     py:with="article = item; author = article['dc:creator']">
-                    <div class="title"><a href="${relative_url(article.uri)}">${article['dc:title']}</a></div>
+                    <div class="title"><a href="${article.uri}">${article['dc:title']}</a></div>
                     <div class="author">
-                        by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
-                        <py:if test="article.getone('mhs:translator', default=None)">(translated by <a href="${relative_url(article['mhs:translator'].uri)}">${article['mhs:translator']['foaf:name']}</a>)</py:if>
+                        by <a href="${author.uri}">${author['foaf:name']}</a>
+                        <py:if test="article.getone('mhs:translator', default=None)">(translated by <a href="${article['mhs:translator'].uri}">${article['mhs:translator']['foaf:name']}</a>)</py:if>
                     </div>
                 </li>
                 <li py:when="item.is_any(['mhs:Review'])"
                     py:with="review = item; author = review['dc:creator']; book = review['mhs:reviews']">
-                    <div class="title"><a href="${relative_url(review.uri)}">${', '.join(book.getall('dc:creator'))}, <em>${book['dc:title']}</em> (${str(book['dc:date'])[:4]})</a></div>
+                    <div class="title"><a href="${review.uri}">${', '.join(c['foaf:name'] for c in book.getall('dc:creator'))}, <em>${book['dc:title']}</em> (${str(book['dc:date'])[:4]})</a></div>
                     <div class="author">
-                        Reviewed by <a href="${relative_url(author.uri)}">${author['foaf:name']}</a>
-                        <py:if test="review.getone('mhs:translator', default=None)">(translated by <a href="${relative_url(review['mhs:translator'].uri)}">${review['mhs:translator']['foaf:name']}</a>)</py:if>
+                        Reviewed by <a href="${author.uri}">${author['foaf:name']}</a>
+                        <py:if test="review.getone('mhs:translator', default=None)">(translated by <a href="${review['mhs:translator'].uri}">${review['mhs:translator']['foaf:name']}</a>)</py:if>
                     </div>
                 </li>
             </py:choose>
