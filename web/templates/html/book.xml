@@ -11,7 +11,7 @@ book = node
 ?>
 
 <head>
-    <title>${book['dc:title']}</title>
+    <title>${Markup(book['dc:title']).striptags()}</title>
     <link rel="stylesheet" type="text/css" href="/style/cited.css" />
 </head>
 
