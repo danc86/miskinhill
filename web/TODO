@@ -24,7 +24,6 @@ eventually:
 * MARC crap:
     - get a copy of AACR2 and make sure we adhere to it (then adjust 
       MARC leader to say so)
-    - convert ISO language codes to MARC language codes (sigh)
     - non-filing chars in titles!!!
     - LCSH -- really wish lcsh.info hadn't been taken down :-(
     - other subjects/classification? NLA has Dewey
