@@ -95,7 +95,7 @@ class MiskinHillApplication(object):
     def unapi(self):
         if 'id' in self.req.GET:
             try:
-                node = graph[rdfob.URIRef(self.req.GET['id'])]
+                node = graph[rdfob.Uri(self.req.GET['id'])]
             except KeyError:
                 return exc.HTTPNotFound('URI not found in RDF graph')
             if 'format' in self.req.GET:
@@ -105,9 +105,9 @@ class MiskinHillApplication(object):
                     return exc.HTTPNotAcceptable('Format %r not known' % self.req.GET['format'])
                 if not r.can_represent(node):
                     return exc.HTTPNotAcceptable('Format %r not acceptable for this URI' % self.req.GET['format'])
-                return exc.HTTPFound(location=(node.uri + '.' + r.format).encode('utf8'))
+                return exc.HTTPFound(location=(unicode(node.uri) + '.' + r.format).encode('utf8'))
             else:
-                body = E.formats(id=node.uri, 
+                body = E.formats(id=unicode(node.uri), 
                         *(E.format(name=r.format, type=r.content_type, docs=r.docs) 
                           for r in representations.ALL if r.can_represent(node)))
         else:

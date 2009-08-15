@@ -24,10 +24,10 @@ from viewutils import name_or_literal
 {% if journal.identifier('urn:issn:') %}\
 %@ ${journal.identifier('urn:issn:')}
 {% end %}\
-{% if article.uri.startswith('http://miskinhill.com.au/journals/') %}\
+{% if unicode(article.uri).startswith('http://miskinhill.com.au/journals/') %}\
 %U ${article.uri}
 {% end %}\
-{% if not article.uri.startswith('http://miskinhill.com.au/journals/') and 'mhs:availableFrom' in article %}\
+{% if not unicode(article.uri).startswith('http://miskinhill.com.au/journals/') and 'mhs:availableFrom' in article %}\
 %U ${article.getone('mhs:availableFrom', as_uriref=True).uri}
 {% end %}\
 {% if 'mhs:startPage' in article and 'mhs:endPage' in article %}\
