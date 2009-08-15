@@ -1,13 +1,13 @@
 {% python
+# http://www.harzing.com/pophelp/exporting.htm
 from viewutils import name_or_literal
 %}\
-{% with article = node; author = article['dc:creator']; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
+{% with article = node; authors = article.getall('dc:creator'); issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
 %0 Journal Article
 %T ${Markup(article['dc:title']).striptags()}
-%A {% choose %}\
-{% when isinstance(author, unicode) %}${author}{% end %}\
-{% otherwise %}${author['foaf:surname']}, ${author['foaf:givenNames']}{% end %}\
-{% end %}
+{% for author in authors %}\
+%A ${author['foaf:surname']}, ${author['foaf:givenNames']}
+{% end %}\
 %J ${journal['dc:title']}
 {% if 'dc:coverage' in issue %}\
 %D ${issue['dc:coverage']}
@@ -24,7 +24,12 @@ from viewutils import name_or_literal
 {% if journal.identifier('urn:issn:') %}\
 %@ ${journal.identifier('urn:issn:')}
 {% end %}\
+{% if article.uri.startswith('http://miskinhill.com.au/journals/') %}\
 %U ${article.uri}
+{% end %}\
+{% if not article.uri.startswith('http://miskinhill.com.au/journals/') and 'mhs:availableFrom' in article %}\
+%U ${article.getone('mhs:availableFrom', as_uriref=True).uri}
+{% end %}\
 {% if 'mhs:startPage' in article and 'mhs:endPage' in article %}\
 %P ${article['mhs:startPage']}-${article['mhs:endPage']}
 {% end %}\
