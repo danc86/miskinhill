@@ -86,9 +86,9 @@ class MiskinHillApplication(object):
         template = template_loader.load('rdfschema_index.xml')
         body = template.generate(req=self.req, 
                 classes=[c for c in graph.by_type('rdfs:Class') 
-                        if c.uri.startswith(u'http://miskinhill.com.au/rdfschema/')], 
+                        if unicode(c.uri).startswith(u'http://miskinhill.com.au/rdfschema/')], 
                 properties=[p for p in graph.by_type('rdf:Property') 
-                        if p.uri.startswith(u'http://miskinhill.com.au/rdfschema/')]
+                        if unicode(p.uri).startswith(u'http://miskinhill.com.au/rdfschema/')]
                 ).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
 

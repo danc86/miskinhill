@@ -17,7 +17,7 @@
 
 <ul>
     <li py:for="cls in sorted(classes, key=lambda c: c.uri)">
-        <a href="${cls.uri}">${cls.uri.split('/')[-1]}</a>
+        <a href="${cls.uri}">${unicode(cls.uri).split('/')[-1]}</a>
     </li>
 </ul>
 
@@ -25,7 +25,7 @@
 
 <ul>
     <li py:for="property in sorted(properties, key=lambda p: p.uri)">
-        <a href="${property.uri}">${property.uri.split('/')[-1]}</a>
+        <a href="${property.uri}">${unicode(property.uri).split('/')[-1]}</a>
     </li>
 </ul>
 
