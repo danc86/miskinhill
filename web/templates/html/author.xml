@@ -30,6 +30,7 @@ translations = [t for t in author.reflexive('mhs:translator') if unicode(t.uri).
 <div class="metabox-container">
     <div class="author-meta metabox">
         <h4>Author details</h4>
+        <p class="homepage" py:if="'foaf:workInfoHomepage' in author"><a href="${author.getone('foaf:workInfoHomepage', as_uriref=True).uri}">Institutional homepage</a></p>
         <p class="affiliation" py:if="'mhs:isAffiliatedWith' in author">Affiliated with <a href="${author['mhs:isAffiliatedWith'].uri}">${author['mhs:isAffiliatedWith']['foaf:name']}</a></p>
         <p class="metadata-links">Metadata:
             ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
