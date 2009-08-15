@@ -66,13 +66,6 @@ class Citation(object):
         else:
             return elem
 
-    def add_to_graph(self, graph):
-        self_uri = rdfob.Uri('%s#citation-%d' % (self.article_uri, self.number))
-        graph.append(RDF.Statement(self_uri, rdfob.RDF_TYPE, rdfob.uriref('mhs:Citation')))
-        graph.append(RDF.Statement(self_uri, rdfob.uriref('dc:isPartOf'), rdfob.Uri(self.article_uri)))
-        for cites in self.cites_urirefs():
-            graph.append(RDF.Statement(self_uri, rdfob.uriref('mhs:cites'), rdfob.Uri(cites.decode('utf8'))))
-
     def cites_urirefs(self):
         return [urlparse.urljoin('http://miskinhill.com.au/cited/', cites.encode('utf8'))
                 for cites in self.cites]
