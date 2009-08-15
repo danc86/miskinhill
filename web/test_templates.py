@@ -166,7 +166,7 @@ ${articleinfo(node)}
         issue = Node(blank='issue')
         graph._g.append(Statement(issue, rdfob.RDF_TYPE, rdfob.uriref('mhs:Issue')))
         graph._g.append(Statement(issue, rdfob.uriref('mhs:isIssueOf'), journal))
-        graph._g.append(Statement(issue, rdfob.uriref('mhs:volume'), Node(1)))
+        graph._g.append(Statement(issue, rdfob.uriref('mhs:volume'), Node('1', datatype=rdfob.uriref('xs:integer').uri)))
         graph._g.append(Statement(issue, rdfob.uriref('mhs:coverThumbnail'), Uri('http://example.com/thumb.gif')))
         article = Node(blank='article')
         graph._g.append(Statement(article, rdfob.RDF_TYPE, rdfob.uriref('mhs:Article')))

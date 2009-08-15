@@ -46,7 +46,7 @@ ${breadcrumbs([('/rdfschema/1.0/', 'RDF Schema')])}
             <th>Subclass of</th>
             <td>
                 <py:for each="superclass in superclasses">
-                    <a href="${superclass}"><code>${superclass}</code></a><br />
+                    <a href="${superclass.uri}"><code>${superclass.uri}</code></a><br />
                 </py:for>
             </td>
         </tr>

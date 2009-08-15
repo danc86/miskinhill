@@ -46,7 +46,7 @@ ${breadcrumbs([('/rdfschema/1.0/', 'RDF Schema')])}
             <th>Sub-property of</th>
             <td>
                 <py:for each="superproperty in superproperties">
-                    <a href="${superproperty}"><code>${superproperty}</code></a><br />
+                    <a href="${superproperty.uri}"><code>${superproperty.uri}</code></a><br />
                 </py:for>
             </td>
         </tr>

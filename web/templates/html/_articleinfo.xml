@@ -15,14 +15,14 @@ issn = journal.identifier('urn:issn:')
 
 <py:choose>
     <py:when test="issue.getone('mhs:coverThumbnail', as_uriref=True, default=None)">
-        <p class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True)}" alt="" /></p>
+        <p class="cover"><img src="${issue.getone('mhs:coverThumbnail', as_uriref=True).uri}" alt="" /></p>
     </py:when>
 </py:choose>
 
 <div class="beside">
     <p class="main" py:with="title = article.getone('dc:title', None); authors = article.getall('dc:creator')">
         <py:if test="title">
-            ‘<a py:strip="not article.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${article.getone('mhs:availableFrom', as_uriref=True)}">${title}</a>’<br />
+            ‘<a py:strip="not article.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${article.getone('mhs:availableFrom', as_uriref=True).uri}">${title}</a>’<br />
             <py:if test="authors">by ${Markup(', ').join(viewutils.linked_author(a) for a in authors)}</py:if>
         </py:if>
     </p>
@@ -31,8 +31,8 @@ issn = journal.identifier('urn:issn:')
                               issue_number = issue.getone('mhs:issueNumber', default=None);
                               coverage = issue.getone('dc:coverage', default=None)">
         Published in
-        <a py:strip="not journal.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${journal.getone('mhs:availableFrom', as_uriref=True)}"><em>${journal['dc:title']}</em></a>
-        <a py:strip="not issue.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${issue.getone('mhs:availableFrom', as_uriref=True)}"><py:if test="volume">Vol.&nbsp;${volume}</py:if><py:if test="volume and issue_number">, </py:if><py:if test="issue_number">Issue&nbsp;${issue_number}</py:if>
+        <a py:strip="not journal.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${journal.getone('mhs:availableFrom', as_uriref=True).uri}"><em>${journal['dc:title']}</em></a>
+        <a py:strip="not issue.getone('mhs:availableFrom', default=None, as_uriref=True)" href="${issue.getone('mhs:availableFrom', as_uriref=True).uri}"><py:if test="volume">Vol.&nbsp;${volume}</py:if><py:if test="volume and issue_number">, </py:if><py:if test="issue_number">Issue&nbsp;${issue_number}</py:if>
         <py:if test="coverage">(${coverage})</py:if></a>
         <br />
         <py:if test="issn">ISSN ${issn}</py:if>
