@@ -8,11 +8,12 @@
 
 <?python
 import representations
+from viewutils import striptags
 book = node
 ?>
 
 <head>
-    <title>${Markup(book['dc:title']).striptags()}</title>
+    <title>${striptags(book['dc:title'])}</title>
     <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
         ${r(req, node).link()}
     </py:for>

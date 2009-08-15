@@ -4,12 +4,13 @@
 
 <?python
 from representations import MODSRepresentation
+from viewutils import striptags
 ?>
 
 <mods py:with="article = node; issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
     <titleInfo>
         <!-- XXX nonSort -->
-        <title>${Markup(article['dc:title']).striptags()}</title>
+        <title>${striptags(article['dc:title'])}</title>
         <!-- XXX subtitle -->
     </titleInfo>
     <location>

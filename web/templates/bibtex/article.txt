@@ -1,6 +1,6 @@
 {% python
 import re
-from viewutils import name_or_literal
+from viewutils import name_or_literal, striptags
 %}\
 {% with article = node; authors = article.getall('dc:creator'); issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
 @article{${re.sub(r'\W', '', authors[0]['foaf:surname'])}{% if 'dc:coverage' in issue %}${issue['dc:coverage'][-4:]}{% end %}, 
@@ -21,7 +21,7 @@ from viewutils import name_or_literal
     year = "${issue['dc:coverage'][-4:]}", 
 {% end %}\
     author = "${' and '.join(a['foaf:name'] for a in authors)}", 
-    title = "${re.sub(r'(.)([A-Z]+)', r'\1{\2}', Markup(article['dc:title']).striptags())}", 
+    title = "${re.sub(r'(.)([A-Z]+)', r'\1{\2}', striptags(article['dc:title']))}", 
 {% if 'mhs:startPage' in article and 'mhs:endPage' in article %}\
     pages = "${article['mhs:startPage']}–${article['mhs:endPage']}", 
 {% end %}\

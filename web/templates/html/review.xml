@@ -7,7 +7,7 @@
 <xi:include href="_bookinfo.xml" />
 
 <?python
-from viewutils import parsed_content
+from viewutils import parsed_content, striptags
 import representations
 review = node
 book = review['mhs:reviews']
@@ -16,7 +16,7 @@ journal = issue['mhs:isIssueOf']
 ?>
 
 <head>
-    <title>Review of ${Markup(book['dc:title']).striptags()} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
+    <title>Review of ${striptags(book['dc:title'])} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
     <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
         ${r(req, node).link()}
     </py:for>

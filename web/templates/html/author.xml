@@ -7,6 +7,7 @@
 
 <?python
 import representations
+from viewutils import striptags
 import rdfob
 author = node
 articles = [a for a in author.reflexive('dc:creator', type='mhs:Article') if unicode(a.uri).startswith('http://miskinhill.com.au/journals/')]
@@ -104,7 +105,7 @@ cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if
     <h4>Books</h4>
     <ul class="books">
         <li py:for="book in cited_books">
-            <div class="book"><a href="${book.uri}">${Markup(book['dc:title']).striptags()}</a></div>
+            <div class="book"><a href="${book.uri}">${striptags(book['dc:title'])}</a></div>
         </li>
     </ul>
 </py:if>
@@ -133,7 +134,7 @@ cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if
                     </py:with>
                 </py:when>
                 <py:when test="rdfob.uriref('mhs:Book') in translation.types">
-                    <div class="book"><a href="${translation.uri}">${', '.join(c['foaf:name'] for c in translation.getall('dc:creator'))}, <em>${Markup(translation['dc:title']).striptags()}</em></a></div>
+                    <div class="book"><a href="${translation.uri}">${', '.join(c['foaf:name'] for c in translation.getall('dc:creator'))}, <em>${striptags(translation['dc:title'])}</em></a></div>
                 </py:when>
                 <py:otherwise>
                     <?python

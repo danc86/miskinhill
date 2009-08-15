@@ -1,7 +1,7 @@
 
 import datetime
 import pytz
-from genshi import XML, Markup
+from genshi import XML, Markup, Stream
 import lxml.html
 from lxml.html import builder as E
 
@@ -37,3 +37,9 @@ def name_or_literal(node):
 
 def datetime_from_date(date):
     return datetime.datetime.combine(date, datetime.time(tzinfo=pytz.utc))
+
+def striptags(x):
+    if isinstance(x, (Stream, Markup)):
+        return Markup(x).striptags()
+    else:
+        return x

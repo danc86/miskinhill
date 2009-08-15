@@ -10,20 +10,16 @@
 import urllib
 from genshi import Stream
 import rdfob
-from viewutils import linked_author, name_or_literal
+from viewutils import linked_author, name_or_literal, striptags
 isbn = book.identifier('urn:isbn:')
 asin = book.identifier('urn:asin:')
 gbooksid = book.identifier('http://books.google.com/books?id=')
 oclcnum = book.identifier('info:oclcnum/')
 
 links = []
-title = book['dc:title']
-if isinstance(title, Stream):
-    title = Markup(title).striptags()
+title = striptags(book['dc:title'])
 title_node = book.getone('dc:title', as_uriref=True)
-responsibility = book.getone('mhs:responsibility', default=None)
-if isinstance(responsibility, Stream):
-    responsibility = Markup(responsibility).striptags()
+responsibility = striptags(book.getone('mhs:responsibility', default=None))
 if asin:
     if asin.startswith('2'):
         domain = 'fr'

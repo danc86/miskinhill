@@ -6,7 +6,7 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
-from viewutils import parsed_content
+from viewutils import parsed_content, striptags
 import representations
 obituary = node
 issue = obituary['dc:isPartOf']
@@ -14,7 +14,7 @@ journal = issue['mhs:isIssueOf']
 ?>
 
 <head>
-    <title>${Markup(obituary['dc:title']).striptags()} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
+    <title>${striptags(obituary['dc:title'])} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
     <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
         ${r(req, node).link()}
     </py:for>
