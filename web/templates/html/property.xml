@@ -39,7 +39,7 @@ ${breadcrumbs([('/rdfschema/1.0/', 'RDF Schema')])}
         <tr><th>URI</th><td><code>${property.uri}</code></td></tr>
         <tr><th>Type</th><td>
             <py:for each="type in property.types">
-                <a href="${type}"><code>${type}</code></a><br />
+                <a href="${type.uri}"><code>${type.uri}</code></a><br />
             </py:for>
         </td></tr>
         <tr py:if="superproperties">
@@ -52,11 +52,11 @@ ${breadcrumbs([('/rdfschema/1.0/', 'RDF Schema')])}
         </tr>
         <tr py:if="'rdfs:domain' in property">
             <th>Domain</th>
-            <td><a href="${property.getone('rdfs:domain', as_uriref=True)}"><code>${property.getone('rdfs:domain', as_uriref=True)}</code></a></td>
+            <td><a href="${property.getone('rdfs:domain', as_uriref=True).uri}"><code>${property.getone('rdfs:domain', as_uriref=True).uri}</code></a></td>
         </tr>
         <tr py:if="'rdfs:range' in property">
             <th>Range</th>
-            <td><a href="${property.getone('rdfs:range', as_uriref=True)}"><code>${property.getone('rdfs:range', as_uriref=True)}</code></a></td>
+            <td><a href="${property.getone('rdfs:range', as_uriref=True).uri}"><code>${property.getone('rdfs:range', as_uriref=True).uri}</code></a></td>
         </tr>
         <tr><th>Description</th><td>${property['dc:description']}</td></tr>
     </tbody>

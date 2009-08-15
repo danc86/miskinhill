@@ -39,7 +39,7 @@ ${breadcrumbs([('/rdfschema/1.0/', 'RDF Schema')])}
         <tr><th>URI</th><td><code>${cls.uri}</code></td></tr>
         <tr><th>Type</th><td>
             <py:for each="type in cls.types">
-                <a href="${type}"><code>${type}</code></a><br />
+                <a href="${type.uri}"><code>${type.uri}</code></a><br />
             </py:for>
         </td></tr>
         <tr py:if="superclasses">

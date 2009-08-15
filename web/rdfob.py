@@ -159,7 +159,7 @@ class GraphNode(object):
     def getall(self, predicate, as_uriref=False):
         predicate = uriref(predicate)
         if as_uriref:
-            return self._objects[predicate]
+            return self._objects.get(predicate, [])
         else:
             return [self._node_or_literal(x) for x in self._objects.get(predicate, [])]
 
