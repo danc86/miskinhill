@@ -16,6 +16,7 @@ RDFS_NS = RDF.NS('http://www.w3.org/2000/01/rdf-schema#')
 OWL_NS = RDF.NS('http://www.w3.org/2002/07/owl#')
 DCTERMS_NS = RDF.NS('http://purl.org/dc/terms/')
 PRISM_NS = RDF.NS('http://prismstandard.org/namespaces/1.2/basic/')
+FOAF_NS = RDF.NS('http://xmlns.com/foaf/0.1/')
 MHS_NS = RDF.NS('http://miskinhill.com.au/rdfschema/1.0/')
 
 def load():
@@ -80,7 +81,7 @@ def infer(g):
     print >>sys.stderr, '%d triples' % len(g)
 
 RANGE_PROPERTY_EXCEPTIONS = frozenset([DCTERMS_NS.publisher, DCTERMS_NS.identifier, DCTERMS_NS.coverage, PRISM_NS.publicationDate])
-RANGE_OBJECT_EXCEPTIONS = frozenset([RDF.Node(uri_string='http://www.w3.org/TR/2000/CR-rdf-schema-20000327#Literal')])
+RANGE_OBJECT_EXCEPTIONS = frozenset([RDF.Node(uri_string='http://www.w3.org/TR/2000/CR-rdf-schema-20000327#Literal'), FOAF_NS.Document])
 
 def validate(g):
     print >>sys.stderr, 'Validating domains/ranges ...',

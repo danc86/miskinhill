@@ -13,6 +13,9 @@ articles = [a for a in author.reflexive('dc:creator', type='mhs:Article') if uni
 reviews = [r for r in author.reflexive('dc:creator', type='mhs:Review') if unicode(r.uri).startswith('http://miskinhill.com.au/journals/')]
 obituaries = [r for r in author.reflexive('dc:creator', type='mhs:Obituary') if unicode(r.uri).startswith('http://miskinhill.com.au/journals/')]
 translations = [t for t in author.reflexive('mhs:translator') if unicode(t.uri).startswith('http://miskinhill.com.au/journals/')]
+cited_articles = [a for a in author.reflexive('dc:creator', type='mhs:Article') if unicode(a.uri).startswith('http://miskinhill.com.au/cited/')]
+cited_translations = [t for t in author.reflexive('mhs:translator') if unicode(t.uri).startswith('http://miskinhill.com.au/cited/')]
+cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if unicode(b.uri).startswith('http://miskinhill.com.au/cited/') and b not in cited_translations]
 ?>
 
 <head>
@@ -40,8 +43,10 @@ translations = [t for t in author.reflexive('mhs:translator') if unicode(t.uri).
 
 <p py:if="'mhs:biographicalNotes' in author">${author['mhs:biographicalNotes']}</p>
 
+<h3 py:if="articles or reviews or obituaries or translations">Works published on this site</h3>
+
 <py:if test="articles">
-    <h3>Articles</h3>
+    <h4>Articles</h4>
     <ul class="articles">
         <li py:for="article in sorted(articles, key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
             py:with="issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
@@ -52,7 +57,7 @@ translations = [t for t in author.reflexive('mhs:translator') if unicode(t.uri).
 </py:if>
 
 <py:if test="reviews">
-    <h3>Reviews</h3>
+    <h4>Reviews</h4>
     <ul class="reviews">
         <li py:for="review in sorted(reviews, key=lambda r: (r['dc:isPartOf']['mhs:publicationDate'], r['mhs:startPage']), reverse=True)"
             py:with="book = review['mhs:reviews']; issue = review['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
@@ -63,7 +68,7 @@ translations = [t for t in author.reflexive('mhs:translator') if unicode(t.uri).
 </py:if>
 
 <py:if test="obituaries">
-    <h3>Obituaries</h3>
+    <h4>Obituaries</h4>
     <ul class="obituaries">
         <li py:for="obituary in sorted(obituaries, key=lambda r: (r['dc:isPartOf']['mhs:publicationDate'], r['mhs:startPage']), reverse=True)"
             py:with="issue = obituary['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
@@ -74,7 +79,7 @@ translations = [t for t in author.reflexive('mhs:translator') if unicode(t.uri).
 </py:if>
 
 <py:if test="translations">
-    <h3>Translations</h3>
+    <h4>Translations</h4>
     <ul class="translations">
         <li py:for="translation in sorted(translations, key=lambda t: t['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
             py:with="issue = translation['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
@@ -89,6 +94,53 @@ translations = [t for t in author.reflexive('mhs:translator') if unicode(t.uri).
                 </py:when>
             </py:choose>
             <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
+        </li>
+    </ul>
+</py:if>
+
+<h3 py:if="cited_articles or cited_books or cited_translations">Cited works</h3>
+
+<py:if test="cited_books">
+    <h4>Books</h4>
+    <ul class="books">
+        <li py:for="book in cited_books">
+            <div class="book"><a href="${book.uri}">${Markup(book['dc:title']).striptags()}</a></div>
+        </li>
+    </ul>
+</py:if>
+
+<py:if test="cited_articles">
+    <h4>Articles</h4>
+    <ul class="articles">
+        <li py:for="article in cited_articles"
+            py:with="issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+            <div class="article"><a href="${article.uri}">${article['dc:title']}</a></div>
+            <div class="issue">in <em>${journal['dc:title']}</em></div>
+        </li>
+    </ul>
+</py:if>
+
+<py:if test="cited_translations">
+    <h4>Translations</h4>
+    <ul class="translations">
+        <li py:for="translation in cited_translations">
+            <py:choose>
+                <py:when test="rdfob.uriref('mhs:Article') in translation.types">
+                    <py:with vars="issue = translation['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+                        <div class="article"><a href="${translation.uri}">${translation['dc:title']}</a></div>
+                        <div class="author">by <a href="${translation['dc:creator'].uri}">${translation['dc:creator']['foaf:name']}</a></div>
+                        <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em></a></div>
+                    </py:with>
+                </py:when>
+                <py:when test="rdfob.uriref('mhs:Book') in translation.types">
+                    <div class="book"><a href="${translation.uri}">${', '.join(c['foaf:name'] for c in translation.getall('dc:creator'))}, <em>${Markup(translation['dc:title']).striptags()}</em></a></div>
+                </py:when>
+                <py:otherwise>
+                    <?python
+                    assert False
+                    ?>
+                </py:otherwise>
+            </py:choose>
         </li>
     </ul>
 </py:if>
