@@ -41,7 +41,7 @@ class HasClassTest(unittest.TestCase):
 class CitationFromElemTest(unittest.TestCase):
 
     def test_book(self):
-        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
+        citation = citations.Citation.from_elem(x(u'''
                 <span class="citation book"><span class="au">Charles Vinicombe Penrose</span>, 
                 <em class="btitle">A Memoir of James Trevenen</em>, edited by 
                 <span class="au">Christopher Lloyd</span> and 
@@ -59,7 +59,7 @@ class CitationFromElemTest(unittest.TestCase):
         self.assertEquals(['91'], citation.epage)
 
     def test_bookitem(self):
-        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
+        citation = citations.Citation.from_elem(x(u'''
                 <span class="citation bookitem"><span class="au" title="Lydia 
                 Black">Black</span><span class="atitle" title="“The Russians were 
                 Coming…”" /><span class="au" title="Robin Inglis" /><span class="btitle" 
@@ -79,7 +79,7 @@ class CitationFromElemTest(unittest.TestCase):
         self.assertEquals(['29'], citation.epage) # sic
 
     def test_thesis(self):
-        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
+        citation = citations.Citation.from_elem(x(u'''
                 <span class="citation thesis"><span class="au">Anthony H. 
                 Hull</span>, <em class="btitle">Spanish and Russian Rivalry 
                 in the North Pacific Regions of the New World</em>, University of 
@@ -94,7 +94,7 @@ class CitationFromElemTest(unittest.TestCase):
         self.assertEquals(['113'], citation.epage)
 
     def test_proceeding(self):
-        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
+        citation = citations.Citation.from_elem(x(u'''
                 <span class="citation proceeding"><span class="au">Valery O. 
                 Shubin</span>, ‘<span class="atitle">Russian Settlements in the 
                 Kuril Islands in the 18th and 19th centuries</span>’, 
@@ -118,7 +118,7 @@ class CitationFromElemTest(unittest.TestCase):
         self.assertEquals(['450'], citation.epage)
 
     def test_article(self):
-        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
+        citation = citations.Citation.from_elem(x(u'''
                 <span class="citation article"><span class="au" lang="ru">Ал.&nbsp;П. 
                 Соколов</span>, «<span class="atitle" lang="ru">Приготовление 
                 кругосветной экспедиции 1787 года, под начальством Муловского</span>», 
@@ -142,7 +142,7 @@ class CitationFromElemTest(unittest.TestCase):
 class CitationCoinsTest(unittest.TestCase):
 
     def test_book(self):
-        citation = citations.Citation('http://example.com/article', 1)
+        citation = citations.Citation()
         citation.genre = 'book'
         citation.au = ['Charles Vinicombe Penrose', 'Christopher Lloyd', 'R. C. Anderson']
         citation.btitle = ['A Memoir of James Trevenen']
@@ -168,7 +168,7 @@ class CitationCoinsTest(unittest.TestCase):
                 cgi.parse_qs(coins.get('title')))
 
     def test_bookitem(self):
-        citation = citations.Citation('http://example.com/article', 1)
+        citation = citations.Citation()
         citation.genre = 'bookitem'
         citation.au = ['Lydia Black', 'Robin Inglis']
         citation.atitle = [u'“The Russians were Coming…”']
@@ -196,7 +196,7 @@ class CitationCoinsTest(unittest.TestCase):
                 cgi.parse_qs(coins.get('title')))
 
     def test_thesis(self):
-        citation = citations.Citation('http://example.com/article', 1)
+        citation = citations.Citation()
         citation.genre = 'thesis'
         citation.au = ['Anthony H. Hull']
         citation.btitle = ['Spanish and Russian Rivalry in the North Pacific '
@@ -218,7 +218,7 @@ class CitationCoinsTest(unittest.TestCase):
                 cgi.parse_qs(coins.get('title')))
 
     def test_proceeding(self):
-        citation = citations.Citation('http://example.com/article', 1)
+        citation = citations.Citation()
         citation.genre = 'proceeding'
         citation.au = ['Valery O. Shubin']
         citation.atitle = ['Russian Settlements in the Kuril Islands in the '
@@ -250,7 +250,7 @@ class CitationCoinsTest(unittest.TestCase):
                 cgi.parse_qs(coins.get('title')))
 
     def test_article(self):
-        citation = citations.Citation('http://example.com/article', 1)
+        citation = citations.Citation()
         citation.genre = 'article'
         citation.au = [u'Ал. П. Соколов']
         citation.atitle = [(u'Приготовление кругосветной экспедиции '
@@ -278,6 +278,87 @@ class CitationCoinsTest(unittest.TestCase):
                 'rft.spage': ['142'], 
                 'rft.epage': ['191']}, 
                 cgi.parse_qs(coins.get('title')))
+
+class CitationAddToGraphTest(unittest.TestCase):
+
+    def setUp(self):
+        self.graph = rdfob.Graph()
+
+    def test_doesnt_add_to_graph_when_already_exists(self):
+        citation = citations.Citation()
+        citation.genre = 'book'
+        citation.btitle = 'Book'
+        class MockFullGraph(object):
+            def __contains__(_, x): return True
+            def add(_, x): self.fail()
+        citation.add_to_graph(MockFullGraph(), u'http://miskinhill.com.au/journals/test/1:1/article')
+
+    def test_book(self):
+        citation = citations.Citation.from_elem(x(u'''
+                <span class="citation book"><span class="au">Charles Vinicombe Penrose</span>, 
+                <em class="btitle">A Memoir of James Trevenen</em>, edited by 
+                <span class="au">Christopher Lloyd</span> and 
+                <span class="au">R.&nbsp;C. Anderson</span>, (<span class="place">London</span>: 
+                <span class="pub">Navy Records Society</span>, <span class="date">1959</span>), 
+                <span class="spage">90</span>–<span class="epage">91</span>
+                <span class="cites" title="books/penrose-1959" /></span>
+                '''))
+        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation_node, = self.graph.by_type('mhs:Citation')
+        self.assertEquals(u'http://private.miskinhill.com.au/cited/books/penrose-1959', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
+
+    def test_bookitem(self):
+        citation = citations.Citation.from_elem(x(u'''
+                <span class="citation bookitem"><span class="au" title="Lydia 
+                Black">Black</span><span class="atitle" title="“The Russians were 
+                Coming…”" /><span class="au" title="Robin Inglis" /><span class="btitle" 
+                title="Spain and the North Pacific Coast" /><span class="place" 
+                title="Vancouver" /><span class="pub" title="Maritime Museum Society" 
+                /><span class="date" title="1992" />, 
+                <span class="spage">31</span>–<span class="epage">29</span>
+                <span class="cites" title="books/inglis-1992" /></span>
+                '''))
+        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation_node, = self.graph.by_type('mhs:Citation')
+        self.assertEquals(u'http://private.miskinhill.com.au/cited/books/inglis-1992', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
+
+    def test_proceeding(self):
+        citation = citations.Citation.from_elem(x(u'''
+                <span class="citation proceeding"><span class="au">Valery O. 
+                Shubin</span>, ‘<span class="atitle">Russian Settlements in the 
+                Kuril Islands in the 18th and 19th centuries</span>’, 
+                <em class="btitle">Russia in North America: Proceedings of 
+                the 2nd International Conference on Russian America</em> 
+                (<span class="place">Kingston and Fairbanks</span>: 
+                <span class="pub">Limestone Press</span>, 
+                <span class="date">1990</span>), 
+                <span class="spage">425</span>–<span class="epage">450</span>
+                <span class="cites" title="proceedings/russian-america-1990" /></span>
+                '''))
+        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation_node, = self.graph.by_type('mhs:Citation')
+        self.assertEquals(u'http://private.miskinhill.com.au/cited/proceedings/russian-america-1990', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
+
+    def test_article(self):
+        citation = citations.Citation.from_elem(x(u'''
+                <span class="citation article"><span class="au" lang="ru">Ал.&nbsp;П. 
+                Соколов</span>, «<span class="atitle" lang="ru">Приготовление 
+                кругосветной экспедиции 1787 года, под начальством Муловского</span>», 
+                <em class="jtitle" lang="ru">Записки Гидрографического Департамента 
+                Морского Министерства</em>, 
+                <span lang="ru">часть&nbsp;<span class="volume" title="6">VI</span></span>, 
+                <span class="date">1848</span>&nbsp;г., 
+                <span class="spage">142</span>–<span class="epage">191</span><span class="cites"
+                title="journals/гидро-департамента-морского-министерства/vi/приготовление" /></span>
+                '''))
+        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation_node, = self.graph.by_type('mhs:Citation')
+        self.assertEquals(u'http://private.miskinhill.com.au/cited/'
+                u'journals/гидро-департамента-морского-министерства/vi/приготовление', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
 
 if __name__ == '__main__':
     unittest.main()
