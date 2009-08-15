@@ -284,17 +284,8 @@ class CitationAddToGraphTest(unittest.TestCase):
     def setUp(self):
         self.graph = rdfob.Graph()
 
-    def test_doesnt_add_to_graph_when_already_exists(self):
-        citation = citations.Citation()
-        citation.genre = 'book'
-        citation.btitle = 'Book'
-        class MockFullGraph(object):
-            def __contains__(_, x): return True
-            def add(_, x): self.fail()
-        citation.add_to_graph(MockFullGraph(), u'http://miskinhill.com.au/journals/test/1:1/article')
-
     def test_book(self):
-        citation = citations.Citation.from_elem(x(u'''
+        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
                 <span class="citation book"><span class="au">Charles Vinicombe Penrose</span>, 
                 <em class="btitle">A Memoir of James Trevenen</em>, edited by 
                 <span class="au">Christopher Lloyd</span> and 
@@ -303,13 +294,13 @@ class CitationAddToGraphTest(unittest.TestCase):
                 <span class="spage">90</span>–<span class="epage">91</span>
                 <span class="cites" title="books/penrose-1959" /></span>
                 '''))
-        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation.add_to_graph(self.graph._g)
         citation_node, = self.graph.by_type('mhs:Citation')
-        self.assertEquals(u'http://private.miskinhill.com.au/cited/books/penrose-1959', 
-                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
+        self.assertEquals(u'http://miskinhill.com.au/cited/books/penrose-1959', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True).uri))
 
     def test_bookitem(self):
-        citation = citations.Citation.from_elem(x(u'''
+        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
                 <span class="citation bookitem"><span class="au" title="Lydia 
                 Black">Black</span><span class="atitle" title="“The Russians were 
                 Coming…”" /><span class="au" title="Robin Inglis" /><span class="btitle" 
@@ -319,13 +310,13 @@ class CitationAddToGraphTest(unittest.TestCase):
                 <span class="spage">31</span>–<span class="epage">29</span>
                 <span class="cites" title="books/inglis-1992" /></span>
                 '''))
-        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation.add_to_graph(self.graph._g)
         citation_node, = self.graph.by_type('mhs:Citation')
-        self.assertEquals(u'http://private.miskinhill.com.au/cited/books/inglis-1992', 
-                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
+        self.assertEquals(u'http://miskinhill.com.au/cited/books/inglis-1992', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True).uri))
 
     def test_proceeding(self):
-        citation = citations.Citation.from_elem(x(u'''
+        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
                 <span class="citation proceeding"><span class="au">Valery O. 
                 Shubin</span>, ‘<span class="atitle">Russian Settlements in the 
                 Kuril Islands in the 18th and 19th centuries</span>’, 
@@ -337,13 +328,13 @@ class CitationAddToGraphTest(unittest.TestCase):
                 <span class="spage">425</span>–<span class="epage">450</span>
                 <span class="cites" title="proceedings/russian-america-1990" /></span>
                 '''))
-        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation.add_to_graph(self.graph._g)
         citation_node, = self.graph.by_type('mhs:Citation')
-        self.assertEquals(u'http://private.miskinhill.com.au/cited/proceedings/russian-america-1990', 
-                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
+        self.assertEquals(u'http://miskinhill.com.au/cited/proceedings/russian-america-1990', 
+                unicode(citation_node.getone('mhs:cites', as_uriref=True).uri))
 
     def test_article(self):
-        citation = citations.Citation.from_elem(x(u'''
+        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
                 <span class="citation article"><span class="au" lang="ru">Ал.&nbsp;П. 
                 Соколов</span>, «<span class="atitle" lang="ru">Приготовление 
                 кругосветной экспедиции 1787 года, под начальством Муловского</span>», 
@@ -354,11 +345,11 @@ class CitationAddToGraphTest(unittest.TestCase):
                 <span class="spage">142</span>–<span class="epage">191</span><span class="cites"
                 title="journals/гидро-департамента-морского-министерства/vi/приготовление" /></span>
                 '''))
-        citation.add_to_graph(self.graph._g, u'http://miskinhill.com.au/journals/test/1:1/article')
+        citation.add_to_graph(self.graph._g)
         citation_node, = self.graph.by_type('mhs:Citation')
-        self.assertEquals(u'http://private.miskinhill.com.au/cited/'
+        self.assertEquals(u'http://miskinhill.com.au/cited/'
                 u'journals/гидро-департамента-морского-министерства/vi/приготовление', 
-                unicode(citation_node.getone('mhs:cites', as_uriref=True)))
+                unicode(citation_node.getone('mhs:cites', as_uriref=True).uri))
 
 if __name__ == '__main__':
     unittest.main()
