@@ -7,11 +7,15 @@
 <xi:include href="_bookinfo.xml" />
 
 <?python
+import representations
 book = node
 ?>
 
 <head>
     <title>${Markup(book['dc:title']).striptags()}</title>
+    <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
+        ${r(req, node).link()}
+    </py:for>
     <link rel="stylesheet" type="text/css" href="/style/cited.css" />
 </head>
 
