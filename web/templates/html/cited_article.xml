@@ -7,6 +7,7 @@
 <xi:include href="_articleinfo.xml" />
 
 <?python
+import representations
 article = node
 issue = article['dc:isPartOf']
 journal = issue['mhs:isIssueOf']
@@ -14,6 +15,9 @@ journal = issue['mhs:isIssueOf']
 
 <head>
     <title>${Markup(article['dc:title']).striptags()} - ${journal['dc:title']}</title>
+    <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
+        ${r(req, node).link()}
+    </py:for>
     <link rel="stylesheet" type="text/css" href="/style/cited.css" />
 </head>
 
