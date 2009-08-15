@@ -41,7 +41,7 @@ class HasClassTest(unittest.TestCase):
 class CitationFromElemTest(unittest.TestCase):
 
     def test_book(self):
-        citation = citations.Citation.from_elem(x(u'''
+        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
                 <span class="citation book"><span class="au">Charles Vinicombe Penrose</span>, 
                 <em class="btitle">A Memoir of James Trevenen</em>, edited by 
                 <span class="au">Christopher Lloyd</span> and 
@@ -59,7 +59,7 @@ class CitationFromElemTest(unittest.TestCase):
         self.assertEquals(['91'], citation.epage)
 
     def test_bookitem(self):
-        citation = citations.Citation.from_elem(x(u'''
+        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
                 <span class="citation bookitem"><span class="au" title="Lydia 
                 Black">Black</span><span class="atitle" title="“The Russians were 
                 Coming…”" /><span class="au" title="Robin Inglis" /><span class="btitle" 
@@ -79,7 +79,7 @@ class CitationFromElemTest(unittest.TestCase):
         self.assertEquals(['29'], citation.epage) # sic
 
     def test_thesis(self):
-        citation = citations.Citation.from_elem(x(u'''
+        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
                 <span class="citation thesis"><span class="au">Anthony H. 
                 Hull</span>, <em class="btitle">Spanish and Russian Rivalry 
                 in the North Pacific Regions of the New World</em>, University of 
@@ -94,7 +94,7 @@ class CitationFromElemTest(unittest.TestCase):
         self.assertEquals(['113'], citation.epage)
 
     def test_proceeding(self):
-        citation = citations.Citation.from_elem(x(u'''
+        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
                 <span class="citation proceeding"><span class="au">Valery O. 
                 Shubin</span>, ‘<span class="atitle">Russian Settlements in the 
                 Kuril Islands in the 18th and 19th centuries</span>’, 
@@ -118,7 +118,7 @@ class CitationFromElemTest(unittest.TestCase):
         self.assertEquals(['450'], citation.epage)
 
     def test_article(self):
-        citation = citations.Citation.from_elem(x(u'''
+        citation = citations.Citation.from_elem('http://example.com/article', 1, x(u'''
                 <span class="citation article"><span class="au" lang="ru">Ал.&nbsp;П. 
                 Соколов</span>, «<span class="atitle" lang="ru">Приготовление 
                 кругосветной экспедиции 1787 года, под начальством Муловского</span>», 
@@ -142,7 +142,7 @@ class CitationFromElemTest(unittest.TestCase):
 class CitationCoinsTest(unittest.TestCase):
 
     def test_book(self):
-        citation = citations.Citation()
+        citation = citations.Citation('http://example.com/article', 1)
         citation.genre = 'book'
         citation.au = ['Charles Vinicombe Penrose', 'Christopher Lloyd', 'R. C. Anderson']
         citation.btitle = ['A Memoir of James Trevenen']
@@ -168,7 +168,7 @@ class CitationCoinsTest(unittest.TestCase):
                 cgi.parse_qs(coins.get('title')))
 
     def test_bookitem(self):
-        citation = citations.Citation()
+        citation = citations.Citation('http://example.com/article', 1)
         citation.genre = 'bookitem'
         citation.au = ['Lydia Black', 'Robin Inglis']
         citation.atitle = [u'“The Russians were Coming…”']
@@ -196,7 +196,7 @@ class CitationCoinsTest(unittest.TestCase):
                 cgi.parse_qs(coins.get('title')))
 
     def test_thesis(self):
-        citation = citations.Citation()
+        citation = citations.Citation('http://example.com/article', 1)
         citation.genre = 'thesis'
         citation.au = ['Anthony H. Hull']
         citation.btitle = ['Spanish and Russian Rivalry in the North Pacific '
@@ -218,7 +218,7 @@ class CitationCoinsTest(unittest.TestCase):
                 cgi.parse_qs(coins.get('title')))
 
     def test_proceeding(self):
-        citation = citations.Citation()
+        citation = citations.Citation('http://example.com/article', 1)
         citation.genre = 'proceeding'
         citation.au = ['Valery O. Shubin']
         citation.atitle = ['Russian Settlements in the Kuril Islands in the '
@@ -250,7 +250,7 @@ class CitationCoinsTest(unittest.TestCase):
                 cgi.parse_qs(coins.get('title')))
 
     def test_article(self):
-        citation = citations.Citation()
+        citation = citations.Citation('http://example.com/article', 1)
         citation.genre = 'article'
         citation.au = [u'Ал. П. Соколов']
         citation.atitle = [(u'Приготовление кругосветной экспедиции '
