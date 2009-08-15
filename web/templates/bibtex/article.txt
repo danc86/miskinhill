@@ -1,9 +1,18 @@
 {% python
 import re
 from viewutils import name_or_literal, striptags
+
+article = node
+authors = article.getall('dc:creator')
+issue = article['dc:isPartOf']
+journal = issue['mhs:isIssueOf']
+
+if authors:
+    id = re.sub(r'\W', '', authors[0]['foaf:surname']) + issue.getone('dc:coverage', default='')[-4:]
+else:
+    id = re.sub(r'\W', '', article['dc:title'][:32]) + issue.getone('dc:coverage', default='')[-4:]
 %}\
-{% with article = node; authors = article.getall('dc:creator'); issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf'] %}\
-@article{${re.sub(r'\W', '', authors[0]['foaf:surname'])}{% if 'dc:coverage' in issue %}${issue['dc:coverage'][-4:]}{% end %}, 
+@article{${id}, 
     journal = "${journal['dc:title']}", 
 {% if journal.identifier('urn:issn:') %}\
     issn = "${journal.identifier('urn:issn:')}", 
@@ -32,4 +41,3 @@ from viewutils import name_or_literal, striptags
     url = "${article.getone('mhs:availableFrom', as_uriref=True).uri}"
 {% end %}\
 }
-{% end %}
