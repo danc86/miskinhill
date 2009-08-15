@@ -51,7 +51,7 @@ cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if
         <li py:for="article in sorted(articles, key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
             py:with="issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
             <div class="article"><a href="${article.uri}">${article['dc:title']}</a></div>
-            <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
+            <div class="issue">in <em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</div>
         </li>
     </ul>
 </py:if>
@@ -62,7 +62,7 @@ cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if
         <li py:for="review in sorted(reviews, key=lambda r: (r['dc:isPartOf']['mhs:publicationDate'], r['mhs:startPage']), reverse=True)"
             py:with="book = review['mhs:reviews']; issue = review['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
             <div class="book"><a href="${review.uri}">${', '.join(c['foaf:name'] for c in book.getall('dc:creator'))}, <em>${book['dc:title']}</em> (${str(book['dc:date'])[:4]})</a></div>
-            <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
+            <div class="issue">in <em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</div>
         </li>
     </ul>
 </py:if>
@@ -73,7 +73,7 @@ cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if
         <li py:for="obituary in sorted(obituaries, key=lambda r: (r['dc:isPartOf']['mhs:publicationDate'], r['mhs:startPage']), reverse=True)"
             py:with="issue = obituary['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
             <div class="book"><a href="${obituary.uri}">${obituary['dc:title']}</a></div>
-            <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
+            <div class="issue">in <em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</div>
         </li>
     </ul>
 </py:if>
@@ -93,7 +93,7 @@ cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if
                     <div class="reviewed-by">Reviewed by <a href="${translation['dc:creator'].uri}">${translation['dc:creator']['foaf:name']}</a></div>
                 </py:when>
             </py:choose>
-            <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
+            <div class="issue">in <em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</div>
         </li>
     </ul>
 </py:if>
