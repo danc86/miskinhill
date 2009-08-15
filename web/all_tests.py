@@ -8,7 +8,7 @@ import xmlrunner
 import figleaf, figleaf2clover
 figleaf.start()
 
-import test_app, test_templates
+import test_app, test_templates, test_citations, test_representations, test_viewutils
 
 loader = unittest.TestLoader()
 suite = loader.loadTestsFromNames(['test_app', 'test_templates', 'test_citations', 'test_representations', 'test_viewutils'])
