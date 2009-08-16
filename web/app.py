@@ -86,7 +86,11 @@ class MiskinHillApplication(object):
         s = smtplib.SMTP('localhost', 25)
         s.sendmail('apache@miskinhill.com.au', ['info@miskinhill.com.au'], msg.as_string())
         s.quit()
-        raise exc.HTTPSeeOther(location='http://miskinhill.com.au/contact/')
+        res = exc.HTTPSeeOther(location='http://miskinhill.com.au/contact/')
+        res.set_cookie('miskinhill-notification',
+                urllib.quote('Your feedback has been submitted.', ''),
+                max_age=20, domain='miskinhill.com.au')
+        return res
 
     def journals_index(self):
         template = template_loader.load('journals_index.xml')

@@ -8,6 +8,8 @@
 <head>
     <title>Contact</title>
     <link rel="stylesheet" type="text/css" href="/style/contact.css" />
+    <script type="text/javascript" src="${req.script_name}/script/jquery-1.3.2.js" />
+    <script type="text/javascript" src="${req.script_name}/script/notification.js" />
 </head>
 
 <body>
@@ -20,6 +22,8 @@
 Telephone: +61&thinsp;407&thinsp;379&thinsp;687</p>
 
 <h3>Feedback form</h3>
+
+<div id="notification-placeholder" />
 
 <form method="post" action="/contact/submit">
 <p><textarea name="body" cols="65" rows="10"><py:if test="'about' in req.GET">Regarding the page at &lt;http://miskinhill.com.au${req.GET['about']}&gt;, </py:if></textarea></p>

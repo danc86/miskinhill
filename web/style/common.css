@@ -77,6 +77,12 @@ p, li, caption {
     padding-right: 20px;
 }
 
+.notification {
+    padding: 1em;
+    border: 1px solid #BFA860;
+    background: #FFEBAD;
+}
+
 /* Breadcrumbs */
 #breadcrumbs {
     font-size: 0.85em;
