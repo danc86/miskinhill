@@ -7,12 +7,12 @@ sys.path.insert(1, os.path.dirname(__file__))
 import re, urllib
 
 from webob import Request, Response
-from webob import exc
 from genshi.template import TemplateLoader, NewTextTemplate, TemplateNotFound
 import lxml.etree, lxml.html
 from lxml.builder import E
 import RDF
 
+import exc
 import rdfob
 import representations
 import citations
