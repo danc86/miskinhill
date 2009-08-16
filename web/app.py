@@ -198,9 +198,9 @@ class Relativizer(object):
     def __call__(self, environ, start_response):
         res = Request(environ).get_response(self.wrapped)
         if res.status_int == 200 and res.content_type == 'text/html':
-            tree = lxml.html.fromstring(res.body, parser=lxml.html.XHTMLParser())
-            tree.rewrite_links(self.do_it)
-            res.body = lxml.html.tostring(tree, method='xml', encoding='utf8')
+            root = lxml.html.fromstring(res.body, parser=lxml.html.XHTMLParser())
+            root.rewrite_links(self.do_it)
+            res.body = lxml.html.tostring(root.getroottree(), method='xml', encoding='utf8')
         return res(environ, start_response)
 
     def do_it(self, link):
