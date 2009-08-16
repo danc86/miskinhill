@@ -32,8 +32,8 @@ p, li, caption {
     margin: auto;
     max-width: 770px;
     /* IE max-width hack: */
-    width: 770px;
     width: auto !important;
+    width: 770px;
     background-color: white;
 }
 
