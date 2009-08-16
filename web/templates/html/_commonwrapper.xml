@@ -6,6 +6,8 @@
 
 <?python
 import rdfob
+
+# don't forget this stuff is duplicated in exc.py!
 ?>
 
 <py:match path="head">

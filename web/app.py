@@ -7,12 +7,12 @@ sys.path.insert(1, os.path.dirname(__file__))
 import re, urllib
 
 from webob import Request, Response
-from webob import exc
 from genshi.template import TemplateLoader, NewTextTemplate, TemplateNotFound
 import lxml.etree, lxml.html
 from lxml.builder import E
 import RDF
 
+import exc
 import rdfob
 import representations
 import citations
@@ -191,6 +191,30 @@ class Relativizer(object):
 
 application = Relativizer(MiskinHillApplication)
 
+class Static(object):
+
+    def __init__(self, wrapped, mappings, fallback_dir):
+        self.wrapped = wrapped
+        self.mappings = mappings
+        self.fallback_dir = fallback_dir
+
+    def __call__(self, environ, start_response):
+        from wsgiref.util import FileWrapper
+        req = Request(environ)
+        for prefix, dir in self.mappings:
+            if req.path_info.startswith(prefix):
+                filename = os.path.join(dir, req.path_info[len(prefix):])
+                if not os.path.exists(filename):
+                    return exc.HTTPNotFound('%s does not exist' % filename)(environ, start_response)
+                start_response('200 OK', [])
+                return FileWrapper(open(filename, 'r'))
+        res = req.get_response(self.wrapped)
+        fallback_filename = os.path.join(self.fallback_dir, req.path_info[1:])
+        if res.status_int == 404 and os.path.exists(fallback_filename):
+            start_response('200 OK', [])
+            return FileWrapper(open(fallback_filename, 'r'))
+        return res(environ, start_response)
+
 if __name__ == '__main__':
     import optparse
     parser = optparse.OptionParser(usage='%prog --port=PORT')
@@ -200,6 +224,11 @@ if __name__ == '__main__':
     parser.set_defaults(port=8082, content_dir=content_dir)
     options, args = parser.parse_args()
     content_dir = options.content_dir
+    application = Static(application, [
+            ('/style/', 'style'),
+            ('/images/', 'images'),
+            ('/script/', 'script')],
+            content_dir)
     from wsgiref.simple_server import make_server
     server = make_server('', options.port, application)
     try:
