@@ -66,6 +66,17 @@ p, li, caption {
     border-bottom: 1px dotted #ccc;
 }
 
+#feedback {
+    float: right;
+    font-size: 0.9em;
+}
+#feedback a {
+    background-image: url(../images/silk/email_edit.png);
+    background-position: center right;
+    background-repeat: no-repeat;
+    padding-right: 20px;
+}
+
 /* Breadcrumbs */
 #breadcrumbs {
     font-size: 0.85em;

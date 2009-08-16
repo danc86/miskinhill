@@ -22,7 +22,7 @@ Telephone: +61&thinsp;407&thinsp;379&thinsp;687</p>
 <h3>Feedback form</h3>
 
 <form method="post" action="/contact/submit">
-<p><textarea name="body" cols="65" rows="10"></textarea></p>
+<p><textarea name="body" cols="65" rows="10"><py:if test="'about' in req.GET">Regarding the page at &lt;http://miskinhill.com.au${req.GET['about']}&gt;, </py:if></textarea></p>
 <p><label for="from">E-mail address (optional):</label> <input type="text" id="from" name="from" /></p>
 <p><button type="submit">Submit</button></p>
 </form>
