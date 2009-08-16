@@ -83,7 +83,6 @@ class MiskinHillApplication(object):
         msg['Subject'] = 'Feedback form submitted on miskinhill.com.au'
         msg['From'] = 'Miskin Hill <apache@miskinhill.com.au>'
         msg['To'] = 'info@miskinhill.com.au'
-        print msg.as_string()
         s = smtplib.SMTP('localhost', 25)
         s.sendmail('apache@miskinhill.com.au', ['info@miskinhill.com.au'], msg.as_string())
         s.quit()
