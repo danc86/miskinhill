@@ -4,7 +4,7 @@ import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'lib'))
 sys.path.insert(1, os.path.dirname(__file__))
 
-import re, urllib
+import re, urllib, smtplib, email.MIMEText
 
 from webob import Request, Response
 from genshi.template import TemplateLoader, NewTextTemplate, TemplateNotFound
@@ -45,6 +45,7 @@ class MiskinHillApplication(object):
     METHODS = {
         '/about/': 'about', 
         '/contact/': 'contact', 
+        '/contact/submit': 'contact_submit', 
         '/journals/': 'journals_index', 
         '/unapi': 'unapi', 
         '/sitemap.xml': 'sitemap', 
@@ -73,6 +74,20 @@ class MiskinHillApplication(object):
         template = template_loader.load('contact.xml')
         body = template.generate(req=self.req).render('xhtml', doctype='xhtml')
         return Response(body, content_type='text/html')
+
+    def contact_submit(self):
+        if self.req.method != 'POST':
+            raise exc.HTTPMethodNotAllowed()
+        msg = email.MIMEText.MIMEText((u'%s\n\nFrom: %s' % (self.req.POST['body'], self.req.POST['from'])).encode('utf8'),
+                'plain', 'UTF-8')
+        msg['Subject'] = 'Feedback form submitted on miskinhill.com.au'
+        msg['From'] = 'Miskin Hill <apache@miskinhill.com.au>'
+        msg['To'] = 'info@miskinhill.com.au'
+        print msg.as_string()
+        s = smtplib.SMTP('localhost', 25)
+        s.sendmail('apache@miskinhill.com.au', ['info@miskinhill.com.au'], msg.as_string())
+        s.quit()
+        raise exc.HTTPSeeOther(location='http://miskinhill.com.au/contact/')
 
     def journals_index(self):
         template = template_loader.load('journals_index.xml')

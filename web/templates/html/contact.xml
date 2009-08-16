@@ -7,15 +7,25 @@
 
 <head>
     <title>Contact</title>
+    <link rel="stylesheet" type="text/css" href="/style/contact.css" />
 </head>
 
 <body>
 
 <h2>Contact</h2>
 
+<p>Please feel free to get in touch using the following contact methods, or using the form below.</p>
+
 <p>E-mail: <a href="mailto:info@miskinhill.com.au">info@miskinhill.com.au</a><br />
-Telephone: +61&thinsp;407&thinsp;379&thinsp;687<br />
-ABN: 27&thinsp;712&thinsp;504&thinsp;809</p>
+Telephone: +61&thinsp;407&thinsp;379&thinsp;687</p>
+
+<h3>Feedback form</h3>
+
+<form method="post" action="/contact/submit">
+<p><textarea name="body" cols="65" rows="10"></textarea></p>
+<p><label for="from">E-mail address (optional):</label> <input type="text" id="from" name="from" /></p>
+<p><button type="submit">Submit</button></p>
+</form>
 
 </body>
 </html>
