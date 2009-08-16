@@ -78,7 +78,7 @@ class MiskinHillApplication(object):
     def contact_submit(self):
         if self.req.method != 'POST':
             raise exc.HTTPMethodNotAllowed()
-        msg = email.MIMEText.MIMEText((u'%s\n\nFrom: %s' % (self.req.POST['body'], self.req.POST['from'])).encode('utf8'),
+        msg = email.MIMEText.MIMEText((u'%s\n\nFrom: %s\nUser-Agent: %s' % (self.req.POST['body'], self.req.POST['from'], self.req.user_agent)).encode('utf8'),
                 'plain', 'UTF-8')
         msg['Subject'] = 'Feedback form submitted on miskinhill.com.au'
         msg['From'] = 'Miskin Hill <apache@miskinhill.com.au>'
