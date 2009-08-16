@@ -7,7 +7,6 @@
 
 <?python
 import representations, rdfob
-NEVER_TYPES = frozenset(rdfob.uriref(x) for x in ['mhs:Article', 'mhs:Review', 'mhs:Citation', 'rdf:Property', 'rdfs:Class'])
 ?>
 
 <url>
@@ -38,7 +37,6 @@ NEVER_TYPES = frozenset(rdfob.uriref(x) for x in ['mhs:Article', 'mhs:Review', '
 <py:for each="node in nodes">
     <url py:for="r in representations.for_node(node)">
         <loc>${node.uri}<py:if test="r is not representations.HTMLRepresentation">.${r.format}</py:if></loc>
-        <changefreq py:if="NEVER_TYPES.intersection(node.types)">never</changefreq>
     </url>
 </py:for>
 
