@@ -115,11 +115,12 @@ class MiskinHillApplication(object):
         return Response(lxml.etree.tostring(body, encoding='utf8', xml_declaration=True),
                 content_type='application/xml')
 
+    SITEMAP_URI_PATT = re.compile(r'http://miskinhill.com.au/[^#]*$')
     def sitemap(self):
         template = template_loader.load('sitemap.xml')
         body = template.generate(req=self.req, 
                 nodes=[s for s in graph.subjects()
-                          if s.uri.startswith(u'http://miskinhill.com.au/')]
+                          if self.SITEMAP_URI_PATT.match(unicode(getattr(s, 'uri', '')))]
                 ).render('xml')
         return Response(body, content_type='application/xml')
 
