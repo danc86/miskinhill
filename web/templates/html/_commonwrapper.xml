@@ -50,7 +50,7 @@ import rdfob
             </ul>
         </div>
         <div id="bodywrapper">
-            <div id="feedback"><a href="/contact/?about=${urllib.quote(req.path_qs, '')}" title="Report a problem or make a suggestion about this page">Feedback</a></div>
+            <div id="feedback"><a href="/contact/?about=${urllib.quote(req.path_info, '')}" title="Report a problem or make a suggestion about this page">Feedback</a></div>
             ${select('./*')}
             <div id="footer">
                 Hosted by <a href="http://www.sjkwi.com.au/">SJK Web Industries</a>.
