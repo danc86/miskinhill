@@ -14,6 +14,7 @@ class MockRequest(object):
 
     def __init__(self):
         self.script_name = ''
+        self.path_info = '/mockrequest'
         self.content_dir = TESTDATA
 
 class NTriplesArticleRepresentationTest(unittest.TestCase):
