@@ -20,7 +20,8 @@ NAMESPACES = {
     'awol': RDF.NS('http://bblfish.net/work/atom-owl/2006-06-06/#'),
     'lingvoj': RDF.NS('http://www.lingvoj.org/ontology#'), 
     'prism': RDF.NS('http://prismstandard.org/namespaces/1.2/basic/'), 
-    'owl': RDF.NS('http://www.w3.org/2002/07/owl#')
+    'owl': RDF.NS('http://www.w3.org/2002/07/owl#'),
+    'rev': RDF.NS('http://purl.org/stuff/rev#')
 }
 RDF_TYPE = NAMESPACES['rdf']['type']
 RDF_SEQ = NAMESPACES['rdf']['Seq']

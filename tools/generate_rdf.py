@@ -70,7 +70,7 @@ def transitive_objects(g, subject, predicate):
     return retval
 
 def infer(g):
-    print >>sys.stderr, 'Inferring superclasses/superproperties ...',
+    print >>sys.stderr, 'Inferring superclasses/superproperties/inverses ...',
     for s in frozenset(stmt.subject for stmt in g):
         for t in list(_types(g, s)):
             for ct in transitive_objects(g, t, RDFS_NS.subClassOf):
@@ -78,26 +78,31 @@ def infer(g):
     for stmt in g:
         for cp in transitive_objects(g, stmt.predicate, RDFS_NS.subPropertyOf):
             g.append(RDF.Statement(stmt.subject, cp, stmt.object))
+    for stmt in g.find_statements(RDF.Statement(None, OWL_NS.inverseOf, None)):
+        p1, p2 = stmt.subject, stmt.object
+        for substmt in g.find_statements(RDF.Statement(None, p1, None)):
+            g.append(RDF.Statement(substmt.object, p2, substmt.subject))
+        for substmt in g.find_statements(RDF.Statement(None, p2, None)):
+            g.append(RDF.Statement(substmt.object, p1, substmt.subject))
     print >>sys.stderr, '%d triples' % len(g)
 
+DOMAIN_OBJECT_EXCEPTIONS = frozenset([RDFS_NS.Resource, OWL_NS.Thing])
 RANGE_PROPERTY_EXCEPTIONS = frozenset([DCTERMS_NS.publisher, DCTERMS_NS.identifier, DCTERMS_NS.coverage, PRISM_NS.publicationDate])
-RANGE_OBJECT_EXCEPTIONS = frozenset([RDF.Node(uri_string='http://www.w3.org/TR/2000/CR-rdf-schema-20000327#Literal'), FOAF_NS.Document])
+RANGE_OBJECT_EXCEPTIONS = frozenset([RDF.Node(uri_string='http://www.w3.org/TR/2000/CR-rdf-schema-20000327#Literal'), FOAF_NS.Document, OWL_NS.Thing])
 
 def validate(g):
     print >>sys.stderr, 'Validating domains/ranges ...',
     for domain_constraint in RDF.Query('SELECT ?s ?o WHERE (?s <http://www.w3.org/2000/01/rdf-schema#domain> ?o)').execute(g):
         if not domain_constraint['s'].is_resource() or not domain_constraint['o'].is_resource():
             continue # for now
-        if domain_constraint['o'] == OWL_NS.Thing:
-            continue # ugh
+        if domain_constraint['o'] in DOMAIN_OBJECT_EXCEPTIONS:
+            continue
         for x in RDF.Query('SELECT ?s WHERE (?s <%s> ?o)' % domain_constraint['s'].uri).execute(g):
             if domain_constraint['o'] not in _types(g, x['s']):
                 raise ValueError('property %s on %s violates rdfs:domain constraint of %s (found %r)' % (domain_constraint['s'], x['s'], domain_constraint['o'], [str(x) for x in _types(g, x['s'])]))
     for range_constraint in RDF.Query('SELECT ?s ?o WHERE (?s <http://www.w3.org/2000/01/rdf-schema#range> ?o)').execute(g):
         if not range_constraint['s'].is_resource() or not range_constraint['o'].is_resource():
             continue # for now
-        if range_constraint['o'] == OWL_NS.Thing:
-            continue # ugh
         if range_constraint['s'] in RANGE_PROPERTY_EXCEPTIONS or range_constraint['o'] in RANGE_OBJECT_EXCEPTIONS:
             continue
         for x in RDF.Query('SELECT ?o WHERE (?s <%s> ?o)' % range_constraint['s'].uri).execute(g):
