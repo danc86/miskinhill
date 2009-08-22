@@ -19,7 +19,7 @@ cited_translations = [t for t in author.reflexive('mhs:translator') if unicode(t
 cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if unicode(b.uri).startswith('http://miskinhill.com.au/cited/') and b not in cited_translations]
 ?>
 
-<head>
+<head profile="http://microformats.org/profile/hcard">
     <title>${author['foaf:name']}</title>
     <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
         ${r(req, node).link()}
@@ -27,15 +27,15 @@ cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if
     <link rel="stylesheet" type="text/css" href="/style/author.css" />
 </head>
 
-<body>
+<body class="vcard">
 
-<h2>${author['foaf:name']}<abbr class="unapi-id" title="${author.uri}" /></h2>
+<h2><span class="fn">${author['foaf:name']}</span><abbr class="unapi-id" title="${author.uri}" /></h2>
 
 <div class="metabox-container">
     <div class="author-meta metabox">
         <h4>Author details</h4>
-        <p class="homepage" py:if="'foaf:workInfoHomepage' in author"><a href="${author.getone('foaf:workInfoHomepage', as_uriref=True).uri}">Institutional homepage</a></p>
-        <p class="affiliation" py:if="'mhs:isAffiliatedWith' in author">Affiliated with <a href="${author['mhs:isAffiliatedWith'].uri}">${author['mhs:isAffiliatedWith']['foaf:name']}</a></p>
+        <p class="homepage" py:if="'foaf:workInfoHomepage' in author"><a href="${author.getone('foaf:workInfoHomepage', as_uriref=True).uri}" class="url">Institutional homepage</a></p>
+        <p class="affiliation" py:if="'mhs:isAffiliatedWith' in author">Affiliated with <a href="${author['mhs:isAffiliatedWith'].uri}" class="org">${author['mhs:isAffiliatedWith']['foaf:name']}</a></p>
         <p class="metadata-links">Metadata:
             ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
         </p>

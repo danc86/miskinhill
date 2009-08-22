@@ -15,7 +15,7 @@ issue = review['dc:isPartOf']
 journal = issue['mhs:isIssueOf']
 ?>
 
-<head>
+<head profile="http://microformats.org/wiki/hreview-profile http://microformats.org/profile/hcard">
     <title>Review of ${striptags(book['dc:title'])} - ${journal['dc:title']} Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']}</title>
     <py:for each="r in representations.for_node(node)" py:if="r.format != 'html'">
         ${r(req, node).link()}
@@ -23,7 +23,7 @@ journal = issue['mhs:isIssueOf']
     <link rel="stylesheet" type="text/css" href="/style/review.css" />
 </head>
 
-<body>
+<body class="hreview">
 
 ${breadcrumbs([('/journals/', 'Journals'), 
                (journal.uri, journal['dc:title']),
@@ -42,8 +42,8 @@ ${breadcrumbs([('/journals/', 'Journals'),
     </div>
 </div>
 
-<p py:with="author = review['dc:creator']">
-    by <a href="${author.uri}">${author['foaf:name']}</a>
+<p py:with="author = review['dc:creator']" class="reviewer vcard">
+    by <a href="${author.uri}" class="fn">${author['foaf:name']}</a>
 </p>
 
 ${bookinfo(book)}

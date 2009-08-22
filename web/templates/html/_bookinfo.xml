@@ -4,7 +4,7 @@
      xmlns:xi="http://www.w3.org/2001/XInclude"
      py:strip="True">
 
-<div py:def="bookinfo(book)" class="bookinfo">
+<div py:def="bookinfo(book)" class="bookinfo item">
 
 <?python
 import urllib
@@ -63,7 +63,7 @@ else:
 
 <div class="beside">
     <p class="main">
-        <em class="title"><a py:strip="'mhs:availableFrom' not in book" href="${book.getone('mhs:availableFrom', as_uriref=True).uri}">${book['dc:title']}</a></em><br />
+        <em class="title fn"><a py:strip="'mhs:availableFrom' not in book" href="${book.getone('mhs:availableFrom', as_uriref=True).uri}">${book['dc:title']}</a></em><br />
         <span class="responsibility">${book.getone('mhs:responsibility', default=None)}</span>
     </p>
     <p class="publication" py:with="publisher = book.getone('dc:publisher', default=None); date = book.getone('dc:date', default=None)">
@@ -78,6 +78,9 @@ else:
         </py:for>
     </p>
 </div>
+
+<a class="url" href="${book.uri}" />
+<a py:if="isbn" class="url" href="urn:isbn:${isbn}" />
 
 </div>
 
