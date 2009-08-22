@@ -10,6 +10,8 @@
 import representations
 from viewutils import striptags
 book = node
+citations = set(c['dc:isPartOf'] for c in book.reflexive('mhs:cites'))
+reviews = book.reflexive('mhs:reviews')
 ?>
 
 <head>
@@ -26,14 +28,27 @@ book = node
 
 ${bookinfo(book)}
 
-<h3 class="cited-in">Cited in</h3>
-<ul class="articles">
-    <li py:for="article in sorted(set(c['dc:isPartOf'] for c in book.reflexive('mhs:cites')), key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
-        py:with="issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
-        <div class="article"><a href="${article.uri}">${article['dc:title']}</a></div>
-        <div class="issue">in <a href="${issue.uri}"><em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</a></div>
-    </li>
-</ul>
+<div class="reviews" py:if="reviews">
+    <h3>Reviews</h3>
+    <ul class="reviews">
+        <li py:for="review in sorted(reviews, key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
+            py:with="issue = review['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+            <div class="review"><a href="${review.uri}">Review</a> by ${review['dc:creator']['foaf:name']}</div>
+            <div class="issue">in <em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</div>
+        </li>
+    </ul>
+</div>
+
+<div class="cited-in" py:if="citations">
+    <h3>Cited in</h3>
+    <ul class="articles">
+        <li py:for="article in sorted(citations, key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
+            py:with="issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+            <div class="article"><a href="${article.uri}">${article['dc:title']}</a></div>
+            <div class="issue">in <em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</div>
+        </li>
+    </ul>
+</div>
 
 </body>
 </html>
