@@ -6,7 +6,7 @@
 <xi:include href="_commonwrapper.xml" />
 
 <?python
-from viewutils import parsed_content, striptags
+from viewutils import parsed_content, striptags, linked_author
 import representations
 article = node
 issue = article['dc:isPartOf']
@@ -52,8 +52,8 @@ ${breadcrumbs([('/journals/', 'Journals'),
     </div>
 </div>
 
-<p py:with="author = article['dc:creator']">
-    by <a href="${author.uri}">${author['foaf:name']}</a>
+<p>
+    by ${Markup(', ').join(linked_author(a) for a in article.getall('dc:creator'))}
 </p>
 
 ${parsed_content(req.content_dir + unicode(article.uri)[24:] + '.html', article.uri)}
