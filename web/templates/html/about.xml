@@ -22,7 +22,7 @@ please <a href="/contact/">get in touch with us</a>.</p>
 <h3>Areas of expertise</h3>
 
 <ul>
-<li>Typsetting and preparation for print, using LaTeX, Adobe InDesign, or Microsoft Word</li>
+<li>Typesetting and preparation for print, using LaTeX, Adobe InDesign, or Microsoft Word</li>
 <li>Copyediting services with a meticulous attention to detail</li>
 <li>Migration between document formats</li>
 <li>Deployment of cutting-edge web technologies for online publications, including:
@@ -35,8 +35,7 @@ please <a href="/contact/">get in touch with us</a>.</p>
 <li>Good web citizenship:
     <ul>
     <li><a href="http://www.w3.org/Provider/Style/URI">persistent</a>, memorable URLs</li>
-    <li>clean, semantic markup</li>
-    <li>adherence to web standards</li>
+    <li>clean, semantic markup adhering to web standards</li>
     <li>interoperability across browsers, devices, and platforms</li>
     </ul>
 </li>
@@ -46,10 +45,11 @@ please <a href="/contact/">get in touch with us</a>.</p>
 
 <p><a href="/journals/asees/">Australian Slavonic and East European 
 Studies</a> is a scholarly journal which publishes articles and book reviews 
-in the areas of Slavonic and East European studies. The journal’s content 
+in the area of Slavonic and East European studies. The journal’s content 
 poses a number of technical challenges, due to the regular appearance of 
 articles which use both the Cyrillic and Latin alphabets, as well as phonetic 
-notation. The online edition of <em>ASEES</em> was prepared from source 
+notation.</p>
+<p>The <a href="/journals/asees/">online edition</a> of <em>ASEES</em> was prepared from source 
 material by Miskin Hill Academic Publishing, and is hosted on this site. We 
 have also provided technical assistance with the preparation of the print 
 edition of several recent volumes.</p>
