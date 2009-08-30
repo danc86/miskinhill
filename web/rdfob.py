@@ -139,7 +139,7 @@ class GraphNode(object):
         predicate = uriref(predicate)
         objects = self._objects.get(predicate, [])
         if len(objects) > 1:
-            raise UniquenessError(objects)
+            raise UniquenessError('%s %s %r' % (self.uri, predicate, [str(o) for o in objects]))
         if not objects:
             if default is not self._NO_DEFAULT:
                 return default
@@ -175,7 +175,8 @@ class GraphNode(object):
 
     def __iter__(self):
         assert RDF_SEQ in self.types, self.types
-        return iter(self.getone(p) for p in self._objects.iterkeys() if p.startswith(NAMESPACES['rdf']['_']))
+        ps = sorted(int(unicode(p.uri)[44:]) for p in self._objects.iterkeys() if unicode(p.uri).startswith(unicode(NAMESPACES['rdf']['_'].uri)))
+        return iter((self.getone(NAMESPACES['rdf']['_%d' % p]) for p in ps))
 
     def identifier(self, scheme):
         for identifier in self._objects.get(NAMESPACES['dc']['identifier'], []):
