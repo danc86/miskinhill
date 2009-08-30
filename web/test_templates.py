@@ -30,7 +30,7 @@ ${bookinfo(book_node)}
 
     def test_responsibility(self):
         graph = rdfob.Graph()
-        node = Node(blank='1')
+        node = Node(uri_string='http://miskinhill.com.au/cited/books/example')
         graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
         graph._g.append(Statement(node, rdfob.uriref('mhs:responsibility'), 
@@ -44,7 +44,7 @@ ${bookinfo(book_node)}
 
     def test_without_publisher(self):
         graph = rdfob.Graph()
-        node = Node(blank='1')
+        node = Node(uri_string='http://miskinhill.com.au/cited/books/example')
         graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
         graph._g.append(Statement(node, rdfob.uriref('mhs:responsibility'), 
@@ -58,7 +58,7 @@ ${bookinfo(book_node)}
 
     def test_without_date(self):
         graph = rdfob.Graph()
-        node = Node(blank='1')
+        node = Node(uri_string='http://miskinhill.com.au/cited/books/example')
         graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
         graph._g.append(Statement(node, rdfob.uriref('dc:publisher'), Node('Some Publisher')))
@@ -68,7 +68,7 @@ ${bookinfo(book_node)}
 
     def test_without_date_or_publisher(self):
         graph = rdfob.Graph()
-        node = Node(blank='1')
+        node = Node(uri_string='http://miskinhill.com.au/cited/books/example')
         graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
         root = lxml.html.fromstring(self.render(graph[node]))
@@ -77,7 +77,7 @@ ${bookinfo(book_node)}
 
     def test_gbooksid(self):
         graph = rdfob.Graph()
-        node = Node(blank='1')
+        node = Node(uri_string='http://miskinhill.com.au/cited/books/example')
         graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
         graph._g.append(Statement(node, rdfob.uriref('dc:date'), Node('1801', datatype=rdfob.uriref('xsd:date').uri)))
@@ -89,7 +89,7 @@ ${bookinfo(book_node)}
 
     def test_cover_thumbnail(self):
         graph = rdfob.Graph()
-        node = Node(blank='1')
+        node = Node(uri_string='http://miskinhill.com.au/cited/books/example')
         graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
         graph._g.append(Statement(node, rdfob.uriref('mhs:coverThumbnail'), Uri('http://example.com/thumb.gif')))
@@ -100,7 +100,7 @@ ${bookinfo(book_node)}
 
     def test_russian_link(self):
         graph = rdfob.Graph()
-        node = Node(blank='1')
+        node = Node(uri_string='http://miskinhill.com.au/cited/books/example')
         graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node(u'Русская книга', language='ru')))
         graph._g.append(Statement(node, rdfob.uriref('mhs:responsibility'), 
@@ -114,7 +114,7 @@ ${bookinfo(book_node)}
 
     def test_russian_link_cyrillic_title(self):
         graph = rdfob.Graph()
-        node = Node(blank='1')
+        node = Node(uri_string='http://miskinhill.com.au/cited/books/example')
         graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.append(Statement(node, rdfob.uriref('dc:title'), 
                 Node(u'<span xmlns="http://www.w3.org/1999/xhtml" lang="ru">'
@@ -131,7 +131,7 @@ ${bookinfo(book_node)}
 
     def test_available_from_link(self):
         graph = rdfob.Graph()
-        node = Node(blank='1')
+        node = Node(uri_string='http://miskinhill.com.au/cited/books/example')
         graph._g.append(Statement(node, rdfob.RDF_TYPE, rdfob.uriref('mhs:Book')))
         graph._g.append(Statement(node, rdfob.uriref('dc:title'), Node('Some title')))
         graph._g.append(Statement(node, rdfob.uriref('dc:date'), Node('1801', datatype=rdfob.uriref('xsd:date').uri)))
@@ -172,7 +172,10 @@ ${articleinfo(node)}
         graph._g.append(Statement(article, rdfob.RDF_TYPE, rdfob.uriref('mhs:Article')))
         graph._g.append(Statement(article, rdfob.uriref('dc:isPartOf'), issue))
         graph._g.append(Statement(article, rdfob.uriref('dc:title'), Node('Some title')))
-        graph._g.append(Statement(article, rdfob.uriref('dc:creator'), Node('Some Dude')))
+        author = Node(uri_string='http://miskinhill.com.au/authors/dude')
+        graph._g.append(Statement(article, rdfob.uriref('dc:creator'), author))
+        graph._g.append(Statement(author, rdfob.RDF_TYPE, rdfob.uriref('mhs:Author')))
+        graph._g.append(Statement(author, rdfob.uriref('foaf:name'), Node('Some Dude')))
         return article, issue, journal
 
     def test_worldcat_issn_link(self):

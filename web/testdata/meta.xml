@@ -81,19 +81,18 @@
     <foaf:surname>Author</foaf:surname>
     <foaf:givenNames>Another</foaf:givenNames>
   </mhs:Author>
-  <rdf:Description rdf:nodeID="book">
-    <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Book"/>
+  <mhs:Book rdf:about="http://miskinhill.com.au/cited/books/test">
     <dc:identifier rdf:resource="urn:isbn:9780415274319"/>
     <dc:identifier rdf:resource="urn:asin:0415274311"/>
     <dc:title xml:lang="en">Slovenia: evolving loyalties</dc:title>
     <dc:creator>John K. Cox</dc:creator>
     <dc:publisher>Routledge</dc:publisher>
     <dc:date rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2005</dc:date>
-  </rdf:Description>
+  </mhs:Book>
   <rdf:Description rdf:about="http://miskinhill.com.au/journals/test/1:1/reviews/review">
     <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Review"/>
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
-    <mhs:reviews rdf:nodeID="book"/>
+    <mhs:reviews rdf:resource="http://miskinhill.com.au/cited/books/test"/>
     <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe">
