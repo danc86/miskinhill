@@ -49,11 +49,11 @@ def extract_responsibility(g):
 
 def extract_citations(g):
     print >>sys.stderr, 'Extracting citation metadata ...',
-    for article in g.get_sources(RDF_NS.type, MHS_NS.Article):
-        if unicode(article.uri).startswith('http://miskinhill.com.au/journals/'):
-            content = unicode(article.uri)[25:] + '.html'
+    for item in chain(g.get_sources(RDF_NS.type, MHS_NS.Article), g.get_sources(RDF_NS.type, MHS_NS.Review)):
+        if unicode(item.uri).startswith('http://miskinhill.com.au/journals/'):
+            content = unicode(item.uri)[25:] + '.html'
             if os.path.exists(content):
-                for citation in citations.citations_from_content(content, article.uri):
+                for citation in citations.citations_from_content(content, item.uri):
                     citation.add_to_graph(g)
     print >>sys.stderr, '%d triples' % len(g)
 
