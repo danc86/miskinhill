@@ -42,9 +42,14 @@ ${bookinfo(book)}
 <div class="cited-in" py:if="citations">
     <h3>Cited in</h3>
     <ul class="articles">
-        <li py:for="article in sorted(citations, key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
-            py:with="issue = article['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
-            <div class="article"><a href="${article.uri}">${article['dc:title']}</a></div>
+        <li py:for="item in sorted(citations, key=lambda a: a['dc:isPartOf']['mhs:publicationDate'], reverse=True)"
+            py:with="issue = item['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+            <div class="article"><a href="${item.uri}">
+                <py:choose>
+                    <py:when test="item.is_any(['mhs:Review'])">Review of ${Markup(' and ').join(Markup('&lt;em&gt;%s&lt;/em&gt;') % striptags(b['dc:title']) for b in item.getall('mhs:reviews'))}</py:when>
+                    <py:otherwise>${item['dc:title']}</py:otherwise>
+                </py:choose>
+            </a></div>
             <div class="issue">in <em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</div>
         </li>
     </ul>

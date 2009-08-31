@@ -7,7 +7,7 @@
 
 <?python
 import representations
-from viewutils import striptags
+from viewutils import striptags, book_summary
 import rdfob
 author = node
 articles = [a for a in author.reflexive('dc:creator', type='mhs:Article') if unicode(a.uri).startswith('http://miskinhill.com.au/journals/')]
@@ -61,8 +61,8 @@ cited_books = [b for b in author.reflexive('dc:contributor', type='mhs:Book') if
     <h4>Reviews</h4>
     <ul class="reviews">
         <li py:for="review in sorted(reviews, key=lambda r: (r['dc:isPartOf']['mhs:publicationDate'], r['mhs:startPage']), reverse=True)"
-            py:with="book = review['mhs:reviews']; issue = review['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
-            <div class="book"><a href="${review.uri}">${', '.join(c['foaf:name'] for c in book.getall('dc:creator'))}, <em>${book['dc:title']}</em> (${str(book['dc:date'])[:4]})</a></div>
+            py:with="issue = review['dc:isPartOf']; journal = issue['mhs:isIssueOf']">
+            <div class="book"><a href="${review.uri}">${Markup('; ').join(book_summary(b) for b in review.getall('mhs:reviews'))}</a></div>
             <div class="issue">in <em>${journal['dc:title']}</em> Vol. ${issue['mhs:volume']}, Issue ${issue['mhs:issueNumber']} (${issue['dc:coverage']})</div>
         </li>
     </ul>

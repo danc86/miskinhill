@@ -20,7 +20,7 @@ from viewutils import striptags
     <language>
         <languageTerm py:for="lang in journal.getall('dc:language')" type="code" authority="rfc3066">${lang['lingvoj:iso1']}</languageTerm>
     </language>
-    <name type="personal" py:with="author = article['dc:creator']">
+    <name type="personal" py:for="author in article.getall('dc:creator')">
         <displayForm>${author['foaf:name']}</displayForm>
         <namePart type="given">${author['foaf:givenNames']}</namePart>
         <namePart type="family">${author['foaf:surname']}</namePart>
