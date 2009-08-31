@@ -10,6 +10,10 @@ h2 .issue {
     display: block;
 }
 
+.section-description {
+    font-size: 0.9em;
+}
+
 ul.contents {
     margin: 0 16em 0 0;
     padding: 0;
