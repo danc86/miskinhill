@@ -196,8 +196,9 @@ class Relativizer(object):
         self.wrapped = wrapped
 
     def __call__(self, environ, start_response):
-        res = Request(environ).get_response(self.wrapped)
-        if res.status_int == 200 and res.content_type == 'text/html':
+        req = Request(environ)
+        res = req.get_response(self.wrapped)
+        if req.method != 'HEAD' and res.status_int == 200 and res.content_type == 'text/html':
             root = lxml.html.fromstring(res.body, parser=lxml.html.XHTMLParser())
             root.rewrite_links(self.do_it)
             res.body = lxml.html.tostring(root.getroottree(), method='xml', encoding='utf8')
