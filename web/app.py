@@ -137,8 +137,8 @@ class MiskinHillApplication(object):
     def sitemap(self):
         template = template_loader.load('sitemap.xml')
         body = template.generate(req=self.req, 
-                nodes=[s for s in graph.subjects()
-                          if self.SITEMAP_URI_PATT.match(unicode(getattr(s, 'uri', '')))]
+                nodes=frozenset(s for s in graph.subjects()
+                          if self.SITEMAP_URI_PATT.match(unicode(getattr(s, 'uri', '')))) # XXX frozenset() is workaround for redland crapness
                 ).render('xml')
         return Response(body, content_type='application/xml')
 
