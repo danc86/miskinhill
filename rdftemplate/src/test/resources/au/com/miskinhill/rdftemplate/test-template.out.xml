@@ -40,7 +40,7 @@
 </ul>
 
 <h3>About this journal</h3>
-<div xml:lang="en" lang="en">A journal, you know, with some stuff in it</div>
+<div><div xmlns="http://www.w3.org/1999/xhtml" lang="en"><p><em>Test Journal</em> is a journal.</p></div></div>
 
 </body>
 </html>

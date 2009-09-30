@@ -2,9 +2,7 @@
       xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
 <body>
 
-<div rdf:content="dc:title">
-    <p>This should all go <em>away</em>!</p>
-</div>
+<div rdf:content="dc:description" />
 
 </body>
 </html>

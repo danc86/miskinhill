@@ -1,6 +1,7 @@
 package au.com.miskinhill.rdftemplate;
 
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -13,8 +14,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventFactory;
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -208,7 +211,11 @@ public class TemplateInterpolator {
                 }
                 
                 writer.add(eventFactory.createStartElement(start.getName(), attributes.iterator(), start.getNamespaces()));
-                writer.add(eventFactory.createCharacters(literal.getValue().toString()));
+                if (literal.isWellFormedXML()) {
+                    writeXMLLiteral(start.getNamespaceContext(), literal.getLexicalForm(), writer);
+                } else {
+                    writer.add(eventFactory.createCharacters(literal.getValue().toString()));
+                }
                 writer.add(eventFactory.createEndElement(start.getName(), start.getNamespaces()));
             } else {
                 throw new UnsupportedOperationException("Not a literal: " + replacementNode);
@@ -228,6 +235,21 @@ public class TemplateInterpolator {
                 attributes.add(attribute);
         }
         return attributes;
+    }
+    
+    private static void writeXMLLiteral(NamespaceContext nsContext, String literal, XMLEventWriter writer)
+            throws XMLStreamException {
+        XMLEventReader reader = inputFactory.createXMLEventReader(new StringReader(literal));
+        while (reader.hasNext()) {
+            XMLEvent event = reader.nextEvent();
+            switch (event.getEventType()) {
+                case XMLStreamConstants.START_DOCUMENT:
+                case XMLStreamConstants.END_DOCUMENT:
+                    break; // discard
+                default:
+                    writer.add(event);
+            }
+        }
     }
     
 }

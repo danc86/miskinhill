@@ -45,8 +45,17 @@ public class TemplateInterpolatorUnitTest {
         Resource journal = model.getResource("http://miskinhill.com.au/journals/test/");
         String result = TemplateInterpolator.interpolate(
                 new InputStreamReader(this.getClass().getResourceAsStream("replace-subtree.xml")), journal);
-        assertThat(result, containsString("<div xml:lang=\"en\" lang=\"en\">A journal, you know, with some stuff in it</div>"));
+        assertThat(result, containsString("<div xml:lang=\"en\" lang=\"en\">Test Journal of Good Stuff</div>"));
         assertThat(result, not(containsString("<p>This should all go <em>away</em>!</p>")));
+    }
+    
+    @Test
+    public void shouldHandleXMLLiterals() throws Exception {
+        Resource journal = model.getResource("http://miskinhill.com.au/journals/test/");
+        String result = TemplateInterpolator.interpolate(
+                new InputStreamReader(this.getClass().getResourceAsStream("replace-xml.xml")), journal);
+        assertThat(result, containsString(
+                "<div xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\"><p><em>Test Journal</em> is a journal.</p></div>"));
     }
     
     @Test

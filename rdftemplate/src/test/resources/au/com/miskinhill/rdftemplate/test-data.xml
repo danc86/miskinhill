@@ -10,7 +10,7 @@
     <dc:title xml:lang="en">Test Journal of Good Stuff</dc:title>
     <dc:publisher rdf:nodeID="pub"/>
     <dc:identifier rdf:resource="urn:issn:12345678"/>
-    <dc:description xml:lang="en">A journal, you know, with some stuff in it</dc:description>
+    <dc:description rdf:parseType="Literal"><div xmlns="http://www.w3.org/1999/xhtml" lang="en"><p><em>Test Journal</em> is a journal.</p></div></dc:description>
     <dc:language rdf:resource="http://www.lingvoj.org/lang/en" />
     <dc:language rdf:resource="http://www.lingvoj.org/lang/ru" />
     <mhs:beginningDate>1987</mhs:beginningDate>
