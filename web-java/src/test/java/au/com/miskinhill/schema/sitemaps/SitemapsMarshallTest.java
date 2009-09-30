@@ -17,7 +17,7 @@ public class SitemapsMarshallTest {
 	private static JAXBContext jc;
 	static {
 		try {
-			jc = JAXBContext.newInstance("au.com.miskinhill.web.sitemaps");
+			jc = JAXBContext.newInstance("au.com.miskinhill.schema.sitemaps");
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
 		}

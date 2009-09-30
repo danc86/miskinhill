@@ -26,7 +26,7 @@ public class SelectorEvaluationUnitTest {
     
     @BeforeClass
     public static void ensureDatatypesRegistered() {
-        DateDataType.register();
+        DateDataType.registerStaticInstance();
     }
     
     @Before

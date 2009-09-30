@@ -27,7 +27,7 @@ public class TemplateInterpolatorUnitTest {
     
     @BeforeClass
     public static void ensureDatatypesRegistered() {
-        DateDataType.register();
+        DateDataType.registerStaticInstance();
     }
     
     private Model model;

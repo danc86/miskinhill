@@ -3,6 +3,8 @@ package au.com.miskinhill.rdftemplate.datatype;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.hp.hpl.jena.datatypes.DatatypeFormatException;
 import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.datatypes.TypeMapper;
@@ -11,13 +13,15 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+@Component
 public class DateDataType implements RDFDatatype {
     
     public static final String URI = "http://www.w3.org/TR/xmlschema-2/#date";
     
-    public static final DateDataType instance = new DateDataType();
-    public static void register() {
-        TypeMapper.getInstance().registerDatatype(instance);
+    @SuppressWarnings("unused")
+    private static DateDataType instance;
+    public static void registerStaticInstance() {
+        instance = new DateDataType();
     }
     
     private final List<DateTimeFormatter> parsers = Arrays.asList(
@@ -25,7 +29,8 @@ public class DateDataType implements RDFDatatype {
             DateTimeFormat.forPattern("yyyy-mm"),
             DateTimeFormat.forPattern("yyyy-mm-dd"));
 
-    private DateDataType() {
+    public DateDataType() {
+        TypeMapper.getInstance().registerDatatype(this);
     }
 
     @Override

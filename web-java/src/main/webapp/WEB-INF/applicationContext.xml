@@ -4,10 +4,6 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean class="au.com.miskinhill.rdf.ModelFactory" factory-method="load">
-        <constructor-arg value="/home/dan/miskinhill/content/meta.xml" />
-    </bean>
-
-	<context:component-scan base-package="au.com.miskinhill.web" />
+    <import resource="classpath:/au/com/miskinhill/web/spring-context.xml"/>
 	
 </beans>
