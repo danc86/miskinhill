@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:contact="http://www.w3.org/2000/10/swap/pim/contact#"
+         xmlns:geonames="http://www.geonames.org/ontology#"
+         xmlns:lingvoj="http://www.lingvoj.org/ontology#"
+         xmlns:mhs="http://miskinhill.com.au/rdfschema/1.0/">
+  <mhs:Journal rdf:about="http://miskinhill.com.au/journals/test/">
+    <dc:title xml:lang="en">Test Journal of Good Stuff</dc:title>
+    <dc:publisher rdf:nodeID="pub"/>
+    <dc:identifier rdf:resource="urn:issn:12345678"/>
+    <dc:description xml:lang="en">A journal, you know, with some stuff in it</dc:description>
+    <dc:language rdf:resource="http://www.lingvoj.org/lang/en" />
+    <dc:language rdf:resource="http://www.lingvoj.org/lang/ru" />
+    <mhs:beginningDate>1987</mhs:beginningDate>
+  </mhs:Journal>
+  <lingvoj:Lingvo rdf:about="http://www.lingvoj.org/lang/en">
+    <lingvoj:iso1>en</lingvoj:iso1>
+    <lingvoj:iso2b>eng</lingvoj:iso2b>
+  </lingvoj:Lingvo>
+  <lingvoj:Lingvo rdf:about="http://www.lingvoj.org/lang/ru">
+    <lingvoj:iso1>ru</lingvoj:iso1>
+    <lingvoj:iso2b>rus</lingvoj:iso2b>
+  </lingvoj:Lingvo>
+  <mhs:Publisher rdf:nodeID="pub">
+    <foaf:name xml:lang="en">Awesome Publishing House</foaf:name>
+    <foaf:homepage rdf:resource="http://awesome.com"/>
+    <contact:address rdf:resource="http://sws.geonames.org/2150650/"/>
+  </mhs:Publisher>
+  <geonames:Feature rdf:about="http://sws.geonames.org/2150650/">
+    <geonames:name xml:lang="en">St Lucia, Qld.</geonames:name>
+  </geonames:Feature>
+  <mhs:Issue rdf:about="http://miskinhill.com.au/journals/test/1:1/">
+    <mhs:isIssueOf rdf:resource="http://miskinhill.com.au/journals/test/"/>
+    <mhs:volume rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</mhs:volume>
+    <mhs:issueNumber>1</mhs:issueNumber>
+    <dc:coverage rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2007</dc:coverage>
+    <mhs:publicationDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2008-02-01</mhs:publicationDate>
+    <mhs:onlinePublicationDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2008-03-01</mhs:onlinePublicationDate>
+    <mhs:coverThumbnail rdf:resource="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg"/>
+  </mhs:Issue>
+  <mhs:Issue rdf:about="http://miskinhill.com.au/journals/test/2:1/">
+    <mhs:isIssueOf rdf:resource="http://miskinhill.com.au/journals/test/"/>
+    <mhs:volume rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</mhs:volume>
+    <mhs:issueNumber>1</mhs:issueNumber>
+    <dc:coverage rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2008</dc:coverage>
+    <mhs:publicationDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2009-02-01</mhs:publicationDate>
+    <mhs:onlinePublicationDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2009-03-01</mhs:onlinePublicationDate>
+    <mhs:coverThumbnail rdf:resource="http://miskinhill.com.au/journals/test/2:1/cover.thumb.jpg"/>
+  </mhs:Issue>
+  <mhs:Article rdf:about="http://miskinhill.com.au/journals/test/1:1/article">
+    <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
+    <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
+    <dc:title rdf:parseType="Literal"><span xmlns="http://www.w3.org/1999/xhtml" lang="en"><em>Moscow 1937</em>: the interpreter’s story</span></dc:title>
+    <mhs:startPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</mhs:startPage>
+    <mhs:endPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</mhs:endPage>
+  </mhs:Article>
+  <mhs:Author rdf:about="http://miskinhill.com.au/authors/test-author">
+    <foaf:name>Test Author</foaf:name>
+    <foaf:surname>Author</foaf:surname>
+    <foaf:givenNames>Test</foaf:givenNames>
+  </mhs:Author>
+  <mhs:Journal rdf:about="http://miskinhill.com.au/cited/journals/asdf/">
+    <dc:title xml:lang="en">A Cited Journal</dc:title>
+    <dc:identifier rdf:resource="urn:issn:87654321"/>
+  </mhs:Journal>
+  <mhs:Issue rdf:about="http://miskinhill.com.au/cited/journals/asdf/1:1/">
+    <mhs:isIssueOf rdf:resource="http://miskinhill.com.au/cited/journals/asdf/"/>
+    <mhs:volume rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</mhs:volume>
+    <mhs:issueNumber>1</mhs:issueNumber>
+  </mhs:Issue>
+  <mhs:Article rdf:about="http://miskinhill.com.au/cited/journals/asdf/1:1/article">
+    <dc:isPartOf rdf:resource="http://miskinhill.com.au/cited/journals/asdf/1:1/"/>
+    <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
+    <dc:creator rdf:resource="http://miskinhill.com.au/authors/another-author"/>
+    <dc:title>Boris Pasternak in August 1936: an NKVD memorandum</dc:title>
+    <mhs:availableFrom rdf:resource="http://example.com/teh-cited-article"/>
+  </mhs:Article>
+  <mhs:Author rdf:about="http://miskinhill.com.au/authors/another-author">
+    <foaf:name>Another Author</foaf:name>
+    <foaf:surname>Author</foaf:surname>
+    <foaf:givenNames>Another</foaf:givenNames>
+  </mhs:Author>
+  <mhs:Book rdf:about="http://miskinhill.com.au/cited/books/test">
+    <dc:identifier rdf:resource="urn:isbn:9780415274319"/>
+    <dc:identifier rdf:resource="urn:asin:0415274311"/>
+    <dc:title xml:lang="en">Slovenia: evolving loyalties</dc:title>
+    <dc:creator>John K. Cox</dc:creator>
+    <dc:publisher>Routledge</dc:publisher>
+    <dc:date rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2005</dc:date>
+  </mhs:Book>
+  <mhs:Review rdf:about="http://miskinhill.com.au/journals/test/1:1/reviews/review">
+    <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
+    <mhs:reviews rdf:resource="http://miskinhill.com.au/cited/books/test"/>
+    <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
+  </mhs:Review>
+  <mhs:Review rdf:about="http://miskinhill.com.au/journals/test/2:1/reviews/another-review">
+    <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/2:1/"/>
+    <mhs:reviews rdf:resource="http://miskinhill.com.au/cited/books/test"/>
+    <dc:creator rdf:resource="http://miskinhill.com.au/authors/another-author"/>
+  </mhs:Review>
+  <mhs:Obituary rdf:about="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe">
+    <dc:title xml:lang="en">In memoriam John Doe</dc:title>
+    <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
+    <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
+    <mhs:obituaryOf rdf:nodeID="person"/>
+  </mhs:Obituary>
+  <foaf:Person rdf:nodeID="person">
+    <foaf:name>John Doe</foaf:name>
+    <mhs:dateOfBirth rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">1990-01-01</mhs:dateOfBirth>
+    <mhs:dateOfDeath rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">1991-12-31</mhs:dateOfDeath>
+  </foaf:Person>
+</rdf:RDF>

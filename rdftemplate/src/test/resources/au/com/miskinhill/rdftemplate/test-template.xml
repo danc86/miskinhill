@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/"
+      lang="en">
+
+<head>
+    <title rdf:content="dc:title" />
+</head>
+
+<body>
+
+<h2><em rdf:content="dc:title" /><abbr class="unapi-id" title="${#uri}" /></h2>
+
+<div class="metabox-container">
+    <div class="issue-meta metabox">
+        <h4>Journal details</h4>
+        <p class="cover">
+            <img src="${!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)[0]/mhs:coverThumbnail#uri}" alt="" />
+        </p>
+        <p class="publisher">Published by <a href="${dc:publisher/foaf:homepage#uri}" rdf:content="dc:publisher/foaf:name" /></p>
+        <p class="issn">ISSN ${dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)}</p>
+        <!-- <p>Metadata:
+            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
+        </p> -->
+    </div>
+</div>
+
+<h3>Issues available online</h3>
+<ul>
+    <li rdf:for="!mhs:isIssueOf[uri-prefix='http://miskinhill.com.au/journals/'](~mhs:publicationDate#comparable-lv)">
+        <a href="${#uri}">
+            Vol.&#160;${mhs:volume},
+            Issue&#160;${mhs:issueNumber}
+            (${dc:coverage})
+        </a>
+    </li>
+</ul>
+
+<h3>About this journal</h3>
+<div rdf:content="dc:description" />
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/" lang="en">
+
+<head>
+    <title xml:lang="en" lang="en">Test Journal of Good Stuff</title>
+</head>
+
+<body>
+
+<h2><em xml:lang="en" lang="en">Test Journal of Good Stuff</em><abbr title="http://miskinhill.com.au/journals/test/" class="unapi-id"></abbr></h2>
+
+<div class="metabox-container">
+    <div class="issue-meta metabox">
+        <h4>Journal details</h4>
+        <p class="cover">
+            <img alt="" src="http://miskinhill.com.au/journals/test/2:1/cover.thumb.jpg"></img>
+        </p>
+        <p class="publisher">Published by <a xml:lang="en" lang="en" href="http://awesome.com">Awesome Publishing House</a></p>
+        <p class="issn">ISSN 12345678</p>
+        <!-- <p>Metadata:
+            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
+        </p> -->
+    </div>
+</div>
+
+<h3>Issues available online</h3>
+<ul>
+    <li>
+        <a href="http://miskinhill.com.au/journals/test/2:1/">
+            Vol. 2,
+            Issue 1
+            (2008-01-01)
+        </a>
+    </li><li>
+        <a href="http://miskinhill.com.au/journals/test/1:1/">
+            Vol. 1,
+            Issue 1
+            (2007-01-01)
+        </a>
+    </li>
+</ul>
+
+<h3>About this journal</h3>
+<div xml:lang="en" lang="en">A journal, you know, with some stuff in it</div>
+
+</body>
+</html>
