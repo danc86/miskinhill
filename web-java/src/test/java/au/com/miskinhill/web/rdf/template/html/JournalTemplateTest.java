@@ -14,14 +14,22 @@ import java.nio.charset.Charset;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.junit.BeforeClass;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.junit.Test;
 
 import au.com.miskinhill.rdftemplate.TemplateInterpolator;
+import au.com.miskinhill.rdftemplate.datatype.DateDataType;
 
 public class JournalTemplateTest {
+    
+    @BeforeClass
+    public static void ensureDatatypesRegistered() {
+        DateDataType.registerStaticInstance();
+    }
     
     @Test
     public void shouldWork() throws Exception {

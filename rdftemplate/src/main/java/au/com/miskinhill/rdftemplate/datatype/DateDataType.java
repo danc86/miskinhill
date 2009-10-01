@@ -1,8 +1,5 @@
 package au.com.miskinhill.rdftemplate.datatype;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 import com.hp.hpl.jena.datatypes.DatatypeFormatException;
@@ -24,10 +21,9 @@ public class DateDataType implements RDFDatatype {
         instance = new DateDataType();
     }
     
-    private final List<DateTimeFormatter> parsers = Arrays.asList(
-            DateTimeFormat.forPattern("yyyy"),
-            DateTimeFormat.forPattern("yyyy-mm"),
-            DateTimeFormat.forPattern("yyyy-mm-dd"));
+    private final DateTimeFormatter yearParser = DateTimeFormat.forPattern("yyyy");
+    private final DateTimeFormatter yearMonthParser = DateTimeFormat.forPattern("yyyy-MM");
+    private final DateTimeFormatter dateParser = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     public DateDataType() {
         TypeMapper.getInstance().registerDatatype(this);
@@ -40,13 +36,12 @@ public class DateDataType implements RDFDatatype {
     
     @Override
     public Class<LocalDate> getJavaClass() {
-        return LocalDate.class;
+        return null;
     }
 
     @Override
     public String unparse(Object value) {
-        LocalDate date = (LocalDate) value;
-        return date.toString();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -70,28 +65,33 @@ public class DateDataType implements RDFDatatype {
     }
     
     @Override
-    public LocalDate parse(String lexicalForm) throws DatatypeFormatException {
-        for (DateTimeFormatter parser: parsers) {
-            try {
-                return parser.parseDateTime(lexicalForm).toLocalDate();
-            } catch (IllegalArgumentException e) {
-                // pass
-            }
+    public Object parse(String lexicalForm) throws DatatypeFormatException {
+        try {
+            return dateParser.parseDateTime(lexicalForm).toLocalDate();
+        } catch (IllegalArgumentException e) {
+            // pass
+        }
+        try {
+            return new YearMonth(yearMonthParser.parseDateTime(lexicalForm).toLocalDate());
+        } catch (IllegalArgumentException e) {
+            // pass
+        }
+        try {
+            return new Year(yearParser.parseDateTime(lexicalForm).toLocalDate());
+        } catch (IllegalArgumentException e) {
+            // pass
         }
         throw new DatatypeFormatException(lexicalForm, this, "No matching parsers found");
     }
 
     @Override
     public boolean isValid(String lexicalForm) {
-        for (DateTimeFormatter parser: parsers) {
-            try {
-                parser.parseDateTime(lexicalForm);
-                return true;
-            } catch (IllegalArgumentException e) {
-                // pass
-            }
+        try {
+            parse(lexicalForm);
+            return true;
+        } catch (DatatypeFormatException e) {
+            return false;
         }
-        return false;
     }
 
     @Override
