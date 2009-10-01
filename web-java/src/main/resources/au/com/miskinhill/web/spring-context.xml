@@ -1,11 +1,20 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+        
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesMode">
+            <util:constant static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        </property>
+    </bean>
 
     <bean class="au.com.miskinhill.rdf.ModelFactory" factory-method="load" lazy-init="true">
-        <constructor-arg value="/home/dan/miskinhill/content/meta.xml" />
+        <constructor-arg value="${contentPath}/meta.xml" />
     </bean>
 
     <context:component-scan base-package="au.com.miskinhill.rdftemplate.datatype" />
