@@ -11,7 +11,7 @@ package au.com.miskinhill.rdftemplate.selector;
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         SelectorParser parser = new SelectorParser(tokens);
         try {
-            return parser.selector();
+            return parser.unionSelector();
         } catch (RecognitionException e) {
             throw new InvalidSelectorSyntaxException(e);
         }
@@ -34,10 +34,27 @@ package au.com.miskinhill.rdftemplate.selector;
     }
 }
 
-start : selector ;
+start : unionSelector ;
+
+unionSelector returns [Selector<?> result]
+@init {
+    List<Selector<?>> selectors = new ArrayList<Selector<?>>();
+}
+    : s=selector { selectors.add(s); }
+      ( '|'
+        s=selector { selectors.add(s); }
+      )*
+      {
+        if (selectors.size() > 1)
+            result = new UnionSelector(selectors);
+        else
+            result = selectors.get(0);
+      }
+    ;
 
 selector returns [Selector<?> result]
-    : ( ts=traversingSelector { result = ts; }
+    : ' '*
+      ( ts=traversingSelector { result = ts; }
       | { result = new NoopSelector(); }
       )
       ( '#'
@@ -52,6 +69,7 @@ selector returns [Selector<?> result]
         )
       |
       )
+      ' '*
     ;
 
 traversingSelector returns [TraversingSelector result]
@@ -75,9 +93,7 @@ traversal returns [Traversal result]
       ':'
       localname=XMLTOKEN { $result.setPropertyLocalName($localname.text); }
       ( '['
-        URI_PREFIX_PREDICATE
-        '='
-        uriPrefix=SINGLE_QUOTED { $result.setPredicate(new UriPrefixPredicate($uriPrefix.text)); }
+        p=booleanPredicate { $result.setPredicate(p); }
         ']'
       | // optional
       )
@@ -96,7 +112,32 @@ traversal returns [Traversal result]
       )
     ;
 
+booleanPredicate returns [Predicate result]
+    : ( p=predicate { result = p; }
+      | left=predicate
+        ' '+
+        'and'
+        ' '+
+        right=booleanPredicate
+        { result = new BooleanAndPredicate(left, right); }
+      )
+    ;
+    
+predicate returns [Predicate result]
+    : ( URI_PREFIX_PREDICATE
+        '='
+        uriPrefix=SINGLE_QUOTED { result = new UriPrefixPredicate($uriPrefix.text); }
+      | TYPE_PREDICATE
+        '='
+        nsprefix=XMLTOKEN
+        ':'
+        localname=XMLTOKEN
+        { result = new TypePredicate($nsprefix.text, $localname.text); }
+      )
+    ;
+
 URI_PREFIX_PREDICATE : 'uri-prefix' ;
+TYPE_PREDICATE : 'type' ;
 FIRST_PREDICATE : 'first' ;
 LV_ADAPTATION : 'lv' ;
 COMPARABLE_LV_ADAPTATION : 'comparable-lv' ;

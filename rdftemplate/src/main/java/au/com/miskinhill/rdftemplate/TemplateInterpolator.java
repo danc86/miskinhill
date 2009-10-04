@@ -43,6 +43,8 @@ public class TemplateInterpolator {
     private static final QName CONTENT_ACTION_QNAME = new QName(NS, CONTENT_ACTION);
     public static final String FOR_ACTION = "for";
     private static final QName FOR_ACTION_QNAME = new QName(NS, FOR_ACTION);
+    public static final String IF_ACTION = "if";
+    private static final QName IF_ACTION_QNAME = new QName(NS, IF_ACTION);
     private static final QName XML_LANG_QNAME = new QName(XMLConstants.XML_NS_URI, "lang", XMLConstants.XML_NS_PREFIX);
     private static final String XHTML_NS_URI = "http://www.w3.org/1999/xhtml";
     
@@ -70,25 +72,51 @@ public class TemplateInterpolator {
             switch (event.getEventType()) {
                 case XMLStreamConstants.START_ELEMENT: {
                     StartElement start = (StartElement) event;
-                    Attribute contentAttribute = start.getAttributeByName(CONTENT_ACTION_QNAME);
-                    Attribute forAttribute = start.getAttributeByName(FOR_ACTION_QNAME);
-                    if (contentAttribute != null && forAttribute != null) {
-                        throw new TemplateSyntaxException("rdf:for and rdf:content cannot both be present on an element");
-                    } else if (contentAttribute != null) {
-                        consumeTree(start, reader);
-                        start = interpolateAttributes(start, node);
-                        Selector<?> selector = SelectorParser.parse(contentAttribute.getValue());
-                        writeTreeForContent(writer, start, selector.singleResult(node));
-                    } else if (forAttribute != null) {
-                        start = cloneStartWithAttributes(start, cloneAttributesWithout(start, FOR_ACTION_QNAME));
-                        List<XMLEvent> tree = consumeTree(start, reader);
-                        Selector<RDFNode> selector = SelectorParser.parse(forAttribute.getValue()).withResultType(RDFNode.class);
-                        for (RDFNode subNode : selector.result(node)) {
-                            interpolate(tree.iterator(), subNode, writer);
+                    if (start.getName().equals(IF_ACTION_QNAME)) {
+                        Attribute testAttribute = start.getAttributeByName(new QName("test"));
+                        if (testAttribute == null)
+                            throw new TemplateSyntaxException("rdf:if must have a test attribute");
+                        Selector<?> selector = SelectorParser.parse(testAttribute.getValue());
+                        if (selector.result(node).isEmpty()) {
+                            consumeTree(start, reader);
+                            break;
+                        } else {
+                            List<XMLEvent> events = consumeTree(start, reader);
+                            // discard the enclosing rdf:if element
+                            events.remove(events.size() - 1);
+                            events.remove(0);
+                            interpolate(events.iterator(), node, writer);
                         }
                     } else {
-                        start = interpolateAttributes(start, node);
-                        writer.add(start);
+                        Attribute ifAttribute = start.getAttributeByName(IF_ACTION_QNAME);
+                        Attribute contentAttribute = start.getAttributeByName(CONTENT_ACTION_QNAME);
+                        Attribute forAttribute = start.getAttributeByName(FOR_ACTION_QNAME);
+                        if (ifAttribute != null) {
+                            Selector<?> selector = SelectorParser.parse(ifAttribute.getValue());
+                            if (selector.result(node).isEmpty()) {
+                                consumeTree(start, reader);
+                                break;
+                            }
+                            start = cloneStartWithAttributes(start, cloneAttributesWithout(start, IF_ACTION_QNAME));
+                        }
+                        if (contentAttribute != null && forAttribute != null) {
+                            throw new TemplateSyntaxException("rdf:for and rdf:content cannot both be present on an element");
+                        } else if (contentAttribute != null) {
+                            consumeTree(start, reader);
+                            start = interpolateAttributes(start, node);
+                            Selector<?> selector = SelectorParser.parse(contentAttribute.getValue());
+                            writeTreeForContent(writer, start, selector.singleResult(node));
+                        } else if (forAttribute != null) {
+                            start = cloneStartWithAttributes(start, cloneAttributesWithout(start, FOR_ACTION_QNAME));
+                            List<XMLEvent> tree = consumeTree(start, reader);
+                            Selector<RDFNode> selector = SelectorParser.parse(forAttribute.getValue()).withResultType(RDFNode.class);
+                            for (RDFNode subNode : selector.result(node)) {
+                                interpolate(tree.iterator(), subNode, writer);
+                            }
+                        } else {
+                            start = interpolateAttributes(start, node);
+                            writer.add(start);
+                        }
                     }
                     break;
                 }

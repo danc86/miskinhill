@@ -1,9 +1,8 @@
 package au.com.miskinhill.rdftemplate.selector;
 
-import static org.junit.matchers.JUnitMatchers.hasItems;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
 import java.io.InputStream;
 import java.util.List;
@@ -22,7 +21,7 @@ import au.com.miskinhill.rdftemplate.datatype.DateDataType;
 public class SelectorEvaluationUnitTest {
     
     private Model m;
-    private Resource journal, issue, article, author, book, review, anotherReview, obituary, en, ru;
+    private Resource journal, issue, article, citedArticle, author, anotherAuthor, book, review, anotherReview, obituary, en, ru;
     
     @BeforeClass
     public static void ensureDatatypesRegistered() {
@@ -37,7 +36,9 @@ public class SelectorEvaluationUnitTest {
         journal = m.createResource("http://miskinhill.com.au/journals/test/");
         issue = m.createResource("http://miskinhill.com.au/journals/test/1:1/");
         article = m.createResource("http://miskinhill.com.au/journals/test/1:1/article");
+        citedArticle = m.createResource("http://miskinhill.com.au/cited/journals/asdf/1:1/article");
         author = m.createResource("http://miskinhill.com.au/authors/test-author");
+        anotherAuthor = m.createResource("http://miskinhill.com.au/authors/another-author");
         book = m.createResource("http://miskinhill.com.au/cited/books/test");
         review = m.createResource("http://miskinhill.com.au/journals/test/1:1/reviews/review");
         anotherReview = m.createResource("http://miskinhill.com.au/journals/test/2:1/reviews/another-review");
@@ -132,6 +133,30 @@ public class SelectorEvaluationUnitTest {
                 .withResultType(Object.class).result(journal);
         assertThat(results.size(), equalTo(2));
         assertThat(results, hasItems((Object) "en", (Object) "ru"));
+    }
+    
+    @Test
+    public void shouldEvaluateTypePredicate() throws Exception {
+        List<RDFNode> results = SelectorParser.parse("!dc:creator[type=mhs:Review]")
+                .withResultType(RDFNode.class).result(author);
+        assertThat(results.size(), equalTo(1));
+        assertThat(results, hasItems((RDFNode) review));
+    }
+    
+    @Test
+    public void shouldEvaluateAndCombinationOfPredicates() throws Exception {
+        List<RDFNode> results = SelectorParser.parse("!dc:creator[type=mhs:Article and uri-prefix='http://miskinhill.com.au/journals/']")
+                .withResultType(RDFNode.class).result(author);
+        assertThat(results.size(), equalTo(1));
+        assertThat(results, hasItems((RDFNode) article));
+    }
+    
+    @Test
+    public void shouldEvaluateUnion() throws Exception {
+        List<RDFNode> results = SelectorParser.parse("!dc:creator | !mhs:translator")
+                .withResultType(RDFNode.class).result(anotherAuthor);
+        assertThat(results.size(), equalTo(3));
+        assertThat(results, hasItems((RDFNode) article, (RDFNode) citedArticle, (RDFNode) anotherReview));
     }
     
 }

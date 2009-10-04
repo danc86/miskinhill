@@ -52,6 +52,7 @@
   <mhs:Article rdf:about="http://miskinhill.com.au/journals/test/1:1/article">
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
     <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
+    <mhs:translator rdf:resource="http://miskinhill.com.au/authors/another-author"/>
     <dc:title rdf:parseType="Literal"><span xmlns="http://www.w3.org/1999/xhtml" lang="en"><em>Moscow 1937</em>: the interpreter’s story</span></dc:title>
     <mhs:startPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</mhs:startPage>
     <mhs:endPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</mhs:endPage>
@@ -60,6 +61,7 @@
     <foaf:name>Test Author</foaf:name>
     <foaf:surname>Author</foaf:surname>
     <foaf:givenNames>Test</foaf:givenNames>
+    <mhs:biographicalNotes>This person does stuff.</mhs:biographicalNotes>
   </mhs:Author>
   <mhs:Journal rdf:about="http://miskinhill.com.au/cited/journals/asdf/">
     <dc:title xml:lang="en">A Cited Journal</dc:title>

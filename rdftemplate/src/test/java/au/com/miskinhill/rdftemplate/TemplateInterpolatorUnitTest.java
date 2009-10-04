@@ -59,6 +59,22 @@ public class TemplateInterpolatorUnitTest {
     }
     
     @Test
+    public void shouldHandleIfs() throws Exception {
+        Resource author = model.getResource("http://miskinhill.com.au/authors/test-author");
+        String result = TemplateInterpolator.interpolate(
+                new InputStreamReader(this.getClass().getResourceAsStream("conditional.xml")), author);
+        assertThat(result, containsString("attribute test"));
+        assertThat(result, containsString("element test"));
+        assertThat(result, not(containsString("rdf:if")));
+        
+        Resource authorWithoutNotes = model.getResource("http://miskinhill.com.au/authors/another-author");
+        result = TemplateInterpolator.interpolate(
+                new InputStreamReader(this.getClass().getResourceAsStream("conditional.xml")), authorWithoutNotes);
+        assertThat(result, not(containsString("attribute test")));
+        assertThat(result, not(containsString("element test")));
+    }
+    
+    @Test
     public void shouldWork() throws Exception {
         Resource journal = model.getResource("http://miskinhill.com.au/journals/test/");
         String result = TemplateInterpolator.interpolate(
