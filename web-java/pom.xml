@@ -94,6 +94,11 @@
                 <artifactId>spring-core</artifactId>
                 <version>3.0.0.RC1</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>3.0.0.RC1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 	<build>
@@ -124,6 +129,12 @@
 					<webAppConfig>
 						<contextPath>/</contextPath>
 					</webAppConfig>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>contentPath</name>
+                            <value>${contentPath}</value>
+                        </systemProperty>
+                    </systemProperties>
 				</configuration>
 			</plugin>
 			<!--
