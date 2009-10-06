@@ -129,9 +129,28 @@ public class TemplateInterpolator {
                             throw new TemplateSyntaxException("rdf:for and rdf:content cannot both be present on an element");
                         } else if (contentAttribute != null) {
                             consumeTree(start, reader);
-                            start = interpolateAttributes(start, node);
                             Selector<?> selector = selectorFactory.get(contentAttribute.getValue());
-                            writeTreeForContent(writer, start, selector.singleResult(node));
+                            Object replacement = selector.singleResult(node);
+                            start = interpolateAttributes(start, node);
+                            Set<Attribute> attributes = cloneAttributesWithout(start, CONTENT_ACTION_QNAME);
+                            if (replacement instanceof Literal) {
+                                Literal literal = (Literal) replacement;
+                                if (!StringUtils.isEmpty(literal.getLanguage())) {
+                                    attributes.add(eventFactory.createAttribute(XML_LANG_QNAME, ((Literal) replacement).getLanguage()));
+                                    if (start.getName().getNamespaceURI().equals(XHTML_NS_URI)) {
+                                        String xhtmlPrefixInContext = start.getNamespaceContext().getPrefix(XHTML_NS_URI);
+                                        QName xhtmlLangQNameForContext; // ugh
+                                        if (xhtmlPrefixInContext.isEmpty())
+                                            xhtmlLangQNameForContext = new QName("lang");
+                                        else
+                                            xhtmlLangQNameForContext = new QName(XHTML_NS_URI, "lang", xhtmlPrefixInContext);
+                                        attributes.add(eventFactory.createAttribute(xhtmlLangQNameForContext, literal.getLanguage()));
+                                    }
+                                }
+                            }
+                            writer.add(eventFactory.createStartElement(start.getName(), attributes.iterator(), start.getNamespaces()));
+                            writeTreeForContent(writer, replacement);
+                            writer.add(eventFactory.createEndElement(start.getName(), start.getNamespaces()));
                         } else if (forAttribute != null) {
                             start = cloneStartWithAttributes(start, cloneAttributesWithout(start, FOR_ACTION_QNAME));
                             List<XMLEvent> tree = consumeTree(start, reader);
@@ -148,12 +167,12 @@ public class TemplateInterpolator {
                 }
                 case XMLStreamConstants.CHARACTERS: {
                     Characters characters = (Characters) event;
-                    writer.add(eventFactory.createCharacters(interpolateString(characters.getData(), node)));
+                    interpolateCharacters(writer, characters, node);
                     break;
                 }
                 case XMLStreamConstants.CDATA: {
                     Characters characters = (Characters) event;
-                    writer.add(eventFactory.createCData(interpolateString(characters.getData(), node)));
+                    interpolateCharacters(writer, characters, node);
                     break;
                 }
                 default:
@@ -237,42 +256,49 @@ public class TemplateInterpolator {
                 throw new UnsupportedOperationException("Not an RDFNode: " + replacement);
             }
             
-            matcher.appendReplacement(substituted, replacementValue.replace("$", "\\$"));;
+            matcher.appendReplacement(substituted, replacementValue.replace("$", "\\$"));
         }
         matcher.appendTail(substituted);
         return substituted.toString();
     }
     
-    private void writeTreeForContent(XMLEventWriter writer, StartElement start, Object replacement)
+    private void interpolateCharacters(XMLEventWriter writer, Characters characters, RDFNode node) throws XMLStreamException {
+        String template = characters.getData();
+        if (!SUBSTITUTION_PATTERN.matcher(template).find()) {
+            writer.add(characters); // fast path
+            return;
+        }
+        Matcher matcher = SUBSTITUTION_PATTERN.matcher(template);
+        int lastAppendedPos = 0;
+        while (matcher.find()) {
+            writer.add(eventFactory.createCharacters(template.substring(lastAppendedPos, matcher.start())));
+            lastAppendedPos = matcher.end();
+            String expression = matcher.group(1);
+            Object replacement = selectorFactory.get(expression).singleResult(node);
+            writeTreeForContent(writer, replacement);
+        }
+        writer.add(eventFactory.createCharacters(template.substring(lastAppendedPos)));
+    }
+    
+    private void writeTreeForContent(XMLEventWriter writer, Object replacement)
             throws XMLStreamException {
         if (replacement instanceof RDFNode) {
             RDFNode replacementNode = (RDFNode) replacement;
             if (replacementNode.isLiteral()) {
                 Literal literal = (Literal) replacementNode;
-                Set<Attribute> attributes = cloneAttributesWithout(start, CONTENT_ACTION_QNAME);
-                
-                if (!StringUtils.isEmpty(literal.getLanguage())) {
-                    attributes.add(eventFactory.createAttribute(XML_LANG_QNAME, literal.getLanguage()));
-                    if (start.getName().getNamespaceURI().equals(XHTML_NS_URI)) {
-                        String xhtmlPrefixInContext = start.getNamespaceContext().getPrefix(XHTML_NS_URI);
-                        QName xhtmlLangQNameForContext; // ugh
-                        if (xhtmlPrefixInContext.isEmpty())
-                            xhtmlLangQNameForContext = new QName("lang");
-                        else
-                            xhtmlLangQNameForContext = new QName(XHTML_NS_URI, "lang", xhtmlPrefixInContext);
-                        attributes.add(eventFactory.createAttribute(xhtmlLangQNameForContext, literal.getLanguage()));
-                    }
-                }
-                
-                writer.add(eventFactory.createStartElement(start.getName(), attributes.iterator(), start.getNamespaces()));
                 if (literal.isWellFormedXML()) {
-                    writeXMLLiteral(start.getNamespaceContext(), literal.getLexicalForm(), writer);
+                    writeXMLLiteral(literal.getLexicalForm(), writer);
                 } else {
                     writer.add(eventFactory.createCharacters(literal.getValue().toString()));
                 }
-                writer.add(eventFactory.createEndElement(start.getName(), start.getNamespaces()));
             } else {
                 throw new UnsupportedOperationException("Not a literal: " + replacementNode);
+            }
+        } else if (replacement instanceof String) {
+            writer.add(eventFactory.createCharacters((String) replacement));
+        } else if (replacement instanceof XMLStream) {
+            for (XMLEvent event: (XMLStream) replacement) {
+                writer.add(event);
             }
         } else {
             throw new UnsupportedOperationException("Not an RDFNode: " + replacement);
@@ -291,7 +317,7 @@ public class TemplateInterpolator {
         return attributes;
     }
     
-    private void writeXMLLiteral(NamespaceContext nsContext, String literal, XMLEventWriter writer)
+    private void writeXMLLiteral(String literal, XMLEventWriter writer)
             throws XMLStreamException {
         XMLEventReader reader = inputFactory.createXMLEventReader(new StringReader(literal));
         while (reader.hasNext()) {
