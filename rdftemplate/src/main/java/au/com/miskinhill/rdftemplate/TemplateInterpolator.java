@@ -34,7 +34,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.apache.commons.lang.StringUtils;
 
 import au.com.miskinhill.rdftemplate.selector.Selector;
-import au.com.miskinhill.rdftemplate.selector.SelectorParser;
+import au.com.miskinhill.rdftemplate.selector.SelectorFactory;
 
 public class TemplateInterpolator {
     
@@ -55,17 +55,20 @@ public class TemplateInterpolator {
         inputFactory.setProperty("javax.xml.stream.isCoalescing", true);
     }
     
-    private TemplateInterpolator() {
+    private final SelectorFactory selectorFactory;
+    
+    public TemplateInterpolator(SelectorFactory selectorFactory) {
+        this.selectorFactory = selectorFactory;
     }
     
     @SuppressWarnings("unchecked")
-    public static String interpolate(Reader reader, RDFNode node) throws XMLStreamException {
+    public String interpolate(Reader reader, RDFNode node) throws XMLStreamException {
         StringWriter writer = new StringWriter();
         interpolate(inputFactory.createXMLEventReader(reader), node, outputFactory.createXMLEventWriter(writer));
         return writer.toString();
     }
     
-    public static void interpolate(Iterator<XMLEvent> reader, RDFNode node, XMLEventWriter writer)
+    public void interpolate(Iterator<XMLEvent> reader, RDFNode node, XMLEventWriter writer)
             throws XMLStreamException {
         while (reader.hasNext()) {
             XMLEvent event = reader.next();
@@ -76,7 +79,7 @@ public class TemplateInterpolator {
                         Attribute testAttribute = start.getAttributeByName(new QName("test"));
                         if (testAttribute == null)
                             throw new TemplateSyntaxException("rdf:if must have a test attribute");
-                        Selector<?> selector = SelectorParser.parse(testAttribute.getValue());
+                        Selector<?> selector = selectorFactory.get(testAttribute.getValue());
                         if (selector.result(node).isEmpty()) {
                             consumeTree(start, reader);
                             break;
@@ -92,7 +95,7 @@ public class TemplateInterpolator {
                         Attribute contentAttribute = start.getAttributeByName(CONTENT_ACTION_QNAME);
                         Attribute forAttribute = start.getAttributeByName(FOR_ACTION_QNAME);
                         if (ifAttribute != null) {
-                            Selector<?> selector = SelectorParser.parse(ifAttribute.getValue());
+                            Selector<?> selector = selectorFactory.get(ifAttribute.getValue());
                             if (selector.result(node).isEmpty()) {
                                 consumeTree(start, reader);
                                 break;
@@ -104,12 +107,12 @@ public class TemplateInterpolator {
                         } else if (contentAttribute != null) {
                             consumeTree(start, reader);
                             start = interpolateAttributes(start, node);
-                            Selector<?> selector = SelectorParser.parse(contentAttribute.getValue());
+                            Selector<?> selector = selectorFactory.get(contentAttribute.getValue());
                             writeTreeForContent(writer, start, selector.singleResult(node));
                         } else if (forAttribute != null) {
                             start = cloneStartWithAttributes(start, cloneAttributesWithout(start, FOR_ACTION_QNAME));
                             List<XMLEvent> tree = consumeTree(start, reader);
-                            Selector<RDFNode> selector = SelectorParser.parse(forAttribute.getValue()).withResultType(RDFNode.class);
+                            Selector<RDFNode> selector = selectorFactory.get(forAttribute.getValue()).withResultType(RDFNode.class);
                             for (RDFNode subNode : selector.result(node)) {
                                 interpolate(tree.iterator(), subNode, writer);
                             }
@@ -136,7 +139,7 @@ public class TemplateInterpolator {
         }
     }
     
-    private static List<XMLEvent> consumeTree(StartElement start, Iterator<XMLEvent> reader) throws XMLStreamException {
+    private List<XMLEvent> consumeTree(StartElement start, Iterator<XMLEvent> reader) throws XMLStreamException {
         List<XMLEvent> events = new ArrayList<XMLEvent>();
         events.add(start);
         Deque<QName> elementStack = new LinkedList<QName>();
@@ -162,7 +165,7 @@ public class TemplateInterpolator {
     }
     
     @SuppressWarnings("unchecked")
-    private static StartElement interpolateAttributes(StartElement start, RDFNode node) {
+    private StartElement interpolateAttributes(StartElement start, RDFNode node) {
         Set<Attribute> replacementAttributes = new LinkedHashSet<Attribute>();
         for (Iterator<Attribute> it = start.getAttributes(); it.hasNext(); ) {
             Attribute attribute = it.next();
@@ -186,7 +189,7 @@ public class TemplateInterpolator {
     }
     
     private static final Pattern SUBSTITUTION_PATTERN = Pattern.compile("\\$\\{([^}]*)\\}");
-    public static String interpolateString(String template, RDFNode node) {
+    public String interpolateString(String template, RDFNode node) {
         if (!SUBSTITUTION_PATTERN.matcher(template).find()) {
             return template; // fast path
         }
@@ -194,7 +197,7 @@ public class TemplateInterpolator {
         Matcher matcher = SUBSTITUTION_PATTERN.matcher(template);
         while (matcher.find()) {
             String expression = matcher.group(1);
-            Object replacement = SelectorParser.parse(expression).singleResult(node);
+            Object replacement = selectorFactory.get(expression).singleResult(node);
             
             String replacementValue;
             if (replacement instanceof RDFNode) {
@@ -217,7 +220,7 @@ public class TemplateInterpolator {
         return substituted.toString();
     }
     
-    private static void writeTreeForContent(XMLEventWriter writer, StartElement start, Object replacement)
+    private void writeTreeForContent(XMLEventWriter writer, StartElement start, Object replacement)
             throws XMLStreamException {
         if (replacement instanceof RDFNode) {
             RDFNode replacementNode = (RDFNode) replacement;
@@ -254,7 +257,7 @@ public class TemplateInterpolator {
     }
 
     @SuppressWarnings("unchecked")
-    private static Set<Attribute> cloneAttributesWithout(StartElement start, QName omit) {
+    private Set<Attribute> cloneAttributesWithout(StartElement start, QName omit) {
         // clone attributes, but without rdf:content
         Set<Attribute> attributes = new LinkedHashSet<Attribute>();
         for (Iterator<Attribute> it = start.getAttributes(); it.hasNext(); ) {
@@ -265,7 +268,7 @@ public class TemplateInterpolator {
         return attributes;
     }
     
-    private static void writeXMLLiteral(NamespaceContext nsContext, String literal, XMLEventWriter writer)
+    private void writeXMLLiteral(NamespaceContext nsContext, String literal, XMLEventWriter writer)
             throws XMLStreamException {
         XMLEventReader reader = inputFactory.createXMLEventReader(new StringReader(literal));
         while (reader.hasNext()) {

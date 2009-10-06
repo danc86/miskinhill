@@ -22,6 +22,7 @@ public class SelectorEvaluationUnitTest {
     
     private Model m;
     private Resource journal, issue, article, citedArticle, author, anotherAuthor, book, review, anotherReview, obituary, en, ru;
+    private SelectorFactory selectorFactory;
     
     @BeforeClass
     public static void ensureDatatypesRegistered() {
@@ -45,24 +46,25 @@ public class SelectorEvaluationUnitTest {
         obituary = m.createResource("http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe");
         en = m.createResource("http://www.lingvoj.org/lang/en");
         ru = m.createResource("http://www.lingvoj.org/lang/ru");
+        selectorFactory = new AntlrSelectorFactory();
     }
     
     @Test
     public void shouldEvaluateTraversal() {
-        RDFNode result = SelectorParser.parse("dc:creator").withResultType(RDFNode.class).singleResult(article);
+        RDFNode result = selectorFactory.get("dc:creator").withResultType(RDFNode.class).singleResult(article);
         assertThat(result, equalTo((RDFNode) author));
     }
     
     @Test
     public void shouldEvaluateMultipleTraversals() throws Exception {
-        RDFNode result = SelectorParser.parse("dc:creator/foaf:name")
+        RDFNode result = selectorFactory.get("dc:creator/foaf:name")
                 .withResultType(RDFNode.class).singleResult(article);
         assertThat(((Literal) result).getString(), equalTo("Test Author"));
     }
     
     @Test
     public void shouldEvaluateInverseTraversal() throws Exception {
-        List<RDFNode> results = SelectorParser.parse("!mhs:isIssueOf/!dc:isPartOf")
+        List<RDFNode> results = selectorFactory.get("!mhs:isIssueOf/!dc:isPartOf")
                 .withResultType(RDFNode.class).result(journal);
         assertThat(results.size(), equalTo(4));
         assertThat(results, hasItems((RDFNode) article, (RDFNode) review, (RDFNode) anotherReview, (RDFNode) obituary));
@@ -70,7 +72,7 @@ public class SelectorEvaluationUnitTest {
     
     @Test
     public void shouldEvaluateSortOrder() throws Exception {
-        List<RDFNode> results = SelectorParser.parse("dc:language(lingvoj:iso1#comparable-lv)")
+        List<RDFNode> results = selectorFactory.get("dc:language(lingvoj:iso1#comparable-lv)")
                 .withResultType(RDFNode.class).result(journal);
         assertThat(results.size(), equalTo(2));
         assertThat(results.get(0), equalTo((RDFNode) en));
@@ -79,7 +81,7 @@ public class SelectorEvaluationUnitTest {
     
     @Test
     public void shouldEvaluateReverseSortOrder() throws Exception {
-        List<RDFNode> results = SelectorParser.parse("dc:language(~lingvoj:iso1#comparable-lv)")
+        List<RDFNode> results = selectorFactory.get("dc:language(~lingvoj:iso1#comparable-lv)")
                 .withResultType(RDFNode.class).result(journal);
         assertThat(results.size(), equalTo(2));
         assertThat(results.get(0), equalTo((RDFNode) ru));
@@ -88,7 +90,7 @@ public class SelectorEvaluationUnitTest {
     
     @Test
     public void shouldEvaluateComplexSortOrder() throws Exception {
-        List<RDFNode> results = SelectorParser.parse("!mhs:reviews(dc:isPartOf/mhs:publicationDate#comparable-lv)")
+        List<RDFNode> results = selectorFactory.get("!mhs:reviews(dc:isPartOf/mhs:publicationDate#comparable-lv)")
                 .withResultType(RDFNode.class).result(book);
         assertThat(results.size(), equalTo(2));
         assertThat(results.get(0), equalTo((RDFNode) review));
@@ -97,31 +99,31 @@ public class SelectorEvaluationUnitTest {
     
     @Test
     public void shouldEvaluateUriAdaptation() throws Exception {
-        String result = SelectorParser.parse("mhs:coverThumbnail#uri")
+        String result = selectorFactory.get("mhs:coverThumbnail#uri")
                 .withResultType(String.class).singleResult(issue);
         assertThat(result, equalTo("http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg"));
     }
     
     @Test
     public void shouldEvaluateBareUriAdaptation() throws Exception {
-        String result = SelectorParser.parse("#uri").withResultType(String.class).singleResult(journal);
+        String result = selectorFactory.get("#uri").withResultType(String.class).singleResult(journal);
         assertThat(result, equalTo("http://miskinhill.com.au/journals/test/"));
     }
     
     @Test
     public void shouldEvaluateUriSliceAdaptation() throws Exception {
-        String result = SelectorParser.parse("dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)")
+        String result = selectorFactory.get("dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)")
                 .withResultType(String.class).singleResult(journal);
         assertThat(result, equalTo("12345678"));
     }
     
     @Test
     public void shouldEvaluateSubscript() throws Exception {
-        String result = SelectorParser.parse(
+        String result = selectorFactory.get(
                 "!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)[0]/mhs:coverThumbnail#uri")
                 .withResultType(String.class).singleResult(journal);
         assertThat(result, equalTo("http://miskinhill.com.au/journals/test/2:1/cover.thumb.jpg"));
-        result = SelectorParser.parse(
+        result = selectorFactory.get(
                 "!mhs:isIssueOf(mhs:publicationDate#comparable-lv)[0]/mhs:coverThumbnail#uri")
                 .withResultType(String.class).singleResult(journal);
         assertThat(result, equalTo("http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg"));
@@ -129,7 +131,7 @@ public class SelectorEvaluationUnitTest {
     
     @Test
     public void shouldEvaluateLVAdaptation() throws Exception {
-        List<Object> results = SelectorParser.parse("dc:language/lingvoj:iso1#lv")
+        List<Object> results = selectorFactory.get("dc:language/lingvoj:iso1#lv")
                 .withResultType(Object.class).result(journal);
         assertThat(results.size(), equalTo(2));
         assertThat(results, hasItems((Object) "en", (Object) "ru"));
@@ -137,7 +139,7 @@ public class SelectorEvaluationUnitTest {
     
     @Test
     public void shouldEvaluateTypePredicate() throws Exception {
-        List<RDFNode> results = SelectorParser.parse("!dc:creator[type=mhs:Review]")
+        List<RDFNode> results = selectorFactory.get("!dc:creator[type=mhs:Review]")
                 .withResultType(RDFNode.class).result(author);
         assertThat(results.size(), equalTo(1));
         assertThat(results, hasItems((RDFNode) review));
@@ -145,7 +147,7 @@ public class SelectorEvaluationUnitTest {
     
     @Test
     public void shouldEvaluateAndCombinationOfPredicates() throws Exception {
-        List<RDFNode> results = SelectorParser.parse("!dc:creator[type=mhs:Article and uri-prefix='http://miskinhill.com.au/journals/']")
+        List<RDFNode> results = selectorFactory.get("!dc:creator[type=mhs:Article and uri-prefix='http://miskinhill.com.au/journals/']")
                 .withResultType(RDFNode.class).result(author);
         assertThat(results.size(), equalTo(1));
         assertThat(results, hasItems((RDFNode) article));
@@ -153,7 +155,7 @@ public class SelectorEvaluationUnitTest {
     
     @Test
     public void shouldEvaluateUnion() throws Exception {
-        List<RDFNode> results = SelectorParser.parse("!dc:creator | !mhs:translator")
+        List<RDFNode> results = selectorFactory.get("!dc:creator | !mhs:translator")
                 .withResultType(RDFNode.class).result(anotherAuthor);
         assertThat(results.size(), equalTo(3));
         assertThat(results, hasItems((RDFNode) article, (RDFNode) citedArticle, (RDFNode) anotherReview));

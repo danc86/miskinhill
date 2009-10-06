@@ -1,5 +1,7 @@
 package au.com.miskinhill.rdftemplate.selector;
 
+import org.junit.Before;
+
 import static au.com.miskinhill.rdftemplate.selector.AdaptationMatcher.*;
 import static au.com.miskinhill.rdftemplate.selector.PredicateMatcher.*;
 import static au.com.miskinhill.rdftemplate.selector.SelectorMatcher.*;
@@ -11,15 +13,22 @@ import org.junit.Test;
 
 public class SelectorParserUnitTest {
     
+    private SelectorFactory factory;
+    
+    @Before
+    public void setUp() {
+        factory = new AntlrSelectorFactory();
+    }
+    
     @Test
     public void shouldRecogniseSingleTraversal() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse("dc:creator").withResultType(RDFNode.class);
+        Selector<RDFNode> selector = factory.get("dc:creator").withResultType(RDFNode.class);
         assertThat(selector, selector(traversal("dc", "creator")));
     }
     
     @Test
     public void shouldRecogniseMultipleTraversals() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse("dc:creator/foaf:name").withResultType(RDFNode.class);
+        Selector<RDFNode> selector = factory.get("dc:creator/foaf:name").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("dc", "creator"),
                 traversal("foaf", "name")));
@@ -27,7 +36,7 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseInverseTraversal() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse("!dc:isPartOf/!dc:isPartOf").withResultType(RDFNode.class);
+        Selector<RDFNode> selector = factory.get("!dc:isPartOf/!dc:isPartOf").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("dc", "isPartOf").inverse(),
                 traversal("dc", "isPartOf").inverse()));
@@ -35,7 +44,7 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseSortOrder() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse("!mhs:isIssueOf(mhs:publicationDate#comparable-lv)").withResultType(RDFNode.class);
+        Selector<RDFNode> selector = factory.get("!mhs:isIssueOf(mhs:publicationDate#comparable-lv)").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("mhs", "isIssueOf").inverse()
                 .withSortOrder(selector(traversal("mhs", "publicationDate"))
@@ -44,7 +53,7 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseReverseSortOrder() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse("!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)").withResultType(RDFNode.class);
+        Selector<RDFNode> selector = factory.get("!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("mhs", "isIssueOf").inverse()
                 .withSortOrder(selector(traversal("mhs", "publicationDate"))
@@ -54,7 +63,7 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseComplexSortOrder() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse("!mhs:reviews(dc:isPartOf/mhs:publicationDate#comparable-lv)").withResultType(RDFNode.class);
+        Selector<RDFNode> selector = factory.get("!mhs:reviews(dc:isPartOf/mhs:publicationDate#comparable-lv)").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("mhs", "reviews")
                 .withSortOrder(selector(traversal("dc", "isPartOf"), traversal("mhs", "publicationDate"))
@@ -63,7 +72,7 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseUriAdaptation() throws Exception {
-        Selector<?> selector = SelectorParser.parse("mhs:coverThumbnail#uri");
+        Selector<?> selector = factory.get("mhs:coverThumbnail#uri");
         assertThat(selector, selector(
                 traversal("mhs", "coverThumbnail"))
                 .withAdaptation(uriAdaptation()));
@@ -71,13 +80,13 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseBareUriAdaptation() throws Exception {
-        Selector<?> selector = SelectorParser.parse("#uri");
+        Selector<?> selector = factory.get("#uri");
         assertThat(selector, selector().withAdaptation(uriAdaptation()));
     }
     
     @Test
     public void shouldRecogniseUriSliceAdaptation() throws Exception {
-        Selector<?> selector = SelectorParser.parse("dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)");
+        Selector<?> selector = factory.get("dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)");
         assertThat(selector, selector(
                 traversal("dc", "identifier")
                     .withPredicate(uriPrefixPredicate("urn:issn:")))
@@ -86,7 +95,7 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseUriPrefixPredicate() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse(
+        Selector<RDFNode> selector = factory.get(
                 "!mhs:isIssueOf[uri-prefix='http://miskinhill.com.au/journals/'](~mhs:publicationDate#comparable-lv)")
                 .withResultType(RDFNode.class);
         assertThat(selector, selector(
@@ -100,7 +109,7 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseSubscript() throws Exception {
-        Selector<String> selector = SelectorParser.parse(
+        Selector<String> selector = factory.get(
                 "!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)[0]/mhs:coverThumbnail#uri")
                 .withResultType(String.class);
         assertThat(selector, selector(
@@ -116,7 +125,7 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseLVAdaptation() throws Exception {
-        Selector<Object> selector = SelectorParser.parse("dc:language/lingvoj:iso1#lv").withResultType(Object.class);
+        Selector<Object> selector = factory.get("dc:language/lingvoj:iso1#lv").withResultType(Object.class);
         assertThat(selector, selector(
                 traversal("dc", "language"),
                 traversal("lingvoj", "iso1"))
@@ -125,14 +134,14 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseTypePredicate() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse("!dc:creator[type=mhs:Review]").withResultType(RDFNode.class);
+        Selector<RDFNode> selector = factory.get("!dc:creator[type=mhs:Review]").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("dc", "creator").inverse().withPredicate(typePredicate("mhs", "Review"))));
     }
     
     @Test
     public void shouldRecogniseAndCombinationOfPredicates() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse("!dc:creator[type=mhs:Review and uri-prefix='http://miskinhill.com.au/journals/']").withResultType(RDFNode.class);
+        Selector<RDFNode> selector = factory.get("!dc:creator[type=mhs:Review and uri-prefix='http://miskinhill.com.au/journals/']").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("dc", "creator").inverse()
                 .withPredicate(booleanAndPredicate(
@@ -142,7 +151,7 @@ public class SelectorParserUnitTest {
     
     @Test
     public void shouldRecogniseUnion() throws Exception {
-        Selector<RDFNode> selector = SelectorParser.parse("!dc:creator | !mhs:translator").withResultType(RDFNode.class);
+        Selector<RDFNode> selector = factory.get("!dc:creator | !mhs:translator").withResultType(RDFNode.class);
         assertThat((UnionSelector<RDFNode>) selector, unionSelector(
                 selector(traversal("dc", "creator").inverse()),
                 selector(traversal("mhs", "translator").inverse())));
@@ -150,12 +159,12 @@ public class SelectorParserUnitTest {
     
     @Test(expected = InvalidSelectorSyntaxException.class)
     public void shouldThrowForInvalidSyntax() throws Exception {
-        SelectorParser.parse("dc:creator]["); // this is a parser error
+        factory.get("dc:creator]["); // this is a parser error
     }
     
     @Test(expected = InvalidSelectorSyntaxException.class)
     public void shouldThrowForUnrecognisedCharacter() throws Exception {
-        SelectorParser.parse("dc:cre&ator"); // ... and this is a lexer error
+        factory.get("dc:cre&ator"); // ... and this is a lexer error
     }
     
 }

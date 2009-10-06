@@ -22,6 +22,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import au.com.miskinhill.rdftemplate.datatype.DateDataType;
+import au.com.miskinhill.rdftemplate.selector.AntlrSelectorFactory;
 
 public class TemplateInterpolatorUnitTest {
     
@@ -31,6 +32,7 @@ public class TemplateInterpolatorUnitTest {
     }
     
     private Model model;
+    private TemplateInterpolator templateInterpolator;
     
     @Before
     public void setUp() {
@@ -38,12 +40,13 @@ public class TemplateInterpolatorUnitTest {
         InputStream stream = this.getClass().getResourceAsStream(
                 "/au/com/miskinhill/rdftemplate/test-data.xml");
         model.read(stream, "");
+        templateInterpolator = new TemplateInterpolator(new AntlrSelectorFactory());
     }
     
     @Test
     public void shouldReplaceSubtreesWithContent() throws Exception {
         Resource journal = model.getResource("http://miskinhill.com.au/journals/test/");
-        String result = TemplateInterpolator.interpolate(
+        String result = templateInterpolator.interpolate(
                 new InputStreamReader(this.getClass().getResourceAsStream("replace-subtree.xml")), journal);
         assertThat(result, containsString("<div xml:lang=\"en\" lang=\"en\">Test Journal of Good Stuff</div>"));
         assertThat(result, not(containsString("<p>This should all go <em>away</em>!</p>")));
@@ -52,7 +55,7 @@ public class TemplateInterpolatorUnitTest {
     @Test
     public void shouldHandleXMLLiterals() throws Exception {
         Resource journal = model.getResource("http://miskinhill.com.au/journals/test/");
-        String result = TemplateInterpolator.interpolate(
+        String result = templateInterpolator.interpolate(
                 new InputStreamReader(this.getClass().getResourceAsStream("replace-xml.xml")), journal);
         assertThat(result, containsString(
                 "<div xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\"><p><em>Test Journal</em> is a journal.</p></div>"));
@@ -61,14 +64,14 @@ public class TemplateInterpolatorUnitTest {
     @Test
     public void shouldHandleIfs() throws Exception {
         Resource author = model.getResource("http://miskinhill.com.au/authors/test-author");
-        String result = TemplateInterpolator.interpolate(
+        String result = templateInterpolator.interpolate(
                 new InputStreamReader(this.getClass().getResourceAsStream("conditional.xml")), author);
         assertThat(result, containsString("attribute test"));
         assertThat(result, containsString("element test"));
         assertThat(result, not(containsString("rdf:if")));
         
         Resource authorWithoutNotes = model.getResource("http://miskinhill.com.au/authors/another-author");
-        result = TemplateInterpolator.interpolate(
+        result = templateInterpolator.interpolate(
                 new InputStreamReader(this.getClass().getResourceAsStream("conditional.xml")), authorWithoutNotes);
         assertThat(result, not(containsString("attribute test")));
         assertThat(result, not(containsString("element test")));
@@ -77,7 +80,7 @@ public class TemplateInterpolatorUnitTest {
     @Test
     public void shouldWork() throws Exception {
         Resource journal = model.getResource("http://miskinhill.com.au/journals/test/");
-        String result = TemplateInterpolator.interpolate(
+        String result = templateInterpolator.interpolate(
                 new InputStreamReader(this.getClass().getResourceAsStream("test-template.xml")), journal);
         String expected = exhaust(this.getClass().getResource("test-template.out.xml").toURI());
         assertEquals(expected.trim(), result.trim());
