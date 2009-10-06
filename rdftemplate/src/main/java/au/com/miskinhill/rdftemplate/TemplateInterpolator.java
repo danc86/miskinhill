@@ -45,6 +45,8 @@ public class TemplateInterpolator {
     private static final QName FOR_ACTION_QNAME = new QName(NS, FOR_ACTION);
     public static final String IF_ACTION = "if";
     private static final QName IF_ACTION_QNAME = new QName(NS, IF_ACTION);
+    public static final String JOIN_ACTION = "join";
+    private static final QName JOIN_ACTION_QNAME = new QName(NS, JOIN_ACTION);
     private static final QName XML_LANG_QNAME = new QName(XMLConstants.XML_NS_URI, "lang", XMLConstants.XML_NS_PREFIX);
     private static final String XHTML_NS_URI = "http://www.w3.org/1999/xhtml";
     
@@ -89,6 +91,27 @@ public class TemplateInterpolator {
                             events.remove(events.size() - 1);
                             events.remove(0);
                             interpolate(events.iterator(), node, writer);
+                        }
+                    } else if (start.getName().equals(JOIN_ACTION_QNAME)) {
+                        Attribute eachAttribute = start.getAttributeByName(new QName("each"));
+                        if (eachAttribute == null)
+                            throw new TemplateSyntaxException("rdf:join must have an each attribute");
+                        String separator = "";
+                        Attribute separatorAttribute = start.getAttributeByName(new QName("separator"));
+                        if (separatorAttribute != null)
+                            separator = separatorAttribute.getValue();
+                        Selector<RDFNode> selector = selectorFactory.get(eachAttribute.getValue()).withResultType(RDFNode.class);
+                        List<XMLEvent> events = consumeTree(start, reader);
+                        // discard enclosing rdf:join
+                        events.remove(events.size() - 1);
+                        events.remove(0);
+                        boolean first = true;
+                        for (RDFNode eachNode: selector.result(node)) {
+                            if (!first) {
+                                writer.add(eventFactory.createCharacters(separator));
+                            }
+                            interpolate(events.iterator(), eachNode, writer);
+                            first = false;
                         }
                     } else {
                         Attribute ifAttribute = start.getAttributeByName(IF_ACTION_QNAME);
