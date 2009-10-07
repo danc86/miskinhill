@@ -58,14 +58,19 @@ selector returns [Selector<?> result]
       | { result = new NoopSelector(); }
       )
       ( '#'
-        adaptationName=XMLTOKEN { adaptationClass = adaptationResolver.getByName($adaptationName.text); }
+        adaptationName=XMLTOKEN
+            {
+                adaptationClass = adaptationResolver.getByName($adaptationName.text);
+                if (adaptationClass == null)
+                    throw new InvalidSelectorSyntaxException("No adaptation named " + $adaptationName.text);
+            }
         ( '('
           startIndex=INTEGER {
                                 try {
                                     adaptation = adaptationClass.getConstructor(Integer.class)
                                             .newInstance(Integer.parseInt($startIndex.text));
                                 } catch (Exception e) {
-                                    throw new RuntimeException(e);
+                                    throw new InvalidSelectorSyntaxException(e);
                                 }
                              }
           ')'
@@ -73,7 +78,7 @@ selector returns [Selector<?> result]
                try {
                    adaptation = adaptationClass.newInstance();
                } catch (Exception e) {
-                   throw new RuntimeException(e);
+                   throw new InvalidSelectorSyntaxException(e);
                }
           }
         )
