@@ -45,9 +45,9 @@ public class Traversal {
                 destinations.add(it.nextResource());
             }
         }
+        CollectionUtils.filter(destinations, predicate);
         if (_sortComparator != null)
             Collections.sort(destinations, reverseSorted ? Collections.reverseOrder(_sortComparator) : _sortComparator);
-        CollectionUtils.filter(destinations, predicate);
         if (subscript != null) {
             if (destinations.size() <= subscript) {
                 throw new SelectorEvaluationException("Cannot apply subscript " + subscript + " to nodes " + destinations);
