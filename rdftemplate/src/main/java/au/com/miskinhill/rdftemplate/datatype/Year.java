@@ -14,6 +14,14 @@ public class Year {
         this.year = date.getYear();
     }
     
+    public Year(YearMonth yearMonth) {
+        this.year = yearMonth.getYear();
+    }
+    
+    public int getYear() {
+        return year;
+    }
+    
     @Override
     public String toString() {
         return Integer.toString(year);

@@ -17,6 +17,14 @@ public class YearMonth {
         this.month = date.getMonthOfYear();
     }
     
+    public int getYear() {
+        return year;
+    }
+    
+    public int getMonth() {
+        return month;
+    }
+    
     @Override
     public String toString() {
         return String.format("%04d-%02d", year, month);
