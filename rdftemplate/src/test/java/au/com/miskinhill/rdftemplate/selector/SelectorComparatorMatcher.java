@@ -8,7 +8,7 @@ public class SelectorComparatorMatcher<T extends Comparable<T>> extends BeanProp
 
     @SuppressWarnings("unchecked")
     public SelectorComparatorMatcher() {
-        super((Class<? extends SelectorComparator<T>>) SelectorComparator.class);
+        super((Class) SelectorComparator.class);
     }
     
     public static SelectorComparatorMatcher<?> selectorComparator(Matcher<? extends Selector<?>> selector) {
