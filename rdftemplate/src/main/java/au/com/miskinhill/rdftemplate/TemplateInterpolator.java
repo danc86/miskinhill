@@ -268,10 +268,8 @@ public class TemplateInterpolator {
                 } else {
                     throw new UnsupportedOperationException("Not a literal: " + replacementNode);
                 }
-            } else if (replacement instanceof String) {
-                replacementValue = (String) replacement;
             } else {
-                throw new UnsupportedOperationException("Not an RDFNode: " + replacement);
+                replacementValue = replacement.toString();
             }
             
             matcher.appendReplacement(substituted, replacementValue.replace("$", "\\$"));
@@ -312,14 +310,12 @@ public class TemplateInterpolator {
             } else {
                 throw new UnsupportedOperationException("Not a literal: " + replacementNode);
             }
-        } else if (replacement instanceof String) {
-            writer.add(eventFactory.createCharacters((String) replacement));
         } else if (replacement instanceof XMLStream) {
             for (XMLEvent event: (XMLStream) replacement) {
                 writer.add(event);
             }
         } else {
-            throw new UnsupportedOperationException("Not an RDFNode: " + replacement);
+            writer.add(eventFactory.createCharacters(replacement.toString()));
         }
     }
 

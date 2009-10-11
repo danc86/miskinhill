@@ -21,5 +21,12 @@ public final class ModelFactory {
 		m.read(new FileInputStream(filename), null);
 		return m;
 	}
+	
+	public static Model load(Class<?> clazz, String resourcePath) throws IOException {
+	    Model m = com.hp.hpl.jena.rdf.model.ModelFactory.createDefaultModel();
+	    LOG.info("Reading RDF model from " + clazz.getResource(resourcePath));
+	    m.read(clazz.getResourceAsStream(resourcePath), null);
+	    return m;
+	}
 
 }

@@ -4,7 +4,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
-public class MHS {
+public final class MHS {
 
 	public static final String NS_URI = "http://miskinhill.com.au/rdfschema/1.0/";
 	
@@ -24,8 +24,15 @@ public class MHS {
 			NS_URI + "Author");
 	public static final Resource Institution = ResourceFactory.createResource(
 			NS_URI + "Institution");
+	public static final Resource Obituary = ResourceFactory.createResource(
+	        NS_URI + "Obituary");
 	
 	public static final Property reviews = ResourceFactory.createProperty(
 	        NS_URI, "reviews");
+	
+	///CLOVER:OFF
+	private MHS() {
+    }
+	///CLOVER:ON
 	
 }

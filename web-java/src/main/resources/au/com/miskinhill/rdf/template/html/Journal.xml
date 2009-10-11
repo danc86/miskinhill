@@ -4,6 +4,7 @@
 
 <head>
     <title rdf:content="dc:title" />
+    ${#representation-links}
 </head>
 
 <body>
@@ -22,9 +23,7 @@
         </p>
         <p class="publisher">Published by <a href="${dc:publisher/foaf:homepage#uri}" rdf:content="dc:publisher/foaf:name" /></p>
         <p class="issn">ISSN ${dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)}</p>
-        <!-- <p>Metadata:
-            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
-        </p> -->
+        <p>Metadata: ${#representation-anchors}</p>
     </div>
 </div>
 

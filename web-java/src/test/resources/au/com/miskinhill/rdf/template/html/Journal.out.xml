@@ -1,14 +1,15 @@
-<?xml version="1.0"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/" lang="en">
+<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/" lang="en">
 
 <head>
     <title xml:lang="en" lang="en">Test Journal of Good Stuff</title>
+    <link title="MODS" rel="alternate" type="application/mods+xml" href="http://miskinhill.com.au/journals/test/.mods"/>
 </head>
 
 <body>
 
 <!-- ${breadcrumbs([('/journals/', 'Journals')])} -->
 
-<h2><em xml:lang="en" lang="en">Test Journal of Good Stuff</em><abbr title="http://miskinhill.com.au/journals/test/" class="unapi-id"></abbr></h2>
+<h2><em xml:lang="en" lang="en">Test Journal of Good Stuff</em><abbr title="http://miskinhill.com.au/journals/test/" class="unapi-id"/></h2>
 
 <div class="metabox-container">
     <!-- ${searchbox(journal)} -->
@@ -16,13 +17,11 @@
     <div class="issue-meta metabox">
         <h4>Journal details</h4>
         <p class="cover">
-            <img alt="" src="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg"></img>
+            <img alt="" src="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg"/>
         </p>
         <p class="publisher">Published by <a xml:lang="en" lang="en" href="http://awesome.com">Awesome Publishing House</a></p>
         <p class="issn">ISSN 12345678</p>
-        <!-- <p>Metadata:
-            ${Markup(u', ').join(r(req, node).anchor() for r in representations.for_node(node) if r.format != 'html')}
-        </p> -->
+        <p>Metadata: <a rel="alternate" href="http://miskinhill.com.au/journals/test/.mods">MODS</a></p>
     </div>
 </div>
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modsCollection xmlns="http://www.loc.gov/mods/v3"
+                xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<mods>
+    <titleInfo>
+        <!-- XXX nonSort -->
+        <title rdf:content="dc:title" />
+    </titleInfo>
+    <genre authority="marcgt">periodical</genre>
+    <genre>academic journal</genre>
+    <originInfo>
+        <place>
+            <placeTerm type="text" rdf:content="dc:publisher/contact:address/geonames:name" />
+        </place>
+        <publisher rdf:content="dc:publisher/foaf:name" />
+        <issuance>continuing</issuance>
+    </originInfo>
+    <language>
+        <languageTerm rdf:for="dc:language" type="code" authority="rfc3066">${lingvoj:iso1}</languageTerm>
+    </language>
+    <identifier type="issn" rdf:content="dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)" />
+    <identifier type="uri" rdf:content="#uri" />
+</mods>
+
+</modsCollection>

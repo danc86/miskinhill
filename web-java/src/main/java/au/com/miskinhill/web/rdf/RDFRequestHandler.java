@@ -1,8 +1,7 @@
 package au.com.miskinhill.web.rdf;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,23 +9,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.vocabulary.RDF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 
-import au.com.miskinhill.rdf.vocabulary.MHS;
-import au.com.miskinhill.rdftemplate.TemplateInterpolator;
+import au.com.miskinhill.rdf.Representation;
+import au.com.miskinhill.rdf.RepresentationFactory;
 
 @Component("rdfRequestHandler")
 public class RDFRequestHandler implements HttpRequestHandler {
     
     private final Model model;
+    private final RepresentationFactory representationFactory;
     
     @Autowired
-    public RDFRequestHandler(Model model) {
+    public RDFRequestHandler(Model model, RepresentationFactory representationFactory) {
         this.model = model;
+        this.representationFactory = representationFactory;
     }
     
     @Override
@@ -51,15 +51,15 @@ public class RDFRequestHandler implements HttpRequestHandler {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        if (!resource.hasProperty(RDF.type, MHS.Journal)) {
-            throw new ServletException("blargh implement me: " + Arrays.deepToString(resource.listProperties(RDF.type).toList().toArray()));
+        Set<Representation> representations = representationFactory.getRepresentationsForResource(resource);
+        if (representations.isEmpty()) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND); // should be not acceptable, once we do proper negotiation
+            return;
         }
-        String body = TemplateInterpolator.interpolate(
-                new InputStreamReader(this.getClass().getResourceAsStream("template/html/Journal.xml")),
-                resource);
-        resp.setContentType("text/html");
+        Representation representation = representations.iterator().next(); // XXX
+        resp.setContentType(representation.getContentType().toString());
         resp.setCharacterEncoding("UTF-8");
-        resp.getWriter().append(body);
+        resp.getWriter().append(representation.render(resource));
     }
 
 }

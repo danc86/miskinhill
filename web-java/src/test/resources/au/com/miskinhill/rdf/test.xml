@@ -81,11 +81,16 @@
     <foaf:surname>Author</foaf:surname>
     <foaf:givenNames>Another</foaf:givenNames>
   </mhs:Author>
+  <mhs:Author rdf:about="http://miskinhill.com.au/authors/cox-j-k">
+    <foaf:name>John K. Cox</foaf:name>
+    <foaf:surname>Cox</foaf:surname>
+    <foaf:givenNames>John K.</foaf:givenNames>
+  </mhs:Author>
   <mhs:Book rdf:about="http://miskinhill.com.au/cited/books/test">
     <dc:identifier rdf:resource="urn:isbn:9780415274319"/>
     <dc:identifier rdf:resource="urn:asin:0415274311"/>
     <dc:title xml:lang="en">Slovenia: evolving loyalties</dc:title>
-    <dc:creator>John K. Cox</dc:creator>
+    <dc:creator rdf:resource="http://miskinhill.com.au/authors/cox-j-k" />
     <dc:publisher>Routledge</dc:publisher>
     <dc:date rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2005</dc:date>
   </mhs:Book>

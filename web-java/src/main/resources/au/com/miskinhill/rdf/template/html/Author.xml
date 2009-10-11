@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/"
+      lang="en-AU">
+
+<head profile="http://microformats.org/profile/hcard">
+    <title rdf:content="foaf:name" />
+    ${#representation-links}
+    <link rel="stylesheet" type="text/css" href="/style/author.css" />
+</head>
+
+<body class="vcard">
+
+<h2><span class="fn" rdf:content="foaf:name" /><abbr class="unapi-id" title="${#uri}" /></h2>
+
+<div class="metabox-container">
+    <div class="author-meta metabox">
+        <h4>Author details</h4>
+        <p class="homepage" rdf:if="foaf:workInfoHomepage"><a href="${foaf:workInfoHomepage#uri}" class="url">Institutional homepage</a></p>
+        <p class="affiliation" rdf:if="mhs:isAffiliatedWith">Affiliated with <a href="${mhs:isAffiliatedWith#uri}" class="org">${mhs:isAffiliatedWith/foaf:name}</a></p>
+        <p class="metadata-links">Metadata: ${#representation-anchors}</p>
+    </div>
+</div>
+
+<p rdf:if="mhs:biographicalNotes" rdf:content="mhs:biographicalNotes" />
+
+<h3 rdf:if="!dc:creator[uri-prefix='http://miskinhill.com.au/journals/'] | !mhs:translator[uri-prefix='http://miskinhill.com.au/journals/']">
+    Works published on this site
+</h3>
+
+<rdf:if test="!dc:creator[type=mhs:Article and uri-prefix='http://miskinhill.com.au/journals/']">
+    <h4>Articles</h4>
+    <ul class="articles">
+        <li rdf:for="!dc:creator[type=mhs:Article and uri-prefix='http://miskinhill.com.au/journals/'](~dc:isPartOf/mhs:publicationDate#comparable-lv)">
+            <div class="article"><a href="${#uri}" rdf:content="dc:title" /></div>
+            <div class="issue">in <em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /> Vol. ${dc:isPartOf/mhs:volume}, Issue ${dc:isPartOf/mhs:issueNumber} (${dc:isPartOf/dc:coverage})</div>
+        </li>
+    </ul>
+</rdf:if>
+
+<rdf:if test="!dc:creator[type=mhs:Review and uri-prefix='http://miskinhill.com.au/journals/']">
+    <h4>Reviews</h4>
+    <ul class="reviews">
+        <li rdf:for="!dc:creator[type=mhs:Review and uri-prefix='http://miskinhill.com.au/journals/'](~dc:isPartOf/mhs:publicationDate#comparable-lv,mhs:startPage#comparable-lv)">
+            <div class="book"><a href="${#uri}"><rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></div>
+            <div class="issue">in <em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /> Vol. ${dc:isPartOf/mhs:volume}, Issue ${dc:isPartOf/mhs:issueNumber} (${dc:isPartOf/dc:coverage})</div>
+        </li>
+    </ul>
+</rdf:if>
+
+<rdf:if test="!dc:creator[type=mhs:Obituary and uri-prefix='http://miskinhill.com.au/journals/']">
+    <h4>Obituaries</h4>
+    <ul class="obituaries">
+        <li rdf:for="!dc:creator[type=mhs:Obituary and uri-prefix='http://miskinhill.com.au/journals/'](~dc:isPartOf/mhs:publicationDate#comparable-lv,mhs:startPage#comparable-lv)">
+            <div class="article"><a href="${#uri}" rdf:content="dc:title" /></div>
+            <div class="issue">in <em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /> Vol. ${dc:isPartOf/mhs:volume}, Issue ${dc:isPartOf/mhs:issueNumber} (${dc:isPartOf/dc:coverage})</div>
+        </li>
+    </ul>
+</rdf:if>
+
+<rdf:if test="!mhs:translator[uri-prefix='http://miskinhill.com.au/journals/']">
+    <h4>Translations</h4>
+    <ul class="translations">
+        <li rdf:for="!mhs:translator[uri-prefix='http://miskinhill.com.au/journals/'](~dc:isPartOf/mhs:publicationDate#comparable-lv,mhs:startPage#comparable-lv)">
+            <rdf:if test="dc:title">
+                <div class="article"><a href="${#uri}">${dc:title}</a></div>
+                <div class="author">by <a href="${dc:creator#uri}" rdf:content="dc:creator/foaf:name" /></div>
+            </rdf:if>
+            <rdf:if test="mhs:reviews">
+                <div class="book"><a href="${#uri}">Review of <rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></div>
+                <div class="reviewed-by">Reviewed by <a href="${dc:creator#uri}" rdf:content="dc:creator/foaf:name" /></div>
+            </rdf:if>
+            <div class="issue">in <em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /> Vol. ${dc:isPartOf/mhs:volume}, Issue ${dc:isPartOf/mhs:issueNumber} (${dc:isPartOf/dc:coverage})</div>
+        </li>
+    </ul>
+</rdf:if>
+
+<h3 rdf:if="!dc:creator[uri-prefix='http://miskinhill.com.au/cited/'] | !mhs:translator[uri-prefix='http://miskinhill.com.au/cited/']">
+    Cited works
+</h3>
+
+<rdf:if test="!dc:creator[type=mhs:Book and uri-prefix='http://miskinhill.com.au/cited/']">
+    <h4>Books</h4>
+    <ul class="books">
+        <li rdf:for="!dc:creator[type=mhs:Book and uri-prefix='http://miskinhill.com.au/cited/'](#uri)">
+            <div class="book"><a href="${#uri}" rdf:content="dc:title" /></div>
+        </li>
+    </ul>
+</rdf:if>
+
+<rdf:if test="!dc:creator[type=mhs:Article and uri-prefix='http://miskinhill.com.au/cited/']">
+    <h4>Articles</h4>
+    <ul class="articles">
+        <li rdf:for="!dc:creator[type=mhs:Article and uri-prefix='http://miskinhill.com.au/cited/'](#uri)">
+            <div class="article"><a href="${#uri}" rdf:content="dc:title" /></div>
+            <div class="issue">in <em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /></div>
+        </li>
+    </ul>
+</rdf:if>
+
+<rdf:if test="!mhs:translator[uri-prefix='http://miskinhill.com.au/cited/']">
+    <h4>Translations</h4>
+    <ul class="translations">
+        <li rdf:for="!mhs:translator[type=mhs:Article and uri-prefix='http://miskinhill.com.au/cited/'](#uri)">
+            <div class="article"><a href="${#uri}" rdf:content="dc:title" /></div>
+            <div class="author">by <a href="${dc:creator#uri}" rdf:content="dc:creator/foaf:name" /></div>
+            <div class="issue">in <em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /></div>
+        </li>
+        <li rdf:for="!mhs:translator[type=mhs:Book and uri-prefix='http://miskinhill.com.au/cited/'](#uri)">
+            <div class="book"><a href="${#uri}"><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</a></div>
+        </li>
+    </ul>
+</rdf:if>
+
+</body>
+</html>
