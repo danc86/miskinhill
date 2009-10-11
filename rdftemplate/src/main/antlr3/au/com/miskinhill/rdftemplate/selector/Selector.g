@@ -114,10 +114,10 @@ traversal returns [Traversal result]
       | // optional
       )
       ( '('
-        ( '~' { $result.setReverseSorted(true); }
-        | // optional
-        )
-        s=selector { $result.setSortOrder(s.withResultType(Comparable.class)); }
+        so=sortOrder { $result.addSortOrderComparator(so); }
+        ( ','
+          so=sortOrder { $result.addSortOrderComparator(so); }
+        )*
         ')'
       | // optional
       )
@@ -126,6 +126,16 @@ traversal returns [Traversal result]
         ']'
       | // optional
       )
+    ;
+
+sortOrder returns [SelectorComparator<? extends Comparable<?>> result]
+@init {
+    result = new SelectorComparator();
+}
+    : ( '~' { $result.setReversed(true); }
+      | // optional
+      )
+      s=selector { $result.setSelector((Selector) s.withResultType(Comparable.class)); }
     ;
 
 booleanPredicate returns [Predicate result]

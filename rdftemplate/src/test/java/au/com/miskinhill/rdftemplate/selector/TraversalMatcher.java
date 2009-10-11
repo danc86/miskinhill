@@ -1,8 +1,11 @@
 package au.com.miskinhill.rdftemplate.selector;
 
-
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
+import java.util.Comparator;
+
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.hamcrest.Matcher;
 
 public class TraversalMatcher extends BeanPropertyMatcher<Traversal> {
@@ -28,13 +31,8 @@ public class TraversalMatcher extends BeanPropertyMatcher<Traversal> {
         return this;
     }
     
-    public TraversalMatcher withSortOrder(Matcher<Selector<?>> sortOrder) {
-        addRequiredProperty("sortOrder", sortOrder);
-        return this;
-    }
-    
-    public TraversalMatcher reverseSorted() {
-        addRequiredProperty("reverseSorted", equalTo(true));
+    public TraversalMatcher withSortOrder(Matcher<? extends Comparator<RDFNode>>... sortOrder) {
+        addRequiredProperty("sortOrder", hasItems(sortOrder));
         return this;
     }
     

@@ -1,12 +1,13 @@
 package au.com.miskinhill.rdftemplate.selector;
 
-import org.junit.Before;
-
 import static au.com.miskinhill.rdftemplate.selector.AdaptationMatcher.*;
 import static au.com.miskinhill.rdftemplate.selector.PredicateMatcher.*;
 import static au.com.miskinhill.rdftemplate.selector.SelectorMatcher.*;
-import static au.com.miskinhill.rdftemplate.selector.TraversalMatcher.traversal;
-import static org.junit.Assert.assertThat;
+import static au.com.miskinhill.rdftemplate.selector.SelectorComparatorMatcher.*;
+import static au.com.miskinhill.rdftemplate.selector.TraversalMatcher.*;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.junit.Test;
@@ -47,8 +48,8 @@ public class SelectorParserUnitTest {
         Selector<RDFNode> selector = factory.get("!mhs:isIssueOf(mhs:publicationDate#comparable-lv)").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("mhs", "isIssueOf").inverse()
-                .withSortOrder(selector(traversal("mhs", "publicationDate"))
-                    .withAdaptation(comparableLVAdaptation()))));
+                .withSortOrder(selectorComparator(selector(traversal("mhs", "publicationDate"))
+                    .withAdaptation(comparableLVAdaptation())))));
     }
     
     @Test
@@ -56,9 +57,8 @@ public class SelectorParserUnitTest {
         Selector<RDFNode> selector = factory.get("!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("mhs", "isIssueOf").inverse()
-                .withSortOrder(selector(traversal("mhs", "publicationDate"))
-                    .withAdaptation(comparableLVAdaptation()))
-                .reverseSorted()));
+                .withSortOrder(selectorComparator(selector(traversal("mhs", "publicationDate"))
+                    .withAdaptation(comparableLVAdaptation())).reversed())));
     }
     
     @Test
@@ -66,8 +66,8 @@ public class SelectorParserUnitTest {
         Selector<RDFNode> selector = factory.get("!mhs:reviews(dc:isPartOf/mhs:publicationDate#comparable-lv)").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal("mhs", "reviews")
-                .withSortOrder(selector(traversal("dc", "isPartOf"), traversal("mhs", "publicationDate"))
-                        .withAdaptation(comparableLVAdaptation()))));
+                .withSortOrder(selectorComparator(selector(traversal("dc", "isPartOf"), traversal("mhs", "publicationDate"))
+                        .withAdaptation(comparableLVAdaptation())))));
     }
     
     @Test
@@ -102,9 +102,8 @@ public class SelectorParserUnitTest {
                 traversal("mhs", "isIssueOf")
                     .inverse()
                     .withPredicate(uriPrefixPredicate("http://miskinhill.com.au/journals/"))
-                    .withSortOrder(selector(traversal("mhs", "publicationDate"))
-                            .withAdaptation(comparableLVAdaptation()))
-                    .reverseSorted()));
+                    .withSortOrder(selectorComparator(selector(traversal("mhs", "publicationDate"))
+                            .withAdaptation(comparableLVAdaptation())).reversed())));
     }
     
     @Test
@@ -115,9 +114,8 @@ public class SelectorParserUnitTest {
         assertThat(selector, selector(
                 traversal("mhs", "isIssueOf")
                     .inverse()
-                    .withSortOrder(selector(traversal("mhs", "publicationDate"))
-                            .withAdaptation(comparableLVAdaptation()))
-                    .reverseSorted()
+                    .withSortOrder(selectorComparator(selector(traversal("mhs", "publicationDate"))
+                            .withAdaptation(comparableLVAdaptation())).reversed())
                     .withSubscript(0),
                 traversal("mhs", "coverThumbnail"))
                 .withAdaptation(uriAdaptation()));
@@ -155,6 +153,17 @@ public class SelectorParserUnitTest {
         assertThat((UnionSelector<RDFNode>) selector, unionSelector(
                 selector(traversal("dc", "creator").inverse()),
                 selector(traversal("mhs", "translator").inverse())));
+    }
+    
+    @Test
+    public void shouldRecogniseMultipleSortSelectors() throws Exception {
+        Selector<RDFNode> selector = factory.get("!dc:creator(~dc:isPartOf/mhs:publicationDate#comparable-lv,mhs:startPage#comparable-lv)").withResultType(RDFNode.class);
+        assertThat(selector, selector(
+                traversal("dc", "creator").inverse()
+                .withSortOrder(
+                    selectorComparator(selector(traversal("dc", "isPartOf"), traversal("mhs", "publicationDate"))
+                        .withAdaptation(comparableLVAdaptation())).reversed(),
+                    selectorComparator(selector(traversal("mhs", "startPage")).withAdaptation(comparableLVAdaptation())))));
     }
     
     @Test(expected = InvalidSelectorSyntaxException.class)

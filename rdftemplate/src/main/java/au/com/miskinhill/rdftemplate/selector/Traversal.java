@@ -22,10 +22,20 @@ public class Traversal {
     private String propertyLocalName;
     private boolean inverse = false;
     private Predicate predicate;
-    private Selector<? extends Comparable<?>> sortOrder;
-    private Comparator<RDFNode> _sortComparator;
-    private boolean reverseSorted = false;
+    private List<Comparator<RDFNode>> sortOrder = new ArrayList<Comparator<RDFNode>>();
     private Integer subscript;
+    
+    private class SortComparator implements Comparator<RDFNode> {
+        @Override
+        public int compare(RDFNode left, RDFNode right) {
+            for (Comparator<RDFNode> comparator: sortOrder) {
+                int result = comparator.compare(left, right);
+                if (result != 0)
+                    return result;
+            }
+            return 0;
+        }
+    }
     
     public List<RDFNode> traverse(RDFNode node) {
         if (!node.isResource()) {
@@ -46,8 +56,8 @@ public class Traversal {
             }
         }
         CollectionUtils.filter(destinations, predicate);
-        if (_sortComparator != null)
-            Collections.sort(destinations, reverseSorted ? Collections.reverseOrder(_sortComparator) : _sortComparator);
+        if (!sortOrder.isEmpty())
+            Collections.sort(destinations, new SortComparator());
         if (subscript != null) {
             if (destinations.size() <= subscript) {
                 throw new SelectorEvaluationException("Cannot apply subscript " + subscript + " to nodes " + destinations);
@@ -65,7 +75,6 @@ public class Traversal {
                 .append("inverse", inverse)
                 .append("predicate", predicate)
                 .append("sortOrder", sortOrder)
-                .append("reverseSorted", reverseSorted)
                 .append("subscript", subscript)
                 .toString();
     }
@@ -102,34 +111,12 @@ public class Traversal {
         this.predicate = predicate;
     }
     
-    public Selector<?> getSortOrder() {
+    public List<Comparator<RDFNode>> getSortOrder() {
         return sortOrder;
     }
     
-    private static final class SelectorComparator<T extends Comparable<T>> implements Comparator<RDFNode> {
-        private final Selector<T> selector;
-        public SelectorComparator(Selector<T> selector) {
-            this.selector = selector;
-        }
-        @Override
-        public int compare(RDFNode left, RDFNode right) {
-            T leftKey = selector.singleResult(left);
-            T rightKey = selector.singleResult(right);
-            return leftKey.compareTo(rightKey);
-        }
-    }
-    
-    public <T extends Comparable<T>> void setSortOrder(Selector<T> sortOrder) {
-        this.sortOrder = sortOrder;
-        this._sortComparator = new SelectorComparator<T>(sortOrder);
-    }
-    
-    public boolean isReverseSorted() {
-        return reverseSorted;
-    }
-    
-    public void setReverseSorted(boolean reverseSorted) {
-        this.reverseSorted = reverseSorted;
+    public void addSortOrderComparator(Comparator<RDFNode> selector) {
+        this.sortOrder.add(selector);
     }
     
     public Integer getSubscript() {

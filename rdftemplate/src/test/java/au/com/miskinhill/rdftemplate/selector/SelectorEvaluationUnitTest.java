@@ -1,5 +1,10 @@
 package au.com.miskinhill.rdftemplate.selector;
 
+import static au.com.miskinhill.rdftemplate.selector.AdaptationMatcher.comparableLVAdaptation;
+import static au.com.miskinhill.rdftemplate.selector.SelectorComparatorMatcher.selectorComparator;
+import static au.com.miskinhill.rdftemplate.selector.SelectorMatcher.selector;
+import static au.com.miskinhill.rdftemplate.selector.TraversalMatcher.traversal;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItems;
@@ -159,6 +164,17 @@ public class SelectorEvaluationUnitTest {
                 .withResultType(RDFNode.class).result(anotherAuthor);
         assertThat(results.size(), equalTo(3));
         assertThat(results, hasItems((RDFNode) article, (RDFNode) citedArticle, (RDFNode) anotherReview));
+    }
+    
+    @Test
+    public void shouldEvaluateMultipleSortSelectors() throws Exception {
+        List<RDFNode> results = selectorFactory.get("!dc:creator[uri-prefix='http://miskinhill.com.au/journals/']" +
+        		"(~dc:isPartOf/mhs:publicationDate#comparable-lv,mhs:startPage#comparable-lv)")
+                .withResultType(RDFNode.class).result(author);
+        assertThat(results.size(), equalTo(3));
+        assertThat(results.get(0), equalTo((RDFNode) obituary));
+        assertThat(results.get(1), equalTo((RDFNode) article));
+        assertThat(results.get(2), equalTo((RDFNode) review));
     }
     
 }

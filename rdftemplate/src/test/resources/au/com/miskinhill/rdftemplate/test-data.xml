@@ -96,6 +96,8 @@
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
     <mhs:reviews rdf:resource="http://miskinhill.com.au/cited/books/test"/>
     <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
+    <mhs:startPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">205</mhs:startPage>
+    <mhs:endPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">206</mhs:endPage>
   </mhs:Review>
   <mhs:Review rdf:about="http://miskinhill.com.au/journals/test/2:1/reviews/another-review">
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/2:1/"/>
@@ -107,6 +109,8 @@
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
     <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
     <mhs:obituaryOf rdf:nodeID="person"/>
+    <mhs:startPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</mhs:startPage>
+    <mhs:endPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</mhs:endPage>
   </mhs:Obituary>
   <foaf:Person rdf:nodeID="person">
     <foaf:name>John Doe</foaf:name>
