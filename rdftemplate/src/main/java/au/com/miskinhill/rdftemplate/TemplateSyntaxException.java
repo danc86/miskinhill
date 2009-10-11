@@ -8,4 +8,8 @@ public class TemplateSyntaxException extends RuntimeException {
         super(message);
     }
     
+    public TemplateSyntaxException(Throwable cause) {
+        super(cause);
+    }
+    
 }

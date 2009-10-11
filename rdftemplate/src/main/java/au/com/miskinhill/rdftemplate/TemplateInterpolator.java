@@ -14,7 +14,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
@@ -28,6 +27,11 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -53,6 +57,7 @@ public class TemplateInterpolator {
     private static final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     private static final XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
     private static final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+    private static final TransformerFactory transformerFactory = TransformerFactory.newInstance();
     static {
         inputFactory.setProperty("javax.xml.stream.isCoalescing", true);
     }
@@ -64,10 +69,23 @@ public class TemplateInterpolator {
     }
     
     @SuppressWarnings("unchecked")
-    public String interpolate(Reader reader, RDFNode node) throws XMLStreamException {
-        StringWriter writer = new StringWriter();
-        interpolate(inputFactory.createXMLEventReader(reader), node, outputFactory.createXMLEventWriter(writer));
-        return writer.toString();
+    public String interpolate(Reader reader, RDFNode node) {
+        try {
+            StringWriter writer = new StringWriter();
+            interpolate(inputFactory.createXMLEventReader(reader), node, outputFactory.createXMLEventWriter(writer));
+            
+            // all this to get self-closing tags -- weird?? XXX
+            StringWriter transformedWriter = new StringWriter();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.transform(new StreamSource(new StringReader(writer.toString())),
+                    new StreamResult(transformedWriter));
+    
+            return transformedWriter.toString();
+        } catch (XMLStreamException e) {
+            throw new TemplateSyntaxException(e);            
+        } catch (TransformerException e) {
+            throw new TemplateSyntaxException(e);
+        }
     }
     
     public void interpolate(Iterator<XMLEvent> reader, RDFNode node, XMLEventWriter writer)
