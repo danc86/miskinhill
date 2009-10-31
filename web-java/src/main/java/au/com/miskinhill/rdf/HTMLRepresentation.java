@@ -10,6 +10,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
@@ -17,6 +18,7 @@ import au.com.miskinhill.rdf.vocabulary.SIOC;
 import au.com.miskinhill.rdftemplate.TemplateInterpolator;
 
 @Component
+@Order(0)
 public class HTMLRepresentation implements Representation {
 
     private final Map<Resource, String> typeTemplates = new HashMap<Resource, String>();

@@ -3,7 +3,6 @@ package au.com.miskinhill.rdf;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventFactory;
@@ -25,7 +24,7 @@ public class RepresentationAnchorsAdaptation implements Adaptation<XMLStream> {
     @Override
     public XMLStream adapt(RDFNode node) {
         Resource resource = (Resource) node;
-        Set<Representation> representations = RepresentationFactory.getInstance().getRepresentationsForResource(resource);
+        List<Representation> representations = RepresentationFactory.getInstance().getRepresentationsForResource(resource);
         List<XMLEvent> events = new ArrayList<XMLEvent>();
         boolean first = true;
         for (Representation representation: representations) {
