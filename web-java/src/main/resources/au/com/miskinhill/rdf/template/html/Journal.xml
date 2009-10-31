@@ -8,12 +8,19 @@
 
 <body>
 
-<!-- ${breadcrumbs([('/journals/', 'Journals')])} -->
+<div id="breadcrumbs">
+    <a href="/journals/">Journals</a> &gt;
+</div>
 
 <h2><em rdf:content="dc:title" /><abbr class="unapi-id" title="${#uri}" /></h2>
 
 <div class="metabox-container">
-    <!-- ${searchbox(journal)} -->
+    <div class="searchbox metabox">
+        <h4>Search this journal</h4>
+        <form method="get" action="http://search.miskinhill.com.au/search">
+            <p><input type="text" name="q" /> <button type="submit">Go</button></p>
+        </form>
+    </div>
 
     <div class="issue-meta metabox">
         <h4>Journal details</h4>
