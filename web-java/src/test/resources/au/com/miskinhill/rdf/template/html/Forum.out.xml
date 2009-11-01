@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title xml:lang="en" lang="en">News</title>
+    
+    <link rel="stylesheet" type="text/css" href="/style/forum.css"/>
+</head>
+
+<body>
+
+<h2 xml:lang="en" lang="en">News</h2>
+
+<div class="post">
+    <h3 xml:lang="en" lang="en">New data feeds available</h3>
+    <p class="created">15 June 2009</p>
+    <div class="content">
+        <div xmlns="http://www.w3.org/1999/xhtml">
+            <p>To coincide with the publication of our second issue, the <a href="/journals/asees/22:1-2/">2008 volume</a> of <a href="/journals/asees/"><em>Australian Slavonic and East European 
+            Studies</em></a>, we are making available two new data feeds: an <a href="/feeds/issues">Atom feed of all journal issues</a> published 
+            on this site, and the <a href="/feeds/world">complete RDF 
+            dataset</a> underlying the site.</p>
+            <p>We hope this helps our users and aggregators to discover new 
+            content as it is published.</p>
+                    </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title rdf:content="dc:title" />
+    ${#representation-links}
+    <link rel="stylesheet" type="text/css" href="/style/forum.css" />
+</head>
+
+<body>
+
+<h2 rdf:content="dc:title" />
+
+<div rdf:for="!sioc:has_container(~dc:created#comparable-lv)" class="post">
+    <h3 rdf:content="dc:title" />
+    <p class="created" rdf:content="dc:created#formatted-dt('d MMMM yyyy')" />
+    <div class="content" rdf:for="sioc:content">
+        ${awol:body}
+    </div>
+</div>
+
+</body>
+</html>

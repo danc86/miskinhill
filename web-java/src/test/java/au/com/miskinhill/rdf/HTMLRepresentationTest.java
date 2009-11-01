@@ -10,6 +10,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
+import org.junit.BeforeClass;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +23,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/au/com/miskinhill/web/test-spring-context.xml" })
 public class HTMLRepresentationTest {
+    
+    @BeforeClass
+    public static void deleteme() {
+        System.setProperty("contentPath", "/home/dan/miskinhill/content");
+    }
 
     @Autowired private RepresentationFactory representationFactory;
     private Representation representation;
@@ -43,6 +50,13 @@ public class HTMLRepresentationTest {
     public void testAuthor() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/authors/test-author"));
         String expected = exhaust(this.getClass().getResource("template/html/Author.out.xml").toURI());
+        assertEquals(expected.trim(), result.trim());
+    }
+    
+    @Test
+    public void testForum() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/"));
+        String expected = exhaust(this.getClass().getResource("template/html/Forum.out.xml").toURI());
         assertEquals(expected.trim(), result.trim());
     }
     
