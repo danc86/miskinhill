@@ -1,10 +1,5 @@
 package au.com.miskinhill.rdftemplate.selector;
 
-import static au.com.miskinhill.rdftemplate.selector.AdaptationMatcher.comparableLVAdaptation;
-import static au.com.miskinhill.rdftemplate.selector.SelectorComparatorMatcher.selectorComparator;
-import static au.com.miskinhill.rdftemplate.selector.SelectorMatcher.selector;
-import static au.com.miskinhill.rdftemplate.selector.TraversalMatcher.traversal;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItems;
@@ -22,16 +17,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import au.com.miskinhill.rdftemplate.datatype.DateDataType;
+import au.com.miskinhill.rdftemplate.datatype.DateTimeDataType;
 
 public class SelectorEvaluationUnitTest {
     
     private Model m;
-    private Resource journal, issue, article, citedArticle, author, anotherAuthor, book, review, anotherReview, obituary, en, ru;
+    private Resource journal, issue, article, citedArticle, author, anotherAuthor, book, review, anotherReview, obituary, en, ru, forum;
     private SelectorFactory selectorFactory;
     
     @BeforeClass
     public static void ensureDatatypesRegistered() {
         DateDataType.registerStaticInstance();
+        DateTimeDataType.registerStaticInstance();
     }
     
     @Before
@@ -51,6 +48,7 @@ public class SelectorEvaluationUnitTest {
         obituary = m.createResource("http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe");
         en = m.createResource("http://www.lingvoj.org/lang/en");
         ru = m.createResource("http://www.lingvoj.org/lang/ru");
+        forum = m.createResource("http://miskinhill.com.au/");
         selectorFactory = new AntlrSelectorFactory();
     }
     
@@ -175,6 +173,13 @@ public class SelectorEvaluationUnitTest {
         assertThat(results.get(0), equalTo((RDFNode) obituary));
         assertThat(results.get(1), equalTo((RDFNode) article));
         assertThat(results.get(2), equalTo((RDFNode) review));
+    }
+    
+    @Test
+    public void shouldEvaluateFormattedDTAdaptation() throws Exception {
+        String result = selectorFactory.get("!sioc:has_container/dc:created#formatted-dt('d MMMM yyyy')")
+                .withResultType(String.class).singleResult(forum);
+        assertThat(result, equalTo("15 June 2009"));
     }
     
 }

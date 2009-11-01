@@ -166,6 +166,13 @@ public class SelectorParserUnitTest {
                     selectorComparator(selector(traversal("mhs", "startPage")).withAdaptation(comparableLVAdaptation())))));
     }
     
+    @Test
+    public void shouldRecogniseFormattedDTAdaptation() throws Exception {
+        Selector<?> selector = factory.get("dc:created#formatted-dt('d MMMM yyyy')");
+        assertThat(selector, selector(traversal("dc", "created"))
+                .withAdaptation(formattedDTAdaptation("d MMMM yyyy")));
+    }
+    
     @Test(expected = InvalidSelectorSyntaxException.class)
     public void shouldThrowForInvalidSyntax() throws Exception {
         factory.get("dc:creator]["); // this is a parser error

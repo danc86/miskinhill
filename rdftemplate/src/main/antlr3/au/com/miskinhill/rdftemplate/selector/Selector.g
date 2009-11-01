@@ -65,7 +65,7 @@ selector returns [Selector<?> result]
                     throw new InvalidSelectorSyntaxException("No adaptation named " + $adaptationName.text);
             }
         ( '('
-          startIndex=INTEGER {
+          ( startIndex=INTEGER {
                                 try {
                                     adaptation = adaptationClass.getConstructor(Integer.class)
                                             .newInstance(Integer.parseInt($startIndex.text));
@@ -73,6 +73,15 @@ selector returns [Selector<?> result]
                                     throw new InvalidSelectorSyntaxException(e);
                                 }
                              }
+          | sq=SINGLE_QUOTED {
+                                try {
+                                    adaptation = adaptationClass.getConstructor(String.class)
+                                            .newInstance($sq.text);
+                                } catch (Exception e) {
+                                    throw new InvalidSelectorSyntaxException(e);
+                                }
+                             }
+          )
           ')'
         | {
                try {

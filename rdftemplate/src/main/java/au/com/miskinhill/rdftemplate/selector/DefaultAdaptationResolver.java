@@ -11,6 +11,7 @@ public class DefaultAdaptationResolver implements AdaptationResolver {
         ADAPTATIONS.put("uri-slice", UriSliceAdaptation.class);
         ADAPTATIONS.put("lv", LiteralValueAdaptation.class);
         ADAPTATIONS.put("comparable-lv", ComparableLiteralValueAdaptation.class);
+        ADAPTATIONS.put("formatted-dt", FormattedDateTimeAdaptation.class);
     }
 
     @Override

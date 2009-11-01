@@ -26,5 +26,11 @@ public class AdaptationMatcher<T extends Adaptation<?>> extends BeanPropertyMatc
     public static AdaptationMatcher<ComparableLiteralValueAdaptation> comparableLVAdaptation() {
         return new AdaptationMatcher<ComparableLiteralValueAdaptation>(ComparableLiteralValueAdaptation.class);
     }
+    
+    public static AdaptationMatcher<FormattedDateTimeAdaptation> formattedDTAdaptation(String pattern) {
+        AdaptationMatcher<FormattedDateTimeAdaptation> m = new AdaptationMatcher<FormattedDateTimeAdaptation>(FormattedDateTimeAdaptation.class);
+        m.addRequiredProperty("pattern", equalTo(pattern));
+        return m;
+    }
 
 }

@@ -5,7 +5,37 @@
          xmlns:contact="http://www.w3.org/2000/10/swap/pim/contact#"
          xmlns:geonames="http://www.geonames.org/ontology#"
          xmlns:lingvoj="http://www.lingvoj.org/ontology#"
-         xmlns:mhs="http://miskinhill.com.au/rdfschema/1.0/">
+         xmlns:mhs="http://miskinhill.com.au/rdfschema/1.0/"
+         xmlns:sioc="http://rdfs.org/sioc/ns#"
+         xmlns:awol="http://bblfish.net/work/atom-owl/2006-06-06/#">
+
+    <sioc:Forum rdf:about="http://miskinhill.com.au/">
+        <dc:title xml:lang="en">News</dc:title>
+    </sioc:Forum>
+    <sioc:Post rdf:about="http://miskinhill.com.au/news/data-feeds">
+        <dc:created rdf:datatype="http://www.w3.org/TR/xmlschema-2/#datetime">2009-06-15T18:21:32+10:00</dc:created>
+        <dc:title xml:lang="en">New data feeds available</dc:title>
+        <sioc:content>
+            <awol:Content>
+                <awol:body rdf:parseType="Literal">
+                    <div xmlns="http://www.w3.org/1999/xhtml">
+            <p>To coincide with the publication of our second issue, the <a 
+            href="/journals/asees/22:1-2/">2008 volume</a> of <a 
+            href="/journals/asees/"><em>Australian Slavonic and East European 
+            Studies</em></a>, we are making available two new data feeds: an <a 
+            href="/feeds/issues">Atom feed of all journal issues</a> published 
+            on this site, and the <a href="/feeds/world">complete RDF 
+            dataset</a> underlying the site.</p>
+            <p>We hope this helps our users and aggregators to discover new 
+            content as it is published.</p>
+                    </div>
+                </awol:body>
+                <awol:type>application/xhtml+xml</awol:type>
+            </awol:Content>
+        </sioc:content>
+        <sioc:has_container rdf:resource="http://miskinhill.com.au/" />
+    </sioc:Post>
+
   <mhs:Journal rdf:about="http://miskinhill.com.au/journals/test/">
     <dc:title xml:lang="en">Test Journal of Good Stuff</dc:title>
     <dc:publisher rdf:nodeID="pub"/>
