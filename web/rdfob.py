@@ -21,7 +21,15 @@ NAMESPACES = {
     'lingvoj': RDF.NS('http://www.lingvoj.org/ontology#'), 
     'prism': RDF.NS('http://prismstandard.org/namespaces/1.2/basic/'), 
     'owl': RDF.NS('http://www.w3.org/2002/07/owl#'),
-    'rev': RDF.NS('http://purl.org/stuff/rev#')
+    'rev': RDF.NS('http://purl.org/stuff/rev#'),
+    'skos': RDF.NS('http://www.w3.org/2004/02/skos/core#'),
+    'vs': RDF.NS('http://www.w3.org/2003/06/sw-vocab-status/ns#'),
+    'wot': RDF.NS('http://xmlns.com/wot/0.1/'),
+    'dcmitype': RDF.NS('http://purl.org/dc/dcmitype/'),
+    'vann': RDF.NS('http://purl.org/vocab/vann/'),
+    'cc': RDF.NS('http://web.resource.org/cc/'),
+    'dcam': RDF.NS('http://purl.org/dc/dcam/'),
+    'grddl': RDF.NS('http://www.w3.org/2003/g/data-view#')
 }
 RDF_TYPE = NAMESPACES['rdf']['type']
 RDF_SEQ = NAMESPACES['rdf']['Seq']
