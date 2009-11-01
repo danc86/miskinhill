@@ -22,7 +22,7 @@ public class MiskinHillAdaptationResolver implements AdaptationResolver {
     }
 
     @Override
-    public <T> Class<? extends Adaptation<?>> getByName(String name) {
+    public Class<? extends Adaptation<?>> getByName(String name) {
         Class<? extends Adaptation<?>> theDefaultOne = defaults.getByName(name);
         if (theDefaultOne == null) {
             return adaptations.get(name);
