@@ -131,6 +131,18 @@ public class TemplateInterpolator {
                             interpolate(events.iterator(), eachNode, writer);
                             first = false;
                         }
+                    } else if (start.getName().equals(FOR_ACTION_QNAME)) {
+                        Attribute eachAttribute = start.getAttributeByName(new QName("each"));
+                        if (eachAttribute == null)
+                            throw new TemplateSyntaxException("rdf:for must have an each attribute");
+                        List<XMLEvent> events = consumeTree(start, reader);
+                        // discard enclosing rdf:for
+                        events.remove(events.size() - 1);
+                        events.remove(0);
+                        Selector<RDFNode> selector = selectorFactory.get(eachAttribute.getValue()).withResultType(RDFNode.class);
+                        for (RDFNode subNode : selector.result(node)) {
+                            interpolate(events.iterator(), subNode, writer);
+                        }
                     } else {
                         Attribute ifAttribute = start.getAttributeByName(IF_ACTION_QNAME);
                         Attribute contentAttribute = start.getAttributeByName(CONTENT_ACTION_QNAME);

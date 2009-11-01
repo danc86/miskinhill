@@ -1,0 +1,10 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+<body>
+
+<span rdf:for="!mhs:isIssueOf">${#uri}</span>
+
+<rdf:for each="!mhs:isIssueOf"><p rdf:content="#uri" /></rdf:for>
+
+</body>
+</html>

@@ -79,4 +79,15 @@ public class TemplateInterpolatorUnitTest {
                 "<a href=\"http://miskinhill.com.au/authors/test-author\">Test Author</a></p>"));
     }
     
+    @Test
+    public void shouldHandleFor() throws Exception {
+        Resource journal = model.getResource("http://miskinhill.com.au/journals/test/");
+        String result = templateInterpolator.interpolate(
+                new InputStreamReader(this.getClass().getResourceAsStream("for.xml")), journal);
+        assertThat(result, containsString("<span>http://miskinhill.com.au/journals/test/1:1/</span>"));
+        assertThat(result, containsString("<span>http://miskinhill.com.au/journals/test/2:1/</span>"));
+        assertThat(result, containsString("<p>http://miskinhill.com.au/journals/test/1:1/</p>"));
+        assertThat(result, containsString("<p>http://miskinhill.com.au/journals/test/2:1/</p>"));
+    }
+    
 }
