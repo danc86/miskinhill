@@ -15,7 +15,7 @@ import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.rdftemplate.TemplateInterpolator;
 
 @Component
-@Order(1)
+@Order(3)
 public class MODSRepresentation implements Representation {
     
     private static final MediaType CONTENT_TYPE = new MediaType("application", "mods+xml");

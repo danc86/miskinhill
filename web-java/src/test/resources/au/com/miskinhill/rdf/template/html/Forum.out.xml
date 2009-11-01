@@ -2,7 +2,7 @@
 
 <head>
     <title xml:lang="en" lang="en">News</title>
-    
+    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/.ttl"/>
     <link rel="stylesheet" type="text/css" href="/style/forum.css"/>
 </head>
 

@@ -1,0 +1,22 @@
+@prefix dc:      <http://purl.org/dc/terms/> .
+@prefix sioc:    <http://rdfs.org/sioc/ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix lingvoj:  <http://www.lingvoj.org/ontology#> .
+@prefix awol:    <http://bblfish.net/work/atom-owl/2006-06-06/#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix geonames:  <http://www.geonames.org/ontology#> .
+@prefix mhs:     <http://miskinhill.com.au/rdfschema/1.0/> .
+@prefix contact:  <http://www.w3.org/2000/10/swap/pim/contact#> .
+
+<http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe>
+      rdf:type mhs:Obituary ;
+      mhs:obituaryOf
+              [ rdf:type foaf:Person ;
+                mhs:dateOfBirth "1990-01-01"^^<http://www.w3.org/TR/xmlschema-2/#date> ;
+                mhs:dateOfDeath "1991-12-31"^^<http://www.w3.org/TR/xmlschema-2/#date> ;
+                foaf:name "John Doe"
+              ] ;
+      dc:creator <http://miskinhill.com.au/authors/test-author> ;
+      dc:isPartOf <http://miskinhill.com.au/journals/test/1:1/> ;
+      dc:title "In memoriam John Doe"@en .

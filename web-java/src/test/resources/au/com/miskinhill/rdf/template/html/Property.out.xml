@@ -2,7 +2,7 @@
 
 <head>
     <title>Start page - RDF Schema</title>
-    
+    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/rdfschema/1.0/startPage.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/rdfschema/1.0/startPage.ttl"/>
     <link rel="stylesheet" type="text/css" href="/style/rdfschema.css"/>
 </head>
 
@@ -17,7 +17,7 @@
 <div class="metabox-container">
     <div class="rdfschema-meta metabox">
         <h4>Other formats</h4>
-        <p/>
+        <p><a rel="alternate" href="http://miskinhill.com.au/rdfschema/1.0/startPage.xml">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/rdfschema/1.0/startPage.ttl">Turtle</a></p>
     </div>
 </div>
 

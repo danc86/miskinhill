@@ -2,7 +2,7 @@
 
 <head profile="http://microformats.org/profile/hcard">
     <title>Test Author</title>
-    
+    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/authors/test-author.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/authors/test-author.ttl"/>
     <link rel="stylesheet" type="text/css" href="/style/author.css"/>
 </head>
 
@@ -15,7 +15,7 @@
         <h4>Author details</h4>
         
         
-        <p class="metadata-links">Metadata: </p>
+        <p class="metadata-links">Metadata: <a rel="alternate" href="http://miskinhill.com.au/authors/test-author.xml">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/authors/test-author.ttl">Turtle</a></p>
     </div>
 </div>
 

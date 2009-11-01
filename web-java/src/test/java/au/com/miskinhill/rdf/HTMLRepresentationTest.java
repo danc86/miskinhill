@@ -10,8 +10,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
-import org.junit.BeforeClass;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,11 +22,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = { "classpath:/au/com/miskinhill/web/test-spring-context.xml" })
 public class HTMLRepresentationTest {
     
-    @BeforeClass
-    public static void deleteme() {
-        System.setProperty("contentPath", "/home/dan/miskinhill/content");
-    }
-
     @Autowired private RepresentationFactory representationFactory;
     private Representation representation;
     private Model model;

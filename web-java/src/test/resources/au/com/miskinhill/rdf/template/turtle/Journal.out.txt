@@ -1,0 +1,24 @@
+@prefix dc:      <http://purl.org/dc/terms/> .
+@prefix sioc:    <http://rdfs.org/sioc/ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix lingvoj:  <http://www.lingvoj.org/ontology#> .
+@prefix awol:    <http://bblfish.net/work/atom-owl/2006-06-06/#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix geonames:  <http://www.geonames.org/ontology#> .
+@prefix mhs:     <http://miskinhill.com.au/rdfschema/1.0/> .
+@prefix contact:  <http://www.w3.org/2000/10/swap/pim/contact#> .
+
+<http://miskinhill.com.au/journals/test/>
+      rdf:type mhs:Journal ;
+      mhs:beginningDate "1987" ;
+      dc:description "A journal, you know, with some stuff in it"@en ;
+      dc:identifier <urn:issn:12345678> ;
+      dc:language <http://www.lingvoj.org/lang/ru> , <http://www.lingvoj.org/lang/en> ;
+      dc:publisher
+              [ rdf:type mhs:Publisher ;
+                contact:address <http://sws.geonames.org/2150650/> ;
+                foaf:homepage <http://awesome.com> ;
+                foaf:name "Awesome Publishing House"@en
+              ] ;
+      dc:title "Test Journal of Good Stuff"@en .
