@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title>${rdfs:label} - RDF Schema</title>
+    ${#representation-links}
+    <link rel="stylesheet" type="text/css" href="/style/rdfschema.css" />
+</head>
+
+<body>
+
+<div id="breadcrumbs">
+    <a href="/rdfschema/1.0/">RDF Schema</a> &gt;
+</div>
+
+<h2 rdf:content="rdfs:label" />
+
+<div class="metabox-container">
+    <div class="rdfschema-meta metabox">
+        <h4>Other formats</h4>
+        <p>${#representation-anchors}</p>
+    </div>
+</div>
+
+<table>
+    <tbody>
+        <tr><th>URI</th><td><code rdf:content="#uri" /></td></tr>
+        <tr><th>Type</th><td>
+            <rdf:for each="rdf:type">
+                <a href="${#uri}"><code rdf:content="#uri" /></a><br />
+            </rdf:for>
+        </td></tr>
+        <tr rdf:if="rdfs:subClassOf">
+            <th>Subclass of</th>
+            <td>
+                <rdf:for each="rdfs:subClassOf">
+                    <a href="${#uri}"><code rdf:content="#uri" /></a><br />
+                </rdf:for>
+            </td>
+        </tr>
+        <tr><th>Description</th><td rdf:content="dc:description" /></tr>
+    </tbody>
+</table>
+
+</body>
+</html>

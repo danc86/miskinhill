@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title>Book - RDF Schema</title>
+    
+    <link rel="stylesheet" type="text/css" href="/style/rdfschema.css"/>
+</head>
+
+<body>
+
+<div id="breadcrumbs">
+    <a href="/rdfschema/1.0/">RDF Schema</a> &gt;
+</div>
+
+<h2 xml:lang="en" lang="en">Book</h2>
+
+<div class="metabox-container">
+    <div class="rdfschema-meta metabox">
+        <h4>Other formats</h4>
+        <p/>
+    </div>
+</div>
+
+<table>
+    <tbody>
+        <tr><th>URI</th><td><code>http://miskinhill.com.au/rdfschema/1.0/Book</code></td></tr>
+        <tr><th>Type</th><td>
+            
+                <a href="http://www.w3.org/2000/01/rdf-schema#Class"><code>http://www.w3.org/2000/01/rdf-schema#Class</code></a><br/>
+            
+        </td></tr>
+        <tr>
+            <th>Subclass of</th>
+            <td>
+                
+                    <a href="http://purl.org/dc/terms/BibliographicResource"><code>http://purl.org/dc/terms/BibliographicResource</code></a><br/>
+                
+            </td>
+        </tr>
+        <tr><th>Description</th><td xml:lang="en" lang="en">A book.</td></tr>
+    </tbody>
+</table>
+
+</body>
+</html>

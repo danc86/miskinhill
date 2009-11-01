@@ -7,7 +7,8 @@
          xmlns:lingvoj="http://www.lingvoj.org/ontology#"
          xmlns:mhs="http://miskinhill.com.au/rdfschema/1.0/"
          xmlns:sioc="http://rdfs.org/sioc/ns#"
-         xmlns:awol="http://bblfish.net/work/atom-owl/2006-06-06/#">
+         xmlns:awol="http://bblfish.net/work/atom-owl/2006-06-06/#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 
     <sioc:Forum rdf:about="http://miskinhill.com.au/">
         <dc:title xml:lang="en">News</dc:title>
@@ -35,6 +36,18 @@
         </sioc:content>
         <sioc:has_container rdf:resource="http://miskinhill.com.au/" />
     </sioc:Post>
+
+    <rdfs:Class rdf:about="http://miskinhill.com.au/rdfschema/1.0/Book">
+        <dc:description xml:lang="en">A book.</dc:description>
+        <rdfs:label xml:lang="en">Book</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://purl.org/dc/terms/BibliographicResource" />
+    </rdfs:Class>
+    <rdf:Property rdf:about="http://miskinhill.com.au/rdfschema/1.0/startPage">
+        <dc:description xml:lang="en">The number of the first page of this body of text in an issue.</dc:description>
+        <rdfs:domain rdf:resource="http://miskinhill.com.au/rdfschema/1.0/IssueContent" />
+        <rdfs:label xml:lang="en">Start page</rdfs:label>
+        <rdfs:subPropertyOf rdf:resource="http://prismstandard.org/namespaces/1.2/basic/startingPage" />
+    </rdf:Property>
   
   <rdf:Description rdf:about="http://miskinhill.com.au/journals/test/">
     <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Journal"/>

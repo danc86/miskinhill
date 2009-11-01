@@ -60,6 +60,20 @@ public class HTMLRepresentationTest {
         assertEquals(expected.trim(), result.trim());
     }
     
+    @Test
+    public void testClass() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/rdfschema/1.0/Book"));
+        String expected = exhaust(this.getClass().getResource("template/html/Class.out.xml").toURI());
+        assertEquals(expected.trim(), result.trim());
+    }
+    
+    @Test
+    public void testProperty() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/rdfschema/1.0/startPage"));
+        String expected = exhaust(this.getClass().getResource("template/html/Property.out.xml").toURI());
+        assertEquals(expected.trim(), result.trim());
+    }
+    
     private String exhaust(URI file) throws IOException { // sigh
         FileChannel channel = new FileInputStream(new File(file)).getChannel();
         Charset charset = Charset.defaultCharset();

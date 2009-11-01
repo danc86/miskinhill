@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title>Start page - RDF Schema</title>
+    
+    <link rel="stylesheet" type="text/css" href="/style/rdfschema.css"/>
+</head>
+
+<body>
+
+<div id="breadcrumbs">
+    <a href="/rdfschema/1.0/">RDF Schema</a> &gt;
+</div>
+
+<h2 xml:lang="en" lang="en">Start page</h2>
+
+<div class="metabox-container">
+    <div class="rdfschema-meta metabox">
+        <h4>Other formats</h4>
+        <p/>
+    </div>
+</div>
+
+<table>
+    <tbody>
+        <tr><th>URI</th><td><code>http://miskinhill.com.au/rdfschema/1.0/startPage</code></td></tr>
+        <tr><th>Type</th><td>
+            
+                <a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#Property</code></a><br/>
+            
+        </td></tr>
+        <tr>
+            <th>Sub-property of</th>
+            <td>
+                
+                    <a href="http://prismstandard.org/namespaces/1.2/basic/startingPage"><code>http://prismstandard.org/namespaces/1.2/basic/startingPage</code></a><br/>
+                
+            </td>
+        </tr>
+        <tr>
+            <th>Domain</th>
+            <td><a href="http://miskinhill.com.au/rdfschema/1.0/IssueContent"><code>http://miskinhill.com.au/rdfschema/1.0/IssueContent</code></a></td>
+        </tr>
+        
+        <tr><th>Description</th><td xml:lang="en" lang="en">The number of the first page of this body of text in an issue.</td></tr>
+    </tbody>
+</table>
+
+</body>
+</html>
