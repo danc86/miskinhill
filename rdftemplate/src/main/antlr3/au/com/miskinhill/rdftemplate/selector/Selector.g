@@ -12,9 +12,14 @@ package au.com.miskinhill.rdftemplate.selector;
     }
     
     private AdaptationResolver adaptationResolver;
+    private PredicateResolver predicateResolver;
     
     public void setAdaptationResolver(AdaptationResolver adaptationResolver) {
         this.adaptationResolver = adaptationResolver;
+    }
+    
+    public void setPredicateResolver(PredicateResolver predicateResolver) {
+        this.predicateResolver = predicateResolver;
     }
     
 }
@@ -159,21 +164,35 @@ booleanPredicate returns [Predicate result]
     ;
     
 predicate returns [Predicate result]
-    : ( URI_PREFIX_PREDICATE
-        '='
-        uriPrefix=SINGLE_QUOTED { result = new UriPrefixPredicate($uriPrefix.text); }
-      | TYPE_PREDICATE
-        '='
-        nsprefix=XMLTOKEN
+@init {
+    Class<? extends Predicate> predicateClass;
+}
+    : predicateName=XMLTOKEN
+            {
+                predicateClass = predicateResolver.getByName($predicateName.text);
+                if (predicateClass == null)
+                    throw new InvalidSelectorSyntaxException("No predicate named " + $predicateName.text);
+            }
+      '='
+      ( sq=SINGLE_QUOTED {
+                try {
+                    result = predicateClass.getConstructor(String.class).newInstance($sq.text);
+                } catch (Exception e) {
+                    throw new InvalidSelectorSyntaxException(e);
+                }
+             }
+      | nsprefix=XMLTOKEN
         ':'
         localname=XMLTOKEN
-        { result = new TypePredicate($nsprefix.text, $localname.text); }
+        {
+            try {
+                result = predicateClass.getConstructor(String.class, String.class).newInstance($nsprefix.text, $localname.text);
+            } catch (Exception e) {
+                throw new InvalidSelectorSyntaxException(e);
+            }
+        }
       )
     ;
-
-URI_PREFIX_PREDICATE : 'uri-prefix' ;
-TYPE_PREDICATE : 'type' ;
-FIRST_PREDICATE : 'first' ;
 
 XMLTOKEN : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'-')* ;
 INTEGER : ('0'..'9')+ ;

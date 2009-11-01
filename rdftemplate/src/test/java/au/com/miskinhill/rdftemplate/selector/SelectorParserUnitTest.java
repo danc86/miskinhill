@@ -173,6 +173,13 @@ public class SelectorParserUnitTest {
                 .withAdaptation(formattedDTAdaptation("d MMMM yyyy")));
     }
     
+    @Test
+    public void shouldRecogniseRdfType() throws Exception {
+        // was broken due to ANTLR being confused about the literal string "type" which was hardcoded to be a predicate
+        Selector<RDFNode> selector = factory.get("rdf:type").withResultType(RDFNode.class);
+        assertThat(selector, selector(traversal("rdf", "type")));
+    }
+    
     @Test(expected = InvalidSelectorSyntaxException.class)
     public void shouldThrowForInvalidSyntax() throws Exception {
         factory.get("dc:creator]["); // this is a parser error
