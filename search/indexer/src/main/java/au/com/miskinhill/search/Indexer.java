@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.ResIterator;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.store.FSDirectory;
@@ -11,11 +14,6 @@ import org.apache.lucene.store.FSDirectory;
 import au.com.miskinhill.domain.FulltextFetcher;
 import au.com.miskinhill.domain.GenericResource;
 import au.com.miskinhill.search.analysis.NullAnalyzer;
-
-import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.ResIterator;
 
 /**
  * Builds the Lucene index from metadata and content.
@@ -25,14 +23,8 @@ public class Indexer {
     private static void writeIndex(final String contentPath, final String indexPath) 
             throws Exception {
         
-        Model schemaModel = ModelFactory.createDefaultModel();
-        schemaModel.read(new FileInputStream(new File(contentPath + "/rdfschema/schema.ttl")), "", "TURTLE");
-        
-        Model metadataModel = ModelFactory.createDefaultModel();
-        metadataModel.read(new FileInputStream(new File(contentPath + "/meta.nt")), "", "N-TRIPLE");
-        
-//        InfModel model = ModelFactory.createRDFSModel(ModelFactory.createUnion(schemaModel, metadataModel));
-        Model model = ModelFactory.createUnion(schemaModel, metadataModel);
+        Model model = ModelFactory.createDefaultModel();
+        model.read(new FileInputStream(new File(contentPath + "/meta.xml")), "", "RDF/XML");
         
         IndexWriter iw = new IndexWriter(FSDirectory.getDirectory(indexPath), 
                 NullAnalyzer.INSTANCE, 
