@@ -1,38 +1,47 @@
 package au.com.miskinhill.domain;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.hasItems;
+import static org.easymock.classextension.EasyMock.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.junit.matchers.JUnitMatchers.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.easymock.classextension.IMocksControl;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-
 public class ArticleUnitTest {
-    
-    private Article article;
+
+    private IMocksControl mockControl;
+    private FulltextFetcher fulltextFetcher;
     
     @Before
-    public void setUpTestArticle() throws Exception {
+    public void setUp() throws Exception {
+        mockControl = createControl();
+        fulltextFetcher = mockControl.createMock(FulltextFetcher.class);
+    }
+
+    private Model model() throws Exception {
         Model model = ModelFactory.createDefaultModel();
         model.read(this.getClass().getResourceAsStream("article.ttl"), null, "TURTLE");
-        
-        FulltextFetcher fulltextFetcher = createMock(FulltextFetcher.class);
+        return model;
+    }
+
+    private Model citedArticleModel() throws Exception {
+        Model model = ModelFactory.createDefaultModel();
+        model.read(this.getClass().getResourceAsStream("cited-article.ttl"), null, "TURTLE");
+        return model;
+    }
+    
+    private void expectFullText() throws Exception {
         expect(fulltextFetcher.fetch(isA(String.class)))
                 .andReturn(new ByteArrayInputStream(
                     ("<div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"body-text\" lang=\"en\">\n" +
@@ -41,28 +50,27 @@ public class ArticleUnitTest {
                     "insufficient attention, is variation in stress. By variation in stress is meant\n" + 
                     "the possibility of two (or more, in theory, but rarely in practice) syllables\n" + 
                     "on which the stress may fall in a given word form. Thus, for example, the\n" +  
-                    "plural short form of the adjective <em>ве́рный</em> ‘faithful’ is given in").getBytes("UTF-8")))
-                .times(0, 1);
-        replay(fulltextFetcher);
-        
-        article = new Article(model.getResource("http://miskinhill.com.au/journals/test/1:1/test-article"), fulltextFetcher);
-    }
-    
-    @After
-    public void verifyFulltextFetcher() {
-        verify(article.fulltextFetcher);
+                    "plural short form of the adjective <em>ве́рный</em> ‘faithful’ is given in").getBytes("UTF-8")));
     }
     
     @Test
-    public void testAnchorText() {
+    public void testAnchorText() throws Exception {
+        mockControl.replay();
+        Article article = new Article(model().getResource("http://miskinhill.com.au/journals/test/1:1/test-article"),
+                fulltextFetcher);
         assertEquals("One hundred years of solitude", article.getAnchorText());
+        mockControl.verify();
     }
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testAddFieldsToDocument() throws Exception {
+	    expectFullText();
+        mockControl.replay();
+        Article article = new Article(model().getResource("http://miskinhill.com.au/journals/test/1:1/test-article"), fulltextFetcher);
 		Document doc = new Document();
 		article.addFieldsToDocument("", doc);
+		mockControl.verify();
 		
 		assertThat((List<Field>) doc.getFields(), hasItems(
 				new BaseMatcher<Field>() {
@@ -111,5 +119,23 @@ public class ArticleUnitTest {
                     }
                 }));
 	}
+
+    @Test
+    public void mhArticlesShouldBeTopLevel() throws Exception {
+        mockControl.replay();
+        Article article = new Article(model().getResource("http://miskinhill.com.au/journals/test/1:1/test-article"),
+                fulltextFetcher);
+        mockControl.verify();
+        assertThat(article.isTopLevel(), equalTo(true));
+    }
+
+    @Test
+    public void citedArticlesShouldNotBeTopLevel() throws Exception {
+        mockControl.replay();
+        Article article = new Article(citedArticleModel().getResource(
+                "http://miskinhill.com.au/cited/journals/test/1:1/test-cited-article"), fulltextFetcher);
+        mockControl.verify();
+        assertThat(article.isTopLevel(), equalTo(false));
+    }
 
 }

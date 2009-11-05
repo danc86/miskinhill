@@ -68,7 +68,7 @@ public class Article extends GenericResource {
 
     @Override
     public boolean isTopLevel() {
-        return true;
+        return rdfResource.getURI().startsWith("http://miskinhill.com.au/journals/");
     }
 
 }
