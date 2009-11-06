@@ -1,7 +1,7 @@
 package au.com.miskinhill.search.webapp;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 
 import java.io.InputStreamReader;
@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.habitsoft.xhtml.dtds.FailingEntityResolver;
-import com.habitsoft.xhtml.dtds.XhtmlEntityResolver;
 import groovy.text.SimpleTemplateEngine;
 import groovy.text.Template;
 import org.dom4j.Document;
@@ -25,6 +23,9 @@ import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 import org.junit.Test;
 import org.xml.sax.InputSource;
+
+import au.com.miskinhill.xhtmldtd.FailingEntityResolver;
+import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
 
 public class SearchResultsTemplateTest {
 	

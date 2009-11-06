@@ -47,9 +47,9 @@
         <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>com.habitsoft</groupId>
+    	<groupId>au.com.miskinhill</groupId>
     	<artifactId>html-dtd-cache</artifactId>
-    	<version>1.0</version>
+    	<version>1.0-SNAPSHOT</version>
     	<scope>test</scope>
     </dependency>
     <dependency>
