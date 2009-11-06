@@ -21,7 +21,7 @@ import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeE
 
 public class Article extends GenericResource {
     
-    public static final Resource TYPE = MHS.Article;
+    public static final String TYPE = MHS.NS_URI + "Article";
 	
 	public Article(Resource rdfResource, FulltextFetcher fulltextFetcher) {
 		super(rdfResource, fulltextFetcher);
@@ -38,8 +38,8 @@ public class Article extends GenericResource {
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
 		super.addFieldsToDocument(fieldNamePrefix, doc);
 		
-		if (!rdfResource.getURI().substring(0, 24).equals("http://miskinhill.com.au"))
-			throw new IllegalArgumentException("Cannot fetch content which is not under http://miskinhill.com.au");
+		if (!rdfResource.getURI().startsWith("http://miskinhill.com.au/journals/"))
+			throw new IllegalArgumentException("Cannot fetch content which is not under http://miskinhill.com.au/journals/");
         InputStream content = null;
         try {
             content = fulltextFetcher.fetch(rdfResource.getURI().substring(24) + ".html");
@@ -62,7 +62,7 @@ public class Article extends GenericResource {
 	}
 
     @Override
-    protected Resource rdfType() {
+    protected String rdfType() {
         return TYPE;
     }
 

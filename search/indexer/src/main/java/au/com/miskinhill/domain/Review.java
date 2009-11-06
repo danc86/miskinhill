@@ -6,6 +6,11 @@ import java.io.SequenceInputStream;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.sparql.vocabulary.FOAF;
+import com.hp.hpl.jena.vocabulary.DCTerms;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
@@ -14,14 +19,9 @@ import au.com.miskinhill.search.analysis.MHAnalyzer;
 import au.com.miskinhill.search.analysis.XMLTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
 
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.vocabulary.DCTerms;
-
 public class Review extends GenericResource {
     
-    public static final Resource TYPE = MHS.Review;
+    public static final String TYPE = MHS.NS_URI + "Review";
 	
 	public Review(Resource rdfResource, FulltextFetcher fulltextFetcher) {
 		super(rdfResource, fulltextFetcher);
@@ -38,6 +38,9 @@ public class Review extends GenericResource {
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
 		super.addFieldsToDocument(fieldNamePrefix, doc);
 		
+		GenericResource reviewed = GenericResource.fromRDF(findReviewed(), fulltextFetcher);
+        reviewed.addFieldsToDocument(fieldNamePrefix + MHS.reviews.getURI() + " ", doc);
+		
 		if (!rdfResource.getURI().substring(0, 24).equals("http://miskinhill.com.au"))
 			throw new IllegalArgumentException("Cannot fetch content which is not under http://miskinhill.com.au");
 		doc.add(new Field(fieldNamePrefix + "content", new XMLTokenizer(
@@ -49,28 +52,34 @@ public class Review extends GenericResource {
 	
 	@Override
 	protected String getAnchorText() {
-	    StmtIterator i = rdfResource.listProperties(MHS.reviews);
-	    if (!i.hasNext())
-	        throw new IllegalArgumentException("Review does not review anything");
-	    Resource reviewed = (Resource) i.nextStatement().getObject().as(Resource.class);
-	    if (i.hasNext())
-	        throw new IllegalArgumentException("Review reviews more than one thing");
+	    Resource reviewed = findReviewed();
 		Property dctitle = rdfResource.getModel().createProperty(DCTerms.NS, "title");
 		Property dccreator = rdfResource.getModel().createProperty(DCTerms.NS, "creator");
 		Property dcdate = rdfResource.getModel().createProperty(DCTerms.NS, "date");
-		return toHTML(reviewed.getRequiredProperty(dccreator).getLiteral()) + ", <em>" + 
+		return toHTML(((Resource) reviewed.getRequiredProperty(dccreator).getObject().as(Resource.class))
+                    .getRequiredProperty(FOAF.name).getLiteral()) + ", <em>" + 
 		        toHTML(reviewed.getRequiredProperty(dctitle).getLiteral()) + "</em> (" + 
 		        reviewed.getRequiredProperty(dcdate).getString().substring(0, 4) + ")"; 
 	}
 
     @Override
-    protected Resource rdfType() {
+    protected String rdfType() {
         return TYPE;
     }
 
     @Override
     public boolean isTopLevel() {
         return true;
+    }
+
+    private Resource findReviewed() {
+        StmtIterator i = rdfResource.listProperties(MHS.reviews);
+        if (!i.hasNext())
+            throw new IllegalArgumentException("Review does not review anything");
+        Resource reviewed = (Resource) i.nextStatement().getObject().as(Resource.class);
+        if (i.hasNext())
+            throw new IllegalArgumentException("Review reviews more than one thing");
+        return reviewed;
     }
 
 }

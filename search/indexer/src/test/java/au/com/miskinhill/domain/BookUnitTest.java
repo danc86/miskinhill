@@ -54,7 +54,7 @@ public class BookUnitTest {
                     @Override
                     public boolean matches(Object field_) {
                         Field field = (Field) field_;
-                        return (field.name().equals("some-prefix http://purl.org/dc/terms/creator") &&
+                        return (field.name().equals("some-prefix http://purl.org/dc/terms/creator http://xmlns.com/foaf/0.1/name") &&
                                 // XXX assert content?
                                 !field.isStored() &&
                                 field.isIndexed());

@@ -9,6 +9,9 @@
 mhauthors:test-author a mhs:Author ;
 	foaf:name "Aureliano Buendía" .
 
+mhauthors:service-r a mhs:Author ;
+    foaf:name "Robert Service" .
+
 <> a mhs:Issue ;
     mhs:isIssueOf <..> ;
     mhs:volume 1 ;
@@ -21,15 +24,16 @@ mhauthors:test-author a mhs:Author ;
 
 <reviews/test-review> a mhs:Review ;
     dc:isPartOf <> ;
-    mhs:reviews [
-        a mhs:Book ;
-        dc:identifier <urn:isbn:9780674016972> ;
-        dc:identifier <urn:asin:0674016971> ;
-        dc:title "Stalin: a biography"@en ;
-        dc:creator "Robert Service" ;
-        dc:publisher "Belknap Press of Harvard University Press"@en ;
-        dc:date "2004"^^xsd:date
-    ] ;
+    mhs:reviews <http://miskinhill.com.au/cited/books/service-2004> ;
     dc:creator mhauthors:test-author ;
     mhs:startPage 192 ;
     mhs:endPage 194 .
+
+<http://miskinhill.com.au/cited/books/service-2004> a mhs:Book ;
+    a mhs:Book ;
+    dc:identifier <urn:isbn:9780674016972> ;
+    dc:identifier <urn:asin:0674016971> ;
+    dc:title "Stalin: a biography"@en ;
+    dc:creator mhauthors:service-r ;
+    dc:publisher "Belknap Press of Harvard University Press"@en ;
+    dc:date "2004"^^xsd:date .

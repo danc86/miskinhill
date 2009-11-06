@@ -1,13 +1,13 @@
 package au.com.miskinhill.domain;
 
-import au.com.miskinhill.domain.vocabulary.MHS;
-
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 
+import au.com.miskinhill.domain.vocabulary.MHS;
+
 public class Author extends GenericResource {
 
-	public static final Resource TYPE = MHS.Author;
+	public static final String TYPE = MHS.NS_URI + "Author";
 
     public Author(Resource rdfResource, FulltextFetcher fulltextFetcher) {
 		super(rdfResource, fulltextFetcher);
@@ -19,7 +19,7 @@ public class Author extends GenericResource {
 	}
 
     @Override
-    protected Resource rdfType() {
+    protected String rdfType() {
         return TYPE;
     }
 

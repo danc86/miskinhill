@@ -1,11 +1,18 @@
 package au.com.miskinhill.domain;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.vocabulary.RDF;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
@@ -15,21 +22,17 @@ import org.apache.lucene.index.IndexWriter;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
 
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.vocabulary.RDF;
-
 public abstract class GenericResource {
 	
-	private static Map<Resource, Class<? extends GenericResource>> types = 
-			new HashMap<Resource, Class<? extends GenericResource>>();
+	private static final Map<Resource, Class<? extends GenericResource>> TYPES;
 	static {
-		types.put(Article.TYPE, Article.class);
-		types.put(Review.TYPE, Review.class);
-		types.put(Author.TYPE, Author.class);
-		types.put(Book.TYPE, Book.class);
+	    Map<Resource, Class<? extends GenericResource>> types =
+	        new HashMap<Resource, Class<? extends GenericResource>>();
+		types.put(ResourceFactory.createResource(Article.TYPE), Article.class);
+		types.put(ResourceFactory.createResource(Review.TYPE), Review.class);
+		types.put(ResourceFactory.createResource(Author.TYPE), Author.class);
+		types.put(ResourceFactory.createResource(Book.TYPE), Book.class);
+		TYPES = Collections.unmodifiableMap(types);
 	}
 
 	public static GenericResource fromRDF(Resource rdfResource, FulltextFetcher fulltextFetcher) {
@@ -39,9 +42,9 @@ public abstract class GenericResource {
 		while (i.hasNext()) {
 			final Statement stmt = i.nextStatement();
 			Resource type = (Resource) stmt.getObject().as(Resource.class);
-			if (types.containsKey(type)) {
+			if (TYPES.containsKey(type)) {
 				try {
-					return types.get(type).getConstructor(Resource.class, FulltextFetcher.class)
+					return TYPES.get(type).getConstructor(Resource.class, FulltextFetcher.class)
 							.newInstance(rdfResource, fulltextFetcher);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
@@ -84,7 +87,7 @@ public abstract class GenericResource {
     	    doc.add(new Field(fieldNamePrefix + "url", rdfResource.getURI(), 
     	            Store.YES, Index.NOT_ANALYZED_NO_NORMS));
 		}
-	    doc.add(new Field(fieldNamePrefix + "type", rdfType().getURI(), 
+	    doc.add(new Field(fieldNamePrefix + "type", rdfType(), 
 	            Store.YES, Index.NOT_ANALYZED_NO_NORMS));
 	}
 
@@ -97,7 +100,7 @@ public abstract class GenericResource {
 	/**
 	 * Returns the (most specific) RDF type associated with this class. 
 	 */
-	protected abstract Resource rdfType();
+	protected abstract String rdfType();
 
 	public void addToIndex(IndexWriter iw)
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
