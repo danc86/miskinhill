@@ -3,6 +3,7 @@ package au.com.miskinhill.search.analysis;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -22,6 +23,8 @@ import org.apache.lucene.analysis.TokenStream;
  * whose language is given as "en-AU".
  */
 public class PerLanguageAnalyzerWrapper extends Analyzer {
+    
+    private static final Logger LOG = Logger.getLogger(PerLanguageAnalyzerWrapper.class.getName());
 
 	protected Trie<Analyzer> analyzers;
 	private List<Analyzer> analyzersList = new ArrayList<Analyzer>(); // easier than traversing the trie
@@ -45,7 +48,7 @@ public class PerLanguageAnalyzerWrapper extends Analyzer {
 
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
-		System.err.println("WARNING: " + this + " using default analyzer");
+	    LOG.warning("Using default analyzer");
 		return tokenStream("", fieldName, reader);
 	}
 	
@@ -53,8 +56,7 @@ public class PerLanguageAnalyzerWrapper extends Analyzer {
 		if (language == null) language = "";
 		Analyzer a = analyzers.get(language);
 		if (a == analyzersList.get(0))
-			System.err.println("WARNING: " + this + 
-					" using default analyzer for language " + language);
+		    LOG.warning("Using default analyzer for language " + language);
 		return a.tokenStream(fieldName, reader);
 	}
 
