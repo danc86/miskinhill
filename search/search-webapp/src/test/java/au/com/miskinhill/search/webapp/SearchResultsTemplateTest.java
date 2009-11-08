@@ -24,7 +24,6 @@ import org.dom4j.io.SAXReader;
 import org.junit.Test;
 import org.xml.sax.InputSource;
 
-import au.com.miskinhill.xhtmldtd.FailingEntityResolver;
 import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
 
 public class SearchResultsTemplateTest {
@@ -87,7 +86,7 @@ public class SearchResultsTemplateTest {
         StringWriter writer = new StringWriter();
         template.make(context).writeTo(writer);
         SAXReader reader = new SAXReader();
-        reader.setEntityResolver(new XhtmlEntityResolver(new FailingEntityResolver()));
+        reader.setEntityResolver(new XhtmlEntityResolver());
         return reader.read(new InputSource(new StringReader(writer.toString())));
     }
 
