@@ -1,16 +1,12 @@
 package au.com.miskinhill.xhtmldtd;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import au.com.miskinhill.xhtmldtd.FailingEntityResolver;
-import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
-
 import org.junit.Assert;
 import org.junit.Test;
-
 
 public class TestXhtmlEntityResolver {
 
@@ -26,21 +22,21 @@ public class TestXhtmlEntityResolver {
     @Test
     public void testResolver() throws Exception {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        documentBuilder.setEntityResolver(new XhtmlEntityResolver(new FailingEntityResolver()));
+        documentBuilder.setEntityResolver(new XhtmlEntityResolver());
         documentBuilder.parse(getClass().getResource("sample.xhtml").toString());
     }
     
     @Test
     public void testResolverStrict() throws Exception {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        documentBuilder.setEntityResolver(new XhtmlEntityResolver(new FailingEntityResolver()));
+        documentBuilder.setEntityResolver(new XhtmlEntityResolver());
         documentBuilder.parse(getClass().getResource("sample-strict.xhtml").toString());
     }
 
     @Test
     public void testResolverMissingFile() throws Exception {
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        documentBuilder.setEntityResolver(new XhtmlEntityResolver(new FailingEntityResolver()));
+        documentBuilder.setEntityResolver(new XhtmlEntityResolver());
         try {
             documentBuilder.parse(getClass().getResource("sample-missing.xhtml").toString());
             Assert.fail("Should have failed to find the DTD!");
