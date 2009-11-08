@@ -26,6 +26,9 @@ public class XMLTokenizer extends TokenStream {
 	static {
 		factory.setProperty("javax.xml.stream.isCoalescing", true);
 	}
+    public static XMLInputFactory getXMLInputFactory() {
+        return factory;
+    }
 	
 	private static final String XHTML_NS_URI = "http://www.w3.org/1999/xhtml";
 	
