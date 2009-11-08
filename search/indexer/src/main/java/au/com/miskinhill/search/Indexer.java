@@ -17,6 +17,8 @@ import org.apache.lucene.store.FSDirectory;
 import au.com.miskinhill.domain.FulltextFetcher;
 import au.com.miskinhill.domain.GenericResource;
 import au.com.miskinhill.search.analysis.NullAnalyzer;
+import au.com.miskinhill.search.analysis.XMLTokenizer;
+import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
 
 /**
  * Builds the Lucene index from metadata and content.
@@ -27,6 +29,8 @@ public class Indexer {
 
     private static void writeIndex(final String contentPath, final String indexPath) 
             throws Exception {
+        
+        XMLTokenizer.getXMLInputFactory().setXMLResolver(new XhtmlEntityResolver());
         
         Model model = ModelFactory.createDefaultModel();
         model.read(new FileInputStream(new File(contentPath + "/meta.xml")), "", "RDF/XML");
