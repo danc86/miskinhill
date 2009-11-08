@@ -128,5 +128,10 @@ public abstract class GenericResource {
      * top-level document, or only added transitively by another resource.
      */
     public abstract boolean isTopLevel();
+    
+    @Override
+    public String toString() {
+        return getClass() + "<" + rdfResource + ">";
+    }
 
 }

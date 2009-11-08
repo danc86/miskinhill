@@ -2,7 +2,10 @@ package au.com.miskinhill.search;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -19,6 +22,8 @@ import au.com.miskinhill.search.analysis.NullAnalyzer;
  * Builds the Lucene index from metadata and content.
  */
 public class Indexer {
+    
+    private static final Logger LOG = Logger.getLogger(Indexer.class.getName());
 
     private static void writeIndex(final String contentPath, final String indexPath) 
             throws Exception {
@@ -39,7 +44,12 @@ public class Indexer {
     		while (articles.hasNext()) {
     			GenericResource r = GenericResource.fromRDF(articles.nextResource(), fulltextFetcher);
     			if (r != null && r.isTopLevel()) {
-    			    r.addToIndex(iw);
+    			    try {
+                        r.addToIndex(iw);
+                    } catch (IOException e) {
+                        LOG.log(Level.SEVERE, "IOException while indexing " + r, e);
+                        throw e;
+                    }
     			}
     		}
 		
