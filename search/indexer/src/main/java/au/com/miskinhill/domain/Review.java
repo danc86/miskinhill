@@ -3,8 +3,12 @@ package au.com.miskinhill.domain;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.SequenceInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -38,8 +42,10 @@ public class Review extends GenericResource {
 			throws UnknownLiteralTypeException, IOException, XMLStreamException {
 		super.addFieldsToDocument(fieldNamePrefix, doc);
 		
-		GenericResource reviewed = GenericResource.fromRDF(findReviewed(), fulltextFetcher);
-        reviewed.addFieldsToDocument(fieldNamePrefix + MHS.reviews.getURI() + " ", doc);
+		for (Resource reviewedRDF: findReviewed()) {
+    		GenericResource reviewed = GenericResource.fromRDF(reviewedRDF, fulltextFetcher);
+            reviewed.addFieldsToDocument(fieldNamePrefix + MHS.reviews.getURI() + " ", doc);
+		}
 		
 		if (!rdfResource.getURI().substring(0, 24).equals("http://miskinhill.com.au"))
 			throw new IllegalArgumentException("Cannot fetch content which is not under http://miskinhill.com.au");
@@ -52,14 +58,17 @@ public class Review extends GenericResource {
 	
 	@Override
 	protected String getAnchorText() {
-	    Resource reviewed = findReviewed();
 		Property dctitle = rdfResource.getModel().createProperty(DCTerms.NS, "title");
 		Property dccreator = rdfResource.getModel().createProperty(DCTerms.NS, "creator");
 		Property dcdate = rdfResource.getModel().createProperty(DCTerms.NS, "date");
-		return toHTML(((Resource) reviewed.getRequiredProperty(dccreator).getObject().as(Resource.class))
-                    .getRequiredProperty(FOAF.name).getLiteral()) + ", <em>" + 
-		        toHTML(reviewed.getRequiredProperty(dctitle).getLiteral()) + "</em> (" + 
-		        reviewed.getRequiredProperty(dcdate).getString().substring(0, 4) + ")"; 
+		List<String> anchors = new ArrayList<String>();
+	    for (Resource reviewed: findReviewed()) {
+	        anchors.add(toHTML(((Resource) reviewed.getRequiredProperty(dccreator).getObject().as(Resource.class))
+                        .getRequiredProperty(FOAF.name).getLiteral()) + ", <em>" + 
+    		        toHTML(reviewed.getRequiredProperty(dctitle).getLiteral()) + "</em> (" + 
+    		        reviewed.getRequiredProperty(dcdate).getString().substring(0, 4) + ")");
+	    }
+	    return StringUtils.join(anchors, "; ");
 	}
 
     @Override
@@ -72,14 +81,14 @@ public class Review extends GenericResource {
         return true;
     }
 
-    private Resource findReviewed() {
+    private List<Resource> findReviewed() {
+        List<Resource> result = new ArrayList<Resource>();
         StmtIterator i = rdfResource.listProperties(MHS.reviews);
         if (!i.hasNext())
             throw new IllegalArgumentException("Review does not review anything");
-        Resource reviewed = (Resource) i.nextStatement().getObject().as(Resource.class);
-        if (i.hasNext())
-            throw new IllegalArgumentException("Review reviews more than one thing");
-        return reviewed;
+        while (i.hasNext())
+            result.add((Resource) i.nextStatement().getObject().as(Resource.class));
+        return result;
     }
 
 }

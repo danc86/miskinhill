@@ -12,6 +12,9 @@ mhauthors:test-author a mhs:Author ;
 mhauthors:service-r a mhs:Author ;
     foaf:name "Robert Service" .
 
+mhauthors:aaron-d a mhs:Author ;
+    foaf:name "Dieter Aaron" .
+
 <> a mhs:Issue ;
     mhs:isIssueOf <..> ;
     mhs:volume 1 ;
@@ -25,6 +28,7 @@ mhauthors:service-r a mhs:Author ;
 <reviews/test-review> a mhs:Review ;
     dc:isPartOf <> ;
     mhs:reviews <http://miskinhill.com.au/cited/books/service-2004> ;
+    mhs:reviews <http://miskinhill.com.au/cited/books/aaron-1961> ;
     dc:creator mhauthors:test-author ;
     mhs:startPage 192 ;
     mhs:endPage 194 .
@@ -37,3 +41,14 @@ mhauthors:service-r a mhs:Author ;
     dc:creator mhauthors:service-r ;
     dc:publisher "Belknap Press of Harvard University Press"@en ;
     dc:date "2004"^^xsd:date .
+    
+<http://miskinhill.com.au/cited/books/aaron-1961> a mhs:Book ;
+    dc:identifier <http://books.google.com/books?id=89ZlAAAAMAAJ> ;
+    dc:identifier <info:oclcnum/270205> ;
+    dc:identifier <urn:asin:B000P8394Q> ;
+    dc:title "Writers on the left: episodes in American literary communism"@en ;
+    mhs:responsibility """<span xmlns="http://www.w3.org/1999/xhtml" lang="en"><a href="http://miskinhill.com.au/authors/aaron-d">D. Aaron</a></span>"""^^rdf:XMLLiteral ;
+    dc:creator mhauthors:aaron-d ;
+    dc:publisher "Harcourt, Brace and World" ;
+    dc:date "1961"^^xsd:date .
+    
