@@ -8,7 +8,7 @@
 	<name>web</name>
 	<url>http://code.miskinhill.com.au/web/</url>
     <properties>
-        <contentPath>/home/dan/.www/miskinhill.com.au/content</contentPath>
+        <contentPath>/var/www/miskinhill.com.au/content</contentPath>
     </properties>
 	<repositories>
 		<repository>
