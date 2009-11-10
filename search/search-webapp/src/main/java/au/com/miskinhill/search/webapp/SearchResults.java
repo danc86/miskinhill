@@ -37,7 +37,7 @@ public class SearchResults {
 
     public static SearchResults build(TopDocs topDocs, IndexReader index) throws IOException {
         SearchResults results = new SearchResults();
-        for (int i = 0; i < topDocs.totalHits; i ++) {
+        for (int i = 0; i < topDocs.scoreDocs.length; i ++) {
             Document doc = index.document(topDocs.scoreDocs[i].doc);
             ResultType type;
             String typeUrl = doc.get("type");
@@ -73,6 +73,13 @@ public class SearchResults {
 
     public Iterable<Result> get(ResultType type) {
         return results.get(type);
+    }
+    
+    public long size() {
+        long size = 0;
+        for (List<Result> rs: results.values())
+            size += rs.size();
+        return size;
     }
 
 }
