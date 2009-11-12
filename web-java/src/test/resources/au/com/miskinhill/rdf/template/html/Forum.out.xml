@@ -2,7 +2,7 @@
 
 <head>
     <title xml:lang="en" lang="en">News</title>
-    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/.ttl"/>
+    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/.ttl"/><link title="Atom" rel="alternate" type="application/atom+xml" href="http://miskinhill.com.au/.atom"/>
     <link rel="stylesheet" type="text/css" href="/style/forum.css"/>
 </head>
 
@@ -14,7 +14,7 @@
     <h3 xml:lang="en" lang="en">New data feeds available</h3>
     <p class="created">15 June 2009</p>
     <div class="content">
-        <div xmlns="http://www.w3.org/1999/xhtml">
+        <div>
             <p>To coincide with the publication of our second issue, the <a href="/journals/asees/22:1-2/">2008 volume</a> of <a href="/journals/asees/"><em>Australian Slavonic and East European 
             Studies</em></a>, we are making available two new data feeds: an <a href="/feeds/issues">Atom feed of all journal issues</a> published 
             on this site, and the <a href="/feeds/world">complete RDF 
