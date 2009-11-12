@@ -1,20 +1,15 @@
 package au.com.miskinhill.rdf;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.util.Collections;
 
-import org.dom4j.XPath;
-
-import org.dom4j.DocumentException;
-
-import org.dom4j.DocumentHelper;
-
-import org.dom4j.Document;
-
-import static org.junit.Assert.*;
-
 import com.hp.hpl.jena.rdf.model.Model;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.XPath;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
