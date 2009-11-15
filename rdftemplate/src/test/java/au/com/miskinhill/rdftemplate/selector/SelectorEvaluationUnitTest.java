@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import au.com.miskinhill.rdftemplate.TestNamespacePrefixMap;
 import au.com.miskinhill.rdftemplate.datatype.DateDataType;
 import au.com.miskinhill.rdftemplate.datatype.DateTimeDataType;
 
@@ -23,7 +24,7 @@ public class SelectorEvaluationUnitTest {
     
     private Model m;
     private Resource journal, issue, article, citedArticle, author, anotherAuthor, book, review, anotherReview, obituary, en, ru, forum;
-    private SelectorFactory selectorFactory;
+    private AntlrSelectorFactory selectorFactory;
     
     @BeforeClass
     public static void ensureDatatypesRegistered() {
@@ -50,6 +51,7 @@ public class SelectorEvaluationUnitTest {
         ru = m.createResource("http://www.lingvoj.org/lang/ru");
         forum = m.createResource("http://miskinhill.com.au/");
         selectorFactory = new AntlrSelectorFactory();
+        selectorFactory.setNamespacePrefixMap(TestNamespacePrefixMap.getInstance());
     }
     
     @Test

@@ -14,9 +14,9 @@ public class TraversalMatcher extends BeanPropertyMatcher<Traversal> {
         super(Traversal.class);
     }
     
-    public static TraversalMatcher traversal(String propertyNamespacePrefix, String propertyLocalName) {
+    public static TraversalMatcher traversal(String propertyNamespace, String propertyLocalName) {
         TraversalMatcher m = new TraversalMatcher();
-        m.addRequiredProperty("propertyNamespacePrefix", equalTo(propertyNamespacePrefix));
+        m.addRequiredProperty("propertyNamespace", equalTo(propertyNamespace));
         m.addRequiredProperty("propertyLocalName", equalTo(propertyLocalName));
         return m;
     }

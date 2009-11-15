@@ -27,7 +27,10 @@
             <bean class="au.com.miskinhill.rdftemplate.selector.EternallyCachingSelectorFactory">
                 <constructor-arg>
                     <bean class="au.com.miskinhill.rdftemplate.selector.AntlrSelectorFactory">
-                        <constructor-arg ref="adaptationResolver" />
+                        <property name="adaptationResolver" ref="adaptationResolver" />
+                        <property name="namespacePrefixMap">
+                            <bean class="au.com.miskinhill.rdf.vocabulary.NamespacePrefixMapper" factory-method="getInstance" />
+                        </property>
                     </bean>
                 </constructor-arg>
             </bean>

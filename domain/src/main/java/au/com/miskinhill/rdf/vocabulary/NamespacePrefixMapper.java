@@ -1,4 +1,4 @@
-package au.com.miskinhill.rdftemplate;
+package au.com.miskinhill.rdf.vocabulary;
 
 import java.util.HashMap;
 

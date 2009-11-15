@@ -14,11 +14,9 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import au.com.miskinhill.rdftemplate.NamespacePrefixMapper;
-
 public class Traversal {
     
-    private String propertyNamespacePrefix;
+    private String propertyNamespace;
     private String propertyLocalName;
     private boolean inverse = false;
     private Predicate predicate;
@@ -42,9 +40,7 @@ public class Traversal {
             throw new SelectorEvaluationException("Attempted to traverse non-resource node " + node);
         }
         Resource resource = (Resource) node;
-        Property property = resource.getModel().createProperty(
-                NamespacePrefixMapper.getInstance().get(propertyNamespacePrefix),
-                propertyLocalName);
+        Property property = resource.getModel().createProperty(propertyNamespace, propertyLocalName);
         List<RDFNode> destinations = new ArrayList<RDFNode>();
         if (!inverse) {
             for (StmtIterator it = resource.listProperties(property); it.hasNext(); ) {
@@ -70,7 +66,7 @@ public class Traversal {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("propertyNamespacePrefix", propertyNamespacePrefix)
+                .append("propertyNamespace", propertyNamespace)
                 .append("propertyLocalName", propertyLocalName)
                 .append("inverse", inverse)
                 .append("predicate", predicate)
@@ -87,12 +83,12 @@ public class Traversal {
         this.propertyLocalName = propertyLocalName;
     }
     
-    public String getPropertyNamespacePrefix() {
-        return propertyNamespacePrefix;
+    public String getPropertyNamespace() {
+        return propertyNamespace;
     }
     
-    public void setPropertyNamespacePrefix(String propertyNamespacePrefix) {
-        this.propertyNamespacePrefix = propertyNamespacePrefix;
+    public void setPropertyNamespace(String propertyNamespace) {
+        this.propertyNamespace = propertyNamespace;
     }
     
     public boolean isInverse() {

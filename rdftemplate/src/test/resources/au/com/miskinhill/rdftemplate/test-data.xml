@@ -43,7 +43,7 @@
     <dc:description rdf:parseType="Literal"><div xmlns="http://www.w3.org/1999/xhtml" lang="en"><p><em>Test Journal</em> is a journal.</p></div></dc:description>
     <dc:language rdf:resource="http://www.lingvoj.org/lang/en" />
     <dc:language rdf:resource="http://www.lingvoj.org/lang/ru" />
-    <mhs:beginningDate>1987</mhs:beginningDate>
+    <mhs:beginningDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">1987</mhs:beginningDate>
   </mhs:Journal>
   <lingvoj:Lingvo rdf:about="http://www.lingvoj.org/lang/en">
     <lingvoj:iso1>en</lingvoj:iso1>

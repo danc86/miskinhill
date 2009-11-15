@@ -33,7 +33,9 @@ public class TemplateInterpolatorUnitTest {
         InputStream stream = this.getClass().getResourceAsStream(
                 "/au/com/miskinhill/rdftemplate/test-data.xml");
         model.read(stream, "");
-        templateInterpolator = new TemplateInterpolator(new AntlrSelectorFactory());
+        AntlrSelectorFactory selectorFactory = new AntlrSelectorFactory();
+        selectorFactory.setNamespacePrefixMap(TestNamespacePrefixMap.getInstance());
+        templateInterpolator = new TemplateInterpolator(selectorFactory);
     }
     
     @Test

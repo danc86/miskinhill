@@ -2,6 +2,7 @@ grammar Selector;
 
 @parser::header {
 package au.com.miskinhill.rdftemplate.selector;
+import java.util.Map;
 }
 
 @parser::members {
@@ -13,6 +14,7 @@ package au.com.miskinhill.rdftemplate.selector;
     
     private AdaptationResolver adaptationResolver;
     private PredicateResolver predicateResolver;
+    private Map<String, String> namespacePrefixMap;
     
     public void setAdaptationResolver(AdaptationResolver adaptationResolver) {
         this.adaptationResolver = adaptationResolver;
@@ -20,6 +22,17 @@ package au.com.miskinhill.rdftemplate.selector;
     
     public void setPredicateResolver(PredicateResolver predicateResolver) {
         this.predicateResolver = predicateResolver;
+    }
+    
+    public void setNamespacePrefixMap(Map<String, String> map) {
+        this.namespacePrefixMap = map;
+    }
+    
+    private String ns(String prefix) {
+        String ns = namespacePrefixMap.get(prefix);
+        if (ns == null)
+            throw new InvalidSelectorSyntaxException("Unbound namespace prefix " + prefix);
+        return ns;
     }
     
 }
@@ -119,7 +132,7 @@ traversal returns [Traversal result]
     : ( '!' { $result.setInverse(true); }
       | // optional
       )
-      nsprefix=XMLTOKEN { $result.setPropertyNamespacePrefix($nsprefix.text); }
+      nsprefix=XMLTOKEN { $result.setPropertyNamespace(ns($nsprefix.text)); }
       ':'
       localname=XMLTOKEN { $result.setPropertyLocalName($localname.text); }
       ( '['
@@ -186,7 +199,7 @@ predicate returns [Predicate result]
         localname=XMLTOKEN
         {
             try {
-                result = predicateClass.getConstructor(String.class, String.class).newInstance($nsprefix.text, $localname.text);
+                result = predicateClass.getConstructor(String.class, String.class).newInstance(ns($nsprefix.text), $localname.text);
             } catch (Exception e) {
                 throw new InvalidSelectorSyntaxException(e);
             }

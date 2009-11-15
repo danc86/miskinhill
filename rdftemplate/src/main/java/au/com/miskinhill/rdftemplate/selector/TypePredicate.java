@@ -8,20 +8,18 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDF;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import au.com.miskinhill.rdftemplate.NamespacePrefixMapper;
-
 public class TypePredicate implements Predicate {
     
-    private final String namespacePrefix;
+    private final String namespace;
     private final String localName;
     
-    public TypePredicate(String namespacePrefix, String localName) {
-        this.namespacePrefix = namespacePrefix;
+    public TypePredicate(String namespace, String localName) {
+        this.namespace = namespace;
         this.localName = localName;
     }
     
-    public String getNamespacePrefix() {
-        return namespacePrefix;
+    public String getNamespace() {
+        return namespace;
     }
     
     public String getLocalName() {
@@ -35,8 +33,7 @@ public class TypePredicate implements Predicate {
             throw new SelectorEvaluationException("Attempted to apply [type] to non-resource node " + node);
         }
         Resource resource = (Resource) node;
-        Resource type = resource.getModel().createResource(
-                NamespacePrefixMapper.getInstance().get(namespacePrefix) + localName);
+        Resource type = resource.getModel().createResource(namespace + localName);
         for (Statement statement: (Set<Statement>) resource.listProperties(RDF.type).toSet()) {
             if (statement.getObject().equals(type))
                 return true;
@@ -46,7 +43,7 @@ public class TypePredicate implements Predicate {
     
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append(namespacePrefix).append(localName).toString();
+        return new ToStringBuilder(this).append(namespace).append(localName).toString();
     }
 
 }

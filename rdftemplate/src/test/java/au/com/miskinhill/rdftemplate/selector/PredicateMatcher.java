@@ -16,9 +16,9 @@ public class PredicateMatcher<T extends Predicate> extends BeanPropertyMatcher<T
         return m;
     }
     
-    public static PredicateMatcher<TypePredicate> typePredicate(String namespacePrefix, String localName) {
+    public static PredicateMatcher<TypePredicate> typePredicate(String namespace, String localName) {
         PredicateMatcher<TypePredicate> m = new PredicateMatcher<TypePredicate>(TypePredicate.class);
-        m.addRequiredProperty("namespacePrefix", equalTo(namespacePrefix));
+        m.addRequiredProperty("namespace", equalTo(namespace));
         m.addRequiredProperty("localName", equalTo(localName));
         return m;
     }
