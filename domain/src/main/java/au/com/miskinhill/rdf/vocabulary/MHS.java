@@ -26,7 +26,11 @@ public final class MHS {
 			NS_URI + "Institution");
 	public static final Resource Obituary = ResourceFactory.createResource(
 	        NS_URI + "Obituary");
+	public static final Resource Citation = ResourceFactory.createResource(
+	        NS_URI + "Citation");
 	
+	public static final Property cites = ResourceFactory.createProperty(
+	        NS_URI, "cites");
 	public static final Property reviews = ResourceFactory.createProperty(
 	        NS_URI, "reviews");
 	public static final Property responsibility = ResourceFactory.createProperty(

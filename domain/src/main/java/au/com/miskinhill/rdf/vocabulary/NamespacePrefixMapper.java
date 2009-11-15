@@ -36,6 +36,16 @@ public final class NamespacePrefixMapper extends HashMap<String, String> {
         put("prism", "http://prismstandard.org/namespaces/1.2/basic/");
         put("owl", OWL.NS);
         put("rev", "http://purl.org/stuff/rev#");
+        put("skos", "http://www.w3.org/2004/02/skos/core#");
+        put("vs", "http://www.w3.org/2003/06/sw-vocab-status/ns#");
+        put("wot", "http://xmlns.com/wot/0.1/");
+        put("dcmitype", "http://purl.org/dc/dcmitype/");
+        put("vann", "http://purl.org/vocab/vann/");
+        put("cc", "http://web.resource.org/cc/");
+        put("dcam", "http://purl.org/dc/dcam/");
+        put("grddl", "http://www.w3.org/2003/g/data-view#");
+        put("wordnet", "http://xmlns.com/wordnet/1.6/");
+        put("wgs84", "http://www.w3.org/2003/01/geo/wgs84_pos#");
     }
     
 }

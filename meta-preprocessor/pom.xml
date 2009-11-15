@@ -2,11 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>au.com.miskinhill</groupId>
-	<artifactId>domain</artifactId>
+	<artifactId>meta-preprocessor</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>Domain</name>
+	<name>Metadata Preprocessor</name>
 	<url>http://code.miskinhill.com.au/</url>
+    <properties>
+        <contentPath>/var/www/miskinhill.com.au/content</contentPath>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -36,11 +39,21 @@
         </dependency>
         <dependency>
         	<groupId>au.com.miskinhill</groupId>
-        	<artifactId>html-dtd-cache</artifactId>
+        	<artifactId>domain</artifactId>
         	<version>1.0-SNAPSHOT</version>
         </dependency>
 	</dependencies>
 	<build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/filtered-resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -51,6 +64,26 @@
                     <showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorId>jar-with-dependencies</descriptorId>
+                    <archive>
+                        <manifest>
+                            <mainClass>au.com.miskinhill.preprocessor.Preprocessor</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 </project>
