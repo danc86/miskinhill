@@ -29,6 +29,10 @@ public final class MHS {
 	
 	public static final Property reviews = ResourceFactory.createProperty(
 	        NS_URI, "reviews");
+	public static final Property responsibility = ResourceFactory.createProperty(
+	        NS_URI, "responsibility");
+	public static final Property translator = ResourceFactory.createProperty(
+	        NS_URI, "translator");
 	
 	///CLOVER:OFF
 	private MHS() {

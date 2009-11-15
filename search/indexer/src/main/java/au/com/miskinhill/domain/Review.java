@@ -18,7 +18,7 @@ import com.hp.hpl.jena.vocabulary.DCTerms;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
-import au.com.miskinhill.domain.vocabulary.MHS;
+import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.search.analysis.MHAnalyzer;
 import au.com.miskinhill.search.analysis.XMLTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
