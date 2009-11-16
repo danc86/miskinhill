@@ -17,10 +17,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.hp.hpl.jena.shared.impl.JenaParameters;
-
-import com.hp.hpl.jena.rdf.model.NodeIterator;
-
 import com.hp.hpl.jena.datatypes.xsd.impl.XMLLiteralType;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -29,6 +25,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.shared.impl.JenaParameters;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.RDF;
 import org.apache.commons.lang.StringUtils;
@@ -70,17 +67,12 @@ public class Preprocessor {
         
         JenaParameters.enableEagerLiteralValidation = true;
         Model m = load(contentRoot);
-        
-        for (NodeIterator it = m.listObjectsOfProperty(m.createProperty(NamespacePrefixMapper.getInstance().get("awol") + "body")); it.hasNext(); ) {
-            Literal literal = (Literal) it.nextNode();
-            System.err.println(literal);
-        }
-//        extractResponsibility(m);
-//        extractCitations(m, contentRoot);
-//        new Inferrer(m).apply();
-//        new Validator(m).validate();
-//        m.setNsPrefixes(NamespacePrefixMapper.getInstance());
-//        m.write(System.out, "RDF/XML");
+        extractResponsibility(m);
+        extractCitations(m, contentRoot);
+        new Inferrer(m).apply();
+        new Validator(m).validate();
+        m.setNsPrefixes(NamespacePrefixMapper.getInstance());
+        m.write(System.out, "RDF/XML");
     }
     
     private static Model load(File base) throws IOException {
@@ -141,7 +133,6 @@ public class Preprocessor {
         LOG.info("Model contains " + m.getGraph().size() + " triples");
     }
     
-    @SuppressWarnings("unchecked")
     private static void extractCitations(Model m, File contentRoot) throws DocumentException, IOException {
         LOG.info("Extracting citation metadata");
         Iterator<Resource> it = m.listSubjectsWithProperty(RDF.type, MHS.Article)
