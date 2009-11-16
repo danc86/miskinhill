@@ -186,9 +186,9 @@ public class SelectorEvaluationUnitTest {
     
     @Test
     public void shouldEvaluateFormattedDTAdaptationWithDoubleQuotes() throws Exception {
-        String result = selectorFactory.get("!sioc:has_container/dc:created#formatted-dt('yyyy-MM-dd\"T\"HH:mm:ss')")
+        String result = selectorFactory.get("!sioc:has_container/dc:created#formatted-dt('yyyy-MM-dd\"T\"HH:mm:ssZZ')")
                 .withResultType(String.class).singleResult(forum);
-        assertThat(result, equalTo("2009-06-15T18:21:32"));
+        assertThat(result, equalTo("2009-06-15T18:21:32+10:00"));
     }
     
 }
