@@ -2,7 +2,7 @@
 
 <head>
     <title xml:lang="en" lang="en">Test Journal of Good Stuff</title>
-    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/journals/test/.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/journals/test/.ttl"/><link title="MODS" rel="alternate" type="application/mods+xml" href="http://miskinhill.com.au/journals/test/.mods"/>
+    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/journals/test/.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/journals/test/.ttl"/><link title="MODS" rel="alternate" type="application/mods+xml" href="http://miskinhill.com.au/journals/test/.mods"/><link title="MARCXML" rel="alternate" type="application/marcxml+xml" href="http://miskinhill.com.au/journals/test/.marcxml"/>
 </head>
 
 <body>
@@ -28,7 +28,7 @@
         </p>
         <p class="publisher">Published by <a xml:lang="en" lang="en" href="http://awesome.com">Awesome Publishing House</a></p>
         <p class="issn">ISSN 12345678</p>
-        <p>Metadata: <a rel="alternate" href="http://miskinhill.com.au/journals/test/.xml">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/.ttl">Turtle</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/.mods">MODS</a></p>
+        <p>Metadata: <a rel="alternate" href="http://miskinhill.com.au/journals/test/.xml">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/.ttl">Turtle</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/.mods">MODS</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/.marcxml">MARCXML</a></p>
     </div>
 </div>
 

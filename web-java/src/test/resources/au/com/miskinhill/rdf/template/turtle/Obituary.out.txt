@@ -10,9 +10,9 @@
 @prefix contact:  <http://www.w3.org/2000/10/swap/pim/contact#> .
 
 <http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe>
-      rdf:type mhs:Obituary ;
+      a       mhs:Obituary ;
       mhs:obituaryOf
-              [ rdf:type foaf:Person ;
+              [ a       foaf:Person ;
                 mhs:dateOfBirth "1990-01-01"^^<http://www.w3.org/TR/xmlschema-2/#date> ;
                 mhs:dateOfDeath "1991-12-31"^^<http://www.w3.org/TR/xmlschema-2/#date> ;
                 foaf:name "John Doe"

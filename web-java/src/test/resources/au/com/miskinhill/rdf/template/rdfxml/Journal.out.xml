@@ -23,6 +23,7 @@
     <dc:description xml:lang="en">A journal, you know, with some stuff in it</dc:description>
     <dc:language rdf:resource="http://www.lingvoj.org/lang/en"/>
     <dc:language rdf:resource="http://www.lingvoj.org/lang/ru"/>
-    <mhs:beginningDate>1987</mhs:beginningDate>
+    <mhs:beginningDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date"
+    >1987</mhs:beginningDate>
   </mhs:Journal>
 </rdf:RDF>

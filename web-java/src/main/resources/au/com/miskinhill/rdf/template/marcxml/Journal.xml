@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<collection xmlns="http://www.loc.gov/MARC21/slim"
+            xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<record>
+<leader>00000nas^a2200000^^^4500</leader>
+<controlfield tag="008">^^^^^^c${mhs:beginningDate#year}9999at^||^p^s^^^^^|^^^|||||^d</controlfield>
+<datafield rdf:if="dc:identifier[uri-prefix='urn:issn:']" tag="022" ind1=" " ind2=" ">
+    <subfield code="a">${dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)}</subfield>
+</datafield>
+<datafield tag="040" ind1=" " ind2=" ">
+    <subfield code="a">Miskin Hill Academic Publishing</subfield>
+</datafield>
+<datafield tag="041" ind1=" " ind2=" ">
+    <subfield code="a" rdf:for="dc:language(lingvoj:iso2b#comparable-lv)">${lingvoj:iso2b}</subfield>
+</datafield>
+<datafield tag="245" ind1="0" ind2="0">
+    <subfield code="a">${dc:title}</subfield>
+</datafield>
+<datafield tag="260" ind1=" " ind2=" ">
+    <subfield code="a" rdf:if="dc:publisher/contact:address">${dc:publisher/contact:address/geonames:name} :</subfield>
+    <subfield code="b">${dc:publisher/foaf:name},</subfield>
+    <subfield code="c">${mhs:beginningDate#year}-</subfield>
+</datafield>
+</record>
+
+</collection>
