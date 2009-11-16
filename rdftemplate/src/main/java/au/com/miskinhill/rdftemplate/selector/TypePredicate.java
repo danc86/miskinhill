@@ -1,7 +1,5 @@
 package au.com.miskinhill.rdftemplate.selector;
 
-import java.util.Set;
-
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
@@ -26,7 +24,6 @@ public class TypePredicate implements Predicate {
         return localName;
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public boolean evaluate(RDFNode node) {
         if (!node.isResource()) {
@@ -34,7 +31,7 @@ public class TypePredicate implements Predicate {
         }
         Resource resource = (Resource) node;
         Resource type = resource.getModel().createResource(namespace + localName);
-        for (Statement statement: (Set<Statement>) resource.listProperties(RDF.type).toSet()) {
+        for (Statement statement: resource.listProperties(RDF.type).toSet()) {
             if (statement.getObject().equals(type))
                 return true;
         }

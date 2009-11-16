@@ -2,7 +2,6 @@ package au.com.miskinhill.preprocessor;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -29,11 +28,10 @@ public class Inferrer {
         this.m = m;
     }
     
-    @SuppressWarnings("unchecked")
     public void apply() {
         LOG.info("Applying transitive superclasses");
         Map<Resource, Set<Resource>> transitiveSuperclasses = transitiveSuperclasses();
-        for (Statement stmt: (List<Statement>) m.listStatements(null, RDF.type, (RDFNode) null).toList()) {
+        for (Statement stmt: m.listStatements(null, RDF.type, (RDFNode) null).toList()) {
             for (Resource superclass: transitiveSuperclasses.get((Resource) stmt.getObject()))
                 m.add(ResourceFactory.createStatement(stmt.getSubject(), RDF.type, superclass));
         }
@@ -41,7 +39,7 @@ public class Inferrer {
         
         LOG.info("Applying transitive superproperties");
         Map<Property, Set<Property>> transitiveSuperproperties = transitiveSuperproperties();
-        for (Statement stmt: (List<Statement>) m.listStatements().toList()) {
+        for (Statement stmt: m.listStatements().toList()) {
             for (Property superproperty: transitiveSuperproperties.get(stmt.getPredicate()))
                 m.add(ResourceFactory.createStatement(stmt.getSubject(), superproperty, stmt.getObject()));
         }
@@ -49,7 +47,7 @@ public class Inferrer {
         
         LOG.info("Applying inverse properties");
         Map<Property, Set<Property>> inverseProperties = inverseProperties();
-        for (Statement stmt: (List<Statement>) m.listStatements().toList()) {
+        for (Statement stmt: m.listStatements().toList()) {
             if (inverseProperties.get(stmt.getPredicate()) != null)
                 for (Property inverse: inverseProperties.get(stmt.getPredicate()))
                     m.add(ResourceFactory.createStatement((Resource) stmt.getObject(), inverse, stmt.getSubject()));
