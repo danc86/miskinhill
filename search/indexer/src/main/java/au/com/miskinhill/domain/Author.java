@@ -1,8 +1,8 @@
 package au.com.miskinhill.domain;
 
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 
+import au.com.miskinhill.rdf.vocabulary.FOAF;
 import au.com.miskinhill.rdf.vocabulary.MHS;
 
 public class Author extends GenericResource {

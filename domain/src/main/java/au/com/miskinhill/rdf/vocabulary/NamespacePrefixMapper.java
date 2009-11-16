@@ -2,7 +2,6 @@ package au.com.miskinhill.rdf.vocabulary;
 
 import java.util.HashMap;
 
-import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.DC_11;
 import com.hp.hpl.jena.vocabulary.OWL;
@@ -20,10 +19,10 @@ public final class NamespacePrefixMapper extends HashMap<String, String> {
     }
     
     private NamespacePrefixMapper() {
-        put("mhs", "http://miskinhill.com.au/rdfschema/1.0/");
+        put("mhs", MHS.NS_URI);
         put("dc", DCTerms.NS);
         put("old-dc", DC_11.NS);
-        put("foaf", FOAF.NS);
+        put("foaf", FOAF.NS_URI);
         put("rdf", RDF.getURI());
         put("rdfs", RDFS.getURI());
         put("xs", XSD.getURI());

@@ -1,6 +1,6 @@
 package au.com.miskinhill.rdftemplate.selector;
 
-import static au.com.miskinhill.rdftemplate.TestNamespacePrefixMap.MHS_NS;
+import static au.com.miskinhill.rdftemplate.TestNamespacePrefixMap.*;
 import static au.com.miskinhill.rdftemplate.selector.AdaptationMatcher.*;
 import static au.com.miskinhill.rdftemplate.selector.PredicateMatcher.*;
 import static au.com.miskinhill.rdftemplate.selector.SelectorComparatorMatcher.*;
@@ -9,7 +9,6 @@ import static au.com.miskinhill.rdftemplate.selector.TraversalMatcher.*;
 import static org.junit.Assert.*;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.RDF;
 import org.junit.Before;
@@ -38,7 +37,7 @@ public class SelectorParserUnitTest {
         Selector<RDFNode> selector = factory.get("dc:creator/foaf:name").withResultType(RDFNode.class);
         assertThat(selector, selector(
                 traversal(DCTerms.NS, "creator"),
-                traversal(FOAF.NS, "name")));
+                traversal(FOAF_NS, "name")));
     }
     
     @Test
