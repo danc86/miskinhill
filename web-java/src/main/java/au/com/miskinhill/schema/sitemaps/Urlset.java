@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "urlset")
 @XmlType
@@ -22,6 +24,11 @@ public class Urlset {
     
     public void add(Url url) {
     	urls.add(url);
+    }
+    
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append(urls).toString();
     }
 
 }

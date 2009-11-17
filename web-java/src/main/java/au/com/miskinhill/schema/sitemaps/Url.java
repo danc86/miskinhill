@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType
 public class Url {
@@ -72,6 +74,16 @@ public class Url {
     		throw new IllegalArgumentException("Priority must be in [0, 1]");
     	}
         this.priority = value;
+    }
+    
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("loc", loc)
+                .append("lastmod", lastmod)
+                .append("changefreq", changefreq)
+                .append("priority", priority)
+                .toString();
     }
 
 }

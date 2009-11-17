@@ -81,6 +81,11 @@
         	<groupId>au.com.miskinhill</groupId>
         	<artifactId>domain</artifactId>
         </dependency>
+        <dependency>
+        	<groupId>com.sun.jersey</groupId>
+        	<artifactId>jersey-client</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -93,28 +98,97 @@
                             <value>${contentPath}</value>
                         </property>
                     </systemProperties>
+                    <excludes>
+                        <exclude>**/*IntegrationTest.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>7.0.0.1beta3</version>
-				<configuration>
-					<webAppConfig>
-						<contextPath>/</contextPath>
-					</webAppConfig>
-                    <systemProperties>
-                        <systemProperty>
-                            <name>jetty.port</name>
-                            <value>8082</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>contentPath</name>
-                            <value>${contentPath}</value>
-                        </systemProperty>
-                    </systemProperties>
-				</configuration>
 			</plugin>
 		</plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>7.0.0.1beta3</version>
+                    <configuration>
+                        <webAppConfig>
+                            <contextPath>/</contextPath>
+                        </webAppConfig>
+                        <systemProperties>
+                            <systemProperty>
+                                <name>jetty.port</name>
+                                <value>8082</value>
+                            </systemProperty>
+                            <systemProperty>
+                                <name>contentPath</name>
+                                <value>${contentPath}</value>
+                            </systemProperty>
+                        </systemProperties>
+                        <scanIntervalSeconds>0</scanIntervalSeconds>
+                        <stopKey>lol</stopKey>
+                        <stopPort>6969</stopPort>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 	</build>
+
+    <profiles>
+        <profile>
+            <id>inttests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.mortbay.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>start-jetty</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <daemon>true</daemon>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-jetty</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>integration-tests</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>false</skip>
+                                    <excludes>
+                                        <exclude>none</exclude>
+                                    </excludes>
+                                    <includes>
+                                        <include>**/*IntegrationTest.java</include>
+                                    </includes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
