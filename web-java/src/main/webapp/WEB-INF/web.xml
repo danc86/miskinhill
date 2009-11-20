@@ -23,6 +23,7 @@
 	<servlet-mapping>
 		<servlet-name>jersey-spring</servlet-name>
 		<url-pattern>/feeds/*</url-pattern>
+		<url-pattern>/unapi</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>rdfRequestHandler</servlet-name>

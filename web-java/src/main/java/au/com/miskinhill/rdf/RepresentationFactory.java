@@ -1,6 +1,7 @@
 package au.com.miskinhill.rdf;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ public class RepresentationFactory {
     @Autowired
     public RepresentationFactory(List<Representation> representations) {
         Collections.sort(representations, new AnnotationAwareOrderComparator()); // why doesn't spring do this for me?
-        this.representations = representations;
+        this.representations = Collections.unmodifiableList(representations);
         instance = this;
         
         for (Representation representation: representations) {
@@ -60,6 +61,10 @@ public class RepresentationFactory {
     
     public Set<String> getAllFormats() {
         return byFormat.keySet();
+    }
+    
+    public Collection<Representation> getAll() {
+        return representations;
     }
 
 }
