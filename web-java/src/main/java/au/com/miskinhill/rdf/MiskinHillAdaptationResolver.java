@@ -18,6 +18,7 @@ public class MiskinHillAdaptationResolver implements AdaptationResolver {
     public MiskinHillAdaptationResolver() {
         adaptations.put("representation-anchors", RepresentationAnchorsAdaptation.class);
         adaptations.put("representation-links", RepresentationLinksAdaptation.class);
+        adaptations.put("representation-atom-links", RepresentationAtomLinksAdaptation.class);
         adaptations.put("year", YearAdaptation.class);
     }
 

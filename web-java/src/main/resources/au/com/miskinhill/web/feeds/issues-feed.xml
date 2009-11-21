@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<id>http://miskinhill.com.au/feeds/issues</id>
+<title type="text">Miskin Hill Journal Issues</title>
+<link rel="self" type="application/atom+xml" href="http://miskinhill.com.au/feeds/issues" />
+<updated>${!mhs:isIssueOf[uri-prefix='http://miskinhill.com.au/journals/'](~mhs:onlinePublicationDate#comparable-lv)[0]
+        /mhs:onlinePublicationDate#formatted-dt('yyyy-MM-dd')}T00:00:00+10:00</updated>
+
+<entry rdf:for="!mhs:isIssueOf[uri-prefix='http://miskinhill.com.au/journals/'](~mhs:onlinePublicationDate#comparable-lv)">
+    <id rdf:content="#uri" />
+    <author><name>Miskin Hill</name></author>
+    <published>${mhs:onlinePublicationDate#formatted-dt('yyyy-MM-dd')}T00:00:00+10:00</published>
+    <updated>${mhs:onlinePublicationDate#formatted-dt('yyyy-MM-dd')}T00:00:00+10:00</updated>
+    <title type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml">
+        <em rdf:content="mhs:isIssueOf/dc:title" /> Vol.&#160;${mhs:volume}, Issue&#160;${mhs:issueNumber}
+    </div></title>
+    ${#representation-atom-links}
+</entry>
+
+</feed>
