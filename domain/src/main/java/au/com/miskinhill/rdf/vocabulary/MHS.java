@@ -37,6 +37,8 @@ public final class MHS {
 	        NS_URI, "responsibility");
 	public static final Property translator = ResourceFactory.createProperty(
 	        NS_URI, "translator");
+	public static final Property onlinePublicationDate = ResourceFactory.createProperty(
+	        NS_URI, "onlinePublicationDate");
 	
 	///CLOVER:OFF
 	private MHS() {

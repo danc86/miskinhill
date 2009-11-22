@@ -21,20 +21,18 @@
     <context:component-scan base-package="au.com.miskinhill.rdf" />
     <context:component-scan base-package="au.com.miskinhill.web" />
     
-
-    <bean class="au.com.miskinhill.rdftemplate.TemplateInterpolator">
+    <bean id="selectorFactory" class="au.com.miskinhill.rdftemplate.selector.EternallyCachingSelectorFactory">
         <constructor-arg>
-            <bean class="au.com.miskinhill.rdftemplate.selector.EternallyCachingSelectorFactory">
-                <constructor-arg>
-                    <bean class="au.com.miskinhill.rdftemplate.selector.AntlrSelectorFactory">
-                        <property name="adaptationResolver" ref="adaptationResolver" />
-                        <property name="namespacePrefixMap">
-                            <bean class="au.com.miskinhill.rdf.vocabulary.NamespacePrefixMapper" factory-method="getInstance" />
-                        </property>
-                    </bean>
-                </constructor-arg>
+            <bean class="au.com.miskinhill.rdftemplate.selector.AntlrSelectorFactory">
+                <property name="adaptationResolver" ref="adaptationResolver" />
+                <property name="namespacePrefixMap">
+                    <bean class="au.com.miskinhill.rdf.vocabulary.NamespacePrefixMapper" factory-method="getInstance" />
+                </property>
             </bean>
         </constructor-arg>
+    </bean>
+    <bean class="au.com.miskinhill.rdftemplate.TemplateInterpolator">
+        <constructor-arg ref="selectorFactory" />
     </bean>
     
 </beans>

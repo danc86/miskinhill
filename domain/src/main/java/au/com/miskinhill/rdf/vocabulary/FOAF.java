@@ -13,6 +13,8 @@ public final class FOAF {
 	
 	public static final Property name = ResourceFactory.createProperty(
 	        NS_URI, "name");
+	public static final Property surname = ResourceFactory.createProperty(
+	        NS_URI, "surname");
 	
 	///CLOVER:OFF
 	private FOAF() {

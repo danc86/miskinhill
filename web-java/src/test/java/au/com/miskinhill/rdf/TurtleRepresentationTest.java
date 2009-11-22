@@ -1,14 +1,6 @@
 package au.com.miskinhill.rdf;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
+import static org.junit.Assert.*;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import org.junit.Before;
@@ -17,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import au.com.miskinhill.TestUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/au/com/miskinhill/web/test-spring-context.xml")
@@ -35,28 +29,15 @@ public class TurtleRepresentationTest {
     @Test
     public void testJournal() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/"));
-        String expected = exhaust(this.getClass().getResource("template/turtle/Journal.out.txt").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResource("template/turtle/Journal.out.txt").toURI());
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testObituary() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe"));
-        String expected = exhaust(this.getClass().getResource("template/turtle/Obituary.out.txt").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResource("template/turtle/Obituary.out.txt").toURI());
         assertEquals(expected.trim(), result.trim());
-    }
-    
-    private String exhaust(URI file) throws IOException { // sigh
-        FileChannel channel = new FileInputStream(new File(file)).getChannel();
-        Charset charset = Charset.defaultCharset();
-        StringBuffer sb = new StringBuffer();
-        ByteBuffer b = ByteBuffer.allocate(8192);
-        while (channel.read(b) > 0) {
-            b.rewind();
-            sb.append(charset.decode(b));
-            b.flip();
-        }
-        return sb.toString();
     }
 
 }
