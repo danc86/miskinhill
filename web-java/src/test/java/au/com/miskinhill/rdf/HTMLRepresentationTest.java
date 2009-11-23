@@ -34,6 +34,13 @@ public class HTMLRepresentationTest {
     }
     
     @Test
+    public void testIssue() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/"));
+        String expected = TestUtil.exhaust(this.getClass().getResource("template/html/Issue.out.xml").toURI());
+        assertEquals(expected.trim(), result.trim());
+    }
+    
+    @Test
     public void testAuthor() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/authors/test-author"));
         String expected = TestUtil.exhaust(this.getClass().getResource("template/html/Author.out.xml").toURI());

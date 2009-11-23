@@ -89,6 +89,11 @@
     <mhs:onlinePublicationDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2008-03-01</mhs:onlinePublicationDate>
     <mhs:coverThumbnail rdf:resource="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg"/>
   </rdf:Description>
+    <mhs:ContentsSection rdf:about="http://miskinhill.com.au/journals/test/1:1/#articles">
+        <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/" />
+        <mhs:sectionHeading>Articles</mhs:sectionHeading>
+        <dc:description>This sections contains some articles.</dc:description>
+    </mhs:ContentsSection>
   <rdf:Description rdf:about="http://miskinhill.com.au/journals/test/1:1/article">
     <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Article"/>
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
@@ -96,6 +101,7 @@
     <dc:title rdf:parseType="Literal"><span xmlns="http://www.w3.org/1999/xhtml" lang="en"><em>Moscow 1937</em>: the interpreter’s story</span></dc:title>
     <mhs:startPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</mhs:startPage>
     <mhs:endPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</mhs:endPage>
+    <mhs:inSection rdf:resource="http://miskinhill.com.au/journals/test/1:1/#articles" />
   </rdf:Description>
   <rdf:Description rdf:about="http://miskinhill.com.au/authors/test-author">
     <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Author"/>

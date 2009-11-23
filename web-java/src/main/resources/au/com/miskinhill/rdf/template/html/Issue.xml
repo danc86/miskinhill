@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title>${mhs:isIssueOf/dc:title} Vol.&#160;${mhs:volume}, Issue&#160;${mhs:issueNumber}</title>
+    ${#representation-links}
+    <link rel="stylesheet" type="text/css" href="/style/issue.css" />
+</head>
+
+<body>
+
+<div id="breadcrumbs">
+    <a href="/journals/">Journals</a> &gt;
+    <a href="${mhs:isIssueOf#uri}">${mhs:isIssueOf/dc:title}</a> &gt;
+</div>
+
+<h2>
+    <span class="journal-title" rdf:content="mhs:isIssueOf/dc:title" />
+    <span class="issue">Vol.&#160;${mhs:volume}, Issue&#160;${mhs:issueNumber} (${dc:coverage})</span>
+    <abbr class="unapi-id" title="${#uri}" />
+</h2>
+
+<div class="metabox-container">
+        <div class="searchbox metabox">
+        <h4>Search this issue</h4>
+        <form method="get" action="http://search.miskinhill.com.au/search">
+            <p><input type="text" name="q" /> <button type="submit">Go</button></p>
+        </form>
+    </div>
+
+    <div class="issue-meta metabox">
+        <h4>Issue details</h4>
+        <p class="cover"><img src="${mhs:coverThumbnail#uri}" alt="" /></p>
+        <p>Published ${mhs:publicationDate#formatted-dt('d MMMM yyyy')}</p>
+        <p class="metadata-links">Metadata: ${#representation-anchors}</p>
+    </div>
+</div>
+
+<rdf:for each="!dc:isPartOf[type=mhs:ContentsSection](!mhs:inSection(mhs:startPage#comparable-lv)[0]/mhs:startPage#comparable-lv)">
+    <h3 id="${#uri-anchor}" rdf:content="mhs:sectionHeading" />
+    <div rdf:if="dc:description" class="section-description" rdf:content="dc:description" />
+    <ul class="contents">
+        <rdf:for each="!mhs:inSection">
+            <li>
+                <div class="title">
+                    <rdf:if test="mhs:reviews"><a href="${#uri}">Review of <rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></rdf:if>
+                    <rdf:if test="dc:title"><a href="${#uri}" rdf:content="dc:title" /></rdf:if>
+                </div>
+                <div class="author">
+                    <rdf:if test="mhs:reviews">Reviewed</rdf:if>
+                    by
+                    <rdf:join each="dc:creator(mhs:authorOrder#comparable-lv)" separator=", "><a href="${#uri}" rdf:content="foaf:name" /></rdf:join>
+                    <rdf:if test="mhs:translator">(translated by <a href="${mhs:translator#uri}" rdf:content="mhs:translator/foaf:name" />)</rdf:if>
+                </div>
+            </li>
+        </rdf:for>
+    </ul>
+</rdf:for>
+
+</body>
+</html>
