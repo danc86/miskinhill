@@ -45,8 +45,8 @@ public class HTMLRepresentation implements Representation {
 
     @Override
     public boolean canRepresent(Resource resource) {
-        if (resource.getURI().startsWith("http://miskinhill.com.au/cited/") && !RDFUtil.hasAnyType(resource, citedTypeTemplates.keySet()))
-            return false;
+        if (resource.getURI().startsWith("http://miskinhill.com.au/cited/"))
+            return RDFUtil.hasAnyType(resource, citedTypeTemplates.keySet());
         return RDFUtil.hasAnyType(resource, typeTemplates.keySet());
     }
 

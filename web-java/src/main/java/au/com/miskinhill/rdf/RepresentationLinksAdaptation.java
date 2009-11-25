@@ -24,7 +24,8 @@ public class RepresentationLinksAdaptation implements Adaptation<XMLStream> {
     @Override
     public XMLStream adapt(RDFNode node) {
         Resource resource = (Resource) node;
-        List<Representation> representations = RepresentationFactory.getInstance().getRepresentationsForResource(resource);
+        List<Representation> representations = StaticApplicationContextAccessor.getBeanOfType(RepresentationFactory.class)
+                .getRepresentationsForResource(resource);
         List<XMLEvent> events = new ArrayList<XMLEvent>();
         for (Representation representation: representations) {
             if (representation.getFormat().equals("html"))

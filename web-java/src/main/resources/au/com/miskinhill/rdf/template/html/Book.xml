@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title rdf:content="dc:title#string-lv" />
+    ${#representation-links}
+    <link rel="stylesheet" type="text/css" href="/style/cited.css" />
+</head>
+
+<body>
+
+<h2>Book<abbr class="unapi-id" title="${#uri}" /></h2>
+
+${#html}
+
+<div class="reviews" rdf:if="!mhs:reviews">
+    <h3>Reviews</h3>
+    <ul class="reviews">
+        <li rdf:for="!mhs:reviews(~dc:isPartOf/mhs:publicationDate#comparable-lv)">
+            <div class="review"><a href="${#uri}">Review</a> by ${dc:creator/foaf:name}</div>
+            <div class="issue">in <em>${dc:isPartOf/mhs:isIssueOf/dc:title}</em> Vol. ${dc:isPartOf/mhs:volume}, Issue ${dc:isPartOf/mhs:issueNumber} (${dc:isPartOf/dc:coverage})</div>
+        </li>
+    </ul>
+</div>
+
+<div class="cited-in" rdf:if="!mhs:cites">
+    <h3>Cited in</h3>
+    <ul class="articles">
+        <li rdf:for="!mhs:cites/dc:isPartOf(~dc:isPartOf/mhs:publicationDate#comparable-lv)">
+            <div class="article"><a href="${#uri}">
+                <rdf:if test="mhs:reviews">Review of <rdf:join each="mhs:reviews" separator="; "><em rdf:content="dc:title" /></rdf:join></rdf:if>
+                <rdf:if test="dc:title">${dc:title}</rdf:if>
+            </a></div>
+            <div class="issue">in <em>${dc:isPartOf/mhs:isIssueOf/dc:title}</em> Vol. ${dc:isPartOf/mhs:volume}, Issue ${dc:isPartOf/mhs:issueNumber} (${dc:isPartOf/dc:coverage})</div>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

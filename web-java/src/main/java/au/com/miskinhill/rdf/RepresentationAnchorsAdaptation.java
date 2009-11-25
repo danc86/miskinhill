@@ -24,7 +24,8 @@ public class RepresentationAnchorsAdaptation implements Adaptation<XMLStream> {
     @Override
     public XMLStream adapt(RDFNode node) {
         Resource resource = (Resource) node;
-        List<Representation> representations = RepresentationFactory.getInstance().getRepresentationsForResource(resource);
+        List<Representation> representations = StaticApplicationContextAccessor.getBeanOfType(RepresentationFactory.class)
+                .getRepresentationsForResource(resource);
         List<XMLEvent> events = new ArrayList<XMLEvent>();
         boolean first = true;
         for (Representation representation: representations) {

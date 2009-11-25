@@ -20,6 +20,8 @@ public class MiskinHillAdaptationResolver implements AdaptationResolver {
         adaptations.put("representation-links", RepresentationLinksAdaptation.class);
         adaptations.put("representation-atom-links", RepresentationAtomLinksAdaptation.class);
         adaptations.put("year", YearAdaptation.class);
+        adaptations.put("html", HTMLFragmentRepresentationAdaptation.class);
+        adaptations.put("book-links", BookLinksAdaptation.class);
     }
 
     @Override

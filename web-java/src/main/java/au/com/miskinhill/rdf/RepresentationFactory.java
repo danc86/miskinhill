@@ -19,13 +19,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RepresentationFactory {
     
-    private static RepresentationFactory instance;
-    
-    /** XXX lame */
-    public static RepresentationFactory getInstance() {
-        return instance;
-    }
-    
     private final List<Representation> representations;
     private final Map<String, Representation> byFormat = new HashMap<String, Representation>();
     private final Map<MediaType, Representation> byContentType = new HashMap<MediaType, Representation>();
@@ -34,7 +27,6 @@ public class RepresentationFactory {
     public RepresentationFactory(List<Representation> representations) {
         Collections.sort(representations, new AnnotationAwareOrderComparator()); // why doesn't spring do this for me?
         this.representations = Collections.unmodifiableList(representations);
-        instance = this;
         
         for (Representation representation: representations) {
             byFormat.put(representation.getFormat(), representation);

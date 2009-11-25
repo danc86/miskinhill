@@ -140,6 +140,10 @@
     <dc:identifier rdf:resource="urn:asin:0415274311"/>
     <dc:title xml:lang="en">Slovenia: evolving loyalties</dc:title>
     <dc:creator rdf:resource="http://miskinhill.com.au/authors/cox-j-k" />
+    <mhs:responsibility rdf:parseType="Literal">
+        <span xmlns="http://www.w3.org/1999/xhtml">edited by
+        <a rel="editor" href="http://miskinhill.com.au/authors/cox-j-k">John K. Cox</a></span>
+    </mhs:responsibility>
     <dc:publisher>Routledge</dc:publisher>
     <dc:date rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2005</dc:date>
   </mhs:Book>
