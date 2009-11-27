@@ -28,7 +28,7 @@
     </p>
 </div>
 
-<a class="url" href="${#uri}"></a>
-<a rdf:if="dc:identifier[uri-prefix='urn:isbn:']" class="url" href="${dc:identifier[uri-prefix='urn:isbn:']#uri}"></a>
+<a class="url" href="${#uri}"> </a>
+<a rdf:if="dc:identifier[uri-prefix='urn:isbn:']" class="url" href="${dc:identifier[uri-prefix='urn:isbn:']#uri}"> </a>
 
 </div>

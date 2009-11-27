@@ -1,37 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+<?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
 
 <head>
     <title>Test Journal of Good Stuff Vol. 1, Issue 1</title>
-    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/journals/test/1:1/.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/journals/test/1:1/.ttl"/>
+    <link type="application/rdf+xml" title="RDF/XML" href="http://miskinhill.com.au/journals/test/1:1/.xml" rel="alternate"/><link type="application/x-turtle" href="http://miskinhill.com.au/journals/test/1:1/.ttl" rel="alternate" title="Turtle"/>
     <link rel="stylesheet" type="text/css" href="/style/issue.css"/>
 </head>
 
 <body>
 
 <div id="breadcrumbs">
-    <a href="/journals/">Journals</a> &gt;
-    <a href="http://miskinhill.com.au/journals/test/">Test Journal of Good Stuff</a> &gt;
+    <a href="/journals/">Journals</a> >
+    <a href="http://miskinhill.com.au/journals/test/">Test Journal of Good Stuff</a> >
 </div>
 
 <h2>
-    <span xml:lang="en" class="journal-title" lang="en">Test Journal of Good Stuff</span>
+    <span class="journal-title" xml:lang="en" lang="en">Test Journal of Good Stuff</span>
     <span class="issue">Vol. 1, Issue 1 (2007)</span>
-    <abbr title="http://miskinhill.com.au/journals/test/1:1/" class="unapi-id"/>
+    <abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/"/>
 </h2>
 
 <div class="metabox-container">
         <div class="searchbox metabox">
         <h4>Search this issue</h4>
-        <form action="http://search.miskinhill.com.au/search" method="get">
-            <p><input name="q" type="text"/> <button type="submit">Go</button></p>
+        <form method="get" action="http://search.miskinhill.com.au/search">
+            <p><input type="text" name="q"/> <button type="submit">Go</button></p>
         </form>
     </div>
 
     <div class="issue-meta metabox">
         <h4>Issue details</h4>
-        <p class="cover"><img alt="" src="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg"/></p>
+        <p class="cover"><img src="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg" alt=""/></p>
         <p>Published 1 February 2008</p>
-        <p class="metadata-links">Metadata: <a rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/.xml">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/.ttl">Turtle</a></p>
+        <p class="metadata-links">Metadata: <a href="http://miskinhill.com.au/journals/test/1:1/.xml" rel="alternate">RDF/XML</a>, <a href="http://miskinhill.com.au/journals/test/1:1/.ttl" rel="alternate">Turtle</a></p>
     </div>
 </div>
 

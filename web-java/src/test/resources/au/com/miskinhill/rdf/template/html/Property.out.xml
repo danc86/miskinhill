@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+<?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
 
 <head>
     <title>Start page - RDF Schema</title>
-    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/rdfschema/1.0/startPage.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/rdfschema/1.0/startPage.ttl"/>
+    <link type="application/rdf+xml" href="http://miskinhill.com.au/rdfschema/1.0/startPage.xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" rel="alternate" href="http://miskinhill.com.au/rdfschema/1.0/startPage.ttl" title="Turtle"/>
     <link rel="stylesheet" type="text/css" href="/style/rdfschema.css"/>
 </head>
 
 <body>
 
 <div id="breadcrumbs">
-    <a href="/rdfschema/1.0/">RDF Schema</a> &gt;
+    <a href="/rdfschema/1.0/">RDF Schema</a> >
 </div>
 
 <h2 xml:lang="en" lang="en">Start page</h2>
@@ -17,7 +17,7 @@
 <div class="metabox-container">
     <div class="rdfschema-meta metabox">
         <h4>Other formats</h4>
-        <p><a rel="alternate" href="http://miskinhill.com.au/rdfschema/1.0/startPage.xml">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/rdfschema/1.0/startPage.ttl">Turtle</a></p>
+        <p><a href="http://miskinhill.com.au/rdfschema/1.0/startPage.xml" rel="alternate">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/rdfschema/1.0/startPage.ttl">Turtle</a></p>
     </div>
 </div>
 

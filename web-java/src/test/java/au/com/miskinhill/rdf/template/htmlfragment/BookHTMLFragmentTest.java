@@ -144,7 +144,6 @@ public class BookHTMLFragmentTest {
         String result = templateInterpolator.interpolate(
                 new InputStreamReader(this.getClass().getResourceAsStream("Book.xml")),
                 node);
-        System.err.println(result);
         return DocumentHelper.parseText(result);
     }
     

@@ -1,29 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+<?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
 
 <head>
     <title>Slovenia: evolving loyalties</title>
-    <link title="RDF/XML" rel="alternate" type="application/rdf+xml" href="http://miskinhill.com.au/cited/books/test.xml"/><link title="Turtle" rel="alternate" type="application/x-turtle" href="http://miskinhill.com.au/cited/books/test.ttl"/>
+    <link type="application/rdf+xml" title="RDF/XML" rel="alternate" href="http://miskinhill.com.au/cited/books/test.xml"/><link href="http://miskinhill.com.au/cited/books/test.ttl" type="application/x-turtle" rel="alternate" title="Turtle"/>
     <link rel="stylesheet" type="text/css" href="/style/cited.css"/>
 </head>
 
 <body>
 
-<h2>Book<abbr title="http://miskinhill.com.au/cited/books/test" class="unapi-id"/></h2>
+<h2>Book<abbr class="unapi-id" title="http://miskinhill.com.au/cited/books/test"/></h2>
 
 <div class="bookinfo item">
 
 
 
-    <p class="cover"><img alt="" src="http://images.amazon.com/images/P/0415274311.01.MZZZZZZZ.jpg"/></p>
+    <p class="cover"><img src="http://images.amazon.com/images/P/0415274311.01.MZZZZZZZ.jpg" alt=""/></p>
 
 
 <div class="beside">
     <p class="main">
         
-        <em xml:lang="en" class="title fn" lang="en">Slovenia: evolving loyalties</em>
+        <em class="title fn" xml:lang="en" lang="en">Slovenia: evolving loyalties</em>
         <br/>
         <span class="responsibility"><span>edited by
-        <a rel="editor" href="http://miskinhill.com.au/authors/cox-j-k">John K. Cox</a></span></span>
+        <a href="http://miskinhill.com.au/authors/cox-j-k" rel="editor">John K. Cox</a></span></span>
     </p>
     <p class="publication">
         Published by Routledge, 2005
@@ -41,8 +41,8 @@
     </p>
 </div>
 
-<a class="url" href="http://miskinhill.com.au/cited/books/test"/>
-<a class="url" href="urn:isbn:9780415274319"/>
+<a class="url" href="http://miskinhill.com.au/cited/books/test"> </a>
+<a class="url" href="urn:isbn:9780415274319"> </a>
 
 </div>
 
