@@ -17,14 +17,16 @@ public final class RDFUtil {
     public static Set<Resource> getTypes(Resource resource) {
         HashSet<Resource> result = new HashSet<Resource>();
         for (StmtIterator it = resource.listProperties(RDF.type); it.hasNext(); )
-            result.add((Resource) it.nextStatement().getObject());
+            result.add(it.nextStatement().getObject().as(Resource.class));
         return result;
     }
 
     public static boolean hasAnyType(Resource resource, Set<Resource> types) {
-        for (Resource type: getTypes(resource))
+        for (StmtIterator it = resource.listProperties(RDF.type); it.hasNext(); ) {
+            Resource type = it.nextStatement().getObject().as(Resource.class);
             if (types.contains(type))
                 return true;
+        }
         return false;
     }
 
