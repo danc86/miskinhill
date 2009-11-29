@@ -9,4 +9,20 @@
     
     <import resource="classpath:/au/com/miskinhill/web/spring-context.xml"/>
     
+    <!-- Overrides: -->
+    <bean id="fulltextFetcher" class="au.com.miskinhill.domain.fulltext.DummyFulltextFetcher">
+        <property name="fulltext">
+            <value>
+                &lt;div xmlns="http://www.w3.org/1999/xhtml" class="body-text" lang="en"&gt;
+                &lt;h3&gt;1. Introduction&lt;/h3&gt;
+                &lt;p&gt;An important and complex area of stress in Russian, which has to date received 
+                insufficient attention, is variation in stress. By variation in stress is meant
+                the possibility of two (or more, in theory, but rarely in practice) syllables 
+                on which the stress may fall in a given word form. Thus, for example, the  
+                plural short form of the adjective &lt;em&gt;ве́рный&lt;/em&gt;&amp;nbsp;‘faithful’ is given in
+                &lt;/p&gt;&lt;/div&gt;
+            </value>
+        </property>
+    </bean>
+    
 </beans>

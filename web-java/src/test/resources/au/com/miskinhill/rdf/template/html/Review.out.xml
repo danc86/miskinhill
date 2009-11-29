@@ -1,0 +1,85 @@
+<?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml">
+
+<head profile="http://microformats.org/wiki/hreview-profile http://microformats.org/profile/hcard">
+    <title>Review of Slovenia: evolving loyalties - Test Journal of Good Stuff Vol. 1, Issue 1</title>
+    <link href="http://miskinhill.com.au/journals/test/1:1/reviews/review.xml" type="application/rdf+xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" rel="alternate" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.ttl"/>
+    <link rel="stylesheet" type="text/css" href="/style/article.css"/>
+    <script type="text/javascript" src="/script/jquery-1.3.2.js"/>
+    <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js"/>
+    <script type="text/javascript" src="/script/footnote.js"/>
+    <script type="text/javascript" src="/script/citation.js"/>
+</head>
+
+<body class="hreview">
+
+<div id="breadcrumbs">
+    <a href="/journals/">Journals</a> >
+    <a href="http://miskinhill.com.au/journals/test/">Test Journal of Good Stuff</a> >
+    <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, Issue 1</a> >
+</div>
+
+<h2>Book review<abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/reviews/review"/></h2>
+
+<div class="metabox-container">
+    <div class="review-meta metabox">
+        <h4>Review details</h4>
+        <p>
+            Published in <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, Issue 1</a> of<br/>
+            <a href="http://miskinhill.com.au/journals/test/"><em xml:lang="en" lang="en">Test Journal of Good Stuff</em></a>
+        </p>
+        <p><a href="http://miskinhill.com.au/journals/test/1:1/reviews/review.pdf">Original print version</a></p>
+        <p class="metadata-links">Metadata: <a href="http://miskinhill.com.au/journals/test/1:1/reviews/review.xml" rel="alternate">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.ttl">Turtle</a></p>
+    </div>
+</div>
+
+<p class="reviewer vcard">
+    by <a href="http://miskinhill.com.au/authors/test-author" class="fn">Test Author</a>
+</p>
+
+<div class="bookinfo item">
+
+
+
+    <p class="cover"><img src="http://images.amazon.com/images/P/0415274311.01.MZZZZZZZ.jpg" alt=""/></p>
+
+
+<div class="beside">
+    <p class="main">
+        
+        <em class="title fn" xml:lang="en" lang="en">Slovenia: evolving loyalties</em>
+        <br/>
+        <span class="responsibility"><span>edited by
+        <a href="http://miskinhill.com.au/authors/cox-j-k" rel="editor">John K. Cox</a></span></span>
+    </p>
+    <p class="publication">
+        Published by Routledge, 2005
+        
+        
+        <br/>
+        ISBN 9780415274319
+    </p>
+    <p class="links">Find this book online:<br/>
+        <a href="http://www.amazon.com/dp/0415274311/?tag=mishil-20">Amazon.com</a>,
+<a href="http://openlibrary.org/search?q=isbn_13:9780415274319">Open Library</a>,
+<a href="http://books.google.com/books?vid=ISBN9780415274319">Google Book Search</a>,
+<a href="http://www.worldcat.org/search?q=isbn:9780415274319">WorldCat</a>,
+<a href="http://www.librarything.com/isbn/9780415274319">LibraryThing</a>
+    </p>
+</div>
+
+<a class="url" href="http://miskinhill.com.au/cited/books/test"> </a>
+<a class="url" href="urn:isbn:9780415274319"> </a>
+
+</div>
+
+<div class="body-text" lang="en">
+                <h3>1. Introduction</h3>
+                <p>An important and complex area of stress in Russian, which has to date received 
+                insufficient attention, is variation in stress. By variation in stress is meant
+                the possibility of two (or more, in theory, but rarely in practice) syllables 
+                on which the stress may fall in a given word form. Thus, for example, the  
+                plural short form of the adjective <em>ве́рный</em> ‘faithful’ is given in
+                </p></div>
+
+</body>
+</html>

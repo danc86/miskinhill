@@ -2,7 +2,6 @@ package au.com.miskinhill.domain;
 
 import static au.com.miskinhill.domain.FieldMatcher.*;
 import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
@@ -14,9 +13,11 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.easymock.classextension.IMocksControl;
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
+
+import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 
 public class ReviewUnitTest {
     
@@ -33,7 +34,7 @@ public class ReviewUnitTest {
     }
     
     private void expectFulltext() throws Exception {
-        expect(fulltextFetcher.fetch(isA(String.class)))
+        expect(fulltextFetcher.fetchFulltext(isA(String.class)))
                 .andReturn(new ByteArrayInputStream(
                     ("<div xmlns=\"http://www.w3.org/1999/xhtml\" class=\"body-text\" lang=\"en\">\n" +
                     "<p>An important and complex area of stress in Russian, which has to date received\n" + 

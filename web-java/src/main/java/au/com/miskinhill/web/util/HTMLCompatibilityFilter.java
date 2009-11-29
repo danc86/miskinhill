@@ -9,15 +9,12 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.stereotype.Component;
 
-@Component("linkRelativizingFilter")
-public class LinkRelativizingFilter extends HttpResponseBufferingFilter {
+@Component("htmlCompatibilityFilter")
+public class HTMLCompatibilityFilter extends HttpResponseBufferingFilter {
     
-    /*
-     * I would do this with a real XML parser, but apparently there are none for Java that actually work properly :-(
-     */
+    /* XXX lame */
     
-    private static final String ABSOLUTE_PREFIX = "http://miskinhill.com.au";
-    private static final Pattern PATTERN = Pattern.compile("((?:href|src)=['\"])" + Pattern.quote(ABSOLUTE_PREFIX) + "([^'\"]*['\"])");
+    private static final Pattern SELF_CLOSING_SCRIPT_PATTERN = Pattern.compile("<script([^>]*)/>");
     
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -40,7 +37,7 @@ public class LinkRelativizingFilter extends HttpResponseBufferingFilter {
     
     @Override
     protected String postprocessResponse(String responseBody) {
-        return PATTERN.matcher(responseBody).replaceAll("$1$2");
-    }
+        return SELF_CLOSING_SCRIPT_PATTERN.matcher(responseBody).replaceAll("<script$1></script>");
+    };
 
 }

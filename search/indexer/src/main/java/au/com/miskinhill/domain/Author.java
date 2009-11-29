@@ -2,6 +2,7 @@ package au.com.miskinhill.domain;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 
+import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 import au.com.miskinhill.rdf.vocabulary.FOAF;
 import au.com.miskinhill.rdf.vocabulary.MHS;
 

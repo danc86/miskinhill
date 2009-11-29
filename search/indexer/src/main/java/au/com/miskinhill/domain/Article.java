@@ -14,6 +14,7 @@ import com.hp.hpl.jena.vocabulary.DCTerms;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
+import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.search.analysis.MHAnalyzer;
 import au.com.miskinhill.search.analysis.XMLTokenizer;
@@ -42,7 +43,7 @@ public class Article extends GenericResource {
 			throw new IllegalArgumentException("Cannot fetch content which is not under http://miskinhill.com.au/journals/");
         InputStream content = null;
         try {
-            content = fulltextFetcher.fetch(rdfResource.getURI().substring(24) + ".html");
+            content = fulltextFetcher.fetchFulltext(rdfResource.getURI().substring(24) + ".html");
         } catch (FileNotFoundException e) {
             System.err.println("WARNING: failed to index content: " + e.getMessage());
         }

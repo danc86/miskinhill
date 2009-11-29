@@ -1,4 +1,4 @@
-package au.com.miskinhill.domain;
+package au.com.miskinhill.domain.fulltext;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -12,20 +12,21 @@ import java.io.InputStream;
  * 
  * Mainly exists so that it can be mocked out in tests.
  */
-public class FulltextFetcher {
+public class FileFulltextFetcher implements FulltextFetcher {
 	
 	private final String basePath;
 	
-	public FulltextFetcher(String basePath) {
+	public FileFulltextFetcher(String basePath) {
 		if (!basePath.endsWith("/")) {
 			basePath += "/";
 		}
 		this.basePath = basePath;
 	}
 	
-	public InputStream fetch(String path) throws IOException {
-		return new BufferedInputStream(new FileInputStream(
-				new File(this.basePath + path)));
+	@Override
+	public InputStream fetchFulltext(String path) throws IOException {
+	    return new BufferedInputStream(new FileInputStream(
+                new File(this.basePath + path)));
 	}
 
 }

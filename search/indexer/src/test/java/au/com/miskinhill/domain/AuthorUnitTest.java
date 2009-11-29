@@ -1,14 +1,13 @@
 package au.com.miskinhill.domain;
 
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.hasItems;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
+import static org.junit.matchers.JUnitMatchers.*;
 
 import java.util.List;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.hamcrest.BaseMatcher;
@@ -17,8 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
+import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 
 public class AuthorUnitTest {
     

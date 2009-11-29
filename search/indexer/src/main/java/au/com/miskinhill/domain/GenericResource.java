@@ -19,6 +19,7 @@ import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexWriter;
 
+import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
 

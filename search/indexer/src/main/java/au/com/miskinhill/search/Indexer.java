@@ -14,8 +14,8 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.store.FSDirectory;
 
-import au.com.miskinhill.domain.FulltextFetcher;
 import au.com.miskinhill.domain.GenericResource;
+import au.com.miskinhill.domain.fulltext.FileFulltextFetcher;
 import au.com.miskinhill.search.analysis.NullAnalyzer;
 import au.com.miskinhill.search.analysis.XMLTokenizer;
 import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
@@ -42,7 +42,7 @@ public class Indexer {
         try {
     		iw.setUseCompoundFile(false);
     		
-    		FulltextFetcher fulltextFetcher = new FulltextFetcher(contentPath);
+    		FileFulltextFetcher fulltextFetcher = new FileFulltextFetcher(contentPath);
     		
     		ResIterator articles = model.listSubjects();
     		while (articles.hasNext()) {

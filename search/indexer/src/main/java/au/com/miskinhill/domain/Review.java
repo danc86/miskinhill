@@ -8,15 +8,15 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.DCTerms;
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
+import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 import au.com.miskinhill.rdf.vocabulary.FOAF;
 import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.search.analysis.MHAnalyzer;
@@ -52,7 +52,7 @@ public class Review extends GenericResource {
 		doc.add(new Field(fieldNamePrefix + "content", new XMLTokenizer(
 				new SequenceInputStream(
 					new ByteArrayInputStream(XHTML_STRICT_DTD_DECL), 
-					fulltextFetcher.fetch(rdfResource.getURI().substring(24) + ".html")), 
+					fulltextFetcher.fetchFulltext(rdfResource.getURI().substring(24) + ".html")), 
 				new MHAnalyzer())));
 	}
 	

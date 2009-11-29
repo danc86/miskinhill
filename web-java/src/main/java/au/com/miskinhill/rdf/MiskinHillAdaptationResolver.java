@@ -22,6 +22,7 @@ public class MiskinHillAdaptationResolver implements AdaptationResolver {
         adaptations.put("year", YearAdaptation.class);
         adaptations.put("html", HTMLFragmentRepresentationAdaptation.class);
         adaptations.put("book-links", BookLinksAdaptation.class);
+        adaptations.put("content", ContentAdaptation.class);
     }
 
     @Override

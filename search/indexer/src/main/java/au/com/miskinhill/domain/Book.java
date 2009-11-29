@@ -10,6 +10,7 @@ import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import org.apache.lucene.document.Document;
 
+import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
 
