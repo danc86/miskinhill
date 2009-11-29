@@ -15,11 +15,6 @@
 		<servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	<servlet>
-		<servlet-name>decorator</servlet-name>
-		<servlet-class>au.com.miskinhill.web.util.DecoratorServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
 	<servlet-mapping>
 		<servlet-name>jersey-spring</servlet-name>
 		<url-pattern>/feeds/*</url-pattern>
@@ -29,33 +24,22 @@
 		<servlet-name>rdfRequestHandler</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>decorator</servlet-name>
-		<url-pattern>/WEB-INF/decorators/*</url-pattern>
-	</servlet-mapping>
     <filter>
-        <filter-name>sitemesh</filter-name>
+        <filter-name>linkRelativizingFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-        <init-param>
-            <param-name>targetBeanName</param-name>
-            <param-value>sitemesh</param-value>
-        </init-param>
-        <init-param>
-            <param-name>targetFilterLifecycle</param-name>
-            <param-value>true</param-value>
-        </init-param>
     </filter>
     <filter>
-        <filter-name>link-relativizer</filter-name>
-        <filter-class>au.com.miskinhill.web.util.LinkRelativizingFilter</filter-class>
+        <filter-name>decoratingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>link-relativizer</filter-name>
+        <filter-name>linkRelativizingFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>sitemesh</filter-name>
+        <filter-name>decoratingFilter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 </web-app>

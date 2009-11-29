@@ -28,14 +28,14 @@ public class BibtexRepresentationTest {
     @Test
     public void testMHArticle() throws Exception {
         String result = representation.render(realModel.getResource("http://miskinhill.com.au/journals/asees/22:1-2/lachlan-macquarie-in-russia"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("bib/lachlan-macquarie.bib").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("bib/lachlan-macquarie.bib"));
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testCitedArticle() throws Exception {
         String result = representation.render(realModel.getResource("http://miskinhill.com.au/cited/journals/ajph/45:1/all-union-society"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("bib/all-union-society.bib").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("bib/all-union-society.bib"));
         assertEquals(expected.trim(), result.trim());
     }
     

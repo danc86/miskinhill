@@ -28,14 +28,14 @@ public class EndnoteRepresentationTest {
     @Test
     public void testMHArticle() throws Exception {
         String result = representation.render(realModel.getResource("http://miskinhill.com.au/journals/asees/22:1-2/lachlan-macquarie-in-russia"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("end/lachlan-macquarie.end").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("end/lachlan-macquarie.end"));
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testCitedArticle() throws Exception {
         String result = representation.render(realModel.getResource("http://miskinhill.com.au/cited/journals/ajph/45:1/all-union-society"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("end/all-union-society.end").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("end/all-union-society.end"));
         assertEquals(expected.trim(), result.trim());
     }
 

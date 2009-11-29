@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://microformats.org/wiki/hreview-profile">
+    <title>Some title</title>
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+</head>
+<body class="body-class" base="asdf">
+<div id="stuff"><p>Body stuff</p></div>
+</body>
+</html>

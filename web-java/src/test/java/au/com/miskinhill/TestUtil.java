@@ -1,12 +1,9 @@
 package au.com.miskinhill;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 import org.junit.Ignore;
 
@@ -18,17 +15,15 @@ public final class TestUtil {
     }
     ///CLOVER:ON
     
-    public static String exhaust(URI file) throws IOException { // sigh
-        FileChannel channel = new FileInputStream(new File(file)).getChannel();
-        Charset charset = Charset.defaultCharset();
-        StringBuffer sb = new StringBuffer();
-        ByteBuffer b = ByteBuffer.allocate(8192);
-        while (channel.read(b) > 0) {
-            b.rewind();
-            sb.append(charset.decode(b));
-            b.flip();
+    public static String exhaust(InputStream stream) throws IOException { // sigh
+        Reader reader = new InputStreamReader(stream);
+        StringBuffer buff = new StringBuffer();
+        int charsRead;
+        char[] cb = new char[4096];
+        while ((charsRead = reader.read(cb)) > 0) {
+            buff.append(cb, 0, charsRead);
         }
-        return sb.toString();
+        return buff.toString();
     }
 
 }

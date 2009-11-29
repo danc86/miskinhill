@@ -1,20 +1,16 @@
 package au.com.miskinhill.web.util;
 
-import java.io.IOException;
-import java.nio.CharBuffer;
 import java.util.regex.Pattern;
 
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.MediaType;
 
-import org.sitemesh.webapp.contentfilter.Selector;
+import org.springframework.stereotype.Component;
 
-import org.sitemesh.webapp.contentfilter.BasicSelector;
-import org.sitemesh.webapp.contentfilter.ContentBufferingFilter;
-import org.sitemesh.webapp.contentfilter.ResponseMetaData;
-
-public class LinkRelativizingFilter extends ContentBufferingFilter {
+@Component("linkRelativizingFilter")
+public class LinkRelativizingFilter extends HttpResponseBufferingFilter {
     
     /*
      * I would do this with a real XML parser, but apparently there are none for Java that actually work properly :-(
@@ -22,22 +18,29 @@ public class LinkRelativizingFilter extends ContentBufferingFilter {
     
     private static final String ABSOLUTE_PREFIX = "http://miskinhill.com.au";
     private static final Pattern PATTERN = Pattern.compile("((?:href|src)=['\"])" + Pattern.quote(ABSOLUTE_PREFIX) + "([^'\"]*['\"])");
-    private static final Selector SELECTOR = new BasicSelector("text/html") {
-        protected boolean filterAlreadyAppliedForRequest(HttpServletRequest request) {
-            return false; // dispatcher=REQUEST in web.xml handles this for us
-        };
-    };
-
-    public LinkRelativizingFilter() {
-        super(SELECTOR);
-    }
-
+    
     @Override
-    protected boolean postProcess(String contentType, CharBuffer buffer,
-            HttpServletRequest request, HttpServletResponse response,
-            ResponseMetaData responseMetaData) throws IOException, ServletException {
-        response.getWriter().write(PATTERN.matcher(buffer).replaceAll("$1$2"));
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+    
+    @Override
+    public void destroy() {
+    }
+    
+    @Override
+    protected boolean shouldBuffer(HttpServletRequest request) {
         return true;
     }
+    
+    @Override
+    protected boolean shouldPostprocessResponse(String contentType, int status) {
+        return MediaType.TEXT_HTML_TYPE.isCompatible(MediaType.valueOf(contentType)) &&
+                status == 200; // XXX 206 and suchlike?
+    }
+    
+    @Override
+    protected String postprocessResponse(String responseBody) {
+        return PATTERN.matcher(responseBody).replaceAll("$1$2");
+    };
 
 }

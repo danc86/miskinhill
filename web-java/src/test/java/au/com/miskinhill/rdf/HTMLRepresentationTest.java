@@ -29,49 +29,49 @@ public class HTMLRepresentationTest {
     @Test
     public void testJournal() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("template/html/Journal.out.xml").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Journal.out.xml"));
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testIssue() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("template/html/Issue.out.xml").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Issue.out.xml"));
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testAuthor() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/authors/test-author"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("template/html/Author.out.xml").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Author.out.xml"));
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testForum() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("template/html/Forum.out.xml").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Forum.out.xml"));
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testClass() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/rdfschema/1.0/Book"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("template/html/Class.out.xml").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Class.out.xml"));
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testProperty() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/rdfschema/1.0/startPage"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("template/html/Property.out.xml").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Property.out.xml"));
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testBook() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/cited/books/test"));
-        String expected = TestUtil.exhaust(this.getClass().getResource("template/html/Book.out.xml").toURI());
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Book.out.xml"));
         assertEquals(expected.trim(), result.trim());
     }
 
