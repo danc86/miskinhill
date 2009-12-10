@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 
+import java.io.StringReader;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,22 +13,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.RDF;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.junit.Test;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
 
 public class CitationUnitTest {
+    
+    private static final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+    static {
+        inputFactory.setXMLResolver(new XhtmlEntityResolver());
+    }
     
     @Test
     public void fromDocumentShouldFindAllCitations() throws Exception {
@@ -49,11 +54,9 @@ public class CitationUnitTest {
                 ResourceFactory.createStatement(citationRes, MHS.cites, citedRes)));
     }
 
-    private List<Citation> citationsFromDocument() throws DocumentException {
-        SAXReader reader = new SAXReader();
-        reader.setEntityResolver(new XhtmlEntityResolver());
-        Document doc = reader.read(getClass().getResourceAsStream("citations.xml"));
-        return Citation.fromDocument(URI.create("http://miskinhill.com.au/journals/test/1:1/test-article"), doc);
+    private List<Citation> citationsFromDocument() throws XMLStreamException {
+        XMLEventReader reader = inputFactory.createXMLEventReader(this.getClass().getResourceAsStream("citations.xml"));
+        return Citation.fromDocument(URI.create("http://miskinhill.com.au/journals/test/1:1/test-article"), reader);
     }
     
     @Test
@@ -71,13 +74,13 @@ public class CitationUnitTest {
         assertThat(Citation.normalizeSpace("\ta \n\tb "), equalTo(" a b "));
     }
     
-    private Element x(String xml) throws DocumentException {
-        return DocumentHelper.parseText(xml).getRootElement();
+    private XMLEventReader x(String xml) throws XMLStreamException {
+        return inputFactory.createXMLEventReader(new StringReader(xml));
     }
     
     @Test
-    public void testBookFromElement() throws Exception {
-        Element element = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation book\">" +
+    public void testBookfromDocument() throws Exception {
+        XMLEventReader reader = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation book\">" +
                 "<span class=\"au\">Charles Vinicombe Penrose</span>, \n" + 
                 "<em class=\"btitle\">A Memoir of James Trevenen</em>, edited by \n" + 
                 "<span class=\"au\">Christopher Lloyd</span> and \n" + 
@@ -85,7 +88,7 @@ public class CitationUnitTest {
                 "<span class=\"pub\">Navy Records Society</span>, <span class=\"date\">1959</span>), \n" + 
                 "<span class=\"spage\">90</span>–<span class=\"epage\">91</span>" +
                 "<span class=\"cites\" title=\"books/penrose-1959\" /></span>");
-        Citation citation = Citation.fromElement(URI.create("http://example.com/article"), 1, element);
+        Citation citation = Citation.fromDocument(URI.create("http://example.com/article"), reader).get(0);
         assertThat(citation.getCites(), equalTo(
                 Collections.singleton(URI.create("http://miskinhill.com.au/cited/books/penrose-1959"))));
         assertThat(citation.getGenre(), equalTo(Genre.book));
@@ -100,8 +103,8 @@ public class CitationUnitTest {
     }
     
     @Test
-    public void testBookitemFromElement() throws Exception {
-        Element element = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation bookitem\">" +
+    public void testBookitemfromDocument() throws Exception {
+        XMLEventReader reader = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation bookitem\">" +
                 "<span class=\"au\" title=\"Lydia \n" + 
                 "Black\">Black</span><span class=\"atitle\" title=\"“The Russians were \n" + 
                 "Coming…”\" /><span class=\"au\" title=\"Robin Inglis\" /><span class=\"btitle\" \n" + 
@@ -110,7 +113,7 @@ public class CitationUnitTest {
                 "/><span class=\"date\" title=\"1992\" />, \n" + 
                 "<span class=\"spage\">31</span>–<span class=\"epage\">29</span>" +
                 "<span class=\"cites\" title=\"books/black-1992\" /></span>");
-        Citation citation = Citation.fromElement(URI.create("http://example.com/article"), 1, element);
+        Citation citation = Citation.fromDocument(URI.create("http://example.com/article"), reader).get(0);
         assertThat(citation.getCites(), equalTo(
                 Collections.singleton(URI.create("http://miskinhill.com.au/cited/books/black-1992"))));
         assertThat(citation.getGenre(), equalTo(Genre.bookitem));
@@ -125,14 +128,14 @@ public class CitationUnitTest {
     }
     
     @Test
-    public void testThesisFromElement() throws Exception {
-        Element element = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation thesis\">" +
+    public void testThesisfromDocument() throws Exception {
+        XMLEventReader reader = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation thesis\">" +
                 "<span class=\"au\">Anthony H. \n" + 
                 "Hull</span>, <em class=\"btitle\">Spanish and Russian Rivalry \n" + 
                 "in the North Pacific Regions of the New World</em>, University of \n" + 
                 "Alabama PhD thesis, UMI microfilm, \n" + 
                 "<span class=\"spage\">112</span>–<span class=\"epage\">113</span></span>");
-        Citation citation = Citation.fromElement(URI.create("http://example.com/article"), 1, element);
+        Citation citation = Citation.fromDocument(URI.create("http://example.com/article"), reader).get(0);
         assertThat(citation.getGenre(), equalTo(Genre.thesis));
         assertThat(citation.getOpenurlField("au"), equalTo(Arrays.asList("Anthony H. Hull")));
         assertThat(citation.getOpenurlField("btitle"), equalTo(Arrays.asList(
@@ -142,8 +145,8 @@ public class CitationUnitTest {
     }
     
     @Test
-    public void testProceedingFromElement() throws Exception {
-        Element element = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation proceeding\">" +
+    public void testProceedingfromDocument() throws Exception {
+        XMLEventReader reader = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation proceeding\">" +
                 "<span class=\"au\">Valery O. \n" + 
                 "Shubin</span>, ‘<span class=\"atitle\">Russian Settlements in the \n" + 
                 "Kuril Islands in the 18th and 19th centuries</span>’, \n" + 
@@ -154,7 +157,7 @@ public class CitationUnitTest {
                 "<span class=\"date\">1990</span>), \n" + 
                 "<span class=\"spage\">425</span>–<span class=\"epage\">450</span>" +
                 "<span class=\"cites\" title=\"books/shubin-1990\" /></span>");
-        Citation citation = Citation.fromElement(URI.create("http://example.com/article"), 1, element);
+        Citation citation = Citation.fromDocument(URI.create("http://example.com/article"), reader).get(0);
         assertThat(citation.getCites(), equalTo(
                 Collections.singleton(URI.create("http://miskinhill.com.au/cited/books/shubin-1990"))));
         assertThat(citation.getGenre(), equalTo(Genre.proceeding));
@@ -171,8 +174,8 @@ public class CitationUnitTest {
     }
     
     @Test
-    public void testArticleFromElement() throws Exception {
-        Element element = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation article\">" +
+    public void testArticlefromDocument() throws Exception {
+        XMLEventReader reader = x("<span xmlns=\"http://www.w3.org/1999/xhtml\" class=\"citation article\">" +
                 "<span class=\"au\" lang=\"ru\">Ал.&#160;П. \n" + 
                 "Соколов</span>, «<span class=\"atitle\" lang=\"ru\">Приготовление \n" + 
                 "кругосветной экспедиции 1787 года, под начальством Муловского</span>», \n" + 
@@ -182,7 +185,7 @@ public class CitationUnitTest {
                 "<span class=\"date\">1848</span>&#160;г., \n" + 
                 "<span class=\"spage\">142</span>–<span class=\"epage\">191</span>" +
                 "<span class=\"cites\" title=\"journals/zgdmm/6/prigotovlenie\" /></span>");
-        Citation citation = Citation.fromElement(URI.create("http://example.com/article"), 1, element);
+        Citation citation = Citation.fromDocument(URI.create("http://example.com/article"), reader).get(0);
         assertThat(citation.getCites(), equalTo(
                 Collections.singleton(URI.create("http://miskinhill.com.au/cited/journals/zgdmm/6/prigotovlenie"))));
         assertThat(citation.getGenre(), equalTo(Genre.article));

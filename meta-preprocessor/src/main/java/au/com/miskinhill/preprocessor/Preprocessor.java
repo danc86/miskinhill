@@ -17,6 +17,10 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+
 import com.hp.hpl.jena.datatypes.xsd.impl.XMLLiteralType;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -35,7 +39,6 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
 
 import au.com.miskinhill.citation.Citation;
 import au.com.miskinhill.rdf.RDFUtil;
@@ -55,9 +58,9 @@ public class Preprocessor {
             "PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" " +
             "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n")
             .getBytes();
-    private static final SAXReader SAX_READER = new SAXReader();
+    private static final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     static {
-        SAX_READER.setEntityResolver(new XhtmlEntityResolver());
+        inputFactory.setXMLResolver(new XhtmlEntityResolver());
     }
     
     public static void main(String[] args) throws Exception {
@@ -133,7 +136,7 @@ public class Preprocessor {
         LOG.info("Model contains " + m.getGraph().size() + " triples");
     }
     
-    private static void extractCitations(Model m, File contentRoot) throws DocumentException, IOException {
+    private static void extractCitations(Model m, File contentRoot) throws XMLStreamException, IOException {
         LOG.info("Extracting citation metadata");
         Iterator<Resource> it = m.listSubjectsWithProperty(RDF.type, MHS.Article)
                 .andThen(m.listSubjectsWithProperty(RDF.type, MHS.Review));
@@ -145,10 +148,10 @@ public class Preprocessor {
                     LOG.warning("Skipping non-existent content " + content);
                     continue;
                 }
-                Document contentDoc = SAX_READER.read(new SequenceInputStream(
+                XMLEventReader contentReader = inputFactory.createXMLEventReader(new SequenceInputStream(
                         new ByteArrayInputStream(XHTML_STRICT_DTD_DECL),
                         new FileInputStream(content)));
-                for (Citation citation: Citation.fromDocument(URI.create(item.getURI()), contentDoc))
+                for (Citation citation: Citation.fromDocument(URI.create(item.getURI()), contentReader))
                     for (Statement stmt: citation.toRDF())
                         m.add(stmt);
             }
