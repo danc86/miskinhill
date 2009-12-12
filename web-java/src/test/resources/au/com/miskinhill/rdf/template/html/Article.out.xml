@@ -1,0 +1,59 @@
+<?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Moscow 1937: the interpreter’s story - Test Journal of Good Stuff Vol. 1, Issue 1</title>
+    <link type="application/rdf+xml" href="http://miskinhill.com.au/journals/test/1:1/article.xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" href="http://miskinhill.com.au/journals/test/1:1/article.ttl" rel="alternate" title="Turtle"/><link title="MODS" rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/article.mods" type="application/mods+xml"/><link href="http://miskinhill.com.au/journals/test/1:1/article.bib" type="text/x-bibtex" rel="alternate" title="BibTeX"/><link title="Endnote" type="application/x-endnote-refer" href="http://miskinhill.com.au/journals/test/1:1/article.end" rel="alternate"/>
+    <link rel="stylesheet" type="text/css" href="/style/article.css"/>
+    <script type="text/javascript" src="/script/jquery-1.3.2.js"/>
+    <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js"/>
+    <script type="text/javascript" src="/script/footnote.js"/>
+    <script type="text/javascript" src="/script/citation.js"/>
+</head>
+
+<body>
+
+<div id="breadcrumbs">
+    <a href="/journals/">Journals</a> >
+    <a href="http://miskinhill.com.au/journals/test/">Test Journal of Good Stuff</a> >
+    <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, Issue 1</a> >
+</div>
+
+<h2><span lang="en"><em>Moscow 1937</em>: the interpreter’s story</span><abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/article"/></h2>
+
+<div class="metabox-container">
+    <div class="article-meta metabox">
+        <h4>Article details</h4>
+        <p>
+            Published in <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, Issue 1</a> of<br/>
+            <a href="http://miskinhill.com.au/journals/test/"><em xml:lang="en" lang="en">Test Journal of Good Stuff</em></a>
+        </p>
+        <p class="other-formats"><a href="http://miskinhill.com.au/journals/test/1:1/article.pdf">Original print version</a></p>
+        <div class="subjects">
+            <p>Subjects:</p>
+            <ul>
+                
+            </ul>
+        </div>
+        <p class="metadata-links">Metadata: <a href="http://miskinhill.com.au/journals/test/1:1/article.xml" rel="alternate">RDF/XML</a>, <a href="http://miskinhill.com.au/journals/test/1:1/article.ttl" rel="alternate">Turtle</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/article.mods">MODS</a>, <a href="http://miskinhill.com.au/journals/test/1:1/article.bib" rel="alternate">BibTeX</a>, <a href="http://miskinhill.com.au/journals/test/1:1/article.end" rel="alternate">Endnote</a></p>
+    </div>
+</div>
+
+<p>
+    by <a href="http://miskinhill.com.au/authors/test-author" class="fn">Test Author</a>
+</p>
+
+<div class="body-text" lang="en">
+                <h3>1. Introduction</h3>
+                <p>An important and complex area of stress in Russian, which has to date received 
+                insufficient attention, is variation in stress. By variation in stress is meant
+                the possibility of two (or more, in theory, but rarely in practice) syllables 
+                on which the stress may fall in a given word form. Thus, for example, the  
+                plural short form of the adjective <em>ве́рный</em> ‘faithful’ is given in
+                </p>
+                <h3>Footnotes</h3>
+                <div id="fn-1" class="footnote"><p><span class="footnote-number">1</span> <span class="citation book"><span class="au">Yuri Andrukhovych</span>, <em lang="uk" class="btitle">Perverziia: Roman</em> (<span class="place">Ivano-Frankivs′k</span>: <span class="pub">Vydavnytstvo 
+                “Lileia-NV”</span>, <span class="date">1997</span>), <span class="spage                  epage">6</span><span class="cites" title="books/andrukhovych-1997"/> <span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft.genre=book&amp;rft_val_format=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.au=Yuri+Andrukhovych&amp;rft.btitle=Perverziia%3A+Roman&amp;rft.place=Ivano-Frankivs%E2%80%B2k&amp;rft.pub=Vydavnytstvo+%E2%80%9CLileia-NV%E2%80%9D&amp;rft.date=1997&amp;rft.spage=6&amp;rft.epage=6"/><a class="citation-link" href="http://miskinhill.com.au/cited/books/andrukhovych-1997"><img src="/images/silk/world_link.png" alt="[Citation details]"/></a></span>.</p></div>
+                </div>
+
+</body>
+</html>

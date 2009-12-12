@@ -20,6 +20,8 @@ import au.com.miskinhill.rdftemplate.TemplateInterpolator;
 @Component
 @Order(0)
 public class HTMLRepresentation implements Representation {
+    
+    private static final String CITED_PREFIX = "http://miskinhill.com.au/cited/";
 
     private final Map<Resource, String> typeTemplates = new HashMap<Resource, String>();
     private final Map<Resource, String> citedTypeTemplates = new HashMap<Resource, String>();
@@ -73,7 +75,11 @@ public class HTMLRepresentation implements Representation {
     @Override
     public String render(Resource resource) {
         for (Resource type: RDFUtil.getTypes(resource)) {
-            String templatePath = templatePathForType(type);
+            String templatePath;
+            if (resource.getURI().startsWith(CITED_PREFIX))
+                templatePath = citedTypeTemplates.get(type);
+            else
+                templatePath = typeTemplates.get(type);
             if (templatePath != null) {
                 return templateInterpolator.interpolate(
                         new InputStreamReader(this.getClass().getResourceAsStream(templatePath)),
@@ -81,13 +87,6 @@ public class HTMLRepresentation implements Representation {
             }
         }
         throw new IllegalArgumentException("No template found for " + resource);
-    }
-
-    private String templatePathForType(Resource type) {
-        String templatePath = citedTypeTemplates.get(type);
-        if (templatePath != null)
-            return templatePath;
-        return typeTemplates.get(type);
     }
 
 }

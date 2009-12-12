@@ -23,6 +23,7 @@ public class MiskinHillAdaptationResolver implements AdaptationResolver {
         adaptations.put("html", HTMLFragmentRepresentationAdaptation.class);
         adaptations.put("book-links", BookLinksAdaptation.class);
         adaptations.put("content", ContentAdaptation.class);
+        adaptations.put("lcsh-cleanup", LCSHCleanupAdaptation.class);
     }
 
     @Override

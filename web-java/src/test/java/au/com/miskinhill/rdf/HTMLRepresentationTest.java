@@ -81,5 +81,12 @@ public class HTMLRepresentationTest {
         String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Review.out.xml"));
         assertEquals(expected.trim(), result.trim());
     }
+    
+    @Test
+    public void testArticle() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/article"));
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Article.out.xml"));
+        assertEquals(expected.trim(), result.trim());
+    }
 
 }

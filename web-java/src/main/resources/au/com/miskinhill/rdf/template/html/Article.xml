@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title>${dc:title#string-lv} - ${dc:isPartOf/mhs:isIssueOf/dc:title} Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</title>
+    ${#representation-links}
+    <link rel="stylesheet" type="text/css" href="/style/article.css" />
+    <script type="text/javascript" src="/script/jquery-1.3.2.js" />
+    <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js" />
+    <script type="text/javascript" src="/script/footnote.js" />
+    <script type="text/javascript" src="/script/citation.js" />
+</head>
+
+<body>
+
+<div id="breadcrumbs">
+    <a href="/journals/">Journals</a> &gt;
+    <a href="${dc:isPartOf/mhs:isIssueOf#uri}">${dc:isPartOf/mhs:isIssueOf/dc:title}</a> &gt;
+    <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</a> &gt;
+</div>
+
+<h2>${dc:title}<abbr class="unapi-id" title="${#uri}" /></h2>
+
+<div class="metabox-container">
+    <div class="article-meta metabox">
+        <h4>Article details</h4>
+        <p>
+            Published in <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</a> of<br />
+            <a href="${dc:isPartOf/mhs:isIssueOf#uri}"><em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /></a>
+        </p>
+        <p class="other-formats"><a href="${#uri}.pdf">Original print version</a></p>
+        <div class="subjects">
+            <p>Subjects:</p>
+            <ul>
+                <li rdf:for="dc:subject(mhs:label#comparable-lv)">${mhs:label#lcsh-cleanup}</li>
+            </ul>
+        </div>
+        <p class="metadata-links">Metadata: ${#representation-anchors}</p>
+    </div>
+</div>
+
+<p>
+    by <rdf:join separator=", " each="dc:creator"><a href="${#uri}" class="fn" rdf:content="foaf:name" /></rdf:join>
+</p>
+
+${#content}
+
+</body>
+</html>
