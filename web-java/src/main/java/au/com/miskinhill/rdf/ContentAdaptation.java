@@ -4,10 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
+import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -16,6 +17,7 @@ import javax.xml.stream.events.XMLEvent;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
+import au.com.miskinhill.citation.Citation;
 import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 import au.com.miskinhill.rdftemplate.XMLStream;
 import au.com.miskinhill.rdftemplate.selector.Adaptation;
@@ -33,7 +35,6 @@ public class ContentAdaptation implements Adaptation<XMLStream> {
         inputFactory.setXMLResolver(new XhtmlEntityResolver());
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public XMLStream adapt(RDFNode node) {
         Resource resource = node.as(Resource.class);
@@ -45,9 +46,10 @@ public class ContentAdaptation implements Adaptation<XMLStream> {
                     new ByteArrayInputStream(XHTML_STRICT_DTD_DECL),
                     StaticApplicationContextAccessor.getBeanOfType(FulltextFetcher.class)
                         .fetchFulltext(pathToContent));
-            List<XMLEvent> events = new ArrayList<XMLEvent>();
-            for (Iterator<XMLEvent> reader = inputFactory.createXMLEventReader(fulltext); reader.hasNext(); ) {
-                XMLEvent event = reader.next();
+            XMLEventReader fulltextReader = inputFactory.createXMLEventReader(fulltext);
+            final List<XMLEvent> events = new ArrayList<XMLEvent>();
+            while (fulltextReader.hasNext()) {
+                XMLEvent event = fulltextReader.nextEvent();
                 switch (event.getEventType()) {
                     case XMLStreamConstants.START_DOCUMENT:
                     case XMLStreamConstants.END_DOCUMENT:
@@ -57,8 +59,9 @@ public class ContentAdaptation implements Adaptation<XMLStream> {
                     default:
                         events.add(event);
                 }
-            }
-            return new XMLStream(events);
+            };
+            List<XMLEvent> eventsWithCitations = Citation.embedInDocument(URI.create(resource.getURI()), events.iterator());
+            return new XMLStream(eventsWithCitations);
         } catch (XMLStreamException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

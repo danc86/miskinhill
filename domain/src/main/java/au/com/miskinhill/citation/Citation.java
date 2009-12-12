@@ -8,11 +8,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
@@ -31,11 +33,19 @@ import au.com.miskinhill.rdf.vocabulary.MHS;
 public class Citation {
     
     private static final URI CITED_BASE = URI.create("http://miskinhill.com.au/cited/");
+    private static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
+    private static final QName SPAN_QNAME = new QName(XHTML_NS, "span");
+    private static final QName A_QNAME = new QName(XHTML_NS, "a");
+    private static final QName IMG_QNAME = new QName(XHTML_NS, "img");
     private static final QName CLASS_QNAME = new QName("class");
     private static final QName TITLE_QNAME = new QName("title");
+    private static final QName HREF_QNAME = new QName("href");
+    private static final QName SRC_QNAME = new QName("src");
+    private static final QName ALT_QNAME = new QName("alt");
     private static final String[] OPENURL_FIELDS = {
         "atitle", "jtitle", "btitle", "date", "volume", "issue", "spage", "epage", "issn", "isbn", "au", "place", "pub", "edition"
     };
+    private static final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
     
     private static Citation fromTree(URI articleUri, int number, List<XMLEvent> events) {
         Genre genre = null;
@@ -98,6 +108,29 @@ public class Citation {
         }
         return citations;
     }
+    
+    public static List<XMLEvent> embedInDocument(URI articleUri, Iterator<XMLEvent> reader) {
+        List<XMLEvent> outEvents = new ArrayList<XMLEvent>();
+        int i = 0;
+        while (reader.hasNext()) {
+            XMLEvent event = reader.next();
+            if (event.isStartElement()) {
+                StartElement start = event.asStartElement();
+                if (hasClass(start, "citation")) {
+                    i ++;
+                    List<XMLEvent> events = consumeTree(start, reader);
+                    Citation citation = fromTree(articleUri, i, events);
+                    citation.addToTree(events);
+                    outEvents.addAll(events);
+                } else {
+                    outEvents.add(start);
+                }
+            } else {
+                outEvents.add(event);
+            }
+        }
+        return outEvents;
+    }
 
     private final URI articleUri;
     private final URI citationUri;
@@ -141,6 +174,30 @@ public class Citation {
             throw new RuntimeException(e);
         }
         return StringUtils.join(pairs, "&");
+    }
+    
+    private void addToTree(List<XMLEvent> events) {
+        List<XMLEvent> toInsert = new ArrayList<XMLEvent>();
+        toInsert.add(eventFactory.createCharacters(" "));
+        Set<Attribute> spanAttributes = new LinkedHashSet<Attribute>();
+        spanAttributes.add(eventFactory.createAttribute(CLASS_QNAME, "Z3988"));
+        spanAttributes.add(eventFactory.createAttribute(TITLE_QNAME, coinsValue()));
+        toInsert.add(eventFactory.createStartElement(SPAN_QNAME, spanAttributes.iterator(), null));
+        toInsert.add(eventFactory.createEndElement(SPAN_QNAME, null));
+        
+        for (URI cited: cites) {
+            toInsert.add(eventFactory.createStartElement(A_QNAME, new LinkedHashSet<Attribute>(Arrays.asList(
+                    eventFactory.createAttribute(CLASS_QNAME, "citation-link"),
+                    eventFactory.createAttribute(HREF_QNAME, cited.toString()))).iterator(), null));
+            toInsert.add(eventFactory.createStartElement(IMG_QNAME, new LinkedHashSet<Attribute>(Arrays.asList(
+                    eventFactory.createAttribute(SRC_QNAME, "/images/silk/world_link.png"),
+                    eventFactory.createAttribute(ALT_QNAME, "[Citation details]"))).iterator(), null));
+            toInsert.add(eventFactory.createEndElement(IMG_QNAME, null));
+            toInsert.add(eventFactory.createEndElement(A_QNAME, null));
+        }
+        
+        // last event is END_ELEMENT, so insert as second-last
+        events.addAll(events.size() - 1, toInsert);
     }
     
     public Set<URI> getCites() {
