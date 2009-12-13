@@ -1,6 +1,5 @@
 package au.com.miskinhill.web.feeds;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
@@ -19,10 +18,16 @@ public class SitemapWebIntegrationTest extends AbstractWebIntegrationTest {
     public void shouldBeParseable() {
         Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
         assertTrue(sitemap.getUrls().size() >= 1228);
-        Set<String> uniqueLocs = new HashSet<String>();
-        for (Url url: sitemap.getUrls())
-            uniqueLocs.add(url.getLoc());
-        assertThat(uniqueLocs.size(), equalTo(sitemap.getUrls().size()));
+    }
+    
+    @Test
+    public void shouldNotContainDuplicates() {
+        Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
+        Set<String> locs = new HashSet<String>();
+        for (Url url: sitemap.getUrls()) {
+            assertFalse("Found duplicate " + url, locs.contains(url.getLoc()));
+            locs.add(url.getLoc());
+        }
     }
 
 }

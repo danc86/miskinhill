@@ -24,8 +24,7 @@ import au.com.miskinhill.schema.sitemaps.Urlset;
 public class SitemapResource {
 	
 	private static final String[] OTHER_URLS = {
-		// homepage is already an RDF resource, don't need to list it here
-		"http://miskinhill.com.au/about/",
+		// homepage and /about/ are already in RDF, don't need to list them here
 		"http://miskinhill.com.au/contact/",
 		"http://miskinhill.com.au/journals/",
 		"http://miskinhill.com.au/feeds/issues",
