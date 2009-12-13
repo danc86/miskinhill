@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title>Journals</title>
+    <meta name="description" content="An index of open-access scholarly journals published on this site by Miskin Hill Academic Publishing." />
+</head>
+
+<body>
+
+<h2>Journals</h2>
+
+<p>The following scholarly journals are hosted on this site:</p>
+
+<ul class="journals">
+    <li rdf:for="!mhs:hostedBy"><a href="${#uri}" rdf:content="dc:title" /></li>
+</ul>
+
+</body>
+</html>

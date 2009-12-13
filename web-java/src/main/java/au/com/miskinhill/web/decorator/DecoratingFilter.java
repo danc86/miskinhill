@@ -41,7 +41,8 @@ public class DecoratingFilter extends HttpResponseBufferingFilter {
     
     @Override
     protected boolean shouldPostprocessResponse(String contentType, int status) {
-        return MediaType.TEXT_HTML_TYPE.isCompatible(MediaType.valueOf(contentType)) &&
+        return contentType != null &&
+                MediaType.TEXT_HTML_TYPE.isCompatible(MediaType.valueOf(contentType)) &&
                 status == 200; // XXX 206 and suchlike?
     }
     

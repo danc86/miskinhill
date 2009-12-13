@@ -36,34 +36,34 @@ public abstract class HttpResponseBufferingFilter implements Filter {
         public ServletOutputStream getOutputStream() throws IOException {
             if (writer != null)
                 throw new IllegalStateException("Already called getWriter()");
-            if (outputStream == null)
-                outputStream = new ByteArrayOutputStream();
             if (servletOutputStream == null) {
                 servletOutputStream = new ServletOutputStream() {
+                    private void maybeInitialiseUnderlying() {
+                        if (outputStream == null) outputStream = new ByteArrayOutputStream();
+                    }
                     @Override
                     public void write(int b) throws IOException {
+                        maybeInitialiseUnderlying();
                         outputStream.write(b);
                     }
                     @Override
                     public void write(byte[] b) throws IOException {
+                        maybeInitialiseUnderlying();
                         outputStream.write(b);
                     }
                     @Override
                     public void write(byte[] b, int off, int len) throws IOException {
+                        maybeInitialiseUnderlying();
                         outputStream.write(b, off, len);
                     }
                     @Override
                     public void flush() throws IOException {
+                        maybeInitialiseUnderlying();
                         outputStream.flush();
                     }
                 };
             }
             return servletOutputStream;
-        }
-        
-        @Override
-        public void setContentLength(int len) {
-            throw new UnsupportedOperationException();
         }
         
         @Override
@@ -141,12 +141,10 @@ public abstract class HttpResponseBufferingFilter implements Filter {
         }
         
         public void writeThrough(String response) throws IOException {
+            byte[] encodedResponse = response.getBytes("UTF-8");
+            super.setContentLength(encodedResponse.length);
             if (outputStream != null) {
-                try {
-                    super.getOutputStream().write(response.getBytes("UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    throw new RuntimeException(e);
-                }
+                super.getOutputStream().write(encodedResponse);
             } else {
                 super.getWriter().write(response);
             }

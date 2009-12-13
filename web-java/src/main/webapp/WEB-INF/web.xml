@@ -19,6 +19,18 @@
 		<servlet-name>jersey-spring</servlet-name>
 		<url-pattern>/feeds/*</url-pattern>
 		<url-pattern>/unapi</url-pattern>
+		<url-pattern>/journals</url-pattern>
+		<url-pattern>/journals/</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.css</url-pattern>
+		<url-pattern>*.js</url-pattern>
+		<url-pattern>*.png</url-pattern>
+		<url-pattern>*.gif</url-pattern>
+		<url-pattern>*.jpg</url-pattern>
+		<url-pattern>/about/*</url-pattern>
+		<url-pattern>/contact/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>rdfRequestHandler</servlet-name>

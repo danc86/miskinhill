@@ -20,6 +20,12 @@ public class HTMLCompatibilityFilterUnitTest {
     }
     
     @Test
+    public void shouldExpandSelfClosingDiv() {
+        String result = new HTMLCompatibilityFilter().postprocessResponse("<div class=\"asdf\" />");
+        assertThat(result, equalTo("<div class=\"asdf\"></div>"));
+    }
+    
+    @Test
     public void shouldExpandSelfClosingAbbr() {
         String result = new HTMLCompatibilityFilter().postprocessResponse("<abbr title=\"asdf\" />");
         assertThat(result, equalTo("<abbr title=\"asdf\"></abbr>"));
@@ -29,6 +35,12 @@ public class HTMLCompatibilityFilterUnitTest {
     public void shouldExpandSelfClosingA() {
         String result = new HTMLCompatibilityFilter().postprocessResponse("<a href=\"xyz\" />");
         assertThat(result, equalTo("<a href=\"xyz\"></a>"));
+    }
+    
+    @Test
+    public void shouldExpandSelfClosingTextarea() {
+        String result = new HTMLCompatibilityFilter().postprocessResponse("<textarea name=\"xyz\" />");
+        assertThat(result, equalTo("<textarea name=\"xyz\"></textarea>"));
     }
 
 }

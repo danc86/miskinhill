@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.UriBuilder;
 
+import com.sun.jersey.api.core.ResourceConfig;
+import com.sun.jersey.spi.container.WebApplication;
+
 import com.sun.jersey.api.container.ContainerException;
 import com.sun.jersey.api.uri.UriComponent;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
@@ -15,6 +18,12 @@ import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 public class ServletPathIgnoringJerseySpringServlet extends SpringServlet {
     
     private static final long serialVersionUID = -9216078129740025444L;
+    
+    @Override
+    protected void initiate(ResourceConfig rc, WebApplication wa) {
+        rc.getFeatures().put(ResourceConfig.FEATURE_REDIRECT, true);
+        super.initiate(rc, wa);
+    }
 
     /** A copy-paste job from the superclass, but ignoring the servlet path. */
     @Override
