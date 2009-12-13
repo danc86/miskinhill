@@ -1,0 +1,19 @@
+
+.post {
+    margin-top: 1em;
+    padding-top: 1em;
+    border-top: 1px solid #AAAAAA;
+}
+.post h3 {
+    display: inline;
+    margin-right: 0.5em;
+}
+.post .created {
+    font-family: "Candara", "Lucida Grande", sans-serif;
+    display: inline;
+    font-size: 0.9em;
+    color: #777777;
+}
+.post .content {
+    margin-left: 2em;
+}

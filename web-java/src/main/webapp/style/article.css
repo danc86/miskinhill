@@ -1,0 +1,87 @@
+
+.article-meta .subjects p {
+    margin-bottom: 0;
+}
+.article-meta .subjects ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.epigraph {
+    margin: 0.75em 0;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.postscript {
+    margin: 0.75em 0;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.incompleteness-warning {
+    clear: both;
+    border: 1px solid #BF8160;
+    margin: 1em;
+    padding: 1em;
+    background-color: #FFD6BF;
+}
+.incompleteness-warning p {
+    background: url(../images/silk/exclamation.png) no-repeat center left;
+    padding-left: 26px;
+}
+
+/* Citations */
+.citation-hover {
+    background-color: #BFD5FF;
+}
+
+/* JSified footnotes */
+.floating-footnote {
+    width: 740px; /* to match #bodywrapper */
+    position: absolute;
+    z-index: 1;
+    background: #E0E0E0; /* for older browsers */
+    background: rgba(224, 224, 224, 0.95) !important;
+    border: 1px solid #777777;
+    padding: 0.75em;
+}
+.floating-footnote .close-button {
+    margin-left: 0.5em;
+}
+
+/* Tabular data */
+table.data caption {
+    text-align: left;
+    margin-top: 1.5em;
+}
+table.data {
+    margin: 1.5em;
+    border-collapse: collapse;
+}
+table.data th, table.data td {
+    padding: 0.25em;
+}
+table.data thead {
+    border-top: 2px solid #aaa;
+}
+table.data tbody {
+    border-top: 1px solid #777;
+    border-bottom: 2px solid #aaa;
+}
+table.data th {
+    text-align: left;
+}
+table.data th + th {
+    text-align: right;
+}
+table.data th.group {
+    text-align: center;
+    border-bottom: 1px solid #777;
+}
+table.data td + td {
+    text-align: right;
+}
+table.data .total {
+    border-top: 1px solid #777;
+}

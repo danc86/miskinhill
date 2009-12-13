@@ -1,0 +1,223 @@
+
+/*
+http://www.wellstyled.com/tools/colorscheme2/index-en.html?triad;49;0;235;0.6458333333333334;0.3764705882352941;0.6458333333333334;0.26352941176470585;0.16145833333333334;1;0.3229166666666667;1;0.6458333333333334;0.3764705882352941;0.6458333333333334;0.26352941176470585;0.16145833333333334;1;0.3229166666666667;1;0.6458333333333334;0.3764705882352941;0.6458333333333334;0.26352941176470585;0.16145833333333334;1;0.3229166666666667;1;0.6458333333333334;0.3764705882352941;0.6458333333333334;0.26352941176470585;0.16145833333333334;1;0.3229166666666667;1;0
+*/
+
+body {
+    font-family: "Liberation Serif", "Cambria", "Times New Roman", serif;
+    background-color: #777;
+    color: black;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Candara", "Lucida Grande", sans-serif;
+}
+a:link {
+    color: #3062BF;
+}
+a:visited {
+    color: #BF6330;
+}
+img {
+    border: none;
+}
+q {
+    quotes: none;
+}
+p, li, caption {
+    line-height: 2.8ex;
+}
+
+#bodywrapper {
+    padding: 15px;
+    margin: auto;
+    max-width: 770px;
+    /* IE max-width hack: */
+    width: auto !important;
+    width: 770px;
+    background-color: white;
+}
+
+#banner {
+    width: 770px;
+    height: 158px;
+    background-image: url(../images/banner_bg.jpg);
+    margin: 1em auto 0 auto;
+    text-align: right;
+    color: white;
+    padding: 15px;
+}
+#banner h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+#banner h1 a {
+    color: white;
+    text-decoration: none;
+}
+#banner ul {
+    margin: 0;
+    list-style: none;
+}
+#banner ul li a {
+    font-family: "Candara", "Lucida Grande", sans-serif;
+    color: white;
+    line-height: 3ex;
+    text-decoration: none;
+    border-bottom: 1px dotted #ccc;
+}
+
+#feedback {
+    float: right;
+    font-size: 0.9em;
+}
+#feedback a {
+    background-image: url(../images/silk/email_edit.png);
+    background-position: center right;
+    background-repeat: no-repeat;
+    padding-right: 20px;
+}
+
+.notification {
+    padding: 1em;
+    border: 1px solid #BFA860;
+    background: #FFEBAD;
+}
+
+/* Breadcrumbs */
+#breadcrumbs {
+    font-size: 0.85em;
+    color: #777;
+    padding-bottom: 0.5em;
+    border-bottom: 1px dotted #aaa;
+}
+#breadcrumbs a {
+    color: #777;
+}
+
+/* Footer */
+#footer {
+    font-size: 0.85em;
+    color: #777;
+    padding-top: 0.5em;
+    margin-top: 1em;
+    border-top: 1px dotted #aaa;
+    clear: both;
+}
+#footer a {
+    color: #777;
+}
+
+/* Body text (articles and reviews) */
+.body-text p {
+    margin: 0;
+}
+.body-text p + p, .body-text blockquote + p, .body-text table + p {
+    text-indent: 1.5em;
+}
+.body-text blockquote p {
+    text-indent: 1.5em;
+}
+.body-text h3 {
+    margin: 1.5em 0 0.5em 0;
+}
+.body-text h4 {
+    margin: 1em 0 0.5em 0;
+}
+.body-text hr {
+    width: 5em;
+    border: none;
+    border-top: 1px solid #777777;
+    margin: 1.5em auto;
+}
+.body-text q {
+    display: block;
+    text-indent: 0;
+    margin: 0.75em 3em;
+}
+.body-text blockquote {
+    margin: 0.75em 3em;
+}
+.footnote {
+    font-size: 0.9em;
+    line-height: 3ex;
+    margin: 0.75em 0;
+}
+.footnote-anchor, .footnote-number {
+    vertical-align: super;
+    font-size: 0.75em;
+    line-height: 0;
+}
+
+/* Metaboxes */
+.metabox-container {
+    float: right;
+}
+.metabox {
+    border: 1px solid #BFA860;
+    background: #FFEBAD;
+    margin: 0 0 1em 1em;
+    width: 16em;
+    font-size: 0.9em;
+}
+.metabox h4 {
+    font-size: 1.05em;
+    padding: 0.25em 0.75em;
+    margin: 0;
+    color: white;
+    background: #BFA860;
+}
+.metabox p {
+    padding: 0 0.75em;
+    margin: 0.75em 0;
+}
+.searchbox input {
+    width: 12em;
+}
+.searchbox button {
+    width: 3em;
+}
+.searchbox {
+    border: 1px solid #6081BF !important;
+    background: #BFD5FF !important;
+}
+.searchbox h4 {
+    background: #6081BF !important;
+}
+.metabox .cover {
+    text-align: center;
+}
+
+/* Book/article info */
+.bookinfo, .articleinfo {
+    margin: 1em 2em;
+}
+.bookinfo .cover, .articleinfo .cover {
+    float: left;
+    margin: 0 10px 0 0;
+}
+.bookinfo .beside, .articleinfo .beside {
+    margin-left: 120px;
+}
+.bookinfo .main, .articleinfo .main {
+    font-size: 1.1em;
+}
+
+/* LaTeX, from http://edward.oconnor.cx/2007/08/tex-poshlet */
+.latex sub, .latex sup {
+    text-transform: uppercase;
+    line-height: 0;
+}
+.latex sub {
+    vertical-align: -0.5ex;
+    margin-left: -0.1667em;
+    margin-right: -0.125em;
+}
+.latex, .latex sub {
+    font-size: 1em;
+}
+.latex sup {
+    font-size: 0.85em;
+    vertical-align: 0.15em;
+    margin-left: -0.36em;
+    margin-right: -0.15em;
+}

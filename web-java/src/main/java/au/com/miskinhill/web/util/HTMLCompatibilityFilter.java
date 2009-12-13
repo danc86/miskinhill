@@ -2,11 +2,6 @@ package au.com.miskinhill.web.util;
 
 import java.util.regex.Pattern;
 
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.MediaType;
-
 import org.springframework.stereotype.Component;
 
 @Component("htmlCompatibilityFilter")
@@ -20,26 +15,6 @@ public class HTMLCompatibilityFilter extends HttpResponseBufferingFilter {
     private static final Pattern SELF_CLOSING_ABBR_PATTERN = Pattern.compile("<abbr(\\s[^>]*?)?\\s*/>");
     private static final Pattern SELF_CLOSING_A_PATTERN = Pattern.compile("<a(\\s[^>]*?)?\\s*/>");
     private static final Pattern SELF_CLOSING_TEXTAREA_PATTERN = Pattern.compile("<textarea(\\s[^>]*?)?\\s*/>");
-    
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
-    
-    @Override
-    public void destroy() {
-    }
-    
-    @Override
-    protected boolean shouldBuffer(HttpServletRequest request) {
-        return true;
-    }
-    
-    @Override
-    protected boolean shouldPostprocessResponse(String contentType, int status) {
-        return contentType != null &&
-                MediaType.TEXT_HTML_TYPE.isCompatible(MediaType.valueOf(contentType)) &&
-                status == 200; // XXX 206 and suchlike?
-    }
     
     @Override
     protected String postprocessResponse(String responseBody) {
