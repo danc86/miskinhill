@@ -1,0 +1,43 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/"
+     class="articleinfo">
+
+<rdf:if test="dc:isPartOf/mhs:coverThumbnail">
+    <p class="cover"><img src="${dc:isPartOf/mhs:coverThumbnail#uri}" alt="" /></p>
+</rdf:if>
+
+<div class="beside">
+    <p class="main">
+        <rdf:if test="dc:title">
+            <rdf:if test="mhs:availableFrom">‘<a href="${mhs:availableFrom#uri}">${dc:title}</a>’</rdf:if>
+            <rdf:if not="mhs:availableFrom">‘${dc:title}’</rdf:if>
+            <br />
+            <rdf:if test="dc:creator">by <rdf:join separator=", " each="dc:creator"><a href="${#uri}" rdf:content="foaf:name" /></rdf:join></rdf:if>
+        </rdf:if>
+    </p>
+
+    <p class="issue">
+        Published in
+        <rdf:if test="dc:isPartOf/mhs:isIssueOf/mhs:availableFrom"><a href="${dc:isPartOf/mhs:isIssueOf/mhs:availableFrom#uri}"><em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /></a></rdf:if>
+        <rdf:if not="dc:isPartOf/mhs:isIssueOf/mhs:availableFrom"><em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /></rdf:if>
+        <rdf:if test="dc:isPartOf/mhs:availableFrom">
+            <a href="${dc:isPartOf/mhs:availableFrom#uri}">
+                <rdf:if test="dc:isPartOf/mhs:volume">Vol.&#160;${dc:isPartOf/mhs:volume}<rdf:if test="dc:isPartOf/mhs:issueNumber">, </rdf:if></rdf:if>
+                <rdf:if test="dc:isPartOf/mhs:issueNumber">Issue&#160;${dc:isPartOf/mhs:issueNumber}</rdf:if>
+                <rdf:if test="dc:isPartOf/dc:coverage">(${dc:isPartOf/dc:coverage})</rdf:if>
+            </a>
+        </rdf:if>
+        <rdf:if not="dc:isPartOf/mhs:availableFrom">
+            <rdf:if test="dc:isPartOf/mhs:volume">Vol.&#160;${dc:isPartOf/mhs:volume}<rdf:if test="dc:isPartOf/mhs:issueNumber">, </rdf:if></rdf:if>
+            <rdf:if test="dc:isPartOf/mhs:issueNumber">Issue&#160;${dc:isPartOf/mhs:issueNumber}</rdf:if>
+            <rdf:if test="dc:isPartOf/dc:coverage">(${dc:isPartOf/dc:coverage})</rdf:if>
+        </rdf:if>
+        <br />
+        <rdf:if test="dc:isPartOf/mhs:isIssueOf/dc:identifier[uri-prefix='urn:issn:']">ISSN ${dc:isPartOf/mhs:isIssueOf/dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)}</rdf:if>
+    </p>
+    <p class="links" rdf:if="dc:title | dc:isPartOf/mhs:isIssueOf/dc:identifier[uri-prefix='urn:issn:']">Find this article online:<br />
+        ${#article-links}
+    </p>
+</div>
+
+</div>

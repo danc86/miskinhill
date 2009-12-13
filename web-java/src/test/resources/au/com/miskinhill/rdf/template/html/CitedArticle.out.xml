@@ -1,0 +1,54 @@
+<?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Boris Pasternak in August 1936: an NKVD memorandum - A Cited Journal</title>
+    <link type="application/rdf+xml" title="RDF/XML" rel="alternate" href="http://miskinhill.com.au/cited/journals/asdf/1:1/article.xml"/><link href="http://miskinhill.com.au/cited/journals/asdf/1:1/article.ttl" type="application/x-turtle" rel="alternate" title="Turtle"/><link type="text/x-bibtex" rel="alternate" href="http://miskinhill.com.au/cited/journals/asdf/1:1/article.bib" title="BibTeX"/><link href="http://miskinhill.com.au/cited/journals/asdf/1:1/article.end" title="Endnote" type="application/x-endnote-refer" rel="alternate"/>
+    <link rel="stylesheet" type="text/css" href="/style/cited.css"/>
+</head>
+
+<body>
+
+<h2>Article<abbr class="unapi-id" title="http://miskinhill.com.au/cited/journals/asdf/1:1/article"/></h2>
+
+<div class="articleinfo">
+
+
+
+<div class="beside">
+    <p class="main">
+        
+            ‘<a href="http://example.com/teh-cited-article">Boris Pasternak in August 1936: an NKVD memorandum</a>’
+            
+            <br/>
+            by <a href="http://miskinhill.com.au/authors/another-author">Another Author</a>, <a href="http://miskinhill.com.au/authors/test-author">Test Author</a>
+        
+    </p>
+
+    <p class="issue">
+        Published in
+        
+        <em xml:lang="en" lang="en">A Cited Journal</em>
+        
+        
+            Vol. 1, 
+            Issue 1
+            
+        
+        <br/>
+        ISSN 87654321
+    </p>
+    <p class="links">Find this article online:<br/>
+        <a href="http://scholar.google.com.au/scholar?q=Boris+Pasternak+in+August+1936%3A+an+NKVD+memorandum">Google Scholar</a>,
+<a href="http://www.worldcat.org/search?q=issn:8765-4321">WorldCat</a>
+    </p>
+</div>
+
+</div>
+
+<h3 class="cited-in">Cited in</h3>
+<ul class="articles">
+    
+</ul>
+
+</body>
+</html>

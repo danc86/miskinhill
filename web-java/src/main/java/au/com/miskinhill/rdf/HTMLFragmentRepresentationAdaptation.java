@@ -22,6 +22,7 @@ public class HTMLFragmentRepresentationAdaptation implements Adaptation<XMLStrea
     private static final Map<Resource, String> TYPE_TEMPLATES = new HashMap<Resource, String>();
     static {
         TYPE_TEMPLATES.put(MHS.Book, "template/htmlfragment/Book.xml");
+        TYPE_TEMPLATES.put(MHS.Article, "template/htmlfragment/Article.xml");
     }
     
     @Override

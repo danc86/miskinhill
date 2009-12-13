@@ -88,5 +88,19 @@ public class HTMLRepresentationTest {
         String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Article.out.xml"));
         assertEquals(expected.trim(), result.trim());
     }
+    
+    @Test
+    public void testObituary() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe"));
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Obituary.out.xml"));
+        assertEquals(expected.trim(), result.trim());
+    }
+    
+    @Test
+    public void testCitedArticle() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/cited/journals/asdf/1:1/article"));
+        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/CitedArticle.out.xml"));
+        assertEquals(expected.trim(), result.trim());
+    }
 
 }

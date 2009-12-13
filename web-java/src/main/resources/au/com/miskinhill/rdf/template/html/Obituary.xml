@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title>${dc:title#string-lv} - ${dc:isPartOf/mhs:isIssueOf/dc:title} Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</title>
+    ${#representation-links}
+    <link rel="stylesheet" type="text/css" href="/style/obituary.css" />
+</head>
+
+<body>
+
+<div id="breadcrumbs">
+    <a href="/journals/">Journals</a> &gt;
+    <a href="${dc:isPartOf/mhs:isIssueOf#uri}">${dc:isPartOf/mhs:isIssueOf/dc:title}</a> &gt;
+    <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</a> &gt;
+</div>
+
+<h2>†${mhs:obituaryOf/foaf:name} (${mhs:obituaryOf/mhs:dateOfBirth#formatted-dt('d MMMM yyyy')} – ${mhs:obituaryOf/mhs:dateOfDeath#formatted-dt('d MMMM yyyy')})<abbr class="unapi-id" title="${#uri}" /></h2>
+
+<div class="metabox-container">
+    <div class="obituary-meta metabox">
+        <h4>Obituary details</h4>
+        <p>
+            Published in <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</a> of<br />
+            <a href="${dc:isPartOf/mhs:isIssueOf#uri}"><em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /></a>
+        </p>
+        <p class="other-formats"><a href="${#uri}.pdf">Original print version</a></p>
+        <p class="metadata-links">Metadata: ${#representation-anchors}</p>
+    </div>
+</div>
+
+<h3><em lang="la">In memoriam</em></h3>
+
+${#content}
+
+<p class="author">
+    <a href="${dc:creator#uri}" rdf:content="dc:creator/foaf:name" />
+</p>
+
+</body>
+</html>
