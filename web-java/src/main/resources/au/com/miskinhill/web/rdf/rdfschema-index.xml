@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<head>
+    <title>RDF Schema</title>
+    <meta name="description" content="Details of the RDF schema for journal metadata used on this site." />
+</head>
+
+<body>
+
+<h2>RDF Schema</h2>
+
+<h3>Classes</h3>
+
+<ul>
+    <li rdf:for="!rdfs:isDefinedBy[type=rdfs:Class](#uri)">
+        <a href="${#uri}" rdf:content="#uri-slice(39)" />
+    </li>
+</ul>
+
+<h3>Properties</h3>
+
+<ul>
+    <li rdf:for="!rdfs:isDefinedBy[type=rdf:Property](#uri)">
+        <a href="${#uri}" rdf:content="#uri-slice(39)" />
+    </li>
+</ul>
+
+</body>
+</html>

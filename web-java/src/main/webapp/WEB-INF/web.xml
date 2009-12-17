@@ -11,6 +11,11 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
+		<servlet-name>pdf-fulltext</servlet-name>
+		<servlet-class>au.com.miskinhill.web.PdfFulltextServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
 		<servlet-name>rdfRequestHandler</servlet-name>
 		<servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
@@ -21,6 +26,8 @@
 		<url-pattern>/unapi</url-pattern>
 		<url-pattern>/journals</url-pattern>
 		<url-pattern>/journals/</url-pattern>
+		<url-pattern>/rdfschema/1.0</url-pattern>
+		<url-pattern>/rdfschema/1.0/</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
@@ -31,6 +38,10 @@
 		<url-pattern>*.jpg</url-pattern>
 		<url-pattern>/about/*</url-pattern>
 		<url-pattern>/contact/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>pdf-fulltext</servlet-name>
+		<url-pattern>*.pdf</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>rdfRequestHandler</servlet-name>

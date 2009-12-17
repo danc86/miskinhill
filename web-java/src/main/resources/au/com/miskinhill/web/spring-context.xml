@@ -19,6 +19,9 @@
     <bean id="fulltextFetcher" class="au.com.miskinhill.domain.fulltext.FileFulltextFetcher">
         <constructor-arg value="${contentPath}" />
     </bean>
+    <bean id="pdfFulltextBase" class="java.lang.String">
+        <constructor-arg value="${contentPath}" />
+    </bean>
 
     <context:component-scan base-package="au.com.miskinhill.rdftemplate.datatype" />
     <context:component-scan base-package="au.com.miskinhill.rdf" />
