@@ -2,6 +2,9 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5" metadata-complete="true">
 	<display-name>Miskin Hill</display-name>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -30,14 +33,6 @@
 		<url-pattern>/rdfschema/1.0/</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/script/*</url-pattern>
-		<url-pattern>/style/*</url-pattern>
-		<url-pattern>/images/*</url-pattern>
-		<url-pattern>/about/*</url-pattern>
-		<url-pattern>/contact/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
 		<servlet-name>pdf-fulltext</servlet-name>
 		<url-pattern>*.pdf</url-pattern>
 		<url-pattern>*.jpg</url-pattern>
@@ -47,6 +42,10 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
     <filter>
+        <filter-name>defaultServletFilter</filter-name>
+        <filter-class>au.com.miskinhill.web.util.DefaultServletFilter</filter-class>
+    </filter>
+    <filter>
         <filter-name>linkRelativizingFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
@@ -71,6 +70,15 @@
     <filter-mapping>
         <filter-name>linkRelativizingFilter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>defaultServletFilter</filter-name>
+        <url-pattern>/script/*</url-pattern>
+        <url-pattern>/style/*</url-pattern>
+        <url-pattern>/images/*</url-pattern>
+        <url-pattern>/about/*</url-pattern>
+        <url-pattern>/contact/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 </web-app>
