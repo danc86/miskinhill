@@ -10,7 +10,12 @@ function cleanup {
     kill -9 $app_pid
 }
 trap cleanup SIGINT SIGTERM
-sleep 20
+
+# wait for app to begin listening
+while ! lsof -iTCP:8082 >/dev/null ; do
+    echo waiting for app to start listening
+    sleep 1
+done
 
 wget -nv -r -p -l inf -erobots=off -P webtest.out http://localhost:8082/ 2>&1 | grep -B1 ERROR
 grep_status=$?
