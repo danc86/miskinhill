@@ -44,7 +44,7 @@
         </tr>
         <tr rdf:if="rdfs:range">
             <th>Range</th>
-            <td><a href="${rdfs:range#uri"><code rdf:content="rdfs:range#uri" /></a></td>
+            <td><a href="${rdfs:range#uri}"><code rdf:content="rdfs:range#uri" /></a></td>
         </tr>
         <tr><th>Description</th><td rdf:content="dc:description" /></tr>
     </tbody>
