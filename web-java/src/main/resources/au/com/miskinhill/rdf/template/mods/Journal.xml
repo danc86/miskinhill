@@ -18,7 +18,7 @@
         <issuance>continuing</issuance>
     </originInfo>
     <language>
-        <languageTerm rdf:for="dc:language" type="code" authority="rfc3066">${lingvoj:iso1}</languageTerm>
+        <languageTerm rdf:for="dc:language(lingvoj:iso1#comparable-lv)" type="code" authority="rfc3066">${lingvoj:iso1}</languageTerm>
     </language>
     <identifier type="issn" rdf:content="dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)" />
     <identifier type="uri" rdf:content="#uri" />

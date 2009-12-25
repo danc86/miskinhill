@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modsCollection xmlns="http://www.loc.gov/mods/v3"
+                xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+
+<mods>
+    <titleInfo>
+        <!-- XXX nonSort -->
+        <title>${dc:title#string-lv}</title>
+        <!-- XXX subtitle -->
+    </titleInfo>
+    <location>
+        <url displayLabel="HTML version" access="object in context" usage="primary display">${#uri}</url>
+        <url displayLabel="Original print version" access="raw object">${#uri}.pdf</url>
+    </location>
+    <language>
+        <languageTerm rdf:for="dc:isPartOf/mhs:isIssueOf/dc:language(lingvoj:iso1#comparable-lv)" type="code" authority="rfc3066">${lingvoj:iso1}</languageTerm>
+    </language>
+    <name type="personal" rdf:for="dc:creator">
+        <displayForm>${foaf:name}</displayForm>
+        <namePart type="given">${foaf:givenNames}</namePart>
+        <namePart type="family">${foaf:surname}</namePart>
+        <role>
+            <roleTerm authority="marcrelator" type="text">author</roleTerm>
+        </role>
+    </name>
+    <typeOfResource>text</typeOfResource>
+    <genre authority="marcgt">periodical</genre>
+    <physicalDescription>
+        <form authority="marcform">electronic</form>
+        <!-- XXX this is lame (just look at Content-Type response header!), but is required by Aquifer guidelines?? -->
+        <internetMediaType>text/html</internetMediaType>
+        <internetMediaType>application/pdf</internetMediaType>
+    </physicalDescription>
+    <relatedItem type="host">
+        ${dc:isPartOf/mhs:isIssueOf#mods}
+        <part>
+            <date encoding="w3cdtf">${dc:isPartOf/dc:coverage}</date>
+            <detail type="volume"><number>${dc:isPartOf/mhs:volume}</number></detail>
+            <detail type="issue"><number>${dc:isPartOf/mhs:issueNumber}</number></detail>
+            <extent unit="page">
+                <start>${mhs:startPage}</start>
+                <end>${mhs:endPage}</end>
+            </extent>
+        </part>
+    </relatedItem>
+    <identifier type="uri">${#uri}</identifier>
+    <subject rdf:for="dc:subject(mhs:label#comparable-lv)" authority="lcsh">
+        <topic>${mhs:label}</topic>
+    </subject>
+</mods>
+
+</modsCollection>

@@ -1,5 +1,6 @@
 package au.com.miskinhill.rdf;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class StaticApplicationContextAccessor {
     
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
+    }
+    
+    public static <T> Collection<T> getBeansOfType(Class<T> type) {
+        Map<String, T> candidateBeans = applicationContext.getBeansOfType(type);
+        return candidateBeans.values();
     }
     
     public static <T> T getBeanOfType(Class<T> type) {

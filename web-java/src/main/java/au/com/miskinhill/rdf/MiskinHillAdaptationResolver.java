@@ -21,6 +21,7 @@ public class MiskinHillAdaptationResolver implements AdaptationResolver {
         adaptations.put("representation-atom-links", RepresentationAtomLinksAdaptation.class);
         adaptations.put("year", YearAdaptation.class);
         adaptations.put("html", HTMLFragmentRepresentationAdaptation.class);
+        adaptations.put("mods", MODSRepresentationAdaptation.class);
         adaptations.put("book-links", BookLinksAdaptation.class);
         adaptations.put("article-links", ArticleLinksAdaptation.class);
         adaptations.put("content", ContentAdaptation.class);
