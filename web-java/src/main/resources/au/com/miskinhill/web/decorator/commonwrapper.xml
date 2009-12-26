@@ -4,8 +4,6 @@
                 xsl:version="1.0"> 
 <xsl:output method="xml" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" /> 
 
-<!-- don't forget this stuff is duplicated in exc.py! -->
-
 <!-- identity -->
 <xsl:template match="@*|node()">
     <xsl:copy>

@@ -46,10 +46,11 @@ public class RDFRequestHandler implements HttpRequestHandler {
     }
     
     private void doGet(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        String uri = "http://miskinhill.com.au" + req.getContextPath() + req.getServletPath() +
+        String requestedUri = "http://miskinhill.com.au" + req.getContextPath() + req.getServletPath() +
                 (req.getPathInfo() != null ? req.getPathInfo() : "");
         
         // figure out what URI they really wanted
+        String uri = requestedUri;
         String extensionFormat = null;
         do {
             // try as is
@@ -75,7 +76,7 @@ public class RDFRequestHandler implements HttpRequestHandler {
                 }
             }
             // couldn't match anything
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested URI " + requestedUri + " does not exist in the RDF graph.");
             return;
         } while (false);
         
@@ -84,13 +85,13 @@ public class RDFRequestHandler implements HttpRequestHandler {
         if (extensionFormat != null) {
             representation = representationFactory.getRepresentationByFormat(extensionFormat);
             if (!representation.canRepresent(resource)) {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "The requested resource cannot be represented as " + representation.getLabel() + ".");
                 return;
             }
         } else {
             List<Representation> candidates = representationFactory.getRepresentationsForResource(resource);
             if (candidates.isEmpty()) {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND); // probably this should never happen
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "No valid representations found for resource. This should probably never happen!");
                 return;
             }
             representation = negotiate(candidates, req.getHeader("Accept"));

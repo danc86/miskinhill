@@ -62,16 +62,19 @@
         <filter-name>htmlCompatibilityFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
     <filter-mapping>
         <filter-name>decoratingFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
     <filter-mapping>
         <filter-name>linkRelativizingFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
     <filter-mapping>
         <filter-name>defaultServletFilter</filter-name>
@@ -81,4 +84,56 @@
         <url-pattern>/about/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>405</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>406</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>410</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>411</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>412</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>413</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>414</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>415</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>416</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>417</error-code>
+        <location>/WEB-INF/error/error.jsp</location>
+    </error-page>
 </web-app>

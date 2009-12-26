@@ -172,7 +172,7 @@ public abstract class HttpResponseBufferingFilter extends OncePerRequestFilter {
         private boolean shouldBuffer() {
             return contentType != null &&
                     MediaType.TEXT_HTML_TYPE.isCompatible(MediaType.valueOf(contentType)) &&
-                    status == 200; // XXX 206 and suchlike?
+                    (status == 200 || (status >= 400 && status < 500)); // XXX 206 and suchlike?
         }
         
     }
