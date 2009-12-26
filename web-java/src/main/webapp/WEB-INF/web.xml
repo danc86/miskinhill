@@ -82,6 +82,8 @@
         <url-pattern>/style/*</url-pattern>
         <url-pattern>/images/*</url-pattern>
         <url-pattern>/about/*</url-pattern>
+        <url-pattern>/google0c9dc78398234842.html</url-pattern>
+        <url-pattern>/robots.txt</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
     <error-page>
