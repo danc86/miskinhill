@@ -63,5 +63,14 @@ public class DecoratingFilterUnitTest {
         CharSequence result = filter.postprocessResponse(dummy);
         assertThat(result.toString(), containsString("<head profile=\"http://microformats.org/wiki/hreview-profile\">"));
     }
+    
+    @Test
+    public void shouldFillInIncompletenessWarning() throws Exception {
+        String dummy = TestUtil.exhaust(this.getClass().getResourceAsStream("dummy-incomplete.xml"));
+        CharSequence result = filter.postprocessResponse(dummy);
+        assertThat(result.toString(), containsString("<div class=\"incompleteness-warning\" lang=\"en\">" + 
+        		"<p>The full HTML version of this article is not currently available online. Please refer to the original print version.</p>" + 
+        		"</div>"));
+    }
 
 }
