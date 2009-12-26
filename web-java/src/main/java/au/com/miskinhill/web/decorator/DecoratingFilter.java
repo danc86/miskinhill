@@ -19,7 +19,10 @@ public class DecoratingFilter extends HttpResponseBufferingFilter {
     
     private static final long serialVersionUID = -379349824773494218L;
     
-    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance(
+            // ensure we get the builtin JDK6 one, since xalan is broken apparently
+            "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+            this.getClass().getClassLoader());
     
     @Override
     protected String postprocessResponse(String responseBody) {
