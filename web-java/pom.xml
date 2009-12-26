@@ -18,10 +18,6 @@
 			<url>http://download.java.net/maven/2/</url>
 			<layout>default</layout>
 		</repository>
-        <repository>
-            <id>springsource maven repo</id>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>
 	</repositories>
 	<dependencies>
 		<dependency>
