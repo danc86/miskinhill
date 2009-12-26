@@ -40,5 +40,14 @@
     <bean class="au.com.miskinhill.rdftemplate.TemplateInterpolator">
         <constructor-arg ref="selectorFactory" />
     </bean>
+
+    <bean class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="localhost" />
+    </bean>
+    <bean id="feedbackSubmissionTemplate" class="org.springframework.mail.SimpleMailMessage">
+        <property name="subject" value="Feedback form submitted on miskinhill.com.au" />
+        <property name="from" value="Miskin Hill &lt;tomcat@miskinhill.com.au&gt;" />
+        <property name="to" value="info@miskinhill.com.au" />
+    </bean>
     
 </beans>

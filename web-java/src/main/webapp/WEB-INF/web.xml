@@ -31,6 +31,7 @@
 		<url-pattern>/journals/</url-pattern>
 		<url-pattern>/rdfschema/1.0</url-pattern>
 		<url-pattern>/rdfschema/1.0/</url-pattern>
+		<url-pattern>/contact/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>pdf-fulltext</servlet-name>
@@ -78,7 +79,6 @@
         <url-pattern>/style/*</url-pattern>
         <url-pattern>/images/*</url-pattern>
         <url-pattern>/about/*</url-pattern>
-        <url-pattern>/contact/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 </web-app>
