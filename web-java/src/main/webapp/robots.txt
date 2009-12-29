@@ -3,3 +3,5 @@ Disallow: /unapi
 
 User-Agent: *
 Disallow: /oaipmh
+
+Sitemap: http://miskinhill.com.au/feeds/sitemap
