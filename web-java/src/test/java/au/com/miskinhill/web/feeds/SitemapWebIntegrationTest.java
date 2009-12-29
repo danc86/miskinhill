@@ -17,7 +17,19 @@ public class SitemapWebIntegrationTest extends AbstractWebIntegrationTest {
     @Test
     public void shouldBeParseable() {
         Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
-        assertTrue(sitemap.getUrls().size() >= 1228);
+        assertTrue(sitemap.getUrls().size() >= 3931);
+    }
+    
+    @Test
+    public void shouldContainAlternateRepresentations() {
+        Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
+        assertTrue(sitemap.containsLoc("http://miskinhill.com.au/journals/asees/.mods"));
+    }
+    
+    @Test
+    public void shouldContainPdfFullTextUrls() {
+        Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
+        assertTrue(sitemap.containsLoc("http://miskinhill.com.au/journals/asees/22:1-2/post-soviet-boevik.pdf"));
     }
     
     @Test

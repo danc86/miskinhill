@@ -30,5 +30,13 @@ public class Urlset {
     public String toString() {
         return new ToStringBuilder(this).append(urls).toString();
     }
+    
+    public boolean containsLoc(String loc) {
+        for (Url url: urls) {
+            if (url.getLoc().equals(loc))
+                return true;
+        }
+        return false;
+    }
 
 }

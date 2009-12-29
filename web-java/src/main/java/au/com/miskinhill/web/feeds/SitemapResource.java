@@ -9,13 +9,16 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import au.com.miskinhill.rdf.RDFUtil;
+import au.com.miskinhill.rdf.Representation;
+import au.com.miskinhill.rdf.RepresentationFactory;
+import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.schema.sitemaps.Url;
 import au.com.miskinhill.schema.sitemaps.Urlset;
 
@@ -34,10 +37,12 @@ public class SitemapResource {
 		Pattern.compile("http://miskinhill\\.com\\.au/[^#]*");
 	
 	private final Model model;
+	private final RepresentationFactory representationFactory;
 	
 	@Autowired
-	public SitemapResource(Model model) {
+	public SitemapResource(Model model, RepresentationFactory representationFactory) {
 		this.model = model;
+		this.representationFactory = representationFactory;
 	}
 	
 	@GET
@@ -51,7 +56,14 @@ public class SitemapResource {
 		for (ResIterator i = model.listSubjects(); i.hasNext();) {
 			Resource res = (Resource) i.next();
 			if (res.getURI() != null && OUR_URLS.matcher(res.getURI()).matches()) {
-				rdfLocs.add(res.getURI());
+                for (Representation representation: representationFactory.getRepresentationsForResource(res)) {
+                    if (representation.getFormat().equals("html"))
+                        rdfLocs.add(res.getURI());
+                    else
+                        rdfLocs.add(res.getURI() + "." + representation.getFormat());
+                }
+                if (RDFUtil.hasAnyType(res, Collections.singleton(MHS.IssueContent)))
+                    rdfLocs.add(res.getURI() + ".pdf");
 			}
 		}
 		Collections.sort(rdfLocs);
