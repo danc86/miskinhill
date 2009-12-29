@@ -4,7 +4,7 @@
     <title>Review of Slovenia: evolving loyalties - Test Journal of Good Stuff Vol. 1, Issue 1</title>
     <link href="http://miskinhill.com.au/journals/test/1:1/reviews/review.xml" type="application/rdf+xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" rel="alternate" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.ttl"/>
     <link rel="stylesheet" type="text/css" href="/style/article.css"/>
-    <script type="text/javascript" src="/script/jquery-1.3.2.js"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"/>
     <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js"/>
     <script type="text/javascript" src="/script/footnote.js"/>
     <script type="text/javascript" src="/script/citation.js"/>

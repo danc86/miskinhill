@@ -4,7 +4,7 @@
     <title>Moscow 1937: the interpreter’s story - Test Journal of Good Stuff Vol. 1, Issue 1</title>
     <link type="application/rdf+xml" href="http://miskinhill.com.au/journals/test/1:1/article.xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" href="http://miskinhill.com.au/journals/test/1:1/article.ttl" rel="alternate" title="Turtle"/><link title="MODS" rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/article.mods" type="application/mods+xml"/><link href="http://miskinhill.com.au/journals/test/1:1/article.bib" type="text/x-bibtex" rel="alternate" title="BibTeX"/><link title="Endnote" type="application/x-endnote-refer" href="http://miskinhill.com.au/journals/test/1:1/article.end" rel="alternate"/>
     <link rel="stylesheet" type="text/css" href="/style/article.css"/>
-    <script type="text/javascript" src="/script/jquery-1.3.2.js"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"/>
     <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js"/>
     <script type="text/javascript" src="/script/footnote.js"/>
     <script type="text/javascript" src="/script/citation.js"/>

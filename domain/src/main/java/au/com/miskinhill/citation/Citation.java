@@ -41,6 +41,8 @@ public class Citation {
     private static final QName TITLE_QNAME = new QName("title");
     private static final QName HREF_QNAME = new QName("href");
     private static final QName SRC_QNAME = new QName("src");
+    private static final QName WIDTH_QNAME = new QName("width");
+    private static final QName HEIGHT_QNAME = new QName("height");
     private static final QName ALT_QNAME = new QName("alt");
     private static final String[] OPENURL_FIELDS = {
         "atitle", "jtitle", "btitle", "date", "volume", "issue", "spage", "epage", "issn", "isbn", "au", "place", "pub", "edition"
@@ -191,6 +193,8 @@ public class Citation {
                     eventFactory.createAttribute(HREF_QNAME, cited.toString()))).iterator(), null));
             toInsert.add(eventFactory.createStartElement(IMG_QNAME, new LinkedHashSet<Attribute>(Arrays.asList(
                     eventFactory.createAttribute(SRC_QNAME, "/images/silk/world_link.png"),
+                    eventFactory.createAttribute(WIDTH_QNAME, "16"),
+                    eventFactory.createAttribute(HEIGHT_QNAME, "16"),
                     eventFactory.createAttribute(ALT_QNAME, "[Citation details]"))).iterator(), null));
             toInsert.add(eventFactory.createEndElement(IMG_QNAME, null));
             toInsert.add(eventFactory.createEndElement(A_QNAME, null));
