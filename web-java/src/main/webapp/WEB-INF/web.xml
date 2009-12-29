@@ -53,6 +53,10 @@
             <param-name>^(/journals/asees/21:1-2/.*)/citations/[^.]*(\..+)?$</param-name>
             <param-value>$1$2</param-value>
         </init-param>
+        <init-param>
+            <param-name>^/sitemap\.xml$</param-name>
+            <param-value>/feeds/sitemap</param-value>
+        </init-param>
     </filter>
     <filter>
         <filter-name>linkRelativizingFilter</filter-name>

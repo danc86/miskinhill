@@ -22,5 +22,11 @@ public class GenericRedirectingFilterWebIntegrationTest extends AbstractJWebUnit
         assertThat(tester.getTestingEngine().getPageURL(),
                 equalTo(BASE.resolve("/journals/asees/21:1-2/writing-manuscript-pasternaks-povest.xml").toURL()));
     }
+    
+    @Test
+    public void shouldRedirectSitemapXml() throws Exception {
+        tester.beginAt("/sitemap.xml");
+        assertThat(tester.getTestingEngine().getPageURL(), equalTo(BASE.resolve("/feeds/sitemap").toURL()));
+    }
 
 }
