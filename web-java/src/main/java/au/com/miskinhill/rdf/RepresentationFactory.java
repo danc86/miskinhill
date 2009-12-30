@@ -3,7 +3,6 @@ package au.com.miskinhill.rdf;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +23,7 @@ public class RepresentationFactory {
     
     @Autowired
     public RepresentationFactory(List<Representation> representations) {
-        Collections.sort(representations, new Comparator<Representation>() {
-            @Override
-            public int compare(Representation left, Representation right) {
-                return right.getOrder() - left.getOrder();
-            }
-        });
+        Collections.sort(representations, Representation.ORDER_COMPARATOR);
         this.representations = Collections.unmodifiableList(representations);
         
         for (Representation representation: representations) {
