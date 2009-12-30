@@ -8,14 +8,12 @@ import javax.ws.rs.core.MediaType;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.rdftemplate.TemplateInterpolator;
 
 @Component
-@Order(4)
 public class MARCXMLRepresentation implements Representation {
     
     private static final MediaType CONTENT_TYPE = new MediaType("application", "marcxml+xml");
@@ -40,6 +38,11 @@ public class MARCXMLRepresentation implements Representation {
     @Override
     public String getFormat() {
         return "marcxml";
+    }
+    
+    @Override
+    public int getOrder() {
+        return 4;
     }
     
     @Override

@@ -11,14 +11,12 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.rdftemplate.selector.SelectorFactory;
 
 @Component
-@Order(6)
 public class EndnoteRepresentation implements Representation {
     
     private static final MediaType CONTENT_TYPE = new MediaType("application", "x-endnote-refer");
@@ -43,6 +41,11 @@ public class EndnoteRepresentation implements Representation {
     @Override
     public String getFormat() {
         return "end";
+    }
+    
+    @Override
+    public int getOrder() {
+        return 6;
     }
     
     @Override

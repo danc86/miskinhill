@@ -15,7 +15,6 @@ import javax.xml.stream.util.XMLEventConsumer;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
@@ -23,7 +22,6 @@ import au.com.miskinhill.rdftemplate.TemplateInterpolator;
 import au.com.miskinhill.rdftemplate.XMLStream;
 
 @Component
-@Order(3)
 public class MODSRepresentation implements XMLStreamRepresentation {
     
     private static final MediaType CONTENT_TYPE = new MediaType("application", "mods+xml");
@@ -53,6 +51,11 @@ public class MODSRepresentation implements XMLStreamRepresentation {
     @Override
     public String getFormat() {
         return "mods";
+    }
+    
+    @Override
+    public int getOrder() {
+        return 3;
     }
     
     @Override

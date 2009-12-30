@@ -31,7 +31,10 @@ public class RepresentationAtomLinksAdaptation implements Adaptation<XMLStream> 
             HashSet<Attribute> attributes = new HashSet<Attribute>();
             attributes.add(eventFactory.createAttribute(new QName("rel"), "alternate"));
             attributes.add(eventFactory.createAttribute(new QName("type"), representation.getContentType().toString()));
-            attributes.add(eventFactory.createAttribute(new QName("href"), resource.getURI() + "." + representation.getFormat()));
+            if (representation.getOrder() == 0)
+                attributes.add(eventFactory.createAttribute(new QName("href"), resource.getURI()));
+            else
+                attributes.add(eventFactory.createAttribute(new QName("href"), resource.getURI() + "." + representation.getFormat()));
             events.add(eventFactory.createStartElement(LINK_QNAME, attributes.iterator(), null));
             events.add(eventFactory.createEndElement(LINK_QNAME, null));
         }

@@ -17,14 +17,12 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.rdftemplate.selector.SelectorFactory;
 
 @Component
-@Order(5)
 public class BibtexRepresentation implements Representation {
     
     private static final MediaType CONTENT_TYPE = new MediaType("text", "x-bibtex");
@@ -49,6 +47,11 @@ public class BibtexRepresentation implements Representation {
     @Override
     public String getFormat() {
         return "bib";
+    }
+    
+    @Override
+    public int getOrder() {
+        return 5;
     }
     
     @Override

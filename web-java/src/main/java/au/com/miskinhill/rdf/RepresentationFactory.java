@@ -3,14 +3,13 @@ package au.com.miskinhill.rdf;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.core.MediaType;
-
-import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,12 @@ public class RepresentationFactory {
     
     @Autowired
     public RepresentationFactory(List<Representation> representations) {
-        Collections.sort(representations, new AnnotationAwareOrderComparator()); // why doesn't spring do this for me?
+        Collections.sort(representations, new Comparator<Representation>() {
+            @Override
+            public int compare(Representation left, Representation right) {
+                return right.getOrder() - left.getOrder();
+            }
+        });
         this.representations = Collections.unmodifiableList(representations);
         
         for (Representation representation: representations) {

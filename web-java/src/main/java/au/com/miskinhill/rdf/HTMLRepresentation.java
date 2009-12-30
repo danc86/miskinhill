@@ -10,7 +10,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
@@ -18,7 +17,6 @@ import au.com.miskinhill.rdf.vocabulary.SIOC;
 import au.com.miskinhill.rdftemplate.TemplateInterpolator;
 
 @Component
-@Order(0)
 public class HTMLRepresentation implements Representation {
     
     private static final String CITED_PREFIX = "http://miskinhill.com.au/cited/";
@@ -60,6 +58,11 @@ public class HTMLRepresentation implements Representation {
     @Override
     public String getFormat() {
         return "html";
+    }
+    
+    @Override
+    public int getOrder() {
+        return 0;
     }
     
     @Override

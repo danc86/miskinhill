@@ -5,11 +5,9 @@ import java.io.StringWriter;
 import javax.ws.rs.core.MediaType;
 
 import com.hp.hpl.jena.rdf.model.Resource;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(1)
 public class RDFXMLRepresentation implements Representation {
     
     private static final MediaType CONTENT_TYPE = new MediaType("application", "rdf+xml");
@@ -32,6 +30,11 @@ public class RDFXMLRepresentation implements Representation {
     @Override
     public String getFormat() {
         return "xml";
+    }
+    
+    @Override
+    public int getOrder() {
+        return 1;
     }
 
     @Override

@@ -12,6 +12,8 @@ public interface Representation {
     
     String getFormat();
     
+    int getOrder();
+    
     String getLabel();
     
     /** URL of a document describing the format. Required by unapi. */

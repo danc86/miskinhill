@@ -8,14 +8,12 @@ import javax.ws.rs.core.MediaType;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import au.com.miskinhill.rdf.vocabulary.SIOC;
 import au.com.miskinhill.rdftemplate.TemplateInterpolator;
 
 @Component
-@Order(7)
 public class AtomRepresentation implements Representation {
     
     private final Set<Resource> types = Collections.singleton(SIOC.Forum);
@@ -39,6 +37,11 @@ public class AtomRepresentation implements Representation {
     @Override
     public String getFormat() {
         return "atom";
+    }
+    
+    @Override
+    public int getOrder() {
+        return 7;
     }
     
     @Override
