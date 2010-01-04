@@ -62,7 +62,8 @@ public class SitemapResource {
                     else
                         rdfLocs.add(res.getURI() + "." + representation.getFormat());
                 }
-                if (RDFUtil.hasAnyType(res, Collections.singleton(MHS.IssueContent)))
+                if (RDFUtil.hasAnyType(res, Collections.singleton(MHS.IssueContent))
+                        && res.getURI().startsWith("http://miskinhill.com.au/journals/"))
                     rdfLocs.add(res.getURI() + ".pdf");
 			}
 		}
