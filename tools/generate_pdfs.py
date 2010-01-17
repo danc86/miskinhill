@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os, cgi, subprocess, shutil
-import genshi
 import rdfob
 from viewutils import striptags
 
@@ -51,6 +50,7 @@ def articles_from_issue(path, issue_filename):
                 entities(striptags(obituary['dc:title'])), 
                 entities('; '.join(c['foaf:name'] for c in obituary.getall('dc:creator'))))
 
-articles_from_issue('journals/asees/20:1-2/', 'final/ASEES 2006final.pdf')
+articles_from_issue('journals/asees/19:1-2/', 'final/ASEESVol 19finalversion05.pdf')
+#articles_from_issue('journals/asees/20:1-2/', 'final/ASEES 2006final.pdf')
 #articles_from_issue('journals/asees/21:1-2/', 'final/asees07.pdf')
 #articles_from_issue('journals/asees/22:1-2/', 'final/asees08.pdf')
