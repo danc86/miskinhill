@@ -87,6 +87,7 @@
     <dc:coverage rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2007</dc:coverage>
     <mhs:publicationDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2008-02-01</mhs:publicationDate>
     <mhs:onlinePublicationDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2008-03-01</mhs:onlinePublicationDate>
+    <mhs:cover rdf:resource="http://miskinhill.com.au/journals/test/1:1/cover.jpg"/>
     <mhs:coverThumbnail rdf:resource="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg"/>
   </rdf:Description>
     <mhs:ContentsSection rdf:about="http://miskinhill.com.au/journals/test/1:1/#articles">

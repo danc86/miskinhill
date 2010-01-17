@@ -29,7 +29,7 @@
 
     <div class="issue-meta metabox">
         <h4>Issue details</h4>
-        <p class="cover"><img src="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg" alt=""/></p>
+        <p class="cover"><a href="http://miskinhill.com.au/journals/test/1:1/cover.jpg"><img src="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg" alt=""/></a></p>
         <p>Published 1 February 2008</p>
         <p class="metadata-links">Metadata: <a href="http://miskinhill.com.au/journals/test/1:1/.xml" rel="alternate">RDF/XML</a>, <a href="http://miskinhill.com.au/journals/test/1:1/.ttl" rel="alternate">Turtle</a></p>
     </div>
