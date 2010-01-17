@@ -40,7 +40,7 @@
     <h3 id="${#uri-anchor}" rdf:content="mhs:sectionHeading" />
     <div rdf:if="dc:description" class="section-description" rdf:content="dc:description" />
     <ul class="contents">
-        <rdf:for each="!mhs:inSection">
+        <rdf:for each="!mhs:inSection(mhs:startPage#comparable-lv)">
             <li>
                 <div class="title">
                     <rdf:if test="mhs:reviews"><a href="${#uri}">Review of <rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></rdf:if>
