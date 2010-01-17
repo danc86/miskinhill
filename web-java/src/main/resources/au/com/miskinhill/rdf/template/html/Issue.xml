@@ -30,7 +30,7 @@
 
     <div class="issue-meta metabox">
         <h4>Issue details</h4>
-        <p class="cover"><img src="${mhs:coverThumbnail#uri}" alt="" /></p>
+        <p class="cover"><a href="${mhs:cover#uri}"><img src="${mhs:coverThumbnail#uri}" alt="" /></a></p>
         <p>Published ${mhs:publicationDate#formatted-dt('d MMMM yyyy')}</p>
         <p class="metadata-links">Metadata: ${#representation-anchors}</p>
     </div>
