@@ -56,7 +56,8 @@ public class Validator {
                 Statement stmt = jt.nextStatement();
                 if (!RDFUtil.getTypes(stmt.getSubject()).contains(domainConstraint.getObject()))
                     throw new Failure("Property " + domainConstraint.getSubject() + " on " + stmt.getSubject() +
-                            " violates rdfs:domain constraint of " + domainConstraint.getObject());
+                            " violates rdfs:domain constraint of " + domainConstraint.getObject() +
+                            " (found " + RDFUtil.getTypes(stmt.getSubject()) + ")");
             }
         }
         
@@ -79,7 +80,8 @@ public class Validator {
                     Statement stmt = jt.nextStatement();
                     if (!RDFUtil.getTypes((Resource) stmt.getObject()).contains(rangeConstraint.getObject()))
                         throw new Failure("Property " + rangeConstraint.getSubject() + " to " + stmt.getObject() +
-                                " violates rdfs:range constraint of " + rangeConstraint.getObject());
+                                " violates rdfs:range constraint of " + rangeConstraint.getObject() +
+                                " (found " + RDFUtil.getTypes((Resource) stmt.getObject()) + ")");
                 }
             }
         }
