@@ -38,7 +38,8 @@ public class Validator {
             ResourceFactory.createProperty(DCTerms.NS + "publisher"), ResourceFactory.createProperty(DCTerms.NS + "identifier"),
             ResourceFactory.createProperty(DCTerms.NS + "coverage"), Prism.publicationDate)));
     private static final Set<Resource> RANGE_OBJECT_EXCEPTIONS = Collections.unmodifiableSet(new HashSet<Resource>(Arrays.asList(
-            ResourceFactory.createResource("http://www.w3.org/TR/2000/CR-rdf-schema-20000327#Literal"), FOAF.Document, OWL.Thing)));
+            ResourceFactory.createResource("http://www.w3.org/TR/2000/CR-rdf-schema-20000327#Literal"), FOAF.Document, OWL.Thing,
+            RDFS.Resource)));
     
     private final Model m;
     
