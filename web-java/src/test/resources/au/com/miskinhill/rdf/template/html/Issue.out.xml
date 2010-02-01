@@ -36,6 +36,26 @@
 </div>
 
 
+    <h3 id="obituary">Obituary</h3>
+    
+    <ul class="contents">
+        
+            <li>
+                <div class="title">
+                    
+                    <a href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe" xml:lang="en" lang="en">In memoriam John Doe</a>
+                </div>
+                <div class="author">
+                    
+                    by
+                    
+                    <a href="http://miskinhill.com.au/authors/test-author">Test Author</a>
+                    
+                </div>
+            </li>
+        
+    </ul>
+
     <h3 id="articles">Articles</h3>
     <div class="section-description">This sections contains some articles.</div>
     <ul class="contents">
@@ -47,6 +67,26 @@
                 </div>
                 <div class="author">
                     
+                    by
+                    
+                    <a href="http://miskinhill.com.au/authors/test-author">Test Author</a>
+                    
+                </div>
+            </li>
+        
+    </ul>
+
+    <h3 id="reviews">Reviews</h3>
+    
+    <ul class="contents">
+        
+            <li>
+                <div class="title">
+                    <a href="http://miskinhill.com.au/journals/test/1:1/reviews/review">John K. Cox, <em xml:lang="en" lang="en">Slovenia: evolving loyalties</em> (2005)</a>
+                    
+                </div>
+                <div class="author">
+                    Reviewed
                     by
                     
                     <a href="http://miskinhill.com.au/authors/test-author">Test Author</a>

@@ -148,16 +148,29 @@
     <dc:publisher>Routledge</dc:publisher>
     <dc:date rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2005</dc:date>
   </mhs:Book>
+    <mhs:ContentsSection rdf:about="http://miskinhill.com.au/journals/test/1:1/#reviews">
+        <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/" />
+        <mhs:sectionHeading>Reviews</mhs:sectionHeading>
+    </mhs:ContentsSection>
   <rdf:Description rdf:about="http://miskinhill.com.au/journals/test/1:1/reviews/review">
     <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Review"/>
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
+    <mhs:inSection rdf:resource="http://miskinhill.com.au/journals/test/1:1/#reviews"/>
+    <mhs:startPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">115</mhs:startPage>
+    <mhs:endPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">116</mhs:endPage>
     <mhs:reviews rdf:resource="http://miskinhill.com.au/cited/books/test"/>
     <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
   </rdf:Description>
+    <mhs:ContentsSection rdf:about="http://miskinhill.com.au/journals/test/1:1/#obituary">
+        <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/" />
+        <mhs:sectionHeading>Obituary</mhs:sectionHeading>
+    </mhs:ContentsSection>
   <rdf:Description rdf:about="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe">
     <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Obituary"/>
     <dc:title xml:lang="en">In memoriam John Doe</dc:title>
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
+    <mhs:inSection rdf:resource="http://miskinhill.com.au/journals/test/1:1/#obituary"/>
+    <mhs:startPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</mhs:startPage>
     <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
     <mhs:obituaryOf rdf:nodeID="person"/>
   </rdf:Description>

@@ -43,7 +43,7 @@
         <rdf:for each="!mhs:inSection(mhs:startPage#comparable-lv)">
             <li>
                 <div class="title">
-                    <rdf:if test="mhs:reviews"><a href="${#uri}">Review of <rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></rdf:if>
+                    <rdf:if test="mhs:reviews"><a href="${#uri}"><rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></rdf:if>
                     <rdf:if test="dc:title"><a href="${#uri}" rdf:content="dc:title" /></rdf:if>
                 </div>
                 <div class="author">
