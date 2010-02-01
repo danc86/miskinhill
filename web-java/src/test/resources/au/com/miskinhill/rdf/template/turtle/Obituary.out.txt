@@ -11,12 +11,14 @@
 
 <http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe>
       a       mhs:Obituary ;
+      mhs:inSection <http://miskinhill.com.au/journals/test/1:1/#obituary> ;
       mhs:obituaryOf
               [ a       foaf:Person ;
                 mhs:dateOfBirth "1990-01-01"^^<http://www.w3.org/TR/xmlschema-2/#date> ;
                 mhs:dateOfDeath "1991-12-31"^^<http://www.w3.org/TR/xmlschema-2/#date> ;
                 foaf:name "John Doe"
               ] ;
+      mhs:startPage -1 ;
       dc:creator <http://miskinhill.com.au/authors/test-author> ;
       dc:isPartOf <http://miskinhill.com.au/journals/test/1:1/> ;
       dc:title "In memoriam John Doe"@en .

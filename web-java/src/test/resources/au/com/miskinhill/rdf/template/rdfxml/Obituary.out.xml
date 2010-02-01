@@ -13,6 +13,9 @@
   <mhs:Obituary rdf:about="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe">
     <dc:title xml:lang="en">In memoriam John Doe</dc:title>
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
+    <mhs:inSection rdf:resource="http://miskinhill.com.au/journals/test/1:1/#obituary"/>
+    <mhs:startPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"
+    >-1</mhs:startPage>
     <dc:creator rdf:resource="http://miskinhill.com.au/authors/test-author"/>
     <mhs:obituaryOf>
       <foaf:Person>
