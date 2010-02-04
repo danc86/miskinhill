@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, cgi, subprocess, shutil
+import os, cgi, subprocess, shutil, tempfile
 import rdfob
 from viewutils import striptags
 
@@ -10,10 +10,11 @@ def entities(s):
     return cgi.escape(s).encode('ascii', 'xmlcharrefreplace')
 
 def generate_pdf(source, output, start_page, end_page, title, author):
+    f = tempfile.NamedTemporaryFile(prefix='mh_generate_pdf')
     subprocess.check_call(['pdftk', source, 'cat', 
             '%d-%d' % (start_page, end_page),
-            'output', output])
-    p = subprocess.Popen(['pdftk', output, 'update_info', '-', 'output', output + '.meta'], 
+            'output', f.name])
+    p = subprocess.Popen(['pdftk', f.name, 'update_info', '-', 'output', f.name + '.meta'], 
             stdin=subprocess.PIPE)
     p.stdin.write('InfoKey: Title\nInfoValue: %s\nInfoKey: Author\nInfoValue: %s' % 
             (title, author))
@@ -21,7 +22,7 @@ def generate_pdf(source, output, start_page, end_page, title, author):
     retcode = p.wait()
     if retcode:
         raise StandardError(retcode)
-    shutil.move(output + '.meta', output)
+    shutil.copy(f.name + '.meta', output)
 
 def articles_from_issue(path, issue_filename):
     issue = graph[rdfob.Uri('http://miskinhill.com.au/' + path)]
@@ -50,7 +51,9 @@ def articles_from_issue(path, issue_filename):
                 entities(striptags(obituary['dc:title'])), 
                 entities('; '.join(c['foaf:name'] for c in obituary.getall('dc:creator'))))
 
-articles_from_issue('journals/asees/19:1-2/', 'final/ASEESVol 19finalversion05.pdf')
+#articles_from_issue('journals/asees/18:1-2/', 'final/ASEES 2004.pdf')
+#articles_from_issue('journals/asees/19:1-2/', 'final/ASEESVol 19finalversion05.pdf')
 #articles_from_issue('journals/asees/20:1-2/', 'final/ASEES 2006final.pdf')
 #articles_from_issue('journals/asees/21:1-2/', 'final/asees07.pdf')
 #articles_from_issue('journals/asees/22:1-2/', 'final/asees08.pdf')
+articles_from_issue('journals/asees/23:1-2/', 'work/asees09.pdf')
