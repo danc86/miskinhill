@@ -10,10 +10,14 @@ h2 .issue {
     display: block;
 }
 
+h3 {
+    font-size: 1.2em;
+    margin-right: 13.34em; /* 16/1.2 */
+}
 .section-description {
     font-size: 0.9em;
+    margin-right: 17.78em; /* 16/0.9 */
 }
-
 ul.contents {
     margin: 0 16em 0 0;
     padding: 0;
