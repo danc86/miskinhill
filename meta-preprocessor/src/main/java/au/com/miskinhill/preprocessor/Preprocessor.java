@@ -139,7 +139,8 @@ public class Preprocessor {
     private static void extractCitations(Model m, File contentRoot) throws XMLStreamException, IOException {
         LOG.info("Extracting citation metadata");
         Iterator<Resource> it = m.listSubjectsWithProperty(RDF.type, MHS.Article)
-                .andThen(m.listSubjectsWithProperty(RDF.type, MHS.Review));
+                .andThen(m.listSubjectsWithProperty(RDF.type, MHS.Review))
+                .andThen(m.listSubjectsWithProperty(RDF.type, MHS.Obituary));
         while (it.hasNext()) {
             Resource item = it.next();
             if (item.getURI().startsWith("http://miskinhill.com.au/journals/")) {
