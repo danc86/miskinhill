@@ -20,7 +20,7 @@
     <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</a> &gt;
 </div>
 
-<h2>†${mhs:obituaryOf/foaf:name} (${mhs:obituaryOf/mhs:dateOfBirth#formatted-dt('d MMMM yyyy')} – ${mhs:obituaryOf/mhs:dateOfDeath#formatted-dt('d MMMM yyyy')})<abbr class="unapi-id" title="${#uri}" /></h2>
+<h2>${mhs:obituaryOf/foaf:name} (${mhs:obituaryOf/mhs:dateOfBirth#formatted-dt('d MMMM yyyy')} – ${mhs:obituaryOf/mhs:dateOfDeath#formatted-dt('d MMMM yyyy')})<abbr class="unapi-id" title="${#uri}" /></h2>
 
 <div class="metabox-container">
     <div class="obituary-meta metabox">
