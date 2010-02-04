@@ -8,7 +8,8 @@
          xmlns:mhs="http://miskinhill.com.au/rdfschema/1.0/"
          xmlns:sioc="http://rdfs.org/sioc/ns#"
          xmlns:awol="http://bblfish.net/work/atom-owl/2006-06-06/#"
-         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#">
 
     <sioc:Forum rdf:about="http://miskinhill.com.au/">
         <dc:title xml:lang="en">News</dc:title>
@@ -109,6 +110,8 @@
     <foaf:name>Test Author</foaf:name>
     <foaf:surname>Author</foaf:surname>
     <foaf:givenNames>Test</foaf:givenNames>
+    <owl:sameAs rdf:resource="http://rdf.freebase.com/ns/en.test_author" />
+    <owl:sameAs rdf:resource="http://en.wikipedia.org/wiki/Test_Author" />
   </rdf:Description>
   <mhs:Journal rdf:about="http://miskinhill.com.au/cited/journals/asdf/">
     <dc:title xml:lang="en">A Cited Journal</dc:title>

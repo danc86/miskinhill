@@ -16,6 +16,7 @@
         <h4>Author details</h4>
         <p class="homepage" rdf:if="foaf:workInfoHomepage"><a href="${foaf:workInfoHomepage#uri}" class="url">Institutional homepage</a></p>
         <p class="affiliation" rdf:if="mhs:isAffiliatedWith">Affiliated with <a href="${mhs:isAffiliatedWith#uri}" class="org">${mhs:isAffiliatedWith/foaf:name}</a></p>
+        <p class="wikipedia" rdf:if="owl:sameAs[uri-prefix='http://en.wikipedia.org/wiki/']"><a href="${owl:sameAs[uri-prefix='http://en.wikipedia.org/wiki/']#uri}">Wikipedia</a></p>
         <p class="metadata-links">Metadata: ${#representation-anchors}</p>
     </div>
 </div>

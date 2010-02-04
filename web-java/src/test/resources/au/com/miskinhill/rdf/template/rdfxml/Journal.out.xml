@@ -5,6 +5,7 @@
     xmlns:contact="http://www.w3.org/2000/10/swap/pim/contact#"
     xmlns:awol="http://bblfish.net/work/atom-owl/2006-06-06/#"
     xmlns:mhs="http://miskinhill.com.au/rdfschema/1.0/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:dc="http://purl.org/dc/terms/"
     xmlns:lingvoj="http://www.lingvoj.org/ontology#"
     xmlns:geonames="http://www.geonames.org/ontology#"

@@ -15,6 +15,7 @@
         <h4>Author details</h4>
         
         
+        <p class="wikipedia"><a href="http://en.wikipedia.org/wiki/Test_Author">Wikipedia</a></p>
         <p class="metadata-links">Metadata: <a href="http://miskinhill.com.au/authors/test-author.xml" rel="alternate">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/authors/test-author.ttl">Turtle</a></p>
     </div>
 </div>

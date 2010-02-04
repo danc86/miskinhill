@@ -1,5 +1,17 @@
 package au.com.miskinhill.rdf;
 
+import static org.hamcrest.CoreMatchers.*;
+
+import java.util.Collections;
+
+import org.dom4j.Element;
+
+import org.dom4j.XPath;
+
+import org.dom4j.DocumentHelper;
+
+import org.dom4j.Document;
+
 import static org.junit.Assert.*;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -45,6 +57,14 @@ public class HTMLRepresentationTest {
         String result = representation.render(model.getResource("http://miskinhill.com.au/authors/test-author"));
         String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Author.out.xml"));
         assertEquals(expected.trim(), result.trim());
+    }
+    
+    @Test
+    public void authorShouldLinkToWikipedia() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/authors/test-author"));
+        Document doc = DocumentHelper.parseText(result);
+        Element link = (Element) xpath("//html:div[@class='author-meta metabox']//html:a[text()='Wikipedia']").selectSingleNode(doc);
+        assertThat(link.attributeValue("href"), equalTo("http://en.wikipedia.org/wiki/Test_Author"));
     }
     
     @Test
@@ -101,6 +121,12 @@ public class HTMLRepresentationTest {
         String result = representation.render(model.getResource("http://miskinhill.com.au/cited/journals/asdf/1:1/article"));
         String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/CitedArticle.out.xml"));
         assertEquals(expected.trim(), result.trim());
+    }
+    
+    private XPath xpath(String expression) {
+        XPath xpath = DocumentHelper.createXPath(expression);
+        xpath.setNamespaceURIs(Collections.singletonMap("html", "http://www.w3.org/1999/xhtml"));
+        return xpath;
     }
 
 }
