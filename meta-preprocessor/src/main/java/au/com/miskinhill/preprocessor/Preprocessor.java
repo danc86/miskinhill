@@ -25,14 +25,12 @@ import com.hp.hpl.jena.datatypes.xsd.impl.XMLLiteralType;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.shared.impl.JenaParameters;
 import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.RDF;
-import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
@@ -120,16 +118,22 @@ public class Preprocessor {
             for (Element anchor: (List<Element>) A_XPATH.selectNodes(doc)) {
                 Resource href = m.createResource(anchor.attributeValue("href"));
                 if (RDFUtil.getTypes(href).contains(MHS.Author)) {
-                    String rel = StringUtils.defaultString(anchor.attributeValue("rel"));
-                    Set<String> rels = new HashSet<String>(Arrays.asList(rel.split("\\s")));
-                    Property prop;
-                    if (rels.contains("contributor"))
-                        prop = m.createProperty(DCTerms.NS + "contributor");
-                    else if (rels.contains("translator"))
-                        prop = MHS.translator;
-                    else
-                        prop = m.createProperty(DCTerms.NS + "creator");
-                    m.add(m.createStatement(stmt.getSubject(), prop, href));
+                    String relValue = anchor.attributeValue("rel");
+                    if (relValue == null)
+                        m.add(m.createStatement(stmt.getSubject(), m.createProperty(DCTerms.NS + "creator"), href));
+                    else {
+                        Set<String> rels = new HashSet<String>(Arrays.asList(relValue.split("\\s")));
+                        for (String rel: rels) {
+                            if (rel.equals("contributor"))
+                                m.add(m.createStatement(stmt.getSubject(), m.createProperty(DCTerms.NS + "contributor"), href));
+                            else if (rel.equals("translator"))
+                                m.add(m.createStatement(stmt.getSubject(), MHS.translator, href));
+                            else if (rel.equals("editor"))
+                                m.add(m.createStatement(stmt.getSubject(), m.createProperty(DCTerms.NS + "creator"), href));
+                            else
+                                throw new AssertionError("Unknown responsibility rel value [" + rel + "]");
+                        }
+                    }
                 }
             }
         }
