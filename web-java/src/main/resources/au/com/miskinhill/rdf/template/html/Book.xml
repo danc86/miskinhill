@@ -26,7 +26,7 @@ ${#html}
 <div class="cited-in" rdf:if="!mhs:cites">
     <h3>Cited in</h3>
     <ul class="articles">
-        <li rdf:for="!mhs:cites/dc:isPartOf(~dc:isPartOf/mhs:publicationDate#comparable-lv)">
+        <li rdf:for="!mhs:cites(~dc:isPartOf/dc:isPartOf/mhs:publicationDate#comparable-lv)/dc:isPartOf">
             <div class="article"><a href="${#uri}">
                 <rdf:if test="mhs:reviews">Review of <rdf:join each="mhs:reviews" separator="; "><em rdf:content="dc:title" /></rdf:join></rdf:if>
                 <rdf:if test="dc:title">${dc:title}</rdf:if>
