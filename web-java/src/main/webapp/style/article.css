@@ -50,16 +50,19 @@
 }
 
 /* Tabular data */
-table.data caption {
+table caption {
     text-align: left;
-    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+table th, table td {
+    padding: 0.25em;
+}
+table th {
+    text-align: left;
 }
 table.data {
     margin: 1.5em;
     border-collapse: collapse;
-}
-table.data th, table.data td {
-    padding: 0.25em;
 }
 table.data thead {
     border-top: 2px solid #aaa;
@@ -67,9 +70,6 @@ table.data thead {
 table.data tbody {
     border-top: 1px solid #777;
     border-bottom: 2px solid #aaa;
-}
-table.data th {
-    text-align: left;
 }
 table.data th + th {
     text-align: right;
