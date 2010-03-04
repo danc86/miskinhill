@@ -38,6 +38,7 @@
 		<servlet-name>pdf-fulltext</servlet-name>
 		<url-pattern>*.pdf</url-pattern>
 		<url-pattern>*.jpg</url-pattern>
+		<url-pattern>*.png</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>rdfRequestHandler</servlet-name>
