@@ -23,7 +23,7 @@ img {
 q {
     quotes: none;
 }
-p, li, caption {
+p, li, caption, .figure {
     line-height: 2.8ex;
 }
 
@@ -150,6 +150,9 @@ p, li, caption {
     vertical-align: super;
     font-size: 0.75em;
     line-height: 0;
+}
+.figure {
+    margin: 2em 0;
 }
 
 /* Metaboxes */
