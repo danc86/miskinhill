@@ -25,8 +25,8 @@ public class UnapiMarshallTest {
 	@Test
 	public void shouldMarshall() throws Exception {
 	    Formats formats = Formats.forId("http://example.com/asdf");
-	    formats.add(new Format("HTML", MediaType.TEXT_HTML_TYPE, "http://www.w3.org/TR/xhtml1/"));
-	    formats.add(new Format("Plain text", MediaType.TEXT_PLAIN_TYPE));
+	    formats.add(new Format("html", MediaType.TEXT_HTML_TYPE, "http://www.w3.org/TR/xhtml1/"));
+	    formats.add(new Format("text", MediaType.TEXT_PLAIN_TYPE));
 		
 		Marshaller m = jc.createMarshaller();
 		StringWriter w = new StringWriter();
@@ -34,8 +34,8 @@ public class UnapiMarshallTest {
 		assertEquals(
 				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
 				"<formats id=\"http://example.com/asdf\">" +
-				    "<format docs=\"http://www.w3.org/TR/xhtml1/\" type=\"text/html\" name=\"HTML\"/>" +
-				    "<format type=\"text/plain\" name=\"Plain text\"/>" +
+				    "<format name=\"html\" type=\"text/html\" docs=\"http://www.w3.org/TR/xhtml1/\"/>" +
+				    "<format name=\"text\" type=\"text/plain\"/>" +
 				"</formats>",
 				w.toString());
 	}

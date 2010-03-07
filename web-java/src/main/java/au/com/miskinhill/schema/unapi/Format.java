@@ -2,7 +2,6 @@ package au.com.miskinhill.schema.unapi;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorOrder;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
@@ -50,7 +49,7 @@ public class Format {
     }
     
     public Format(Representation representation) {
-        this.name = representation.getLabel();
+        this.name = representation.getFormat();
         this.type = representation.getContentType();
         this.docs = representation.getDocs();
     }

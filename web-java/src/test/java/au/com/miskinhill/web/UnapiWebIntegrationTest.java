@@ -20,10 +20,13 @@ import org.dom4j.Node;
 import org.junit.Test;
 
 import au.com.miskinhill.AbstractWebIntegrationTest;
+import au.com.miskinhill.schema.unapi.Format;
+import au.com.miskinhill.schema.unapi.Formats;
 
 public class UnapiWebIntegrationTest extends AbstractWebIntegrationTest {
     
     private static final String ASEES_ID = "http://miskinhill.com.au/journals/asees/";
+    private static final String ARTICLE_ID = "http://miskinhill.com.au/journals/asees/22:1-2/lachlan-macquarie-in-russia";
 
     @Test
     public void testFormats() throws DocumentException {
@@ -92,6 +95,25 @@ public class UnapiWebIntegrationTest extends AbstractWebIntegrationTest {
         } catch (UniformInterfaceException e) {
             assertThat(e.getResponse().getStatus(), equalTo(HttpServletResponse.SC_FOUND));
             assertThat(e.getResponse().getLocation(), equalTo(URI.create(ASEES_ID + ".xml")));
+        }
+    }
+    
+    @Test
+    public void allListedFormatsShouldWork() throws DocumentException {
+        for (String id: new String[] { ASEES_ID, ARTICLE_ID }) {
+            Client client = Client.create();
+            client.getProperties().put(ClientConfig.PROPERTY_FOLLOW_REDIRECTS, false);
+            Formats formats = client.resource(BASE).path("/unapi").queryParam("id", id).get(Formats.class);
+            for (Format format: formats.getFormats()) {
+                try {
+                    client.resource(BASE).path("/unapi").queryParam("id", id).queryParam("format", format.getName())
+                            .get(String.class);
+                    fail("should throw");
+                } catch (UniformInterfaceException e) {
+                    assertThat(e.getResponse().getStatus(), equalTo(HttpServletResponse.SC_FOUND));
+                    assertThat(e.getResponse().getLocation(), equalTo(URI.create(id + "." + format.getName())));
+                }
+            }
         }
     }
 
