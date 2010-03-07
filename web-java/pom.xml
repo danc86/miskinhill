@@ -147,6 +147,7 @@
                             <contentPath>${contentPath}</contentPath>
                         </systemProperties>
                         <uriEncoding>UTF-8</uriEncoding>
+                        <accessLogPattern>%h %l %u %t %r %s %b %{User-Agent}i %{Referer}i %{X-Forwarded-For}i</accessLogPattern>
                     </configuration>
                 </plugin>
             </plugins>
