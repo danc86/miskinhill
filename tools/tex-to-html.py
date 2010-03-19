@@ -15,7 +15,11 @@ def tex2html(s, type):
     s = re.sub(r'\\,', '&thinsp;', s)
 
     # emphasis
+    s = re.compile(r'\\ru\{\\textit\{([^}]+)\}\}', re.M).sub(r'<em lang="ru">\1</em>', s)
     s = re.compile(r'\\textit\{([^}]+)\}', re.M).sub(r'<em>\1</em>', s)
+
+    # languages
+    s = re.compile(r'\\ru\{([^}]+)\}', re.M).sub(r'<span lang="ru">\1</span>', s)
 
     # quotes
     s = re.sub(r'\\begin{quote}', '<q>', s)
