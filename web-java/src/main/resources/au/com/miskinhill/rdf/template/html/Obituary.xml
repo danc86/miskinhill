@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
 
-<head>
+<head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
     <title>${dc:title#string-lv} - ${dc:isPartOf/mhs:isIssueOf/dc:title} Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</title>
     ${#representation-links}
     <link rel="stylesheet" type="text/css" href="/style/article.css" />
@@ -10,6 +10,10 @@
     <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js" />
     <script type="text/javascript" src="/script/footnote.js" />
     <script type="text/javascript" src="/script/citation.js" />
+        
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+    <meta name="DC.title" content="${dc:title#string-lv}" />
+    <meta rdf:for="dc:creator" name="DC.creator" content="${foaf:name#string-lv}" />
 </head>
 
 <body>

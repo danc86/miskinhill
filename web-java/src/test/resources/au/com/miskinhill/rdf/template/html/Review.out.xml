@@ -1,6 +1,6 @@
 <?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml">
 
-<head profile="http://microformats.org/wiki/hreview-profile http://microformats.org/profile/hcard">
+<head profile="http://microformats.org/wiki/hreview-profile http://microformats.org/profile/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
     <title>Review of Slovenia: evolving loyalties - Test Journal of Good Stuff Vol. 1, Issue 1</title>
     <link href="http://miskinhill.com.au/journals/test/1:1/reviews/review.xml" type="application/rdf+xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" rel="alternate" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.ttl"/>
     <link rel="stylesheet" type="text/css" href="/style/article.css"/>
@@ -8,6 +8,23 @@
     <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js"/>
     <script type="text/javascript" src="/script/footnote.js"/>
     <script type="text/javascript" src="/script/citation.js"/>
+    
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
+    <meta name="DC.title">Review of Slovenia: evolving loyalties</meta>
+    <meta name="DC.creator" content="Test Author"/>
+    
+    <meta name="citation_title">Review of Slovenia: evolving loyalties</meta>
+    
+    <meta name="citation_authors">Test Author</meta>
+    <meta name="citation_pdf_url" content="http://miskinhill.com.au/journals/test/1:1/reviews/review.pdf"/>
+    <meta name="citation_firstpage" content="115"/>
+    <meta name="citation_lastpage" content="116"/>
+    <meta name="citation_volume" content="1"/>
+    <meta name="citation_issue" content="1"/>
+    <meta name="citation_date" content="2008-02-01"/>
+    <meta name="citation_issn" content="12345678"/>
+    <meta name="citation_journal_title" content="Test Journal of Good Stuff"/>
+    <meta name="citation_publisher" content="Awesome Publishing House"/>
 </head>
 
 <body class="hreview">

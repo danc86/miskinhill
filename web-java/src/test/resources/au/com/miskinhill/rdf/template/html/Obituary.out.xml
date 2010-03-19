@@ -1,6 +1,6 @@
 <?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml">
 
-<head>
+<head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
     <title>In memoriam John Doe - Test Journal of Good Stuff Vol. 1, Issue 1</title>
     <link href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe.xml" type="application/rdf+xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" rel="alternate" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe.ttl"/>
     <link rel="stylesheet" type="text/css" href="/style/article.css"/>
@@ -9,6 +9,10 @@
     <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js"/>
     <script type="text/javascript" src="/script/footnote.js"/>
     <script type="text/javascript" src="/script/citation.js"/>
+        
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
+    <meta name="DC.title" content="In memoriam John Doe"/>
+    <meta name="DC.creator" content="Test Author"/>
 </head>
 
 <body>

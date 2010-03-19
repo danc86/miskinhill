@@ -21,6 +21,19 @@
     <html lang="en"><xsl:apply-templates /></html>
 </xsl:template>
 
+<xsl:template match="html:meta[not(@content)]">
+    <meta>
+        <xsl:for-each select="@*">
+            <xsl:attribute name="{name(.)}">
+                <xsl:value-of select="." />
+            </xsl:attribute>
+        </xsl:for-each>
+        <xsl:attribute name="content">
+            <xsl:value-of select="./text()" />
+        </xsl:attribute>
+    </meta>
+</xsl:template>
+
 <xsl:template match="html:head">
     <head>
         <xsl:for-each select="@*">

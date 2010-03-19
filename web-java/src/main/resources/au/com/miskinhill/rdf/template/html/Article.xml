@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
 
-<head>
+<head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
     <title>${dc:title#string-lv} - ${dc:isPartOf/mhs:isIssueOf/dc:title} Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</title>
     ${#representation-links}
     <link rel="stylesheet" type="text/css" href="/style/article.css" />
@@ -9,6 +9,23 @@
     <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js" />
     <script type="text/javascript" src="/script/footnote.js" />
     <script type="text/javascript" src="/script/citation.js" />
+    
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+    <meta name="DC.title" content="${dc:title#string-lv}" />
+    <meta rdf:for="dc:creator" name="DC.creator" content="${foaf:name#string-lv}" />
+    
+    <meta name="citation_title" content="${dc:title#string-lv}" />
+    <rdf:if test="mhs:authorOrder"><meta name="citation_authors"><rdf:join each="mhs:authorOrder" separator="; ">${foaf:name}</rdf:join></meta></rdf:if>
+    <rdf:if not="mhs:authorOrder"><meta name="citation_authors"><rdf:join each="dc:creator" separator="; ">${foaf:name}</rdf:join></meta></rdf:if>
+    <meta name="citation_pdf_url" content="${#uri}.pdf" />
+    <meta name="citation_firstpage" content="${mhs:startPage}" />
+    <meta name="citation_lastpage" content="${mhs:endPage}" />
+    <meta name="citation_volume" content="${dc:isPartOf/mhs:volume}" />
+    <meta name="citation_issue" content="${dc:isPartOf/mhs:issueNumber}" />
+    <meta name="citation_date" content="${dc:isPartOf/mhs:publicationDate}" />
+    <meta name="citation_issn" content="${dc:isPartOf/mhs:isIssueOf/dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)}" />
+    <meta name="citation_journal_title" content="${dc:isPartOf/mhs:isIssueOf/dc:title#string-lv}" />
+    <meta name="citation_publisher" content="${dc:isPartOf/mhs:isIssueOf/dc:publisher/foaf:name#string-lv}" />
 </head>
 
 <body>
