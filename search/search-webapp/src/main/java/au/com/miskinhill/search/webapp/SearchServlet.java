@@ -45,8 +45,13 @@ public class SearchServlet extends HttpServlet {
             fieldsToSearch = determineFieldsToSearch();
 
             SimpleTemplateEngine engine = new SimpleTemplateEngine();
-            resultsTemplate = engine.createTemplate(new InputStreamReader(
-                this.getClass().getResourceAsStream("SearchResults.html"), "UTF-8"));
+            InputStreamReader resultsTemplateReader = new InputStreamReader(
+                this.getClass().getResourceAsStream("SearchResults.html"), "UTF-8");
+            try {
+                resultsTemplate = engine.createTemplate(resultsTemplateReader);
+            } finally {
+                resultsTemplateReader.close();
+            }
         } catch (Exception e) {
             throw new ServletException(e);
         }

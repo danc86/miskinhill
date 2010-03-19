@@ -1,5 +1,7 @@
 package au.com.miskinhill.web.decorator;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.logging.Logger;
@@ -30,11 +32,18 @@ public class DecoratingFilter extends HttpResponseBufferingFilter {
         @Override
         protected Transformer initialValue() {
             LOG.fine("Constructing transformer");
+            InputStream xsltStream = this.getClass().getResourceAsStream("commonwrapper.xml");
             try {
                 return transformerFactory.newTransformer(
-                        new SAXSource(new InputSource(this.getClass().getResourceAsStream("commonwrapper.xml"))));
+                        new SAXSource(new InputSource(xsltStream)));
             } catch (TransformerConfigurationException e) {
                 throw new RuntimeException(e);
+            } finally {
+                try {
+                    xsltStream.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         };
     };
