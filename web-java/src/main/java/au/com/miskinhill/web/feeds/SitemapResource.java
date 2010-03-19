@@ -19,6 +19,7 @@ import au.com.miskinhill.rdf.RDFUtil;
 import au.com.miskinhill.rdf.Representation;
 import au.com.miskinhill.rdf.RepresentationFactory;
 import au.com.miskinhill.rdf.vocabulary.MHS;
+import au.com.miskinhill.schema.sitemaps.Dataset;
 import au.com.miskinhill.schema.sitemaps.Url;
 import au.com.miskinhill.schema.sitemaps.Urlset;
 
@@ -35,6 +36,7 @@ public class SitemapResource {
 	};
 	private static final Pattern OUR_URLS =
 		Pattern.compile("http://miskinhill\\.com\\.au/[^#]*");
+	private static final String DATA_DUMP_URL = "http://miskinhill.com.au/feeds/world";
 	
 	private final Model model;
 	private final RepresentationFactory representationFactory;
@@ -71,6 +73,7 @@ public class SitemapResource {
 		for (String loc: rdfLocs) {
 			urlset.add(new Url(loc));
 		}
+		urlset.add(new Dataset(DATA_DUMP_URL));
 		return urlset;
 	}
 

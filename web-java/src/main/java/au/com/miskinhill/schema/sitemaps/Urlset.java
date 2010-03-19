@@ -16,14 +16,24 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Urlset {
 
     @XmlElement(name = "url", required = true)
-    protected List<Url> urls = new ArrayList<Url>();
+    private List<Url> urls = new ArrayList<Url>();
+    @XmlElement(name = "dataset", namespace = "http://sw.deri.org/2007/07/sitemapextension/scschema.xsd")
+    private List<Dataset> datasets = new ArrayList<Dataset>();
 
     public List<Url> getUrls() {
         return urls;
     }
     
+    public List<Dataset> getDatasets() {
+        return datasets;
+    }
+    
     public void add(Url url) {
     	urls.add(url);
+    }
+    
+    public void add(Dataset dataset) {
+        datasets.add(dataset);
     }
     
     @Override

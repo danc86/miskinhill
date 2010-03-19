@@ -1,5 +1,7 @@
 package au.com.miskinhill.web.feeds;
 
+import static org.hamcrest.CoreMatchers.*;
+
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
@@ -40,6 +42,13 @@ public class SitemapWebIntegrationTest extends AbstractWebIntegrationTest {
             assertFalse("Found duplicate " + url, locs.contains(url.getLoc()));
             locs.add(url.getLoc());
         }
+    }
+    
+    @Test
+    public void shouldContainDataDumpLocation() {
+        Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
+        assertThat(sitemap.getDatasets().size(), equalTo(1));
+        assertThat(sitemap.getDatasets().get(0).getDataDumpLocation(), equalTo("http://miskinhill.com.au/feeds/world"));
     }
 
 }
