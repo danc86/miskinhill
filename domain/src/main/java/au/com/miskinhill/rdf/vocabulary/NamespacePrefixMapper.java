@@ -45,6 +45,8 @@ public final class NamespacePrefixMapper extends HashMap<String, String> {
         put("grddl", "http://www.w3.org/2003/g/data-view#");
         put("wordnet", "http://xmlns.com/wordnet/1.6/");
         put("wgs84", "http://www.w3.org/2003/01/geo/wgs84_pos#");
+        put("skos2008", "http://www.w3.org/2008/05/skos#");
+        put("owl-temp", "http://www.w3.org/2006/12/owl2-xml#");
     }
     
 }

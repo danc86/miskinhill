@@ -72,12 +72,12 @@ public class Preprocessor {
         extractCitations(m, contentRoot);
         new Inferrer(m).apply();
         new Validator(m).validate();
-        m.setNsPrefixes(NamespacePrefixMapper.getInstance());
         m.write(System.out, "RDF/XML");
     }
     
     private static Model load(File base) throws IOException {
         Model m = ModelFactory.createDefaultModel();
+        m.setNsPrefixes(NamespacePrefixMapper.getInstance());
         Queue<File> queue = new LinkedList<File>();
         queue.add(base);
         while (!queue.isEmpty()) {
