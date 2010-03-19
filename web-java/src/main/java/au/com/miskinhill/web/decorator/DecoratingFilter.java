@@ -2,8 +2,10 @@ package au.com.miskinhill.web.decorator;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.logging.Logger;
 
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
@@ -17,18 +19,30 @@ import au.com.miskinhill.web.util.HttpResponseBufferingFilter;
 @Component("decoratingFilter")
 public class DecoratingFilter extends HttpResponseBufferingFilter {
     
-    private static final long serialVersionUID = -379349824773494218L;
+    private static final Logger LOG = Logger.getLogger(DecoratingFilter.class.getName());
+    private static final long serialVersionUID = -379349824773494219L;
     
     private final TransformerFactory transformerFactory = TransformerFactory.newInstance(
             // ensure we get the builtin JDK6 one, since xalan is broken apparently
             "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
             this.getClass().getClassLoader());
+    private final ThreadLocal<Transformer> transformerHolder = new ThreadLocal<Transformer>() {
+        @Override
+        protected Transformer initialValue() {
+            LOG.fine("Constructing transformer");
+            try {
+                return transformerFactory.newTransformer(
+                        new SAXSource(new InputSource(this.getClass().getResourceAsStream("commonwrapper.xml"))));
+            } catch (TransformerConfigurationException e) {
+                throw new RuntimeException(e);
+            }
+        };
+    };
     
     @Override
     protected String postprocessResponse(String responseBody) {
         try {
-            Transformer transformer = transformerFactory.newTransformer(
-                    new SAXSource(new InputSource(this.getClass().getResourceAsStream("commonwrapper.xml"))));
+            Transformer transformer = transformerHolder.get();
             StringWriter writer = new StringWriter();
             transformer.transform(
                     new SAXSource(new InputSource(new StringReader(responseBody))),
