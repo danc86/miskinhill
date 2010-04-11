@@ -26,6 +26,7 @@ public class MiskinHillAdaptationResolver implements AdaptationResolver {
         adaptations.put("article-links", ArticleLinksAdaptation.class);
         adaptations.put("content", ContentAdaptation.class);
         adaptations.put("lcsh-cleanup", LCSHCleanupAdaptation.class);
+        adaptations.put("issue-number", IssueNumberAdaptation.class);
     }
 
     @Override

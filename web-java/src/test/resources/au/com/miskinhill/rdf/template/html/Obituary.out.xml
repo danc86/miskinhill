@@ -1,7 +1,7 @@
 <?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml">
 
 <head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
-    <title>In memoriam John Doe - Test Journal of Good Stuff Vol. 1, Issue 1</title>
+    <title>In memoriam John Doe - Test Journal of Good Stuff Vol. 1, No. 1</title>
     <link href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe.xml" type="application/rdf+xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" rel="alternate" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe.ttl"/>
     <link rel="stylesheet" type="text/css" href="/style/article.css"/>
     <link rel="stylesheet" type="text/css" href="/style/obituary.css"/>
@@ -20,7 +20,7 @@
 <div id="breadcrumbs">
     <a href="/journals/">Journals</a> >
     <a href="http://miskinhill.com.au/journals/test/">Test Journal of Good Stuff</a> >
-    <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, Issue 1</a> >
+    <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, No. 1</a> >
 </div>
 
 <h2>John Doe (1 January 1990 – 31 December 1991)<abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe"/></h2>
@@ -29,7 +29,7 @@
     <div class="obituary-meta metabox">
         <h4>Obituary details</h4>
         <p>
-            Published in <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, Issue 1</a> of<br/>
+            Published in <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, No. 1</a> of<br/>
             <a href="http://miskinhill.com.au/journals/test/"><em xml:lang="en" lang="en">Test Journal of Good Stuff</em></a>
         </p>
         <p class="other-formats"><a href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe.pdf">Original print version</a></p>

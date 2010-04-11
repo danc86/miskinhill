@@ -14,7 +14,7 @@
     <published>${mhs:onlinePublicationDate#formatted-dt('yyyy-MM-dd')}T00:00:00+10:00</published>
     <updated>${mhs:onlinePublicationDate#formatted-dt('yyyy-MM-dd')}T00:00:00+10:00</updated>
     <title type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml">
-        <em rdf:content="mhs:isIssueOf/dc:title" /> Vol.&#160;${mhs:volume}, Issue&#160;${mhs:issueNumber}
+        <em rdf:content="mhs:isIssueOf/dc:title" /> Vol.&#160;${mhs:volume}, ${#issue-number}
     </div></title>
     ${#representation-atom-links}
 </entry>

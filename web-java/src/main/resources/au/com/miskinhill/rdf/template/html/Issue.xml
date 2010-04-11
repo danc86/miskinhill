@@ -2,7 +2,7 @@
       xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
 
 <head>
-    <title>${mhs:isIssueOf/dc:title} Vol.&#160;${mhs:volume}, Issue&#160;${mhs:issueNumber}</title>
+    <title>${mhs:isIssueOf/dc:title} Vol.&#160;${mhs:volume}, ${#issue-number}</title>
     ${#representation-links}
     <link rel="stylesheet" type="text/css" href="/style/issue.css" />
 </head>
@@ -16,7 +16,7 @@
 
 <h2>
     <span class="journal-title" rdf:content="mhs:isIssueOf/dc:title" />
-    <span class="issue">Vol.&#160;${mhs:volume}, Issue&#160;${mhs:issueNumber} (${dc:coverage})</span>
+    <span class="issue">Vol.&#160;${mhs:volume}, ${#issue-number} (${dc:coverage})</span>
     <abbr class="unapi-id" title="${#uri}" />
 </h2>
 

@@ -23,13 +23,13 @@
         <rdf:if test="dc:isPartOf/mhs:availableFrom">
             <a href="${dc:isPartOf/mhs:availableFrom#uri}">
                 <rdf:if test="dc:isPartOf/mhs:volume">Vol.&#160;${dc:isPartOf/mhs:volume}<rdf:if test="dc:isPartOf/mhs:issueNumber">, </rdf:if></rdf:if>
-                <rdf:if test="dc:isPartOf/mhs:issueNumber">Issue&#160;${dc:isPartOf/mhs:issueNumber}</rdf:if>
+                <rdf:if test="dc:isPartOf/mhs:issueNumber">${dc:isPartOf#issue-number}</rdf:if>
                 <rdf:if test="dc:isPartOf/dc:coverage">(${dc:isPartOf/dc:coverage})</rdf:if>
             </a>
         </rdf:if>
         <rdf:if not="dc:isPartOf/mhs:availableFrom">
             <rdf:if test="dc:isPartOf/mhs:volume">Vol.&#160;${dc:isPartOf/mhs:volume}<rdf:if test="dc:isPartOf/mhs:issueNumber">, </rdf:if></rdf:if>
-            <rdf:if test="dc:isPartOf/mhs:issueNumber">Issue&#160;${dc:isPartOf/mhs:issueNumber}</rdf:if>
+            <rdf:if test="dc:isPartOf/mhs:issueNumber">${dc:isPartOf#issue-number}</rdf:if>
             <rdf:if test="dc:isPartOf/dc:coverage">(${dc:isPartOf/dc:coverage})</rdf:if>
         </rdf:if>
         <br />

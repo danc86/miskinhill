@@ -2,7 +2,7 @@
       xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
 
 <head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
-    <title>${dc:title#string-lv} - ${dc:isPartOf/mhs:isIssueOf/dc:title} Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</title>
+    <title>${dc:title#string-lv} - ${dc:isPartOf/mhs:isIssueOf/dc:title} Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</title>
     ${#representation-links}
     <link rel="stylesheet" type="text/css" href="/style/article.css" />
     <link rel="stylesheet" type="text/css" href="/style/obituary.css" />
@@ -21,7 +21,7 @@
 <div id="breadcrumbs">
     <a href="/journals/">Journals</a> &gt;
     <a href="${dc:isPartOf/mhs:isIssueOf#uri}">${dc:isPartOf/mhs:isIssueOf/dc:title}</a> &gt;
-    <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</a> &gt;
+    <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</a> &gt;
 </div>
 
 <h2>${mhs:obituaryOf/foaf:name} (${mhs:obituaryOf/mhs:dateOfBirth#formatted-dt('d MMMM yyyy')} – ${mhs:obituaryOf/mhs:dateOfDeath#formatted-dt('d MMMM yyyy')})<abbr class="unapi-id" title="${#uri}" /></h2>
@@ -30,7 +30,7 @@
     <div class="obituary-meta metabox">
         <h4>Obituary details</h4>
         <p>
-            Published in <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, Issue&#160;${dc:isPartOf/mhs:issueNumber}</a> of<br />
+            Published in <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</a> of<br />
             <a href="${dc:isPartOf/mhs:isIssueOf#uri}"><em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /></a>
         </p>
         <p class="other-formats"><a href="${#uri}.pdf">Original print version</a></p>

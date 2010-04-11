@@ -31,7 +31,7 @@
     <ul class="articles">
         <li>
             <div class="article"><a href="http://miskinhill.com.au/journals/test/1:1/article"><span lang="en"><em>Moscow 1937</em>: the interpreter’s story</span></a></div>
-            <div class="issue">in <em xml:lang="en" lang="en">Test Journal of Good Stuff</em> Vol. 1, Issue 1 (2007)</div>
+            <div class="issue">in <em xml:lang="en" lang="en">Test Journal of Good Stuff</em> Vol. 1, No. 1 (2007)</div>
         </li>
     </ul>
 
@@ -41,7 +41,7 @@
     <ul class="reviews">
         <li>
             <div class="book"><a href="http://miskinhill.com.au/journals/test/1:1/reviews/review">John K. Cox, <em xml:lang="en" lang="en">Slovenia: evolving loyalties</em> (2005)</a></div>
-            <div class="issue">in <em xml:lang="en" lang="en">Test Journal of Good Stuff</em> Vol. 1, Issue 1 (2007)</div>
+            <div class="issue">in <em xml:lang="en" lang="en">Test Journal of Good Stuff</em> Vol. 1, No. 1 (2007)</div>
         </li>
     </ul>
 
@@ -51,7 +51,7 @@
     <ul class="obituaries">
         <li>
             <div class="article"><a href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe" xml:lang="en" lang="en">In memoriam John Doe</a></div>
-            <div class="issue">in <em xml:lang="en" lang="en">Test Journal of Good Stuff</em> Vol. 1, Issue 1 (2007)</div>
+            <div class="issue">in <em xml:lang="en" lang="en">Test Journal of Good Stuff</em> Vol. 1, No. 1 (2007)</div>
         </li>
     </ul>
 
@@ -69,7 +69,7 @@
     <ul class="articles">
         <li>
             <div class="article"><a href="http://miskinhill.com.au/cited/journals/asdf/1:1/article">Boris Pasternak in August 1936: an NKVD memorandum</a></div>
-            <div class="issue">in <em xml:lang="en" lang="en">A Cited Journal</em> Vol. 1, Issue 1 </div>
+            <div class="issue">in <em xml:lang="en" lang="en">A Cited Journal</em> Vol. 1, No. 1 </div>
         </li>
     </ul>
 

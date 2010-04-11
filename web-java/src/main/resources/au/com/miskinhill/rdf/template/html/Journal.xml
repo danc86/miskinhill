@@ -38,7 +38,7 @@
     <li rdf:for="!mhs:isIssueOf[uri-prefix='http://miskinhill.com.au/journals/'](~mhs:publicationDate#comparable-lv)">
         <a href="${#uri}">
             Vol.&#160;${mhs:volume},
-            Issue&#160;${mhs:issueNumber}
+            ${#issue-number}
             (${dc:coverage})
         </a>
     </li>

@@ -20,7 +20,7 @@ ${#html}
             <rdf:if test="mhs:reviews">Review of <rdf:join each="mhs:reviews" separator="; "><em rdf:content="dc:title" /></rdf:join></rdf:if>
             <rdf:if test="dc:title">${dc:title}</rdf:if>
         </a></div>
-        <div class="issue">in <em>${dc:isPartOf/mhs:isIssueOf/dc:title}</em> Vol. ${dc:isPartOf/mhs:volume}, Issue ${dc:isPartOf/mhs:issueNumber} (${dc:isPartOf/dc:coverage})</div>
+        <div class="issue">in <em>${dc:isPartOf/mhs:isIssueOf/dc:title}</em> Vol. ${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number} (${dc:isPartOf/dc:coverage})</div>
     </li>
 </ul>
 

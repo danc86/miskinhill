@@ -1,7 +1,7 @@
 <?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Test Journal of Good Stuff Vol. 1, Issue 1</title>
+    <title>Test Journal of Good Stuff Vol. 1, No. 1</title>
     <link type="application/rdf+xml" title="RDF/XML" href="http://miskinhill.com.au/journals/test/1:1/.xml" rel="alternate"/><link type="application/x-turtle" href="http://miskinhill.com.au/journals/test/1:1/.ttl" rel="alternate" title="Turtle"/>
     <link rel="stylesheet" type="text/css" href="/style/issue.css"/>
 </head>
@@ -15,7 +15,7 @@
 
 <h2>
     <span class="journal-title" xml:lang="en" lang="en">Test Journal of Good Stuff</span>
-    <span class="issue">Vol. 1, Issue 1 (2007)</span>
+    <span class="issue">Vol. 1, No. 1 (2007)</span>
     <abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/"/>
 </h2>
 
