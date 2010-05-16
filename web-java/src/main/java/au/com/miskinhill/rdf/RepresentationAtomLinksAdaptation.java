@@ -9,21 +9,23 @@ import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-import au.com.miskinhill.rdftemplate.XMLStream;
-import au.com.miskinhill.rdftemplate.selector.Adaptation;
+import au.id.djc.rdftemplate.XMLStream;
+import au.id.djc.rdftemplate.selector.AbstractAdaptation;
 
-public class RepresentationAtomLinksAdaptation implements Adaptation<XMLStream> {
+public class RepresentationAtomLinksAdaptation extends AbstractAdaptation<XMLStream, Resource> {
     
     private static final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
     private static final String XHTML_NS_URI = "http://www.w3.org/2005/Atom";
     private static final QName LINK_QNAME = new QName(XHTML_NS_URI, "link");
     
+    public RepresentationAtomLinksAdaptation() {
+        super(XMLStream.class, new Class<?>[] { }, Resource.class);
+    }
+    
     @Override
-    public XMLStream adapt(RDFNode node) {
-        Resource resource = (Resource) node;
+    protected XMLStream doAdapt(Resource resource) {
         List<Representation> representations = StaticApplicationContextAccessor.getBeanOfType(RepresentationFactory.class)
                 .getRepresentationsForResource(resource);
         List<XMLEvent> events = new ArrayList<XMLEvent>();
@@ -39,11 +41,6 @@ public class RepresentationAtomLinksAdaptation implements Adaptation<XMLStream> 
             events.add(eventFactory.createEndElement(LINK_QNAME, null));
         }
         return new XMLStream(events);
-    }
-
-    @Override
-    public Class<XMLStream> getDestinationType() {
-        return XMLStream.class;
     }
 
 }

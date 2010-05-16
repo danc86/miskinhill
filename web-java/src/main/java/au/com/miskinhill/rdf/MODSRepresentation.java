@@ -17,9 +17,10 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import au.id.djc.rdftemplate.TemplateInterpolator;
+import au.id.djc.rdftemplate.XMLStream;
+
 import au.com.miskinhill.rdf.vocabulary.MHS;
-import au.com.miskinhill.rdftemplate.TemplateInterpolator;
-import au.com.miskinhill.rdftemplate.XMLStream;
 
 @Component
 public class MODSRepresentation implements XMLStreamRepresentation {

@@ -8,11 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.UriBuilder;
 
-import com.sun.jersey.api.core.ResourceConfig;
-import com.sun.jersey.spi.container.WebApplication;
-
 import com.sun.jersey.api.container.ContainerException;
+import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.api.uri.UriComponent;
+import com.sun.jersey.spi.container.WebApplication;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 
 public class ServletPathIgnoringJerseySpringServlet extends SpringServlet {

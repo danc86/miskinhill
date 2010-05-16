@@ -13,8 +13,9 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import au.id.djc.rdftemplate.selector.SelectorFactory;
+
 import au.com.miskinhill.rdf.vocabulary.MHS;
-import au.com.miskinhill.rdftemplate.selector.SelectorFactory;
 
 @Component
 public class EndnoteRepresentation implements Representation {

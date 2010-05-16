@@ -14,19 +14,23 @@ import javax.xml.stream.events.XMLEvent;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
-import au.com.miskinhill.rdftemplate.XMLStream;
-import au.com.miskinhill.rdftemplate.selector.Adaptation;
-import au.com.miskinhill.rdftemplate.selector.SelectorFactory;
+import au.id.djc.rdftemplate.XMLStream;
+import au.id.djc.rdftemplate.selector.AbstractAdaptation;
+import au.id.djc.rdftemplate.selector.SelectorFactory;
 
-public class ArticleLinksAdaptation implements Adaptation<XMLStream> {
+public class ArticleLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNode> {
     
     private static final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
     private static final String XHTML_NS_URI = "http://www.w3.org/1999/xhtml";
     private static final QName A_QNAME = new QName(XHTML_NS_URI, "a");
     private static final QName HREF_QNAME = new QName("href");
     
+    public ArticleLinksAdaptation() {
+        super(XMLStream.class, new Class<?>[] { }, RDFNode.class);
+    }
+    
     @Override
-    public XMLStream adapt(RDFNode node) {
+    protected XMLStream doAdapt(RDFNode node) {
         List<Link> links = new ArrayList<Link>();
         SelectorFactory selectorFactory = StaticApplicationContextAccessor.getBeanOfType(SelectorFactory.class);
         String title = oneOrNull(selectorFactory.get("dc:title#string-lv").withResultType(String.class).result(node));
@@ -51,11 +55,6 @@ public class ArticleLinksAdaptation implements Adaptation<XMLStream> {
                 events.add(eventFactory.createCharacters(",\n"));
         }
         return new XMLStream(events);
-    }
-
-    @Override
-    public Class<XMLStream> getDestinationType() {
-        return XMLStream.class;
     }
     
     private static final class Link {

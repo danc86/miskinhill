@@ -11,13 +11,14 @@ import javax.xml.stream.events.XMLEvent;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-import au.com.miskinhill.rdf.vocabulary.MHS;
-import au.com.miskinhill.rdftemplate.TemplateInterpolator;
-import au.com.miskinhill.rdftemplate.XMLStream;
-import au.com.miskinhill.rdftemplate.selector.Adaptation;
-import au.com.miskinhill.rdftemplate.selector.SelectorEvaluationException;
+import au.id.djc.rdftemplate.TemplateInterpolator;
+import au.id.djc.rdftemplate.XMLStream;
+import au.id.djc.rdftemplate.selector.AbstractAdaptation;
+import au.id.djc.rdftemplate.selector.SelectorEvaluationException;
 
-public class HTMLFragmentRepresentationAdaptation implements Adaptation<XMLStream> {
+import au.com.miskinhill.rdf.vocabulary.MHS;
+
+public class HTMLFragmentRepresentationAdaptation extends AbstractAdaptation<XMLStream, RDFNode> {
     
     private static final Map<Resource, String> TYPE_TEMPLATES = new HashMap<Resource, String>();
     static {
@@ -25,8 +26,12 @@ public class HTMLFragmentRepresentationAdaptation implements Adaptation<XMLStrea
         TYPE_TEMPLATES.put(MHS.Article, "template/htmlfragment/Article.xml");
     }
     
+    public HTMLFragmentRepresentationAdaptation() {
+        super(XMLStream.class, new Class<?>[] { }, RDFNode.class);
+    }
+    
     @Override
-    public XMLStream adapt(RDFNode node) {
+    protected XMLStream doAdapt(RDFNode node) {
         String templatePath = null;
         for (Resource type: RDFUtil.getTypes(node.as(Resource.class))) {
             templatePath = TYPE_TEMPLATES.get(type);
@@ -44,11 +49,6 @@ public class HTMLFragmentRepresentationAdaptation implements Adaptation<XMLStrea
             destination.remove(0);
         }
         return new XMLStream(destination);
-    }
-
-    @Override
-    public Class<XMLStream> getDestinationType() {
-        return XMLStream.class;
     }
 
 }

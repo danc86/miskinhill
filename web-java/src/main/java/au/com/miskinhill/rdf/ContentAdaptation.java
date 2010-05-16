@@ -14,17 +14,17 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+
+import au.id.djc.rdftemplate.XMLStream;
+import au.id.djc.rdftemplate.selector.AbstractAdaptation;
+import au.id.djc.rdftemplate.selector.SelectorEvaluationException;
 
 import au.com.miskinhill.citation.Citation;
 import au.com.miskinhill.domain.fulltext.FulltextFetcher;
-import au.com.miskinhill.rdftemplate.XMLStream;
-import au.com.miskinhill.rdftemplate.selector.Adaptation;
-import au.com.miskinhill.rdftemplate.selector.SelectorEvaluationException;
 import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
 
-public class ContentAdaptation implements Adaptation<XMLStream> {
+public class ContentAdaptation extends AbstractAdaptation<XMLStream, Resource> {
     
     private static final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     private static final byte[] XHTML_STRICT_DTD_DECL = 
@@ -35,9 +35,12 @@ public class ContentAdaptation implements Adaptation<XMLStream> {
         inputFactory.setXMLResolver(new XhtmlEntityResolver());
     }
     
+    public ContentAdaptation() {
+        super(XMLStream.class, new Class<?>[] { }, Resource.class);
+    }
+    
     @Override
-    public XMLStream adapt(RDFNode node) {
-        Resource resource = node.as(Resource.class);
+    protected XMLStream doAdapt(Resource resource) {
         if (!resource.getURI().startsWith("http://miskinhill.com.au/"))
             throw new SelectorEvaluationException("Attempted to apply #content to non-Miskin-Hill node " + resource);
         try {
@@ -67,11 +70,6 @@ public class ContentAdaptation implements Adaptation<XMLStream> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public Class<XMLStream> getDestinationType() {
-        return XMLStream.class;
     }
 
 }

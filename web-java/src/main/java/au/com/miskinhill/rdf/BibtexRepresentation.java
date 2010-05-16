@@ -19,8 +19,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import au.id.djc.rdftemplate.selector.SelectorFactory;
+
 import au.com.miskinhill.rdf.vocabulary.MHS;
-import au.com.miskinhill.rdftemplate.selector.SelectorFactory;
 
 @Component
 public class BibtexRepresentation implements Representation {

@@ -12,9 +12,10 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import au.id.djc.rdftemplate.TemplateInterpolator;
+
 import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.rdf.vocabulary.SIOC;
-import au.com.miskinhill.rdftemplate.TemplateInterpolator;
 
 @Component
 public class HTMLRepresentation implements Representation {

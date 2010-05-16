@@ -11,7 +11,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import au.com.miskinhill.rdftemplate.TemplateInterpolator;
+import au.id.djc.rdftemplate.TemplateInterpolator;
 
 @Component
 @Path("/feeds/issues")

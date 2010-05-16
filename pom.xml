@@ -24,10 +24,15 @@
     <properties>
         <contentPath>/var/www/miskinhill.com.au/content</contentPath>
         <indexPath>/var/www/miskinhill.com.au/index-data</indexPath>
-        <spring.version>3.0.0.RELEASE</spring.version>
+        <spring.version>3.0.2.RELEASE</spring.version>
     </properties>
     
     <repositories>
+        <repository>
+            <id>code.djc.id.au</id>
+            <name>code.djc.id.au</name>
+            <url>http://code.djc.id.au/maven2/</url>
+        </repository>
         <repository>
             <id>code.miskinhill.com.au</id>
             <name>Miskin Hill Code</name>
@@ -99,14 +104,14 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>au.com.miskinhill</groupId>
+                <groupId>au.id.djc</groupId>
                 <artifactId>rdftemplate</artifactId>
-                <version>1.0.1</version>
+                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.7</version>
+                <version>4.8.1</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -152,6 +157,27 @@
                 <groupId>au.com.miskinhill.jena</groupId>
                 <artifactId>jena</artifactId>
                 <version>2.6.2.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.hp.hpl.jena</groupId>
+                <artifactId>arq</artifactId>
+                <version>2.8.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.codehaus.woodstox</groupId>
+                        <artifactId>wstx-asl</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -237,6 +263,16 @@
                 <groupId>net.sourceforge.jwebunit</groupId>
                 <artifactId>jwebunit-htmlunit-plugin</artifactId>
                 <version>2.2</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -257,6 +293,11 @@
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-impl</artifactId>
                 <version>2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jdk14</artifactId>
+                <version>1.5.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

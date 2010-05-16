@@ -18,16 +18,15 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.apache.commons.lang.StringUtils;
 
-import au.com.miskinhill.rdftemplate.XMLStream;
-import au.com.miskinhill.rdftemplate.selector.Adaptation;
-import au.com.miskinhill.rdftemplate.selector.SelectorFactory;
+import au.id.djc.rdftemplate.XMLStream;
+import au.id.djc.rdftemplate.selector.AbstractAdaptation;
+import au.id.djc.rdftemplate.selector.SelectorFactory;
 
-public class BookLinksAdaptation implements Adaptation<XMLStream> {
+public class BookLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNode> {
     
     private static final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     private static final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
@@ -36,8 +35,12 @@ public class BookLinksAdaptation implements Adaptation<XMLStream> {
     private static final QName LANG_QNAME = new QName("lang");
     private static final QName HREF_QNAME = new QName("href");
     
+    public BookLinksAdaptation() {
+        super(XMLStream.class, new Class<?>[] { }, RDFNode.class);
+    }
+    
     @Override
-    public XMLStream adapt(RDFNode node) {
+    protected XMLStream doAdapt(RDFNode node) {
         List<Link> links = new ArrayList<Link>();
         SelectorFactory selectorFactory = StaticApplicationContextAccessor.getBeanOfType(SelectorFactory.class);
         String title = selectorFactory.get("dc:title#string-lv").withResultType(String.class).singleResult(node);
@@ -102,11 +105,6 @@ public class BookLinksAdaptation implements Adaptation<XMLStream> {
         return new XMLStream(events);
     }
 
-    @Override
-    public Class<XMLStream> getDestinationType() {
-        return XMLStream.class;
-    }
-    
     private static final class Link {
         private final String href;
         private final String anchor;

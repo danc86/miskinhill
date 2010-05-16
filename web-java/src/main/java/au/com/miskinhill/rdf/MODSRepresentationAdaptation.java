@@ -10,17 +10,21 @@ import javax.xml.stream.events.XMLEvent;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-import au.com.miskinhill.rdftemplate.XMLStream;
-import au.com.miskinhill.rdftemplate.selector.Adaptation;
-import au.com.miskinhill.rdftemplate.selector.SelectorEvaluationException;
+import au.id.djc.rdftemplate.XMLStream;
+import au.id.djc.rdftemplate.selector.AbstractAdaptation;
+import au.id.djc.rdftemplate.selector.SelectorEvaluationException;
 
-public class MODSRepresentationAdaptation implements Adaptation<XMLStream> {
+public class MODSRepresentationAdaptation extends AbstractAdaptation<XMLStream, RDFNode> {
     
     private static final String MODS_NS = "http://www.loc.gov/mods/v3";
     private static final QName MODS_QNAME = new QName(MODS_NS, "mods");
     
+    public MODSRepresentationAdaptation() {
+        super(XMLStream.class, new Class<?>[] { }, RDFNode.class);
+    }
+    
     @Override
-    public XMLStream adapt(RDFNode node) {
+    protected XMLStream doAdapt(RDFNode node) {
         XMLStreamRepresentation modsRepresentation = null;
         for (XMLStreamRepresentation r: StaticApplicationContextAccessor.getBeansOfType(XMLStreamRepresentation.class)) {
             if (r.getFormat().equals("mods")) {
@@ -60,11 +64,6 @@ public class MODSRepresentationAdaptation implements Adaptation<XMLStream> {
             }
         }
         return new XMLStream(events);
-    }
-
-    @Override
-    public Class<XMLStream> getDestinationType() {
-        return XMLStream.class;
     }
 
 }
