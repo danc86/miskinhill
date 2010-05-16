@@ -2,11 +2,16 @@ package au.com.miskinhill.rdf;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import au.id.djc.rdftemplate.selector.AbstractAdaptation;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
 
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class IssueNumberAdaptation extends AbstractAdaptation<String, Resource> {
 
     public IssueNumberAdaptation() {

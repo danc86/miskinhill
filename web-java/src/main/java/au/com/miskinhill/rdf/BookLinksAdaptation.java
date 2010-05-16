@@ -21,11 +21,17 @@ import javax.xml.stream.events.XMLEvent;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import au.id.djc.rdftemplate.XMLStream;
 import au.id.djc.rdftemplate.selector.AbstractAdaptation;
 import au.id.djc.rdftemplate.selector.SelectorFactory;
 
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class BookLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNode> {
     
     private static final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -35,14 +41,17 @@ public class BookLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNode> 
     private static final QName LANG_QNAME = new QName("lang");
     private static final QName HREF_QNAME = new QName("href");
     
-    public BookLinksAdaptation() {
+    private final SelectorFactory selectorFactory;
+    
+    @Autowired
+    public BookLinksAdaptation(SelectorFactory selectorFactory) {
         super(XMLStream.class, new Class<?>[] { }, RDFNode.class);
+        this.selectorFactory = selectorFactory;
     }
     
     @Override
     protected XMLStream doAdapt(RDFNode node) {
         List<Link> links = new ArrayList<Link>();
-        SelectorFactory selectorFactory = StaticApplicationContextAccessor.getBeanOfType(SelectorFactory.class);
         String title = selectorFactory.get("dc:title#string-lv").withResultType(String.class).singleResult(node);
         String responsibility = StringUtils.defaultString(oneOrNull(selectorFactory.get("mhs:responsibility#string-lv")
                 .withResultType(String.class).result(node)));

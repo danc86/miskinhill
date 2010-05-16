@@ -15,6 +15,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import au.id.djc.rdftemplate.XMLStream;
 import au.id.djc.rdftemplate.selector.AbstractAdaptation;
@@ -24,6 +28,8 @@ import au.com.miskinhill.citation.Citation;
 import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
 
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ContentAdaptation extends AbstractAdaptation<XMLStream, Resource> {
     
     private static final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -35,8 +41,12 @@ public class ContentAdaptation extends AbstractAdaptation<XMLStream, Resource> {
         inputFactory.setXMLResolver(new XhtmlEntityResolver());
     }
     
-    public ContentAdaptation() {
+    private final FulltextFetcher fulltextFetcher;
+    
+    @Autowired
+    public ContentAdaptation(FulltextFetcher fulltextFetcher) {
         super(XMLStream.class, new Class<?>[] { }, Resource.class);
+        this.fulltextFetcher = fulltextFetcher;
     }
     
     @Override
@@ -47,8 +57,7 @@ public class ContentAdaptation extends AbstractAdaptation<XMLStream, Resource> {
             String pathToContent = resource.getURI().substring(25) + ".html";
             InputStream fulltext = new SequenceInputStream(
                     new ByteArrayInputStream(XHTML_STRICT_DTD_DECL),
-                    StaticApplicationContextAccessor.getBeanOfType(FulltextFetcher.class)
-                        .fetchFulltext(pathToContent));
+                    fulltextFetcher.fetchFulltext(pathToContent));
             XMLEventReader fulltextReader = inputFactory.createXMLEventReader(fulltext);
             final List<XMLEvent> events = new ArrayList<XMLEvent>();
             while (fulltextReader.hasNext()) {

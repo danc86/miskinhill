@@ -10,6 +10,10 @@ import javax.xml.stream.events.XMLEvent;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import au.id.djc.rdftemplate.TemplateInterpolator;
 import au.id.djc.rdftemplate.XMLStream;
@@ -18,6 +22,8 @@ import au.id.djc.rdftemplate.selector.SelectorEvaluationException;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
 
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class HTMLFragmentRepresentationAdaptation extends AbstractAdaptation<XMLStream, RDFNode> {
     
     private static final Map<Resource, String> TYPE_TEMPLATES = new HashMap<Resource, String>();
@@ -26,8 +32,12 @@ public class HTMLFragmentRepresentationAdaptation extends AbstractAdaptation<XML
         TYPE_TEMPLATES.put(MHS.Article, "template/htmlfragment/Article.xml");
     }
     
-    public HTMLFragmentRepresentationAdaptation() {
+    private final TemplateInterpolator templateInterpolator;
+    
+    @Autowired
+    public HTMLFragmentRepresentationAdaptation(TemplateInterpolator templateInterpolator) {
         super(XMLStream.class, new Class<?>[] { }, RDFNode.class);
+        this.templateInterpolator = templateInterpolator;
     }
     
     @Override
@@ -41,7 +51,7 @@ public class HTMLFragmentRepresentationAdaptation extends AbstractAdaptation<XML
             throw new SelectorEvaluationException("No HTML fragment template found for node " + node);
         
         List<XMLEvent> destination = new ArrayList<XMLEvent>();
-        StaticApplicationContextAccessor.getBeanOfType(TemplateInterpolator.class).interpolate(
+        templateInterpolator.interpolate(
                 new InputStreamReader(this.getClass().getResourceAsStream(templatePath)),
                 node, destination);
         if (destination.get(0).isStartDocument() && destination.get(destination.size() - 1).isEndDocument()) {

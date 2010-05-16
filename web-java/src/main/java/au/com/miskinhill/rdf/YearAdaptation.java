@@ -2,12 +2,17 @@ package au.com.miskinhill.rdf;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 import org.joda.time.LocalDate;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import au.id.djc.rdftemplate.datatype.Year;
 import au.id.djc.rdftemplate.datatype.YearMonth;
 import au.id.djc.rdftemplate.selector.AbstractAdaptation;
 import au.id.djc.rdftemplate.selector.SelectorEvaluationException;
 
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class YearAdaptation extends AbstractAdaptation<Year, Literal> {
 
     public YearAdaptation() {

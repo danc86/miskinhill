@@ -7,34 +7,35 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.events.XMLEvent;
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import au.id.djc.rdftemplate.XMLStream;
 import au.id.djc.rdftemplate.selector.AbstractAdaptation;
 import au.id.djc.rdftemplate.selector.SelectorEvaluationException;
 
-public class MODSRepresentationAdaptation extends AbstractAdaptation<XMLStream, RDFNode> {
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+public class MODSRepresentationAdaptation extends AbstractAdaptation<XMLStream, Resource> {
     
     private static final String MODS_NS = "http://www.loc.gov/mods/v3";
     private static final QName MODS_QNAME = new QName(MODS_NS, "mods");
     
-    public MODSRepresentationAdaptation() {
-        super(XMLStream.class, new Class<?>[] { }, RDFNode.class);
+    private final XMLStreamRepresentation modsRepresentation;
+    
+    @Autowired
+    public MODSRepresentationAdaptation(RepresentationFactory representationFactory) {
+        super(XMLStream.class, new Class<?>[] { }, Resource.class);
+        this.modsRepresentation = (XMLStreamRepresentation) representationFactory.getRepresentationByFormat("mods");
     }
     
     @Override
-    protected XMLStream doAdapt(RDFNode node) {
-        XMLStreamRepresentation modsRepresentation = null;
-        for (XMLStreamRepresentation r: StaticApplicationContextAccessor.getBeansOfType(XMLStreamRepresentation.class)) {
-            if (r.getFormat().equals("mods")) {
-                modsRepresentation = r;
-                break;
-            }
-        }
-        Resource resource = node.as(Resource.class);
+    protected XMLStream doAdapt(Resource resource) {
         if (!modsRepresentation.canRepresent(resource))
-            throw new SelectorEvaluationException("Cannot represent node " + node + " as MODS");
+            throw new SelectorEvaluationException("Cannot represent node " + resource + " as MODS");
         
         XMLStream stream = modsRepresentation.renderXMLStream(resource);
         List<XMLEvent> events = new ArrayList<XMLEvent>();
