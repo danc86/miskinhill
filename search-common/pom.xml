@@ -6,8 +6,8 @@
   <name>Search Common</name>
   <url>http://maven.apache.org</url>
   <parent>
-    <groupId>au.com.miskinhill.search</groupId>
-    <artifactId>search</artifactId>
+    <groupId>au.com.miskinhill</groupId>
+    <artifactId>miskinhill-master</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <dependencies>
@@ -17,8 +17,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>au.com.miskinhill.search</groupId>
-    	<artifactId>multilingual</artifactId>
+    	<groupId>au.id.djc</groupId>
+    	<artifactId>lucene-multilingual</artifactId>
     </dependency>
     <dependency>
     	<groupId>org.apache.lucene</groupId>

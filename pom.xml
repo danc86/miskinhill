@@ -15,8 +15,10 @@
     
     <modules>
         <module>domain</module>
-        <module>search</module>
-        <module>web-java</module>
+        <module>search-common</module>
+        <module>search-webapp</module>
+        <module>indexer</module>
+        <module>web</module>
         <module>meta-preprocessor</module>
         <module>html-dtd-cache</module>
     </modules>
@@ -102,6 +104,16 @@
                 <groupId>au.com.miskinhill</groupId>
                 <artifactId>html-dtd-cache</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>au.com.miskinhill</groupId>
+                <artifactId>search-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>au.id.djc</groupId>
+                <artifactId>lucene-multilingual</artifactId>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>au.id.djc</groupId>
