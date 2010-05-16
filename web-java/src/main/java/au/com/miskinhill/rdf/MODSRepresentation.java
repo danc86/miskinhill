@@ -28,11 +28,12 @@ public class MODSRepresentation implements XMLStreamRepresentation {
     private static final MediaType CONTENT_TYPE = new MediaType("application", "mods+xml");
     private final Map<Resource, String> typeTemplates = new HashMap<Resource, String>();
     private final TemplateInterpolator templateInterpolator;
-    private final XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+    private final XMLOutputFactory outputFactory;
     
     @Autowired
-    public MODSRepresentation(TemplateInterpolator templateInterpolator) {
+    public MODSRepresentation(TemplateInterpolator templateInterpolator, XMLOutputFactory outputFactory) {
         this.templateInterpolator = templateInterpolator;
+        this.outputFactory = outputFactory;
         
         typeTemplates.put(MHS.Journal, "template/mods/Journal.xml");
         typeTemplates.put(MHS.Article, "template/mods/Article.xml");

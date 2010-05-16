@@ -22,15 +22,16 @@ import au.id.djc.rdftemplate.selector.AbstractAdaptation;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class RepresentationAnchorsAdaptation extends AbstractAdaptation<XMLStream, Resource> {
     
-    private static final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
     private static final String XHTML_NS_URI = "http://www.w3.org/1999/xhtml";
     private static final QName A_QNAME = new QName(XHTML_NS_URI, "a");
     
+    private final XMLEventFactory eventFactory;
     private final RepresentationFactory representationFactory;
     
     @Autowired
-    public RepresentationAnchorsAdaptation(RepresentationFactory representationFactory) {
+    public RepresentationAnchorsAdaptation(XMLEventFactory eventFactory, RepresentationFactory representationFactory) {
         super(XMLStream.class, new Class<?>[] { }, Resource.class);
+        this.eventFactory = eventFactory;
         this.representationFactory = representationFactory;
     }
     

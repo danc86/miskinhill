@@ -26,26 +26,23 @@ import au.id.djc.rdftemplate.selector.SelectorEvaluationException;
 
 import au.com.miskinhill.citation.Citation;
 import au.com.miskinhill.domain.fulltext.FulltextFetcher;
-import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ContentAdaptation extends AbstractAdaptation<XMLStream, Resource> {
     
-    private static final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     private static final byte[] XHTML_STRICT_DTD_DECL = 
             ("<!DOCTYPE html " +
             "PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" " +
             "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n").getBytes();
-    static {
-        inputFactory.setXMLResolver(new XhtmlEntityResolver());
-    }
     
+    private final XMLInputFactory inputFactory;
     private final FulltextFetcher fulltextFetcher;
     
     @Autowired
-    public ContentAdaptation(FulltextFetcher fulltextFetcher) {
+    public ContentAdaptation(XMLInputFactory inputFactory, FulltextFetcher fulltextFetcher) {
         super(XMLStream.class, new Class<?>[] { }, Resource.class);
+        this.inputFactory = inputFactory;
         this.fulltextFetcher = fulltextFetcher;
     }
     

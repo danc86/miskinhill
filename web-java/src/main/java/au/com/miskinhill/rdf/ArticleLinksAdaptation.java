@@ -26,16 +26,17 @@ import au.id.djc.rdftemplate.selector.SelectorFactory;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ArticleLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNode> {
     
-    private static final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
     private static final String XHTML_NS_URI = "http://www.w3.org/1999/xhtml";
     private static final QName A_QNAME = new QName(XHTML_NS_URI, "a");
     private static final QName HREF_QNAME = new QName("href");
     
+    private final XMLEventFactory eventFactory;
     private final SelectorFactory selectorFactory;
     
     @Autowired
-    public ArticleLinksAdaptation(SelectorFactory selectorFactory) {
+    public ArticleLinksAdaptation(XMLEventFactory eventFactory, SelectorFactory selectorFactory) {
         super(XMLStream.class, new Class<?>[] { }, RDFNode.class);
+        this.eventFactory = eventFactory;
         this.selectorFactory = selectorFactory;
     }
     
@@ -66,7 +67,7 @@ public class ArticleLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNod
         return new XMLStream(events);
     }
     
-    private static final class Link {
+    private final class Link {
         private final String href;
         private final String anchor;
         public Link(String href, String anchor) {

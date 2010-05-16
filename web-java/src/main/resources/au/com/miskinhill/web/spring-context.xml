@@ -22,6 +22,14 @@
     <bean id="pdfFulltextBase" class="java.lang.String">
         <constructor-arg value="${contentPath}" />
     </bean>
+        
+    <bean class="javax.xml.stream.XMLEventFactory" factory-method="newInstance" />
+    <bean class="javax.xml.stream.XMLInputFactory" factory-method="newInstance">
+        <property name="XMLResolver">
+            <bean class="au.com.miskinhill.xhtmldtd.XhtmlEntityResolver" />
+        </property>
+    </bean>
+    <bean class="javax.xml.stream.XMLOutputFactory" factory-method="newInstance" />
 
     <context:component-scan base-package="au.id.djc.rdftemplate.datatype" />
     <context:component-scan base-package="au.com.miskinhill.rdf" />

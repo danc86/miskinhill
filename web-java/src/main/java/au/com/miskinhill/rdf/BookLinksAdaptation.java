@@ -34,18 +34,20 @@ import au.id.djc.rdftemplate.selector.SelectorFactory;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class BookLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNode> {
     
-    private static final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-    private static final XMLEventFactory eventFactory = XMLEventFactory.newInstance();
     private static final String XHTML_NS_URI = "http://www.w3.org/1999/xhtml";
     private static final QName A_QNAME = new QName(XHTML_NS_URI, "a");
     private static final QName LANG_QNAME = new QName("lang");
     private static final QName HREF_QNAME = new QName("href");
     
+    private final XMLInputFactory inputFactory;
+    private final XMLEventFactory eventFactory;
     private final SelectorFactory selectorFactory;
     
     @Autowired
-    public BookLinksAdaptation(SelectorFactory selectorFactory) {
+    public BookLinksAdaptation(XMLInputFactory inputFactory, XMLEventFactory eventFactory, SelectorFactory selectorFactory) {
         super(XMLStream.class, new Class<?>[] { }, RDFNode.class);
+        this.inputFactory = inputFactory;
+        this.eventFactory = eventFactory;
         this.selectorFactory = selectorFactory;
     }
     
@@ -114,7 +116,7 @@ public class BookLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNode> 
         return new XMLStream(events);
     }
 
-    private static final class Link {
+    private final class Link {
         private final String href;
         private final String anchor;
         public Link(String href, String anchor) {
