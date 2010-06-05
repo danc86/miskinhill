@@ -13,7 +13,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.xml.SimpleTransformErrorListener;
 import org.xml.sax.InputSource;
 
 import au.com.miskinhill.web.util.HttpResponseBufferingFilter;
@@ -47,6 +49,10 @@ public class DecoratingFilter extends HttpResponseBufferingFilter {
             }
         };
     };
+    
+    public DecoratingFilter() {
+        transformerFactory.setErrorListener(new SimpleTransformErrorListener(LogFactory.getLog(DecoratingFilter.class)));
+    }
     
     @Override
     protected String postprocessResponse(String responseBody) {
