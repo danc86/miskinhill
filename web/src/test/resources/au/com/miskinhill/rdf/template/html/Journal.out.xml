@@ -3,6 +3,7 @@
 <head>
     <title xml:lang="en" lang="en">Test Journal of Good Stuff</title>
     <link type="application/rdf+xml" title="RDF/XML" href="http://miskinhill.com.au/journals/test/.xml" rel="alternate"/><link type="application/x-turtle" href="http://miskinhill.com.au/journals/test/.ttl" rel="alternate" title="Turtle"/><link href="http://miskinhill.com.au/journals/test/.mods" title="MODS" rel="alternate" type="application/mods+xml"/><link href="http://miskinhill.com.au/journals/test/.marcxml" type="application/marcxml+xml" title="MARCXML" rel="alternate"/>
+    <link rel="feed" type="application/atom+xml" title="Atom feed of journal issues" href="/feeds/issues?journal=http://miskinhill.com.au/journals/test/"/>
 </head>
 
 <body>

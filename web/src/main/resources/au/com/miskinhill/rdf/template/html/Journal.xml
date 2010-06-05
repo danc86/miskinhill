@@ -4,6 +4,7 @@
 <head>
     <title rdf:content="dc:title" />
     ${#representation-links}
+    <link rel="feed" type="application/atom+xml" title="Atom feed of journal issues" href="/feeds/issues?journal=${#uri}" />
 </head>
 
 <body>
