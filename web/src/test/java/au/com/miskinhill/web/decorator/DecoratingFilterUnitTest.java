@@ -69,7 +69,8 @@ public class DecoratingFilterUnitTest {
         String dummy = TestUtil.exhaust(this.getClass().getResourceAsStream("dummy-incomplete.xml"));
         CharSequence result = filter.postprocessResponse(dummy);
         assertThat(result.toString(), containsString("<div class=\"incompleteness-warning\" lang=\"en\">" + 
-        		"<p>The full HTML version of this article is not currently available online. Please refer to the original print version.</p>" + 
+        		"<p>The full HTML version of this article is not currently available online.\n" +
+        		"        Please refer to the <a href=\"asdf.pdf\">original print version</a>.</p>" + 
         		"</div>"));
     }
 

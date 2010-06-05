@@ -13,7 +13,8 @@
 
 <xsl:template match="html:div[@class='incompleteness-warning']">
     <div class="incompleteness-warning" lang="en">
-        <p>The full HTML version of this article is not currently available online. Please refer to the original print version.</p>
+        <p>The full HTML version of this article is not currently available online.
+        Please refer to the <a><xsl:attribute name="href"><xsl:value-of select="//html:a[@rel='alternate' and @type='application/pdf']/@href" /></xsl:attribute>original print version</a>.</p>
     </div>
 </xsl:template>
 
