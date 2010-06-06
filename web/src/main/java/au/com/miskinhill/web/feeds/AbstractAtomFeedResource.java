@@ -15,11 +15,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.util.XMLEventConsumer;
 
-import org.apache.commons.codec.CharEncoding;
-
-import org.apache.commons.codec.net.URLCodec;
-
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.apache.commons.codec.CharEncoding;
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.collections15.IteratorUtils;
 import org.joda.time.DateTime;
 
@@ -58,6 +56,7 @@ public abstract class AbstractAtomFeedResource {
         this.templateInterpolator = templateInterpolator;
         this.eventFactory = eventFactory;
         typeTemplates.put(MHS.Issue, "/au/com/miskinhill/rdf/template/atomfragment/Issue.xml");
+        typeTemplates.put(MHS.Article, "/au/com/miskinhill/rdf/template/atomfragment/Article.xml");
     }
     
     protected void addTitleElement(List<XMLEvent> destination, String title) {

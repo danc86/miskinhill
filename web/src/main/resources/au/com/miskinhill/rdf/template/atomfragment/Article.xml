@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entry xmlns="http://www.w3.org/2005/Atom"
+       xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+    <id rdf:content="#uri" />
+    <rdf:if test="mhs:authorOrder">
+        <author rdf:for="mhs:authorOrder">
+            <name rdf:content="foaf:name" />
+            <uri rdf:content="#uri" />
+        </author>
+    </rdf:if>
+    <rdf:if not="mhs:authorOrder">
+        <author rdf:for="dc:creator">
+            <name rdf:content="foaf:name" />
+            <uri rdf:content="#uri" />
+        </author>
+    </rdf:if>
+    <published>${dc:isPartOf/mhs:onlinePublicationDate#formatted-dt('yyyy-MM-dd')}T00:00:00+10:00</published>
+    <updated>${dc:isPartOf/mhs:onlinePublicationDate#formatted-dt('yyyy-MM-dd')}T00:00:00+10:00</updated>
+    <title type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml" rdf:content="dc:title" /></title>
+    ${#representation-atom-links}
+</entry>
