@@ -70,8 +70,10 @@ public class IssuesFeedResource extends AbstractAtomFeedResource {
 	@Produces(MediaType.APPLICATION_ATOM_XML)
 	public String getIssues(@QueryParam("journal") String journalUri) throws XMLStreamException {
 	    Resource journal = null;
-	    if (journalUri != null)
-	        journal = model.createResource(BASE.resolve(journalUri).toString());
+	    if (journalUri != null) {
+	        journalUri = BASE.resolve(journalUri).toString();
+	        journal = model.createResource(journalUri);
+	    }
 	    List<AtomEntry> entries = new ArrayList<AtomEntry>();
 	    for (Resource issue: model.listSubjectsWithProperty(RDF.type, MHS.Issue).filterKeep(new IssueFilter(journal)).toList())
 	        entries.add(renderEntry(issue));
@@ -82,11 +84,13 @@ public class IssuesFeedResource extends AbstractAtomFeedResource {
 	    List<XMLEvent> events = new ArrayList<XMLEvent>();
 	    events.add(eventFactory.createStartElement(FEED_QNAME, null,
 	            IteratorUtils.singletonIterator(eventFactory.createNamespace(ATOM_NS))));
-	    if (journal != null)
+	    if (journal != null) {
 	        addTitleElement(events, journal.getRequiredProperty(DC.title).getObject().as(Literal.class).getString() + " journal issues");
-	    else
+	        addIdAndSelfLinkElements(events, "http://miskinhill.com.au/feeds/issues?journal=" + ProperURLCodec.encodeUrl(journalUri));
+	    } else {
 	        addTitleElement(events, "Miskin Hill journal issues");
-	    addIdAndSelfLinkElements(events, "http://miskinhill.com.au/feeds/issues");
+	        addIdAndSelfLinkElements(events, "http://miskinhill.com.au/feeds/issues");
+	    }
 	    addUpdated(events, Collections.max(entries, ComparatorUtils.reversedComparator(AtomEntry.UPDATED_COMPARATOR)).getUpdated());
 	    for (AtomEntry entry: entries)
 	        events.addAll(entry.getEvents());

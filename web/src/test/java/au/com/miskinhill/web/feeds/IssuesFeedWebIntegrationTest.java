@@ -34,6 +34,15 @@ public class IssuesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
                 equalTo("Miskin Hill journal issues"));
     }
     
+    @Test
+    public void feedIdShouldBeCorrect() throws DocumentException {
+        String response = Client.create().resource(BASE).path("/feeds/issues")
+        .accept(MediaType.APPLICATION_ATOM_XML_TYPE).get(String.class);
+        Document doc = DocumentHelper.parseText(response);
+        assertThat(xpath("/atom:feed/atom:id").selectSingleNode(doc).getText(),
+                equalTo("http://miskinhill.com.au/feeds/issues"));
+    }
+    
     @SuppressWarnings("unchecked")
     @Test
     public void htmlLinksShouldNotIncludeExtension() throws DocumentException {
@@ -68,6 +77,16 @@ public class IssuesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
         Document doc = DocumentHelper.parseText(response);
         assertThat(xpath("/atom:feed/atom:title[@type='text']").selectSingleNode(doc).getText(),
                 equalTo("Australian Slavonic and East European Studies journal issues"));
+    }
+    
+    @Test
+    public void journalSpecificFeedShouldHaveUniqueId() throws DocumentException {
+        String response = Client.create().resource(BASE).path("/feeds/issues")
+                .queryParam("journal", "http://miskinhill.com.au/journals/asees/")
+                .accept(MediaType.APPLICATION_ATOM_XML_TYPE).get(String.class);
+        Document doc = DocumentHelper.parseText(response);
+        assertThat(xpath("/atom:feed/atom:id").selectSingleNode(doc).getText(),
+                equalTo("http://miskinhill.com.au/feeds/issues?journal=http%3A%2F%2Fmiskinhill.com.au%2Fjournals%2Fasees%2F"));
     }
     
     @Test
