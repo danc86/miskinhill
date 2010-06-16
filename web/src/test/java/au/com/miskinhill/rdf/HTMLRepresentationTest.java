@@ -113,6 +113,8 @@ public class HTMLRepresentationTest {
         List<Element> dcCreators = (List<Element>) xpath("//html:head/html:meta[@name='DC.creator']").selectNodes(doc);
         assertThat(dcCreators.size(), equalTo(1));
         assertThat(dcCreators.get(0).attributeValue("content"), equalTo("Test Author"));
+        Element dcDate = (Element) xpath("//html:head/html:meta[@name='DC.date']").selectSingleNode(doc);
+        assertThat(dcDate.attributeValue("content"), equalTo("2008-02-01"));
     }
     
     @Test
@@ -144,6 +146,13 @@ public class HTMLRepresentationTest {
     }
     
     @Test
+    public void reviewShouldHavePublicationDate() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/reviews/review"));
+        Document doc = DocumentHelper.parseText(result);
+        assertThat(xpath("//html:span[@class='date']").selectSingleNode(doc).getText(), equalTo("1 Feb 2008"));
+    }
+    
+    @Test
     public void testArticle() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/article"));
         String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Article.out.xml"));
@@ -162,6 +171,8 @@ public class HTMLRepresentationTest {
         List<Element> dcCreators = (List<Element>) xpath("//html:head/html:meta[@name='DC.creator']").selectNodes(doc);
         assertThat(dcCreators.size(), equalTo(1));
         assertThat(dcCreators.get(0).attributeValue("content"), equalTo("Test Author"));
+        Element dcDate = (Element) xpath("//html:head/html:meta[@name='DC.date']").selectSingleNode(doc);
+        assertThat(dcDate.attributeValue("content"), equalTo("2008-02-01"));
     }
     
     /**
@@ -195,6 +206,14 @@ public class HTMLRepresentationTest {
         assertThat(citationPublisher.attributeValue("content"), equalTo("Awesome Publishing House"));
     }
     
+    
+    @Test
+    public void articleShouldHavePublicationDate() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/article"));
+        Document doc = DocumentHelper.parseText(result);
+        assertThat(xpath("//html:span[@class='date']").selectSingleNode(doc).getText(), equalTo("1 Feb 2008"));
+    }
+    
     @Test
     public void testObituary() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe"));
@@ -214,6 +233,15 @@ public class HTMLRepresentationTest {
         List<Element> dcCreators = (List<Element>) xpath("//html:head/html:meta[@name='DC.creator']").selectNodes(doc);
         assertThat(dcCreators.size(), equalTo(1));
         assertThat(dcCreators.get(0).attributeValue("content"), equalTo("Test Author"));
+        Element dcDate = (Element) xpath("//html:head/html:meta[@name='DC.date']").selectSingleNode(doc);
+        assertThat(dcDate.attributeValue("content"), equalTo("2008-02-01"));
+    }
+    
+    @Test
+    public void obituaryShouldHavePublicationDate() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe"));
+        Document doc = DocumentHelper.parseText(result);
+        assertThat(xpath("//html:span[@class='date']").selectSingleNode(doc).getText(), equalTo("1 Feb 2008"));
     }
     
     @Test

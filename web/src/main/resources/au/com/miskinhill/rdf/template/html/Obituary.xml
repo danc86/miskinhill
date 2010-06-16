@@ -14,6 +14,7 @@
     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
     <meta name="DC.title" content="${dc:title#string-lv}" />
     <meta rdf:for="dc:creator" name="DC.creator" content="${foaf:name#string-lv}" />
+    <meta name="DC.date" content="${dc:isPartOf/mhs:publicationDate}" />
 </head>
 
 <body>
@@ -30,7 +31,8 @@
     <div class="obituary-meta metabox">
         <h4>Obituary details</h4>
         <p>
-            Published in <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</a> of<br />
+            Published <span class="date">${dc:isPartOf/mhs:publicationDate#formatted-dt('d MMM yyyy')}</span><br />
+            in <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</a> of<br />
             <a href="${dc:isPartOf/mhs:isIssueOf#uri}"><em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /></a>
         </p>
         <p class="other-formats"><a href="${#uri}.pdf">Original print version</a></p>

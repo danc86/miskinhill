@@ -12,6 +12,7 @@
     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
     <meta name="DC.title">Review of Slovenia: evolving loyalties</meta>
     <meta name="DC.creator" content="Test Author"/>
+    <meta name="DC.date" content="2008-02-01"/>
     
     <meta name="citation_title">Review of Slovenia: evolving loyalties</meta>
     
@@ -41,7 +42,8 @@
     <div class="review-meta metabox">
         <h4>Review details</h4>
         <p>
-            Published in <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, No. 1</a> of<br/>
+            Published <span class="date">1 Feb 2008</span><br/>
+            in <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, No. 1</a> of<br/>
             <a href="http://miskinhill.com.au/journals/test/"><em xml:lang="en" lang="en">Test Journal of Good Stuff</em></a>
         </p>
         <p><a href="http://miskinhill.com.au/journals/test/1:1/reviews/review.pdf">Original print version</a></p>
