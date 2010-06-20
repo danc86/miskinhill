@@ -16,6 +16,9 @@
     <bean class="au.com.miskinhill.rdf.ModelFactory" factory-method="load" lazy-init="true">
         <constructor-arg value="${contentPath}/meta.xml" />
     </bean>
+    <bean id="modelTimestamp" class="au.com.miskinhill.web.util.FileModificationTimeFactory" factory-method="getModificationTimeForPath">
+        <constructor-arg value="${contentPath}/meta.xml" />
+    </bean>
     <bean id="fulltextFetcher" class="au.com.miskinhill.domain.fulltext.FileFulltextFetcher">
         <constructor-arg value="${contentPath}" />
     </bean>

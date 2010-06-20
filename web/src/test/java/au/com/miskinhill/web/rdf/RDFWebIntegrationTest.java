@@ -1,5 +1,7 @@
 package au.com.miskinhill.web.rdf;
 
+import static au.com.miskinhill.MiskinHillMatchers.*;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -8,11 +10,11 @@ import java.net.URI;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
-import com.sun.jersey.api.client.config.ClientConfig;
-
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
+import com.sun.jersey.api.client.config.ClientConfig;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import au.com.miskinhill.AbstractWebIntegrationTest;
@@ -70,6 +72,13 @@ public class RDFWebIntegrationTest extends AbstractWebIntegrationTest {
             assertThat(e.getResponse().getStatus(), equalTo(HttpServletResponse.SC_FOUND));
             assertThat(e.getResponse().getLocation(), equalTo(URI.create("http://miskinhill.com.au/journals/asees/")));
         }
+    }
+    
+    @SuppressWarnings("unchecked") // joda
+    @Test
+    public void shouldAddLastModifiedHeader() throws Exception {
+        ClientResponse response = Client.create().resource(BASE).path("/journals/asees/22:1-2/").get(ClientResponse.class);
+        assertThat(new DateTime(response.getLastModified()), greaterThan(new DateTime("2010-06-20T15:00:00+10:00")));
     }
     
     private void checkContentTypeForPathAndAccept(String pathInfo, String accept, MediaType expectedContentType) throws Exception {

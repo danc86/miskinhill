@@ -6,10 +6,10 @@ import java.util.Iterator;
 import org.hamcrest.Description;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
-public class DecreasingOrderMatcher<T extends Comparable<T>, C extends Collection<? extends T>> extends TypeSafeMatcher<C> {
+public class DecreasingOrderMatcher<T extends Comparable<T>> extends TypeSafeMatcher<Collection<T>> {
     
     @Override
-    public boolean matchesSafely(C item) {
+    public boolean matchesSafely(Collection<T> item) {
         if (item.size() < 2) return true;
         Iterator<? extends T> it = item.iterator();
         T previous = it.next();

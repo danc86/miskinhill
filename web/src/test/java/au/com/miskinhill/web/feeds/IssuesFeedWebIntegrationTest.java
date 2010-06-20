@@ -1,5 +1,6 @@
 package au.com.miskinhill.web.feeds;
 
+import static au.com.miskinhill.MiskinHillMatchers.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -21,7 +22,6 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import au.com.miskinhill.AbstractWebIntegrationTest;
-import au.com.miskinhill.DecreasingOrderMatcher;
 
 public class IssuesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
     
@@ -66,7 +66,7 @@ public class IssuesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
         List<DateTime> publishedTimes = new ArrayList<DateTime>();
         for (Element published: publisheds)
             publishedTimes.add(new DateTime(published.getTextTrim()));
-        assertThat(publishedTimes, new DecreasingOrderMatcher());
+        assertThat(publishedTimes, decreasingOrder(DateTime.class));
     }
     
     @Test

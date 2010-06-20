@@ -24,11 +24,13 @@ public class RDFRequestHandler implements HttpRequestHandler {
     
     private final Model model;
     private final RepresentationFactory representationFactory;
+    private final TimestampDeterminer timestampDeterminer;
     
     @Autowired
-    public RDFRequestHandler(Model model, RepresentationFactory representationFactory) {
+    public RDFRequestHandler(Model model, RepresentationFactory representationFactory, TimestampDeterminer timestampDeterminer) {
         this.model = model;
         this.representationFactory = representationFactory;
+        this.timestampDeterminer = timestampDeterminer;
     }
     
     @Override
@@ -96,6 +98,10 @@ public class RDFRequestHandler implements HttpRequestHandler {
             }
             representation = negotiate(candidates, req.getHeader("Accept"));
         }
+        
+        // TODO etag?
+        // TODO conditional?
+        resp.setDateHeader("Last-Modified", timestampDeterminer.determineTimestamp(resource, representation).getMillis());
         resp.setContentType(representation.getContentType().toString());
         resp.setCharacterEncoding("UTF-8");
         resp.getWriter().append(representation.render(resource));
