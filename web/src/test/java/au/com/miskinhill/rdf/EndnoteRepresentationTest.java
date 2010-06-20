@@ -1,10 +1,9 @@
 package au.com.miskinhill.rdf;
 
-import au.com.miskinhill.TestUtil;
-
 import static org.junit.Assert.*;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,14 +27,14 @@ public class EndnoteRepresentationTest {
     @Test
     public void testMHArticle() throws Exception {
         String result = representation.render(realModel.getResource("http://miskinhill.com.au/journals/asees/22:1-2/lachlan-macquarie-in-russia"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("end/lachlan-macquarie.end"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("end/lachlan-macquarie.end"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testCitedArticle() throws Exception {
         String result = representation.render(realModel.getResource("http://miskinhill.com.au/cited/journals/ajph/45:1/all-union-society"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("end/all-union-society.end"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("end/all-union-society.end"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
 

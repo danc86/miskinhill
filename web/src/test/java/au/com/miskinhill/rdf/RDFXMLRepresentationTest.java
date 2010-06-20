@@ -3,14 +3,13 @@ package au.com.miskinhill.rdf;
 import static org.junit.Assert.*;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import au.com.miskinhill.TestUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/au/com/miskinhill/web/test-spring-context.xml")
@@ -29,14 +28,14 @@ public class RDFXMLRepresentationTest {
     @Test
     public void testJournal() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/rdfxml/Journal.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/rdfxml/Journal.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testObituary() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/rdfxml/Obituary.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/rdfxml/Obituary.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     

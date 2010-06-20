@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import org.apache.commons.io.IOUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -20,8 +21,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import au.com.miskinhill.TestUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/au/com/miskinhill/web/test-spring-context.xml" })
@@ -40,21 +39,21 @@ public class HTMLRepresentationTest {
     @Test
     public void testJournal() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Journal.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Journal.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testIssue() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Issue.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Issue.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testAuthor() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/authors/test-author"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Author.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Author.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
@@ -69,35 +68,35 @@ public class HTMLRepresentationTest {
     @Test
     public void testForum() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Forum.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Forum.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testClass() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/rdfschema/1.0/Book"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Class.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Class.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testProperty() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/rdfschema/1.0/startPage"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Property.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Property.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testBook() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/cited/books/test"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Book.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Book.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
     @Test
     public void testReview() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/reviews/review"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Review.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Review.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
@@ -155,7 +154,7 @@ public class HTMLRepresentationTest {
     @Test
     public void testArticle() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/article"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Article.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Article.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
@@ -217,7 +216,7 @@ public class HTMLRepresentationTest {
     @Test
     public void testObituary() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/Obituary.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Obituary.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
@@ -247,7 +246,7 @@ public class HTMLRepresentationTest {
     @Test
     public void testCitedArticle() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/cited/journals/asdf/1:1/article"));
-        String expected = TestUtil.exhaust(this.getClass().getResourceAsStream("template/html/CitedArticle.out.xml"));
+        String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/CitedArticle.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
     }
     
