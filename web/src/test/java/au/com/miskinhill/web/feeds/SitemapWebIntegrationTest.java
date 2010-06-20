@@ -1,13 +1,11 @@
 package au.com.miskinhill.web.feeds;
 
 import static org.hamcrest.CoreMatchers.*;
-
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.sun.jersey.api.client.Client;
 import org.junit.Test;
 
 import au.com.miskinhill.AbstractWebIntegrationTest;
@@ -18,25 +16,25 @@ public class SitemapWebIntegrationTest extends AbstractWebIntegrationTest {
     
     @Test
     public void shouldContainAlternateRepresentations() {
-        Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
+        Urlset sitemap = restTemplate.getForObject(BASE.resolve("/feeds/sitemap"), Urlset.class);
         assertTrue(sitemap.containsLoc("http://miskinhill.com.au/journals/asees/.mods"));
     }
     
     @Test
     public void shouldContainPdfFullTextUrls() {
-        Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
+        Urlset sitemap = restTemplate.getForObject(BASE.resolve("/feeds/sitemap"), Urlset.class);
         assertTrue(sitemap.containsLoc("http://miskinhill.com.au/journals/asees/22:1-2/post-soviet-boevik.pdf"));
     }
     
     @Test
     public void shouldNotContainPdfFullTextUrlsForCitedJournals() {
-        Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
+        Urlset sitemap = restTemplate.getForObject(BASE.resolve("/feeds/sitemap"), Urlset.class);
         assertFalse(sitemap.containsLoc("http://miskinhill.com.au/cited/journals/ajph/45:1/all-union-society.pdf"));
     }
     
     @Test
     public void shouldNotContainDuplicates() {
-        Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
+        Urlset sitemap = restTemplate.getForObject(BASE.resolve("/feeds/sitemap"), Urlset.class);
         Set<String> locs = new HashSet<String>();
         for (Url url: sitemap.getUrls()) {
             assertFalse("Found duplicate " + url, locs.contains(url.getLoc()));
@@ -46,7 +44,7 @@ public class SitemapWebIntegrationTest extends AbstractWebIntegrationTest {
     
     @Test
     public void shouldContainDataDumpLocation() {
-        Urlset sitemap = Client.create().resource(BASE).path("/feeds/sitemap").get(Urlset.class);
+        Urlset sitemap = restTemplate.getForObject(BASE.resolve("/feeds/sitemap"), Urlset.class);
         assertThat(sitemap.getDatasets().size(), equalTo(1));
         assertThat(sitemap.getDatasets().get(0).getDataDumpLocation(), equalTo("http://miskinhill.com.au/feeds/world"));
     }

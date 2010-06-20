@@ -17,18 +17,14 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import com.hp.hpl.jena.vocabulary.DCTerms;
-
 import com.hp.hpl.jena.rdf.model.Literal;
-
-import com.hp.hpl.jena.vocabulary.DC;
-
-import com.sun.jersey.api.NotFoundException;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.util.iterator.Filter;
+import com.hp.hpl.jena.vocabulary.DC;
+import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.RDF;
+import com.sun.jersey.api.NotFoundException;
 import org.apache.commons.collections15.ComparatorUtils;
 import org.apache.commons.collections15.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +33,7 @@ import org.springframework.stereotype.Component;
 import au.id.djc.rdftemplate.TemplateInterpolator;
 
 import au.com.miskinhill.rdf.vocabulary.MHS;
+import au.com.miskinhill.web.ProperURLCodec;
 
 @Component
 @Path("/feeds/articles")

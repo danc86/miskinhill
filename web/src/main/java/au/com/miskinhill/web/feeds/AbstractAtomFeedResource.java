@@ -1,10 +1,8 @@
 package au.com.miskinhill.web.feeds;
 
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +14,6 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.stream.util.XMLEventConsumer;
 
 import com.hp.hpl.jena.rdf.model.Resource;
-import org.apache.commons.codec.CharEncoding;
-import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.collections15.IteratorUtils;
 import org.joda.time.DateTime;
 
@@ -36,17 +32,6 @@ public abstract class AbstractAtomFeedResource {
     protected static final QName LINK_QNAME = new QName(ATOM_NS, "link");
     protected static final QName PUBLISHED_QNAME = new QName(ATOM_NS, "published");
     protected static final QName UPDATED_QNAME = new QName(ATOM_NS, "updated");
-    
-    /** Ugh */
-    protected static final class ProperURLCodec extends URLCodec {
-        private static final BitSet SAFE = (BitSet) WWW_FORM_URL.clone();
-        static { SAFE.clear(' '); }
-        private static final Charset UTF8 = Charset.forName(CharEncoding.UTF_8);
-        private static final Charset ASCII = Charset.forName(CharEncoding.US_ASCII);
-        public static String encodeUrl(String raw) {
-            return new String(encodeUrl(SAFE, raw.getBytes(UTF8)), ASCII);
-        }
-    }
     
     private final Map<Resource, String> typeTemplates = new HashMap<Resource, String>();
     protected final TemplateInterpolator templateInterpolator;

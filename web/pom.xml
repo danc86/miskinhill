@@ -86,8 +86,8 @@
         	<artifactId>domain</artifactId>
         </dependency>
         <dependency>
-        	<groupId>com.sun.jersey</groupId>
-        	<artifactId>jersey-client</artifactId>
+        	<groupId>commons-httpclient</groupId>
+        	<artifactId>commons-httpclient</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

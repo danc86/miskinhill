@@ -1,21 +1,22 @@
 package au.com.miskinhill.web.rdf;
 
 import static au.com.miskinhill.MiskinHillMatchers.*;
-
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.net.URI;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
-import com.sun.jersey.api.client.config.ClientConfig;
+import org.dom4j.Document;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 
 import au.com.miskinhill.AbstractWebIntegrationTest;
 
@@ -33,58 +34,54 @@ public class RDFWebIntegrationTest extends AbstractWebIntegrationTest {
     
     @Test
     public void shouldReturnDefaultTypeIfNoKnownTypesAreRequested() throws Exception {
-        checkContentTypeForPathAndAccept("/journals/asees/", "application/foobar, text/vcard", MediaType.TEXT_HTML_TYPE);
+        checkContentTypeForPathAndAccept("/journals/asees/", "application/foobar, text/vcard", MediaType.TEXT_HTML);
     }
     
     @Test
     public void shouldReturnDefaultTypeIfKnownButInapplicableTypesAreRequested() throws Exception {
-        checkContentTypeForPathAndAccept("/journals/asees/", "application/atom+xml, application/x-endnote-refer", MediaType.TEXT_HTML_TYPE);
+        checkContentTypeForPathAndAccept("/journals/asees/", "application/atom+xml, application/x-endnote-refer", MediaType.TEXT_HTML);
     }
     
     @Test
     public void shouldReturnHtmlAsDefaultType() throws Exception {
-        checkContentTypeForPathAndAccept("/journals/asees/", null, MediaType.TEXT_HTML_TYPE);
+        checkContentTypeForPathAndAccept("/journals/asees/", null, MediaType.TEXT_HTML);
     }
     
     @Test
     public void shouldReturnHtmlForWildcardAccept() throws Exception {
-        checkContentTypeForPathAndAccept("/journals/asees/", "*/*", MediaType.TEXT_HTML_TYPE);
+        checkContentTypeForPathAndAccept("/journals/asees/", "*/*", MediaType.TEXT_HTML);
     }
     
     @Test
     public void shouldGive404ForInapplicableFormatInExtension() throws Exception {
-        try {
-            Client.create().resource(BASE).path("/journals/asees/.end").get(String.class);
-            fail("should throw");
-        } catch (UniformInterfaceException e) {
-            assertThat(e.getResponse().getStatus(), equalTo(HttpServletResponse.SC_NOT_FOUND));
-        }
+        assertHttpError(BASE.resolve("/journals/asees/.end"), HttpStatus.NOT_FOUND);
     }
     
     @Test
     public void shouldRedirectForMissingTrailingSlash() throws Exception {
-        try {
-            Client client = Client.create();
-            client.getProperties().put(ClientConfig.PROPERTY_FOLLOW_REDIRECTS, false);
-            client.resource(BASE).path("/journals/asees").get(String.class);
-            fail("should throw");
-        } catch (UniformInterfaceException e) {
-            assertThat(e.getResponse().getStatus(), equalTo(HttpServletResponse.SC_FOUND));
-            assertThat(e.getResponse().getLocation(), equalTo(URI.create("http://miskinhill.com.au/journals/asees/")));
-        }
+        assertRedirect(BASE.resolve("/journals/asees"), URI.create("http://miskinhill.com.au/journals/asees/"));
     }
     
     @SuppressWarnings("unchecked") // joda
     @Test
     public void shouldAddLastModifiedHeader() throws Exception {
-        ClientResponse response = Client.create().resource(BASE).path("/journals/asees/22:1-2/").get(ClientResponse.class);
-        assertThat(new DateTime(response.getLastModified()), greaterThan(new DateTime("2010-06-20T15:00:00+10:00")));
+        ResponseEntity<Document> response = restTemplate.getForEntity(BASE.resolve("/journals/asees/22:1-2/"), Document.class);
+        assertThat(new DateTime(response.getHeaders().getLastModified()), greaterThan(new DateTime("2010-06-20T15:00:00+10:00")));
     }
     
-    private void checkContentTypeForPathAndAccept(String pathInfo, String accept, MediaType expectedContentType) throws Exception {
-        ClientResponse response = Client.create().resource(BASE).path(pathInfo)
-                .header("Accept", accept).get(ClientResponse.class);
-        assertTrue(expectedContentType.isCompatible(response.getType())); // don't care about content-type params
+    private void checkContentTypeForPathAndAccept(String pathInfo, final String accept, final MediaType expectedContentType) throws Exception {
+        restTemplate.execute(BASE.resolve(pathInfo), HttpMethod.GET, new RequestCallback() {
+            @Override
+            public void doWithRequest(ClientHttpRequest request) throws IOException {
+                request.getHeaders().set("Accept", accept);
+            }
+        }, new ResponseExtractor<Object>() {
+            @Override
+            public Object extractData(ClientHttpResponse response) throws IOException {
+                assertTrue(expectedContentType.isCompatibleWith(response.getHeaders().getContentType())); // don't care about content-type params
+                return null;
+            }
+        });
     }
     
 }

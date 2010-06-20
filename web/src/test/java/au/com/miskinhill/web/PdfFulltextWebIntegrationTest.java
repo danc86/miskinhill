@@ -3,11 +3,16 @@ package au.com.miskinhill.web;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
 import org.junit.Test;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequest;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 
 import au.com.miskinhill.AbstractWebIntegrationTest;
 
@@ -15,22 +20,31 @@ public class PdfFulltextWebIntegrationTest extends AbstractWebIntegrationTest {
     
     @Test
     public void shouldServePdfs() {
-        ClientResponse response = Client.create().resource(BASE)
-                .path("/journals/asees/22:1-2/location-in-russian-aluminium.pdf").get(ClientResponse.class);
-        assertThat(response.getType(), equalTo(new MediaType("application", "pdf")));
-        assertThat(response.getLength(), equalTo(213303));
-        byte[] responseBody = response.getEntity(byte[].class);
-        assertThat(responseBody.length, equalTo(213303));
-        assertThat(new String(responseBody, 0, 8), equalTo("%PDF-1.4"));
+        ResponseEntity<byte[]> response = restTemplate.getForEntity(
+                BASE.resolve("/journals/asees/22:1-2/location-in-russian-aluminium.pdf"), byte[].class);
+        assertThat(response.getHeaders().getContentType(), equalTo(new MediaType("application", "pdf")));
+        assertThat(response.getHeaders().getContentLength(), equalTo(213303L));
+        assertThat(response.getBody().length, equalTo(213303));
+        assertThat(new String(response.getBody(), 0, 8), equalTo("%PDF-1.4"));
     }
     
     @Test
     public void shouldSupportAcceptRange() {
-        ClientResponse response = Client.create().resource(BASE)
-                .path("/journals/asees/22:1-2/location-in-russian-aluminium.pdf")
-                .header("Range", "bytes=500-999").get(ClientResponse.class);
-        assertThat(response.getLength(), equalTo(500));
-        assertThat(response.getHeaders().getFirst("Content-Range"), equalTo("bytes 500-999/213303"));
+       restTemplate.execute(
+                BASE.resolve("/journals/asees/22:1-2/location-in-russian-aluminium.pdf"),
+                HttpMethod.GET, new RequestCallback() {
+                    @Override
+                    public void doWithRequest(ClientHttpRequest request) throws IOException {
+                        request.getHeaders().set("Range", "bytes=500-999");
+                    }
+                }, new ResponseExtractor<Object>() {
+                    @Override
+                    public Object extractData(ClientHttpResponse response) throws IOException {
+                        assertThat(response.getHeaders().getContentLength(), equalTo(500L));
+                        assertThat(response.getHeaders().getFirst("Content-Range"), equalTo("bytes 500-999/213303"));
+                        return null;
+                    }
+                });
     }
 
 }

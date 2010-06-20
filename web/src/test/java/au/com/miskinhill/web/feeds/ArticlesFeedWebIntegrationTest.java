@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -20,25 +15,25 @@ import org.dom4j.Element;
 import org.dom4j.XPath;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
 
 import au.com.miskinhill.AbstractWebIntegrationTest;
+import au.com.miskinhill.web.ProperURLCodec;
 
 public class ArticlesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
     
+    private static final String ASEES_JOURNAL_PARAM = "journal=" + ProperURLCodec.encodeUrl("http://miskinhill.com.au/journals/asees/");
+    
     @Test
     public void titleShouldBeThere() throws DocumentException {
-        String response = Client.create().resource(BASE).path("/feeds/articles")
-                .accept(MediaType.APPLICATION_ATOM_XML_TYPE).get(String.class);
-        Document doc = DocumentHelper.parseText(response);
+        Document doc = restTemplate.getForObject(BASE.resolve("/feeds/articles"), Document.class);
         assertThat(xpath("/atom:feed/atom:title[@type='text']").selectSingleNode(doc).getText(),
                 equalTo("Miskin Hill journal articles"));
     }
     
     @Test
     public void feedIdShouldBeCorrect() throws DocumentException {
-        String response = Client.create().resource(BASE).path("/feeds/articles")
-                .accept(MediaType.APPLICATION_ATOM_XML_TYPE).get(String.class);
-        Document doc = DocumentHelper.parseText(response);
+        Document doc = restTemplate.getForObject(BASE.resolve("/feeds/articles"), Document.class);
         assertThat(xpath("/atom:feed/atom:id").selectSingleNode(doc).getText(),
                 equalTo("http://miskinhill.com.au/feeds/articles"));
     }
@@ -46,9 +41,7 @@ public class ArticlesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
     @SuppressWarnings("unchecked")
     @Test
     public void htmlLinksShouldNotIncludeExtension() throws DocumentException {
-        String response = Client.create().resource(BASE).path("/feeds/articles")
-                .accept(MediaType.APPLICATION_ATOM_XML_TYPE).get(String.class);
-        Document doc = DocumentHelper.parseText(response);
+        Document doc = restTemplate.getForObject(BASE.resolve("/feeds/articles"), Document.class);
         List<Element> htmlLinks = xpath("/atom:feed/atom:entry/atom:link[@type='text/html' and @rel='alternate']").selectNodes(doc);
         assertFalse(htmlLinks.isEmpty());
         for (Element htmlLink: htmlLinks) {
@@ -59,9 +52,7 @@ public class ArticlesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
     @SuppressWarnings("unchecked")
     @Test
     public void entriesShouldBeInOrderOfPublication() throws DocumentException {
-        String response = Client.create().resource(BASE).path("/feeds/articles")
-                .accept(MediaType.APPLICATION_ATOM_XML_TYPE).get(String.class);
-        Document doc = DocumentHelper.parseText(response);
+        Document doc = restTemplate.getForObject(BASE.resolve("/feeds/articles"), Document.class);
         List<Element> publisheds = xpath("/atom:feed/atom:entry/atom:published").selectNodes(doc);
         List<DateTime> publishedTimes = new ArrayList<DateTime>();
         for (Element published: publisheds)
@@ -71,34 +62,22 @@ public class ArticlesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
     
     @Test
     public void journalSpecificFeedShouldHaveJournalNameInTitle() throws DocumentException {
-        String response = Client.create().resource(BASE).path("/feeds/articles")
-                .queryParam("journal", "http://miskinhill.com.au/journals/asees/")
-                .accept(MediaType.APPLICATION_ATOM_XML_TYPE).get(String.class);
-        Document doc = DocumentHelper.parseText(response);
+        Document doc = restTemplate.getForObject(BASE.resolve("/feeds/articles?" + ASEES_JOURNAL_PARAM), Document.class);
         assertThat(xpath("/atom:feed/atom:title[@type='text']").selectSingleNode(doc).getText(),
                 equalTo("Australian Slavonic and East European Studies journal articles"));
     }
     
     @Test
     public void journalSpecificFeedShouldHaveUniqueId() throws DocumentException {
-        String response = Client.create().resource(BASE).path("/feeds/articles")
-                .queryParam("journal", "http://miskinhill.com.au/journals/asees/")
-                .accept(MediaType.APPLICATION_ATOM_XML_TYPE).get(String.class);
-        Document doc = DocumentHelper.parseText(response);
+        Document doc = restTemplate.getForObject(BASE.resolve("/feeds/articles?" + ASEES_JOURNAL_PARAM), Document.class);
         assertThat(xpath("/atom:feed/atom:id").selectSingleNode(doc).getText(),
                 equalTo("http://miskinhill.com.au/feeds/articles?journal=http%3A%2F%2Fmiskinhill.com.au%2Fjournals%2Fasees%2F"));
     }
     
     @Test
     public void shouldGive404ForNonsenseJournal() throws DocumentException {
-        try {
-            Client.create().resource(BASE).path("/feeds/articles")
-                    .queryParam("journal", "http://example.com/")
-                    .accept(MediaType.APPLICATION_ATOM_XML_TYPE).get(String.class);
-            fail("should throw");
-        } catch (UniformInterfaceException e) {
-            assertThat(e.getResponse().getStatus(), equalTo(HttpServletResponse.SC_NOT_FOUND));
-        }
+        assertHttpError(BASE.resolve("/feeds/articles?journal=" + ProperURLCodec.encodeUrl("http://example.com/")),
+                HttpStatus.NOT_FOUND);
     }
     
     private XPath xpath(String expression) { // ugh
