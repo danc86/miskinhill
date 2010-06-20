@@ -2,9 +2,8 @@ package au.com.miskinhill.rdf;
 
 import java.io.StringWriter;
 
-import javax.ws.rs.core.MediaType;
-
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -4,12 +4,11 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.core.MediaType;
-
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import au.id.djc.rdftemplate.TemplateInterpolator;
@@ -53,7 +52,7 @@ public class HTMLRepresentation implements Representation {
 
     @Override
     public MediaType getContentType() {
-        return MediaType.TEXT_HTML_TYPE;
+        return MediaType.TEXT_HTML;
     }
     
     @Override

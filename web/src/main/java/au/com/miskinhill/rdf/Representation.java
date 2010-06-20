@@ -2,9 +2,8 @@ package au.com.miskinhill.rdf;
 
 import java.util.Comparator;
 
-import javax.ws.rs.core.MediaType;
-
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.springframework.http.MediaType;
 
 public interface Representation {
     
