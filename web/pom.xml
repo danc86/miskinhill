@@ -151,6 +151,7 @@
                         <path>/</path>
                         <port>8082</port>
                         <systemProperties>
+                            <java.util.logging.config.file>${project.basedir}/logging.properties</java.util.logging.config.file>
                             <contentPath>${contentPath}</contentPath>
                         </systemProperties>
                         <uriEncoding>UTF-8</uriEncoding>
