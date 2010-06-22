@@ -11,10 +11,6 @@ import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.events.XMLEvent;
 
-import org.joda.time.DateTime;
-
-import org.springframework.http.MediaType;
-
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -24,11 +20,14 @@ import com.hp.hpl.jena.vocabulary.DCTerms;
 import com.hp.hpl.jena.vocabulary.RDF;
 import org.apache.commons.collections15.ComparatorUtils;
 import org.apache.commons.collections15.IteratorUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 
 import au.id.djc.rdftemplate.TemplateInterpolator;
 
@@ -67,7 +66,7 @@ public class ArticlesFeedController extends AbstractAtomFeedController {
 	}
 	
 	@RequestMapping(value = "/feeds/articles", method = RequestMethod.GET)
-	public void getArticles(HttpServletResponse response,
+	public void getArticles(WebRequest request, HttpServletResponse response,
 	        @RequestParam(value = "journal", required = false) String journalUri) throws Exception {
 	    Resource journal = null;
 	    if (journalUri != null) {
@@ -79,6 +78,9 @@ public class ArticlesFeedController extends AbstractAtomFeedController {
 	        entries.add(renderEntry(article));
 	    if (entries.isEmpty())
 	        throw new NotFoundException("No articles exist for journal " + journalUri);
+	    DateTime maxUpdated = Collections.max(entries, AtomEntry.UPDATED_COMPARATOR).getUpdated();
+	    if (request.checkNotModified(maxUpdated.getMillis()))
+	        return;
 	    Collections.sort(entries, ComparatorUtils.reversedComparator(AtomEntry.PUBLISHED_COMPARATOR));
 	    
 	    List<XMLEvent> events = new ArrayList<XMLEvent>();
@@ -91,14 +93,12 @@ public class ArticlesFeedController extends AbstractAtomFeedController {
 	        addTitleElement(events, "Miskin Hill journal articles");
 	        addIdAndSelfLinkElements(events, "http://miskinhill.com.au/feeds/articles");
 	    }
-	    DateTime maxUpdated = Collections.max(entries, AtomEntry.UPDATED_COMPARATOR).getUpdated();
         addUpdated(events, maxUpdated);
 	    for (AtomEntry entry: entries)
 	        events.addAll(entry.getEvents());
 	    events.add(eventFactory.createEndElement(FEED_QNAME, null));
 	    
 	    response.setContentType(MediaType.APPLICATION_ATOM_XML.toString());
-	    response.setDateHeader("Last-Modified", maxUpdated.getMillis());
 	    response.setCharacterEncoding("UTF-8");
 	    XMLEventWriter destination = outputFactory.createXMLEventWriter(response.getOutputStream(), "UTF-8");
 	    for (XMLEvent event: events)

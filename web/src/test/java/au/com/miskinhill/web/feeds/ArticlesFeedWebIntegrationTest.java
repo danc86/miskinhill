@@ -83,6 +83,13 @@ public class ArticlesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
     }
     
     @Test
+    public void shouldSupportIfModifiedSince() throws DocumentException {
+        ResponseEntity<Document> response = restTemplate.getForEntity(BASE.resolve("/feeds/articles"), Document.class);
+        DateTime lastModified = new DateTime(response.getHeaders().getLastModified());
+        assertNotModifiedSince(BASE.resolve("/feeds/articles"), lastModified.plusMinutes(1));
+    }
+    
+    @Test
     public void journalSpecificFeedShouldHaveJournalNameInTitle() throws DocumentException {
         Document doc = restTemplate.getForObject(BASE.resolve("/feeds/articles?" + ASEES_JOURNAL_PARAM), Document.class);
         assertThat(xpath("/atom:feed/atom:title[@type='text']").selectSingleNode(doc).getText(),
