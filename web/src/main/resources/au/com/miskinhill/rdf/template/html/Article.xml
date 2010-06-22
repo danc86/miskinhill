@@ -43,7 +43,7 @@
     <div class="article-meta metabox">
         <h4>Article details</h4>
         <p>
-            Published <span class="date">${dc:isPartOf/mhs:publicationDate#formatted-dt('d MMM yyyy')}</span><br />
+            Published <span class="date">${dc:isPartOf/mhs:publicationDate#formatted-dt('d MMMM yyyy')}</span><br />
             in <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</a> of<br />
             <a href="${dc:isPartOf/mhs:isIssueOf#uri}"><em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /></a>
         </p>
