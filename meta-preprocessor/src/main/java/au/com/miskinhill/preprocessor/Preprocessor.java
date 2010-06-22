@@ -1,8 +1,10 @@
 package au.com.miskinhill.preprocessor;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.SequenceInputStream;
 import java.net.URI;
@@ -67,22 +69,24 @@ public class Preprocessor {
         File contentRoot = new File(paths.getProperty("contentPath"));
         
         JenaParameters.enableEagerLiteralValidation = true;
-        Model m = load(contentRoot);
-        extractResponsibility(m);
-        extractCitations(m, contentRoot);
-        new Inferrer(m).apply();
-        new Validator(m).validate();
-        m.write(System.out, "RDF/XML");
+        Model model = load(contentRoot, Collections.singleton("thirdparty"));
+        extractResponsibility(model);
+        extractCitations(model, contentRoot);
+        Model inferredModel = load(new File(contentRoot, "thirdparty"), Collections.<String>emptySet());
+        Model union = ModelFactory.createUnion(model, inferredModel);
+        new Inferrer(union).apply(inferredModel);
+        new Validator(union).validate();
+        writeResult(model, inferredModel);
     }
     
-    private static Model load(File base) throws IOException {
+    private static Model load(File base, Set<String> excludes) throws IOException {
         Model m = ModelFactory.createDefaultModel();
         m.setNsPrefixes(NamespacePrefixMapper.getInstance());
         Queue<File> queue = new LinkedList<File>();
         queue.add(base);
         while (!queue.isEmpty()) {
             for (File child: queue.remove().listFiles()) {
-                if (child.isDirectory()) {
+                if (child.isDirectory() && !excludes.contains(child.getName())) {
                     queue.add(child);
                 } else if (child.isFile()) {
                     if (child.getName().endsWith(".nt")) {
@@ -162,6 +166,16 @@ public class Preprocessor {
             }
         }
         LOG.info("Model contains " + m.getGraph().size() + " triples");
+    }
+    
+    private static void writeResult(Model model, Model inferredModel) throws IOException {
+        File modelFile = new File("meta.xml");
+        LOG.info("Writing model to " + modelFile.getAbsolutePath());
+        model.write(new BufferedOutputStream(new FileOutputStream(modelFile)), "RDF/XML");
+        
+        File inferredModelFile = new File("meta-inferred.xml");
+        LOG.info("Writing inferred model to " + inferredModelFile.getAbsolutePath());
+        inferredModel.write(new BufferedOutputStream(new FileOutputStream(inferredModelFile)), "RDF/XML");
     }
     
 }

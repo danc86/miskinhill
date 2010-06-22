@@ -2,14 +2,21 @@ package au.com.miskinhill.rdf;
 
 import java.io.StringWriter;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RDFXMLRepresentation implements Representation {
+public class RDFXMLRepresentation extends AbstractRDFRepresentation {
     
     private static final MediaType CONTENT_TYPE = new MediaType("application", "rdf+xml");
+    
+    @Autowired
+    public RDFXMLRepresentation(Model bareModel) {
+        super(bareModel);
+    }
 
     @Override
     public boolean canRepresent(Resource resource) {
@@ -40,15 +47,12 @@ public class RDFXMLRepresentation implements Representation {
     public String getLabel() {
         return "RDF/XML";
     }
-
+    
     @Override
-    public String render(Resource resource) {
-        SubgraphAccumulator acc = new SubgraphAccumulator(resource.getModel());
-        acc.visit(resource);
-        // XXX should also do defragged
+    public String renderSubgraph(Model subgraph) {
         StringWriter w = new StringWriter();
         w.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-        acc.getSubgraph().write(w, "RDF/XML-ABBREV");
+        subgraph.write(w, "RDF/XML-ABBREV");
         return w.toString();
     }
 

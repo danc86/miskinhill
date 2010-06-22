@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -16,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class BibtexRepresentationTest {
     
     @Autowired private RepresentationFactory representationFactory;
-    @Autowired private Model realModel; // i.e. with real data, not fake test data
+    @Autowired @Qualifier("model") private Model realModel; // i.e. with real data, not fake test data
     private Representation representation;
     
     @Before

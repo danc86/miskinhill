@@ -1,0 +1,19 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+    
+    <import resource="classpath:/au/com/miskinhill/web/test-spring-context.xml"/>
+    
+    <bean id="bareModel" class="au.com.miskinhill.rdf.ModelFactory" factory-method="load" lazy-init="true">
+        <constructor-arg value="au.com.miskinhill.rdf.RDFXMLRepresentationTest" />
+        <constructor-arg value="test.xml" />
+    </bean>
+    <bean id="inferredModel" class="com.hp.hpl.jena.rdf.model.ModelFactory" factory-method="createDefaultModel" lazy-init="true" />
+    <alias name="bareModel" alias="model" />
+    
+</beans>

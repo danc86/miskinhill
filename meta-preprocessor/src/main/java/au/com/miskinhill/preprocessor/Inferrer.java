@@ -28,31 +28,31 @@ public class Inferrer {
         this.m = m;
     }
     
-    public void apply() {
+    public void apply(Model destination) {
         LOG.info("Applying transitive superclasses");
         Map<Resource, Set<Resource>> transitiveSuperclasses = transitiveSuperclasses();
         for (Statement stmt: m.listStatements(null, RDF.type, (RDFNode) null).toList()) {
             for (Resource superclass: transitiveSuperclasses.get((Resource) stmt.getObject()))
-                m.add(ResourceFactory.createStatement(stmt.getSubject(), RDF.type, superclass));
+                destination.add(ResourceFactory.createStatement(stmt.getSubject(), RDF.type, superclass));
         }
-        LOG.info("Model contains " + m.getGraph().size() + " triples");
+        LOG.info("Destination model contains " + destination.getGraph().size() + " triples");
         
         LOG.info("Applying transitive superproperties");
         Map<Property, Set<Property>> transitiveSuperproperties = transitiveSuperproperties();
         for (Statement stmt: m.listStatements().toList()) {
             for (Property superproperty: transitiveSuperproperties.get(stmt.getPredicate()))
-                m.add(ResourceFactory.createStatement(stmt.getSubject(), superproperty, stmt.getObject()));
+                destination.add(ResourceFactory.createStatement(stmt.getSubject(), superproperty, stmt.getObject()));
         }
-        LOG.info("Model contains " + m.getGraph().size() + " triples");
+        LOG.info("Destination model contains " + destination.getGraph().size() + " triples");
         
         LOG.info("Applying inverse properties");
         Map<Property, Set<Property>> inverseProperties = inverseProperties();
         for (Statement stmt: m.listStatements().toList()) {
             if (inverseProperties.get(stmt.getPredicate()) != null)
                 for (Property inverse: inverseProperties.get(stmt.getPredicate()))
-                    m.add(ResourceFactory.createStatement((Resource) stmt.getObject(), inverse, stmt.getSubject()));
+                    destination.add(ResourceFactory.createStatement((Resource) stmt.getObject(), inverse, stmt.getSubject()));
         }
-        LOG.info("Model contains " + m.getGraph().size() + " triples");
+        LOG.info("Destination model contains " + destination.getGraph().size() + " triples");
     }
     
     private Set<Resource> transitiveObjects(Resource subject, Property predicate) {

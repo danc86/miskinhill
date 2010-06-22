@@ -16,11 +16,11 @@ public class WorldFeedController {
 	
 	private static final byte[] XML_PREAMBLE = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n".getBytes();
 	
-    private final Model model;
+    private final Model bareModel;
 	
 	@Autowired
-	public WorldFeedController(Model model) {
-		this.model = model;
+	public WorldFeedController(Model bareModel) {
+		this.bareModel = bareModel;
 	}
 	
 	@RequestMapping(value = "/feeds/world", method = RequestMethod.GET)
@@ -28,7 +28,7 @@ public class WorldFeedController {
 	    response.setContentType("application/rdf+xml");
 	    OutputStream stream = response.getOutputStream();
         stream.write(XML_PREAMBLE);
-        model.write(stream, "RDF/XML-ABBREV");
+        bareModel.write(stream, "RDF/XML-ABBREV");
         stream.flush();
 	}
 

@@ -2,14 +2,21 @@ package au.com.miskinhill.rdf;
 
 import java.io.StringWriter;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TurtleRepresentation implements Representation {
+public class TurtleRepresentation extends AbstractRDFRepresentation {
     
     private static final MediaType CONTENT_TYPE = new MediaType("application", "x-turtle");
+    
+    @Autowired
+    public TurtleRepresentation(Model bareModel) {
+        super(bareModel);
+    }
 
     @Override
     public boolean canRepresent(Resource resource) {
@@ -42,12 +49,9 @@ public class TurtleRepresentation implements Representation {
     }
 
     @Override
-    public String render(Resource resource) {
-        SubgraphAccumulator acc = new SubgraphAccumulator(resource.getModel());
-        acc.visit(resource);
-        // XXX should also do defragged
+    public String renderSubgraph(Model subgraph) {
         StringWriter w = new StringWriter();
-        acc.getSubgraph().write(w, "TURTLE");
+        subgraph.write(w, "TURTLE");
         return w.toString();
     }
 

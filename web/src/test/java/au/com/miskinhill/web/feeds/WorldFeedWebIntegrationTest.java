@@ -14,7 +14,7 @@ public class WorldFeedWebIntegrationTest extends AbstractWebIntegrationTest {
     public void shouldBeParseable() {
         Model model = ModelFactory.createDefaultModel();
         model.read(BASE.resolve("/feeds/world").toString());
-        assertTrue(model.size() >= 25585L);
+        assertTrue(model.size() >= 12672L);
     }
 
 }

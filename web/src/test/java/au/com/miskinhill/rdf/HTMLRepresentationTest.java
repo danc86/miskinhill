@@ -23,16 +23,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/au/com/miskinhill/web/test-spring-context.xml" })
+@ContextConfiguration("classpath:/au/com/miskinhill/web/test-spring-context-with-fake-model.xml")
 public class HTMLRepresentationTest {
     
     @Autowired private RepresentationFactory representationFactory;
     private Representation representation;
-    private Model model;
+    @Autowired private Model model;
     
     @Before
     public void setUp() throws Exception {
-        model = ModelFactory.load(HTMLRepresentationTest.class, "/au/com/miskinhill/rdf/test.xml");
         representation = representationFactory.getRepresentationByFormat("html");
     }
     

@@ -34,5 +34,9 @@ public final class ModelFactory {
         }
 	    return m;
 	}
+	
+	public static Model createUnion(Model one, Model two) {
+	    return com.hp.hpl.jena.rdf.model.ModelFactory.createUnion(one, two);
+	}
 
 }
