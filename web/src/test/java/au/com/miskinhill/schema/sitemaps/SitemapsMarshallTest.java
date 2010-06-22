@@ -9,6 +9,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.joda.time.DateTime;
+
 import org.junit.Test;
 
 public class SitemapsMarshallTest {
@@ -26,7 +28,7 @@ public class SitemapsMarshallTest {
     public void shouldMarshall() throws Exception {
         Urlset urlset = new Urlset();
         urlset.add(new Url("http://example.com/asdf"));
-        urlset.add(new Url("http://example.com/another", "2009-09-14", ChangeFreq.MONTHLY, BigDecimal.ONE));
+        urlset.add(new Url("http://example.com/another", new DateTime("2009-09-14T01:02:03+10:00"), ChangeFreq.MONTHLY, BigDecimal.ONE));
 
         Marshaller m = jc.createMarshaller();
         m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new SitemapsNamespacePrefixMapper());
@@ -40,7 +42,7 @@ public class SitemapsMarshallTest {
         		"    </url>\n" + 
         		"    <url>\n" + 
         		"        <loc>http://example.com/another</loc>\n" + 
-        		"        <lastmod>2009-09-14</lastmod>\n" + 
+        		"        <lastmod>2009-09-14T01:02:03+10:00</lastmod>\n" + 
         		"        <changefreq>MONTHLY</changefreq>\n" + 
         		"        <priority>1</priority>\n" + 
         		"    </url>\n" + 

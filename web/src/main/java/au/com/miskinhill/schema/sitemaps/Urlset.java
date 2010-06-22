@@ -25,6 +25,18 @@ public class Urlset {
         return urls;
     }
     
+    /**
+     * Returns the first if multiple matches are present (which they should not
+     * be, per the spec), or null if nothing matches.
+     */
+    public Url getUrlForLoc(String loc) {
+        for (Url url: urls) {
+            if (url.getLoc().equals(loc))
+                return url;
+        }
+        return null;
+    }
+    
     public List<Dataset> getDatasets() {
         return datasets;
     }
@@ -42,12 +54,4 @@ public class Urlset {
         return new ToStringBuilder(this).append(urls).toString();
     }
     
-    public boolean containsLoc(String loc) {
-        for (Url url: urls) {
-            if (url.getLoc().equals(loc))
-                return true;
-        }
-        return false;
-    }
-
 }

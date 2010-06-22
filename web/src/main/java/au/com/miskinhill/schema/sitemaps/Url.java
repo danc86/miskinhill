@@ -6,17 +6,38 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.joda.time.format.ISODateTimeFormat;
+
+import org.joda.time.format.DateTimeFormatter;
+
+import org.joda.time.DateTime;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType
 public class Url {
+    
+    private static final class DateTimeAdapter extends XmlAdapter<String, DateTime> {
+        private static final DateTimeFormatter FORMAT = ISODateTimeFormat.dateTimeNoMillis().withOffsetParsed();
+        @Override
+        public String marshal(DateTime v) throws Exception {
+            return FORMAT.print(v);
+        }
+        @Override
+        public DateTime unmarshal(String v) throws Exception {
+            return FORMAT.parseDateTime(v);
+        }
+    }
 
     @XmlElement(required = true)
     private String loc;
     @XmlElement
-    private String lastmod;
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private DateTime lastmod;
     @XmlElement
     private ChangeFreq changefreq;
     @XmlElement
@@ -29,7 +50,12 @@ public class Url {
     	this.loc = loc;
     }
     
-    public Url(String loc, String lastmod, ChangeFreq changefreq,
+    public Url(String loc, DateTime lastmod) {
+        this.loc = loc;
+        this.lastmod = lastmod;
+    }
+    
+    public Url(String loc, DateTime lastmod, ChangeFreq changefreq,
     		BigDecimal priority) {
     	this.loc = loc;
     	this.lastmod = lastmod;
@@ -45,15 +71,11 @@ public class Url {
         this.loc = value;
     }
 
-    public String getLastmod() {
+    public DateTime getLastmod() {
         return lastmod;
     }
 
-	/**
-	 * Should be given in <a href="http://www.w3.org/TR/NOTE-datetime">W3C
-	 * datetime format</a>.
-	 */
-    public void setLastmod(String value) {
+    public void setLastmod(DateTime value) {
         this.lastmod = value;
     }
 

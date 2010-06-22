@@ -7,16 +7,18 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.apache.commons.httpclient.HttpMethodBase;
+import org.joda.time.DateTime;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.CommonsClientHttpRequestFactory;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
-
 
 public abstract class AbstractWebIntegrationTest {
     
@@ -71,6 +73,23 @@ public abstract class AbstractWebIntegrationTest {
                 return null;
             }
         });
+    }
+    
+    protected void assertNotModifiedSince(URI url, final DateTime since) {
+        nonThrowingRestTemplate.execute(url, HttpMethod.GET,
+                new RequestCallback() {
+                    @Override
+                    public void doWithRequest(ClientHttpRequest request) throws IOException {
+                        request.getHeaders().setIfModifiedSince(since.getMillis());
+                    }
+                },
+                new ResponseExtractor<Object>() {
+                    @Override
+                    public Object extractData(ClientHttpResponse response) throws IOException {
+                        assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_MODIFIED));
+                        return null;
+                    }
+                });
     }
 
 }
