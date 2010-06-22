@@ -13,9 +13,8 @@ public abstract class AbstractRDFRepresentation implements Representation {
 
     @Override
     public String render(Resource resource) {
-        SubgraphAccumulator acc = new SubgraphAccumulator(bareModel);
-        acc.visit(bareModel.createResource(resource.getURI()));
-        // XXX should also do defragged
+        SubgraphAccumulator acc = new SubgraphAccumulator(bareModel.createResource(resource.getURI()));
+        acc.accumulate();
         return renderSubgraph(acc.getSubgraph());
     }
 

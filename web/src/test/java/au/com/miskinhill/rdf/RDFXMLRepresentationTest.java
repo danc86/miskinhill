@@ -1,8 +1,12 @@
 package au.com.miskinhill.rdf;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.io.StringReader;
+
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +33,14 @@ public class RDFXMLRepresentationTest {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/"));
         String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/rdfxml/Journal.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
+    }
+    
+    @Test
+    public void shouldIncludeReachableFragmentUris() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/"));
+        Model parsed = ModelFactory.createDefaultModel();
+        parsed.read(new StringReader(result), null, "RDF/XML");
+        assertThat(parsed.getResource("http://miskinhill.com.au/journals/test/1:1/#reviews").listProperties().toList().size(), equalTo(3));
     }
     
     @Test
