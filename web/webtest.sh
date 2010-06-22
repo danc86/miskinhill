@@ -2,7 +2,7 @@
 
 rm -rf webtest.out
 
-mvn tomcat:run &
+mvn clean tomcat:run &
 app_pid=$!
 echo app_pid is $app_pid
 function cleanup {
