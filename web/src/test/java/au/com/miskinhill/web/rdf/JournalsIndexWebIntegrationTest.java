@@ -17,7 +17,7 @@ public class JournalsIndexWebIntegrationTest extends AbstractWebIntegrationTest 
     
     @Test
     public void shouldRedirectForMissingTrailingSlash() throws Exception {
-        assertRedirect(BASE.resolve("/journals"), BASE.resolve("/journals/"), HttpStatus.TEMPORARY_REDIRECT);
+        assertRedirect(BASE.resolve("/journals"), BASE.resolve("/journals/"), HttpStatus.MOVED_PERMANENTLY);
     }
     
     @Test

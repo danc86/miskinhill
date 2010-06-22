@@ -2,18 +2,22 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:aop="http://www.springframework.org/schema/aop"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
         
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="systemPropertiesMode">
             <util:constant static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE" />
         </property>
     </bean>
+    
+    <aop:aspectj-autoproxy />
 
-    <bean class="au.com.miskinhill.rdf.ModelFactory" factory-method="load" lazy-init="true">
+    <bean id="model" class="au.com.miskinhill.rdf.ModelFactory" factory-method="load" lazy-init="true">
         <constructor-arg value="${contentPath}/meta.xml" />
     </bean>
     <bean id="modelTimestamp" class="au.com.miskinhill.web.util.FileModificationTimeFactory" factory-method="getModificationTimeForPath">

@@ -23,7 +23,7 @@ import au.id.djc.rdftemplate.selector.SelectorEvaluationException;
 import au.com.miskinhill.rdf.RDFUtil;
 import au.com.miskinhill.rdf.vocabulary.MHS;
 
-public abstract class AbstractAtomFeedResource {
+public abstract class AbstractAtomFeedController {
     
     protected static final String ATOM_NS = "http://www.w3.org/2005/Atom";
     protected static final QName FEED_QNAME = new QName(ATOM_NS, "feed");
@@ -37,7 +37,7 @@ public abstract class AbstractAtomFeedResource {
     protected final TemplateInterpolator templateInterpolator;
     protected final XMLEventFactory eventFactory;
     
-    public AbstractAtomFeedResource(TemplateInterpolator templateInterpolator, XMLEventFactory eventFactory) {
+    public AbstractAtomFeedController(TemplateInterpolator templateInterpolator, XMLEventFactory eventFactory) {
         this.templateInterpolator = templateInterpolator;
         this.eventFactory = eventFactory;
         typeTemplates.put(MHS.Issue, "/au/com/miskinhill/rdf/template/atomfragment/Issue.xml");

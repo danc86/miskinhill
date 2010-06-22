@@ -9,8 +9,8 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<servlet>
-		<servlet-name>jersey-spring</servlet-name>
-		<servlet-class>au.com.miskinhill.web.util.ServletPathIgnoringJerseySpringServlet</servlet-class>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
@@ -24,7 +24,7 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>jersey-spring</servlet-name>
+		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/feeds/*</url-pattern>
 		<url-pattern>/unapi</url-pattern>
 		<url-pattern>/journals</url-pattern>

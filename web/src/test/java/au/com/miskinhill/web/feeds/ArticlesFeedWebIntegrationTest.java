@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -58,6 +60,26 @@ public class ArticlesFeedWebIntegrationTest extends AbstractWebIntegrationTest {
         for (Element published: publisheds)
             publishedTimes.add(new DateTime(published.getTextTrim()));
         assertThat(publishedTimes, decreasingOrder(DateTime.class));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void feedUpdatedShouldBeLatestEntryUpdated() throws DocumentException {
+        Document doc = restTemplate.getForObject(BASE.resolve("/feeds/articles"), Document.class);
+        List<Element> updateds = xpath("/atom:feed/atom:entry/atom:updated").selectNodes(doc);
+        List<DateTime> updatedTimes = new ArrayList<DateTime>();
+        for (Element updated: updateds)
+            updatedTimes.add(new DateTime(updated.getTextTrim()));
+        Element feedUpdated = (Element) xpath("/atom:feed/atom:updated").selectSingleNode(doc);
+        assertThat(new DateTime(feedUpdated.getTextTrim()), equalTo(Collections.max(updatedTimes)));
+    }
+    
+    @Test
+    public void httpLastModifiedShouldBeTheSameAsFeedUpdated() throws DocumentException {
+        ResponseEntity<Document> response = restTemplate.getForEntity(BASE.resolve("/feeds/articles"), Document.class);
+        Element feedUpdated = (Element) xpath("/atom:feed/atom:updated").selectSingleNode(response.getBody());
+        assertThat(new DateTime(response.getHeaders().getLastModified()),
+                equalTo(new DateTime(feedUpdated.getTextTrim())));
     }
     
     @Test

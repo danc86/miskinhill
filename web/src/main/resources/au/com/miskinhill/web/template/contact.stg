@@ -1,3 +1,6 @@
+group contact;
+
+root() ::= <<
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -23,10 +26,11 @@ Telephone: +61&#160;407&#160;379&#160;687</p>
 <div id="notification-placeholder" />
 
 <form method="post" action="/contact/submit">
-<p><textarea name="body" cols="65" rows="10">%s</textarea></p>
+<p><textarea name="body" cols="65" rows="10">$body; format="xml-escaped"$</textarea></p>
 <p><label for="from">E-mail address (optional):</label> <input type="text" id="from" name="from" /></p>
 <p><input type="submit" value="Submit" /></p>
 </form>
 
 </body>
 </html>
+>>

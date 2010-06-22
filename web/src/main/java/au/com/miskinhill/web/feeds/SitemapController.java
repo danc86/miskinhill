@@ -5,15 +5,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import org.springframework.http.MediaType;
+
+import org.springframework.http.ResponseEntity;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import au.com.miskinhill.rdf.RDFUtil;
 import au.com.miskinhill.rdf.Representation;
@@ -22,10 +25,10 @@ import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.schema.sitemaps.Dataset;
 import au.com.miskinhill.schema.sitemaps.Url;
 import au.com.miskinhill.schema.sitemaps.Urlset;
+import au.com.miskinhill.web.util.ResponseUtils;
 
-@Component
-@Path("/feeds/sitemap")
-public class SitemapResource {
+@Controller
+public class SitemapController {
 	
 	private static final String[] OTHER_URLS = {
 		// homepage and /about/ are already in RDF, don't need to list them here
@@ -42,14 +45,14 @@ public class SitemapResource {
 	private final RepresentationFactory representationFactory;
 	
 	@Autowired
-	public SitemapResource(Model model, RepresentationFactory representationFactory) {
+	public SitemapController(Model model, RepresentationFactory representationFactory) {
 		this.model = model;
 		this.representationFactory = representationFactory;
 	}
 	
-	@GET
-	@Produces("text/xml")
-	public Urlset getSitemap() {
+	@RequestMapping(value = "/feeds/sitemap", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Urlset> getSitemap() {
 		Urlset urlset = new Urlset();
 		for (String loc: OTHER_URLS) {
 			urlset.add(new Url(loc));
@@ -74,7 +77,7 @@ public class SitemapResource {
 			urlset.add(new Url(loc));
 		}
 		urlset.add(new Dataset(DATA_DUMP_URL));
-		return urlset;
+		return ResponseUtils.createResponse(urlset, MediaType.TEXT_XML);
 	}
 
 }

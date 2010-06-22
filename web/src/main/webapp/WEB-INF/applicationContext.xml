@@ -5,5 +5,39 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
     <import resource="classpath:/au/com/miskinhill/web/spring-context.xml"/>
+    
+    <bean class="au.id.djc.stringtemplate.webmvc.StringTemplateViewResolver">
+        <property name="order" value="1" />
+        <property name="prefix" value="/au/com/miskinhill/web/template/" />
+        <property name="suffix" value=".stg" />
+        <property name="charset" value="UTF-8" />
+        <property name="contentType" value="text/html; charset=UTF-8" />
+        <property name="errorListener">
+            <bean class="au.id.djc.stringtemplate.LoggingStringTemplateErrorListener" />
+        </property>
+        <property name="exposeRequestAttributes" value="false" />
+        <property name="exposeSessionAttributes" value="false" />
+        <property name="exposeSpringMacroHelpers" value="false" />
+    </bean>
+    <bean class="au.id.djc.stringtemplate.AnnotationAttributeRendererGenerator" />
+    
+    <bean class="au.id.djc.rdftemplate.view.RDFTemplateViewResolver">
+        <property name="order" value="2" />
+        <property name="prefix" value="classpath:/au/com/miskinhill/web/template/" />
+        <property name="suffix" value=".xml" />
+        <property name="contentType" value="text/html; charset=UTF-8" />
+        <property name="modelOperations">
+            <bean class="au.id.djc.jena.util.SingleModelOperator">
+                <property name="model" ref="model" />
+            </bean>
+        </property>
+        <property name="selectorFactory" ref="selectorFactory" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/" />
+        <property name="suffix" value=".html" />
+        <property name="contentType" value="text/html; charset=UTF-8" />
+    </bean>
 	
 </beans>

@@ -1,37 +1,23 @@
 package au.com.miskinhill.web.rdf;
 
-import java.io.InputStreamReader;
+import javax.servlet.http.HttpServletRequest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import au.com.miskinhill.web.TrailingSlash;
 
-import au.id.djc.rdftemplate.TemplateInterpolator;
-
-@Component
-@Path("/journals/")
+@Controller
 public class JournalsIndexResource {
     
-    private final Model model;
-    private final TemplateInterpolator templateInterpolator;
-    
-    @Autowired
-    public JournalsIndexResource(Model model, TemplateInterpolator templateInterpolator) {
-        this.model = model;
-        this.templateInterpolator = templateInterpolator;
-    }
-    
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    public String getJournalsIndex() {
-        return templateInterpolator.interpolate(
-                new InputStreamReader(this.getClass().getResourceAsStream("journals-index.xml")),
-                model.createResource("http://miskinhill.com.au/#organisation"));
+    @RequestMapping(value = {"/journals", "/journals/"}, method = RequestMethod.GET)
+    @TrailingSlash
+    public ModelAndView getJournalsIndex(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("journals-index");
+        mav.addObject("nodeUri", "http://miskinhill.com.au/#organisation");
+        return mav;
     }
 
 }

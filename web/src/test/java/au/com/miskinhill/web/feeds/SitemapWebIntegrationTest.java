@@ -7,12 +7,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import au.com.miskinhill.AbstractWebIntegrationTest;
 import au.com.miskinhill.schema.sitemaps.Url;
 import au.com.miskinhill.schema.sitemaps.Urlset;
 
 public class SitemapWebIntegrationTest extends AbstractWebIntegrationTest {
+    
+    @Test
+    public void shouldServeAsTextXml() {
+        ResponseEntity<Urlset> response= restTemplate.getForEntity(BASE.resolve("/feeds/sitemap"), Urlset.class);
+        assertTrue(response.getHeaders().getContentType().isCompatibleWith(MediaType.TEXT_XML));
+    }
     
     @Test
     public void shouldContainAlternateRepresentations() {

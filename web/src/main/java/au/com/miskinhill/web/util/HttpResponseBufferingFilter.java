@@ -13,8 +13,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import javax.ws.rs.core.MediaType;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /** Based on ContentBufferingFilter from SiteMesh 3. */
@@ -171,7 +171,7 @@ public abstract class HttpResponseBufferingFilter extends OncePerRequestFilter {
         
         private boolean shouldBuffer() {
             return contentType != null &&
-                    MediaType.TEXT_HTML_TYPE.isCompatible(MediaType.valueOf(contentType)) &&
+                    MediaType.TEXT_HTML.isCompatibleWith(MediaType.valueOf(contentType)) &&
                     (status == 200 || (status >= 400 && status < 500)); // XXX 206 and suchlike?
         }
         

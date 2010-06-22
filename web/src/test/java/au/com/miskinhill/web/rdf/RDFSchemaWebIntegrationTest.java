@@ -17,7 +17,7 @@ public class RDFSchemaWebIntegrationTest extends AbstractWebIntegrationTest {
     
     @Test
     public void shouldRedirectForMissingTrailingSlash() throws Exception {
-        assertRedirect(BASE.resolve("/rdfschema/1.0"), BASE.resolve("/rdfschema/1.0/"), HttpStatus.TEMPORARY_REDIRECT);
+        assertRedirect(BASE.resolve("/rdfschema/1.0"), BASE.resolve("/rdfschema/1.0/"), HttpStatus.MOVED_PERMANENTLY);
     }
     
     @Test

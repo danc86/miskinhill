@@ -1,0 +1,48 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <!-- parent context is applicationContext.xml -->
+    
+    <bean id="urlPathHelper" class="org.springframework.web.util.UrlPathHelper">
+        <property name="alwaysUseFullPath" value="true" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="detectHandlersInAncestorContexts" value="true" />
+        <property name="useDefaultSuffixPattern" value="false" />
+        <property name="urlPathHelper" ref="urlPathHelper" />
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="urlPathHelper" ref="urlPathHelper" />
+        <property name="messageConverters">
+            <util:list>
+                <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+                <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+            </util:list>
+        </property>
+    </bean>
+    <!--bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="mediaTypes">
+            <util:map>
+                <entry key="atom" value="application/atom+xml" />
+                <entry key="html" value="text/html" />
+                <entry key="json" value="application/json" />
+                <entry key="rdf" value="application/rdf+xml" />
+            </util:map>
+        </property>
+        <property name="defaultContentType" value="text/html" />
+        <property name="useNotAcceptableStatusCode" value="true" />
+    </bean-->
+    
+    <!-- need to explicitly define the default exception resolvers because we have one of our own -->
+    <bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver" />
+    <bean class="org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver" />
+	
+</beans>
