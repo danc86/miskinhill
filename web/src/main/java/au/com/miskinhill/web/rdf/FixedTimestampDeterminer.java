@@ -20,11 +20,15 @@ public class FixedTimestampDeterminer implements TimestampDeterminer {
     
     private static final Logger LOG = Logger.getLogger(FixedTimestampDeterminer.class.getName());
     
+    private final DateTime buildTimestamp;
+    private final DateTime modelTimestamp;
     private final DateTime timestamp;
     
     @Autowired
     public FixedTimestampDeterminer(@Qualifier("modelTimestamp") DateTime modelTimestamp) throws IOException {
-        this.timestamp = maxInstant(getBuildTimestamp(), modelTimestamp);
+        this.buildTimestamp = loadBuildTimestamp();
+        this.modelTimestamp = modelTimestamp;
+        this.timestamp = maxInstant(buildTimestamp, modelTimestamp);
         LOG.info("Using " + timestamp + " as fixed timestamp");
     }
     
@@ -33,7 +37,17 @@ public class FixedTimestampDeterminer implements TimestampDeterminer {
         return timestamp;
     }
     
-    private DateTime getBuildTimestamp() throws IOException {
+    @Override
+    public DateTime getBuildTimestamp() {
+        return buildTimestamp;
+    }
+    
+    @Override
+    public DateTime getLatestResourceTimestamp() {
+        return modelTimestamp;
+    }
+    
+    private DateTime loadBuildTimestamp() throws IOException {
         Properties buildProperties = new Properties();
         InputStream stream = getClass().getResourceAsStream("/build.properties");
         if (stream == null)
@@ -49,7 +63,7 @@ public class FixedTimestampDeterminer implements TimestampDeterminer {
         return new DateTime(buildTimestamp);
     }
     
-    private static <T extends ReadableInstant> T maxInstant(T left, T right) {
+    public static <T extends ReadableInstant> T maxInstant(T left, T right) {
         if (left.compareTo(right) < 0) return right;
         return left;
     }

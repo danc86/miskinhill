@@ -87,6 +87,7 @@ public abstract class AbstractWebIntegrationTest {
                     @Override
                     public Object extractData(ClientHttpResponse response) throws IOException {
                         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_MODIFIED));
+                        assertThat(response.getBody(), nullValue()); // i.e. empty
                         return null;
                     }
                 });

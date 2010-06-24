@@ -3,13 +3,10 @@ package au.com.miskinhill.web.feeds;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
-import org.joda.time.DateTime;
-
-import org.springframework.web.context.request.WebRequest;
-
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 import au.com.miskinhill.rdf.RDFUtil;
 import au.com.miskinhill.rdf.Representation;
@@ -54,7 +52,7 @@ public class SitemapController {
 		this.timestampDeterminer = timestampDeterminer;
 	}
 	
-	@RequestMapping(value = "/feeds/sitemap", method = RequestMethod.GET)
+	@RequestMapping(value = {"/feeds/sitemap", "/feeds/sitemap.xml"}, method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<Urlset> getSitemap(WebRequest request) {
 		Urlset urlset = new Urlset();

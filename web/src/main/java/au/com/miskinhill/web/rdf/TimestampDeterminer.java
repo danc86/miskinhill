@@ -8,5 +8,9 @@ import au.com.miskinhill.rdf.Representation;
 public interface TimestampDeterminer {
     
     DateTime determineTimestamp(Resource resource, Representation representation);
+    
+    DateTime getLatestResourceTimestamp();
+    
+    DateTime getBuildTimestamp();
 
 }
