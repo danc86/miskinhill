@@ -9,6 +9,7 @@ import java.net.URI;
 import org.dom4j.Document;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,6 +68,13 @@ public class RDFWebIntegrationTest extends AbstractWebIntegrationTest {
     public void shouldAddLastModifiedHeader() throws Exception {
         ResponseEntity<Document> response = restTemplate.getForEntity(BASE.resolve("/journals/asees/22:1-2/"), Document.class);
         assertThat(new DateTime(response.getHeaders().getLastModified()), greaterThan(new DateTime("2010-06-20T15:00:00+10:00")));
+    }
+    
+    @Test
+    public void shouldSupportHEADMethod() throws Exception {
+        HttpHeaders headers = restTemplate.headForHeaders(BASE.resolve("/journals/asees/22:1-2/"));
+        assertTrue(headers.getContentType().isCompatibleWith(MediaType.TEXT_HTML));
+        assertThat(headers.getLastModified(), greaterThan(0L));
     }
     
     private void checkContentTypeForPathAndAccept(String pathInfo, final String accept, final MediaType expectedContentType) throws Exception {

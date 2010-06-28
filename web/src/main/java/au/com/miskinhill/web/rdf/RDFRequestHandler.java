@@ -36,18 +36,14 @@ public class RDFRequestHandler implements HttpRequestHandler {
     @Override
     public void handleRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getMethod().equals("GET")) {
-            try {
-                doGet(request, response);
-            } catch (Exception e) {
-                throw new ServletException(e);
-            }
+        if (request.getMethod().equals("GET") || request.getMethod().equals("HEAD")) {
+            handle(request, response);
         } else {
             throw new HttpRequestMethodNotSupportedException(request.getMethod());
         }
     }
     
-    private void doGet(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    private void handle(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String requestedUri = "http://miskinhill.com.au" + req.getContextPath() + req.getServletPath() +
                 (req.getPathInfo() != null ? req.getPathInfo() : "");
         
@@ -104,7 +100,10 @@ public class RDFRequestHandler implements HttpRequestHandler {
         resp.setDateHeader("Last-Modified", timestampDeterminer.determineTimestamp(resource, representation).getMillis());
         resp.setContentType(representation.getContentType().toString());
         resp.setCharacterEncoding("UTF-8");
-        resp.getWriter().append(representation.render(resource));
+        
+        if (!req.getMethod().equals("HEAD")) {
+            resp.getWriter().append(representation.render(resource));
+        }
     }
     
     private boolean existsInModel(Model model, String uri) {
