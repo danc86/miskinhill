@@ -6,33 +6,17 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.joda.time.format.ISODateTimeFormat;
-
-import org.joda.time.format.DateTimeFormatter;
-
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import au.com.miskinhill.schema.xmladapter.DateTimeAdapter;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType
 public class Url {
     
-    private static final class DateTimeAdapter extends XmlAdapter<String, DateTime> {
-        private static final DateTimeFormatter FORMAT = ISODateTimeFormat.dateTimeNoMillis().withOffsetParsed();
-        @Override
-        public String marshal(DateTime v) throws Exception {
-            return FORMAT.print(v);
-        }
-        @Override
-        public DateTime unmarshal(String v) throws Exception {
-            return FORMAT.parseDateTime(v);
-        }
-    }
-
     @XmlElement(required = true)
     private String loc;
     @XmlElement
