@@ -8,8 +8,6 @@ import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +22,6 @@ import au.com.miskinhill.schema.sitemaps.Dataset;
 import au.com.miskinhill.schema.sitemaps.Url;
 import au.com.miskinhill.schema.sitemaps.Urlset;
 import au.com.miskinhill.web.rdf.TimestampDeterminer;
-import au.com.miskinhill.web.util.ResponseUtils;
 
 @Controller
 public class SitemapController {
@@ -54,7 +51,7 @@ public class SitemapController {
 	
 	@RequestMapping(value = {"/feeds/sitemap", "/feeds/sitemap.xml"}, method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<Urlset> getSitemap(WebRequest request) {
+	public Urlset getSitemap(WebRequest request) {
 		Urlset urlset = new Urlset();
 		DateTime maxLastmod = new DateTime(0);
 		for (String loc: OTHER_URLS) {
@@ -83,7 +80,7 @@ public class SitemapController {
 		urlset.add(new Dataset(DATA_DUMP_URL));
 		if (request.checkNotModified(maxLastmod.getMillis()))
 		    return null;
-		return ResponseUtils.createResponse(urlset, MediaType.TEXT_XML);
+		return urlset;
 	}
 
 }

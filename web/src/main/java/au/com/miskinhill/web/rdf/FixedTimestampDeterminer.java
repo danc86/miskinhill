@@ -43,6 +43,11 @@ public class FixedTimestampDeterminer implements TimestampDeterminer {
     }
     
     @Override
+    public DateTime getEarliestResourceTimestamp() {
+        return modelTimestamp;
+    }
+    
+    @Override
     public DateTime getLatestResourceTimestamp() {
         return modelTimestamp;
     }

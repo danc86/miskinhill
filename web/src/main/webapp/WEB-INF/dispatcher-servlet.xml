@@ -8,7 +8,7 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
     <!-- parent context is applicationContext.xml -->
-    
+
     <bean id="urlPathHelper" class="org.springframework.web.util.UrlPathHelper">
         <property name="alwaysUseFullPath" value="true" />
         <property name="defaultEncoding" value="UTF-8" />
@@ -24,22 +24,21 @@
             <util:list>
                 <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
                 <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
-                <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" />
+                <bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+                    <constructor-arg ref="unapiMarshaller" />
+                    <property name="supportedMediaTypes" value="application/xml" />
+                </bean>
+                <bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+                    <constructor-arg ref="sitemapsMarshaller" />
+                    <property name="supportedMediaTypes" value="text/xml" />
+                </bean>
+                <bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+                    <constructor-arg ref="oaipmhMarshaller" />
+                    <property name="supportedMediaTypes" value="text/xml" />
+                </bean>
             </util:list>
         </property>
     </bean>
-    <!--bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-        <property name="mediaTypes">
-            <util:map>
-                <entry key="atom" value="application/atom+xml" />
-                <entry key="html" value="text/html" />
-                <entry key="json" value="application/json" />
-                <entry key="rdf" value="application/rdf+xml" />
-            </util:map>
-        </property>
-        <property name="defaultContentType" value="text/html" />
-        <property name="useNotAcceptableStatusCode" value="true" />
-    </bean-->
     
     <!-- need to explicitly define the default exception resolvers because we have one of our own -->
     <bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver" />

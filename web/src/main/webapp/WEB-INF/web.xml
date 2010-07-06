@@ -27,6 +27,7 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/feeds/*</url-pattern>
 		<url-pattern>/unapi</url-pattern>
+		<url-pattern>/oaipmh</url-pattern>
 		<url-pattern>/journals</url-pattern>
 		<url-pattern>/journals/</url-pattern>
 		<url-pattern>/rdfschema/1.0</url-pattern>

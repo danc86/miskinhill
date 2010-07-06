@@ -9,6 +9,8 @@ public interface TimestampDeterminer {
     
     DateTime determineTimestamp(Resource resource, Representation representation);
     
+    DateTime getEarliestResourceTimestamp();
+    
     DateTime getLatestResourceTimestamp();
     
     DateTime getBuildTimestamp();

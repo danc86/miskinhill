@@ -73,4 +73,22 @@
         <property name="to" value="info@miskinhill.com.au" />
     </bean>
     
+    <bean id="unapiMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPath" value="au.com.miskinhill.schema.unapi" />
+    </bean>
+    <bean id="sitemapsMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPath" value="au.com.miskinhill.schema.sitemaps" />
+    </bean>
+    <bean id="oaipmhMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="contextPath" value="au.com.miskinhill.schema.oaipmh:au.com.miskinhill.schema.oaidc" />
+        <property name="marshallerProperties">
+            <util:map>
+                <entry key="com.sun.xml.bind.namespacePrefixMapper">
+                    <bean class="au.com.miskinhill.schema.oaipmh.OAINamespacePrefixMapper" />
+                </entry>
+                <entry key="jaxb.schemaLocation" value="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" />
+            </util:map>
+        </property>
+    </bean>
+    
 </beans>

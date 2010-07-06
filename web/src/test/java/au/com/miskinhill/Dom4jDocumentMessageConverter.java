@@ -18,7 +18,7 @@ import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
 
 public class Dom4jDocumentMessageConverter implements HttpMessageConverter<Document> {
     
-    private static final List<MediaType> MEDIA_TYPES = Arrays.asList(MediaType.TEXT_HTML,
+    private static final List<MediaType> MEDIA_TYPES = Arrays.asList(MediaType.TEXT_HTML, MediaType.TEXT_XML,
             MediaType.APPLICATION_XML, MediaType.APPLICATION_ATOM_XML);
     
     private final SAXReader reader = new SAXReader();
