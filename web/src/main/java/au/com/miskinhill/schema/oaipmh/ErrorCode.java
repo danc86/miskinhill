@@ -31,7 +31,7 @@ public enum ErrorCode {
     BAD_VERB {
         @Override
         public boolean verbApplies(Verb verb) {
-            return false;
+            return verb == null;
         }
     },
     @XmlEnumValue("noMetadataFormats")

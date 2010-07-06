@@ -70,7 +70,8 @@ public class OAIPMHMarshallTest {
                 new Metadata(oaidc));
 		OAIPMH<GetRecordResponse> oaipmh = new OAIPMH<GetRecordResponse>(
 		        new DateTime(2002, 2, 8, 8, 55, 46, 0, DateTimeZone.UTC),
-		        new Request(URI.create("http://arXiv.org/oai2"), Verb.GET_RECORD, "oai:arXiv.org:cs/0112017", "oai_dc"),
+		        new Request.Builder(URI.create("http://arXiv.org/oai2")).forVerb(Verb.GET_RECORD)
+		            .forIdentifier("oai:arXiv.org:cs/0112017").forMetadataPrefix("oai_dc").build(),
 		        new GetRecordResponse(record));
         String expected = IOUtils.toString(this.getClass().getResourceAsStream("GetRecord-example.xml"), "UTF-8");
         assertMarshalled(expected, oaipmh);
@@ -88,7 +89,7 @@ public class OAIPMHMarshallTest {
 	            Arrays.asList("deflate"));
 	    OAIPMH<IdentifyResponse> oaipmh = new OAIPMH<IdentifyResponse>(
 	            new DateTime(2002, 2, 8, 12, 0, 1, 0, DateTimeZone.UTC),
-	            new Request(URI.create("http://memory.loc.gov/cgi-bin/oai"), Verb.IDENTIFY),
+	            new Request.Builder(URI.create("http://memory.loc.gov/cgi-bin/oai")).forVerb(Verb.IDENTIFY).build(),
 	            identify);
 	    String expected = IOUtils.toString(this.getClass().getResourceAsStream("Identify-example.xml"), "UTF-8");
 	    assertMarshalled(expected, oaipmh);
@@ -112,9 +113,9 @@ public class OAIPMHMarshallTest {
 	            new ResumptionToken("xxx45abttyz", new DateTime(2002, 6, 1, 23, 20, 0, 0, DateTimeZone.UTC), 6, 0));
 	    OAIPMH<ListIdentifiersResponse> oaipmh = new OAIPMH<ListIdentifiersResponse>(
 	            new DateTime(2002, 6, 1, 19, 20, 30, 0, DateTimeZone.UTC),
-	            new Request(URI.create("http://an.oa.org/OAI-script"), Verb.LIST_IDENTIFIERS,
-                    new DateTime(1998, 1, 15, 0, 0, 0, 0, DateTimeZone.UTC),
-                    "oldarXiv", "physics:hep"),
+	            new Request.Builder(URI.create("http://an.oa.org/OAI-script")).forVerb(Verb.LIST_IDENTIFIERS)
+                    .from(new DateTime(1998, 1, 15, 0, 0, 0, 0, DateTimeZone.UTC))
+                    .forMetadataPrefix("oldarXiv").forSet("physics:hep").build(),
 	            listIdentifiers);
 	    String expected = IOUtils.toString(this.getClass().getResourceAsStream("ListIdentifiers-example.xml"), "UTF-8");
 	    assertMarshalled(expected, oaipmh);
@@ -134,7 +135,8 @@ public class OAIPMHMarshallTest {
         	            URI.create("http://www.perseus.tufts.edu/persmeta.dtd"))));
 	    OAIPMH<ListMetadataFormatsResponse> oaipmh = new OAIPMH<ListMetadataFormatsResponse>(
 	            new DateTime(2002, 2, 8, 14, 27, 19, 0, DateTimeZone.UTC),
-	            new Request(URI.create("http://www.perseus.tufts.edu/cgi-bin/pdataprov"), Verb.LIST_METADATA_FORMATS, "oai:perseus.tufts.edu:Perseus:text:1999.02.0119"),
+	            new Request.Builder(URI.create("http://www.perseus.tufts.edu/cgi-bin/pdataprov"))
+	                .forVerb(Verb.LIST_METADATA_FORMATS).forIdentifier("oai:perseus.tufts.edu:Perseus:text:1999.02.0119").build(),
 	            listMetadataFormats);
 	    String expected = IOUtils.toString(this.getClass().getResourceAsStream("ListMetadataFormats-example.xml"), "UTF-8");
 	    assertMarshalled(expected, oaipmh);
@@ -167,11 +169,10 @@ public class OAIPMHMarshallTest {
                         new Identifier("http://www.perseus.tufts.edu/cgi-bin/ptext?doc=Perseus:text:1999.02.0083")))))));
 	    OAIPMH<ListRecordsResponse> oaipmh = new OAIPMH<ListRecordsResponse>(
 	            new DateTime(2002, 6, 1, 19, 20, 30, 0, DateTimeZone.UTC),
-	            new Request(URI.create("http://www.perseus.tufts.edu/cgi-bin/pdataprov"),
-                    Verb.LIST_RECORDS,
-                    new DateTime(2002, 5, 1, 14, 15, 0, 0, DateTimeZone.UTC),
-                    new DateTime(2002, 5, 1, 14, 20, 0, 0, DateTimeZone.UTC),
-                    "oai_dc"),
+	            new Request.Builder(URI.create("http://www.perseus.tufts.edu/cgi-bin/pdataprov")).forVerb(Verb.LIST_RECORDS)
+                    .from(new DateTime(2002, 5, 1, 14, 15, 0, 0, DateTimeZone.UTC))
+                    .until(new DateTime(2002, 5, 1, 14, 20, 0, 0, DateTimeZone.UTC))
+                    .forMetadataPrefix("oai_dc").build(),
 	            listRecords);
 	    String expected = IOUtils.toString(this.getClass().getResourceAsStream("ListRecords-example.xml"), "UTF-8");
 	    assertMarshalled(expected, oaipmh);
@@ -188,7 +189,7 @@ public class OAIPMHMarshallTest {
                 new Set("video", "Video Collection")));
 	    OAIPMH<ListSetsResponse> oaipmh = new OAIPMH<ListSetsResponse>(
 	            new DateTime(2002, 8, 11, 7, 21, 33, 0, DateTimeZone.UTC),
-	            new Request(URI.create("http://an.oa.org/OAI-script"), Verb.LIST_SETS),
+	            new Request.Builder(URI.create("http://an.oa.org/OAI-script")).forVerb(Verb.LIST_SETS).build(),
                 listSets);
 	    String expected = IOUtils.toString(this.getClass().getResourceAsStream("ListSets-example.xml"), "UTF-8");
 	    assertMarshalled(expected, oaipmh);
@@ -198,7 +199,7 @@ public class OAIPMHMarshallTest {
 	public void shouldMarshallError() throws Exception {
 	    OAIPMH<ListSetsResponse> oaipmh = new OAIPMH<ListSetsResponse>(
 	            new DateTime(2002, 5, 1, 9, 18, 29, 0, DateTimeZone.UTC),
-	            new Request(URI.create("http://arXiv.org/oai2"), Verb.LIST_SETS),
+	            new Request.Builder(URI.create("http://arXiv.org/oai2")).forVerb(Verb.LIST_SETS).build(),
 	            Arrays.asList(new Error(ErrorCode.NO_SET_HIERARCHY, "This repository does not support sets")));
         String expected = IOUtils.toString(this.getClass().getResourceAsStream("error-example.xml"), "UTF-8");
         assertMarshalled(expected, oaipmh);

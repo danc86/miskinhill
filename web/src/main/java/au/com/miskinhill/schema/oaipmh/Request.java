@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType
@@ -37,54 +36,46 @@ public class Request {
     protected Request() {
     }
     
-    public Request(URI baseUrl, Verb verb) {
-        this.baseUrl = baseUrl.toString();
-        this.verb = verb;
-    }
-    
-    public Request(URI baseUrl, Verb verb, String identifier) {
-        this.baseUrl = baseUrl.toString();
-        this.verb = verb;
-        this.identifier = identifier;
-    }
-    
-    public Request(URI baseUrl, Verb verb, String identifier, String metadataPrefix) {
-        this.baseUrl = baseUrl.toString();
-        this.verb = verb;
-        this.identifier = identifier;
-        this.metadataPrefix = metadataPrefix;
-    }
-    
-    public Request(URI baseUrl, Verb verb, DateTime from, String metadataPrefix) {
-        this.baseUrl = baseUrl.toString();
-        this.verb = verb;
-        this.from = from.toDateTime(DateTimeZone.UTC);
-        this.metadataPrefix = metadataPrefix;
-    }
-    
-    public Request(URI baseUrl, Verb verb, DateTime from, String metadataPrefix, String set) {
-        this.baseUrl = baseUrl.toString();
-        this.verb = verb;
-        this.from = from.toDateTime(DateTimeZone.UTC);
-        this.metadataPrefix = metadataPrefix;
-        this.set = set;
-    }
-    
-    public Request(URI baseUrl, Verb verb, DateTime from, DateTime until, String metadataPrefix) {
-        this.baseUrl = baseUrl.toString();
-        this.verb = verb;
-        this.from = from.toDateTime(DateTimeZone.UTC);
-        this.until = until.toDateTime(DateTimeZone.UTC);
-        this.metadataPrefix = metadataPrefix;
-    }
-    
-    public Request(URI baseUrl, Verb verb, DateTime from, DateTime until, String metadataPrefix, String set) {
-        this.baseUrl = baseUrl.toString();
-        this.verb = verb;
-        this.from = from.toDateTime(DateTimeZone.UTC);
-        this.until = until.toDateTime(DateTimeZone.UTC);
-        this.metadataPrefix = metadataPrefix;
-        this.set = set;
+    public static final class Builder {
+        private final Request request = new Request();
+        
+        public Builder(URI baseUrl) {
+            request.baseUrl = baseUrl.toString();
+        }
+        
+        public Builder forVerb(Verb verb) {
+            request.verb = verb;
+            return this;
+        }
+        
+        public Builder forIdentifier(String identifier) {
+            request.identifier = identifier;
+            return this;
+        }
+        
+        public Builder forMetadataPrefix(String prefix) {
+            request.metadataPrefix = prefix;
+            return this;
+        }
+        
+        public Builder from(DateTime from) {
+            request.from = from;
+            return this;
+        }
+        
+        public Builder until(DateTime until) {
+            request.until = until;
+            return this;
+        }
+        
+        public Builder forSet(String set) {
+            request.set = set;
+            return this;
+        }
+        
+        public Request build() {
+            return request;
+        }
     }
 
     public String getBaseUrl() {

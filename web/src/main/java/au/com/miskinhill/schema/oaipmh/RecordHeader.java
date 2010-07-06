@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(propOrder = {
@@ -33,19 +34,19 @@ public class RecordHeader {
     
     public RecordHeader(String identifier, DateTime datestamp) {
         this.identifier = identifier;
-        this.datestamp = datestamp;
+        this.datestamp = datestamp.toDateTime(DateTimeZone.UTC);
         this.setSpec = Collections.emptyList();
     }
     
     public RecordHeader(String identifier, DateTime datestamp, List<String> setSpec) {
         this.identifier = identifier;
-        this.datestamp = datestamp;
+        this.datestamp = datestamp.toDateTime(DateTimeZone.UTC);
         this.setSpec = setSpec;
     }
     
     public RecordHeader(String identifier, DateTime datestamp, List<String> setSpec, Status status) {
         this.identifier = identifier;
-        this.datestamp = datestamp;
+        this.datestamp = datestamp.toDateTime(DateTimeZone.UTC);
         this.setSpec = setSpec;
         this.status = status;
     }
