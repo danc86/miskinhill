@@ -1,3 +1,6 @@
+* support other IssueContent besides Articles in OAI-PMH
+* record/infer language for each IssueContent, and put it everywhere (esp. MODS and OAI-DC)
+
 * <http://www.ukoln.ac.uk/repositories/digirep/index/SWAP#Vocabularies_and_Terms>
 
 soonish:
