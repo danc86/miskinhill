@@ -2,6 +2,7 @@ package au.com.miskinhill.rdf;
 
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -28,6 +29,8 @@ public class MODSRepresentation implements XMLStreamRepresentation {
     
     private final MediaType contentType = new MediaType("application", "mods+xml");
     private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.HTMLAnchors, ShownIn.HTMLLinks, ShownIn.AtomLinks, ShownIn.Unapi, ShownIn.OAIPMH);
+    private final URI namespace = URI.create("http://www.loc.gov/mods/v3");
+    private final URI xsd = URI.create("http://www.loc.gov/standards/mods/v3/mods-3-3.xsd");
     private final Map<Resource, String> typeTemplates = new HashMap<Resource, String>();
     private final TemplateInterpolator templateInterpolator;
     private final XMLOutputFactory outputFactory;
@@ -75,6 +78,16 @@ public class MODSRepresentation implements XMLStreamRepresentation {
     @Override
     public boolean isShownIn(ShownIn place) {
         return shownIn.contains(place);
+    }
+    
+    @Override
+    public URI getXMLNamespace() {
+        return namespace;
+    }
+    
+    @Override
+    public URI getXSD() {
+        return xsd;
     }
 
     @Override

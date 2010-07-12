@@ -35,6 +35,7 @@ import org.w3c.dom.Element;
 import au.id.djc.rdftemplate.XMLStream;
 
 import au.com.miskinhill.rdf.Representation;
+import au.com.miskinhill.rdf.Representation.ShownIn;
 import au.com.miskinhill.rdf.RepresentationFactory;
 import au.com.miskinhill.rdf.XMLStreamRepresentation;
 import au.com.miskinhill.rdf.vocabulary.MHS;
@@ -71,6 +72,9 @@ public class OaipmhController {
     private final XMLOutputFactory outputFactory;
     private final DocumentBuilderFactory dbf;
     
+    /** Computed once for efficiency. */
+    private final ListMetadataFormatsResponse allFormatsResponse;
+    
     @Autowired
     public OaipmhController(Model model, TimestampDeterminer timestampDeterminer, RepresentationFactory representationFactory,
             XMLOutputFactory outputFactory) {
@@ -80,6 +84,13 @@ public class OaipmhController {
         this.outputFactory = outputFactory;
         this.dbf = DocumentBuilderFactory.newInstance();
         this.dbf.setNamespaceAware(true);
+        
+        ArrayList<MetadataFormat> formats = new ArrayList<MetadataFormat>();
+        for (Representation represenation: representationFactory.getAllRepresentationsShownIn(ShownIn.OAIPMH)) {
+            XMLStreamRepresentation r = (XMLStreamRepresentation) represenation;
+            formats.add(new MetadataFormat(r.getFormat(), r.getXSD(), r.getXMLNamespace()));
+        }
+        allFormatsResponse = new ListMetadataFormatsResponse(formats);
     }
     
     @RequestMapping(params = "!verb")
@@ -112,11 +123,7 @@ public class OaipmhController {
     @ResponseBody
     public OAIPMH<?> listMetadataFormatsForAll() {
         Request request = new Request.Builder(REPOSITORY_BASE).forVerb(Verb.LIST_METADATA_FORMATS).build();
-        return new OAIPMH<ListMetadataFormatsResponse>(new DateTime(), request,
-                new ListMetadataFormatsResponse(Arrays.asList(
-                    new MetadataFormat("oai_dc",
-                            URI.create("http://www.openarchives.org/OAI/2.0/oai_dc.xsd"),
-                            URI.create("http://www.openarchives.org/OAI/2.0/oai_dc/")))));
+        return new OAIPMH<ListMetadataFormatsResponse>(new DateTime(), request, allFormatsResponse);
     }
     
     @RequestMapping(params = {"verb=ListMetadataFormats", "identifier"})
@@ -128,11 +135,14 @@ public class OaipmhController {
                     Arrays.asList(new au.com.miskinhill.schema.oaipmh.Error(ErrorCode.ID_DOES_NOT_EXIST,
                         "Identifier " + identifier + " is not known to this repository")));
         }
+        Resource resource = model.createResource(identifier);
+        ArrayList<MetadataFormat> formats = new ArrayList<MetadataFormat>();
+        for (Representation represenation: representationFactory.getRepresentationsForResource(resource, ShownIn.OAIPMH)) {
+            XMLStreamRepresentation r = (XMLStreamRepresentation) represenation;
+            formats.add(new MetadataFormat(r.getFormat(), r.getXSD(), r.getXMLNamespace()));
+        }
         return new OAIPMH<ListMetadataFormatsResponse>(new DateTime(), request,
-                new ListMetadataFormatsResponse(Arrays.asList(
-                        new MetadataFormat("oai_dc",
-                                URI.create("http://www.openarchives.org/OAI/2.0/oai_dc.xsd"),
-                                URI.create("http://www.openarchives.org/OAI/2.0/oai_dc/")))));
+                new ListMetadataFormatsResponse(formats));
     }
     
     @RequestMapping(params = {"verb=ListIdentifiers", "!metadataPrefix"})
@@ -149,7 +159,8 @@ public class OaipmhController {
     public OAIPMH<?> listIdentifiers(@RequestParam String metadataPrefix,
             @RequestParam(required = false) String from, @RequestParam(required = false) String until) {
         Request.Builder requestBuilder = new Request.Builder(REPOSITORY_BASE).forVerb(Verb.LIST_IDENTIFIERS).forMetadataPrefix(metadataPrefix);
-        if (!metadataPrefix.equals("oai_dc")) {
+        Representation representation = representationFactory.getRepresentationByFormat(metadataPrefix);
+        if (representation == null || !representation.isShownIn(ShownIn.OAIPMH)) {
             return new OAIPMH<Response>(new DateTime(), requestBuilder.build(),
                     Arrays.asList(new au.com.miskinhill.schema.oaipmh.Error(ErrorCode.CANNOT_DISSEMINATE_FORMAT,
                             "Metadata prefix " + metadataPrefix + " is not supported")));
@@ -186,7 +197,6 @@ public class OaipmhController {
             requestBuilder = requestBuilder.until(untilDateTime);
         }
         
-        Representation representation = representationFactory.getRepresentationByFormat(metadataPrefix);
         List<RecordHeader> headers = new ArrayList<RecordHeader>();
         for (Iterator<Resource> it = getAllResourcesInRepository(model); it.hasNext(); ) {
             Resource resource = it.next();
@@ -233,7 +243,8 @@ public class OaipmhController {
     public OAIPMH<?> getRecord(@RequestParam String identifier, @RequestParam String metadataPrefix) throws Exception {
         Request request = new Request.Builder(REPOSITORY_BASE).forVerb(Verb.GET_RECORD)
                 .forIdentifier(identifier).forMetadataPrefix(metadataPrefix).build();
-        if (!metadataPrefix.equals("oai_dc")) {
+        XMLStreamRepresentation representation = (XMLStreamRepresentation) representationFactory.getRepresentationByFormat(metadataPrefix);
+        if (representation == null || !representation.isShownIn(ShownIn.OAIPMH)) {
             return new OAIPMH<Response>(new DateTime(), request,
                     Arrays.asList(new au.com.miskinhill.schema.oaipmh.Error(ErrorCode.CANNOT_DISSEMINATE_FORMAT,
                             "Metadata prefix " + metadataPrefix + " is not supported")));
@@ -245,7 +256,6 @@ public class OaipmhController {
         }
         
         Resource resource = model.createResource(identifier);
-        XMLStreamRepresentation representation = (XMLStreamRepresentation) representationFactory.getRepresentationByFormat(metadataPrefix);
         RecordHeader header = new RecordHeader(resource.getURI(), timestampDeterminer.determineTimestamp(resource, representation));
         Element recordBody = domElementFromStream(representation.renderXMLStream(resource));
         GetRecordResponse response = new GetRecordResponse(new Record(header, new Metadata(recordBody)));
@@ -276,7 +286,8 @@ public class OaipmhController {
     public OAIPMH<?> listRecords(@RequestParam String metadataPrefix,
             @RequestParam(required = false) String from, @RequestParam(required = false) String until) throws Exception {
         Request.Builder requestBuilder = new Request.Builder(REPOSITORY_BASE).forVerb(Verb.LIST_RECORDS).forMetadataPrefix(metadataPrefix);
-        if (!metadataPrefix.equals("oai_dc")) {
+        XMLStreamRepresentation representation = (XMLStreamRepresentation) representationFactory.getRepresentationByFormat(metadataPrefix);
+        if (representation == null || !representation.isShownIn(ShownIn.OAIPMH)) {
             return new OAIPMH<Response>(new DateTime(), requestBuilder.build(),
                     Arrays.asList(new au.com.miskinhill.schema.oaipmh.Error(ErrorCode.CANNOT_DISSEMINATE_FORMAT,
                             "Metadata prefix " + metadataPrefix + " is not supported")));
@@ -313,7 +324,6 @@ public class OaipmhController {
             requestBuilder = requestBuilder.until(untilDateTime);
         }
         
-        XMLStreamRepresentation representation = (XMLStreamRepresentation) representationFactory.getRepresentationByFormat(metadataPrefix);
         List<Record> records = new ArrayList<Record>();
         for (Iterator<Resource> it = getAllResourcesInRepository(model); it.hasNext(); ) {
             Resource resource = it.next();

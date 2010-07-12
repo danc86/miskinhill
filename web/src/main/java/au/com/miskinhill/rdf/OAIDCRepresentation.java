@@ -2,6 +2,7 @@ package au.com.miskinhill.rdf;
 
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -27,6 +28,8 @@ import au.com.miskinhill.rdf.vocabulary.MHS;
 public class OAIDCRepresentation implements XMLStreamRepresentation {
     
     private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.Unapi, ShownIn.OAIPMH);
+    private final URI namespace = URI.create("http://www.openarchives.org/OAI/2.0/oai_dc/");
+    private final URI xsd = URI.create("http://www.openarchives.org/OAI/2.0/oai_dc.xsd");
     private final Map<Resource, String> typeTemplates = new HashMap<Resource, String>();
     private final TemplateInterpolator templateInterpolator;
     private final XMLOutputFactory outputFactory;
@@ -73,6 +76,16 @@ public class OAIDCRepresentation implements XMLStreamRepresentation {
     @Override
     public boolean isShownIn(ShownIn place) {
         return shownIn.contains(place);
+    }
+    
+    @Override
+    public URI getXMLNamespace() {
+        return namespace;
+    }
+    
+    @Override
+    public URI getXSD() {
+        return xsd;
     }
 
     @Override

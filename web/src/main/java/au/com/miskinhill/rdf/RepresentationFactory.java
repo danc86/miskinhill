@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
+import au.com.miskinhill.rdf.Representation.ShownIn;
+
 @Component
 public class RepresentationFactory {
     
@@ -40,6 +42,15 @@ public class RepresentationFactory {
         return result;
     }
     
+    public List<Representation> getRepresentationsForResource(final Resource resource, final ShownIn place) {
+        List<Representation> result = new ArrayList<Representation>();
+        for (Representation representation: representations) {
+            if (representation.canRepresent(resource) && representation.isShownIn(place))
+                result.add(representation);
+        }
+        return result;
+    }
+    
     public Representation getRepresentationByFormat(String format) {
         return byFormat.get(format);
     }
@@ -49,11 +60,20 @@ public class RepresentationFactory {
     }
     
     public Set<String> getAllFormats() {
-        return byFormat.keySet();
+        return Collections.unmodifiableSet(byFormat.keySet());
     }
     
     public Collection<Representation> getAll() {
         return representations;
+    }
+
+    public List<Representation> getAllRepresentationsShownIn(ShownIn place) {
+        List<Representation> result = new ArrayList<Representation>();
+        for (Representation representation: representations) {
+            if (representation.isShownIn(place))
+                result.add(representation);
+        }
+        return result;
     }
 
 }

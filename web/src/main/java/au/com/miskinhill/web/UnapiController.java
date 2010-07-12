@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
-import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,18 +52,10 @@ public class UnapiController {
                     throw new NotAcceptableException();
                 throw new RedirectException(id + "." + format);
             }
-            List<Representation> representations = representationFactory.getRepresentationsForResource(resource);
-            CollectionUtils.filter(representations, SHOWN_IN_UNAPI_PREDICATE);
+            List<Representation> representations = representationFactory.getRepresentationsForResource(resource, ShownIn.Unapi);
             return Formats.forId(id, representations);
         }
         return allFormats;
     }
-    
-    private static final Predicate<Representation> SHOWN_IN_UNAPI_PREDICATE = new Predicate<Representation>() {
-        @Override
-        public boolean evaluate(Representation representation) {
-            return representation.isShownIn(ShownIn.Unapi);
-        }
-    };
 
 }

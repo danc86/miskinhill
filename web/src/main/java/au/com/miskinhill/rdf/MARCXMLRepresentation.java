@@ -18,7 +18,7 @@ import au.com.miskinhill.rdf.vocabulary.MHS;
 public class MARCXMLRepresentation implements Representation {
     
     private final MediaType contentType = new MediaType("application", "marcxml+xml");
-    private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.HTMLAnchors, ShownIn.HTMLLinks, ShownIn.AtomLinks, ShownIn.Unapi, ShownIn.OAIPMH);
+    private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.HTMLAnchors, ShownIn.HTMLLinks, ShownIn.AtomLinks, ShownIn.Unapi);
     private final Set<Resource> types = Collections.singleton(MHS.Journal);
     private final TemplateInterpolator templateInterpolator;
     
