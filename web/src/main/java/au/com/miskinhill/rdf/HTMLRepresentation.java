@@ -1,6 +1,7 @@
 package au.com.miskinhill.rdf;
 
 import java.io.InputStreamReader;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public class HTMLRepresentation implements Representation {
     
     private static final String CITED_PREFIX = "http://miskinhill.com.au/cited/";
 
+    private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.AtomLinks, ShownIn.Unapi);
     private final Map<Resource, String> typeTemplates = new HashMap<Resource, String>();
     private final Map<Resource, String> citedTypeTemplates = new HashMap<Resource, String>();
     private final TemplateInterpolator templateInterpolator;
@@ -73,6 +75,11 @@ public class HTMLRepresentation implements Representation {
     @Override
     public String getDocs() {
         return "http://www.w3.org/TR/xhtml1/";
+    }
+    
+    @Override
+    public boolean isShownIn(ShownIn place) {
+        return shownIn.contains(place);
     }
 
     @Override

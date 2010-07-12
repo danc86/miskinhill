@@ -1,0 +1,12 @@
+<oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" 
+        xmlns:dc="http://purl.org/dc/elements/1.1/" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd"
+        xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+    <dc:title rdf:content="dc:title#string-lv" />
+    <rdf:if test="mhs:authorOrder"><dc:creator rdf:for="mhs:authorOrder">${foaf:surname}, ${foaf:givenNames}</dc:creator></rdf:if>
+    <rdf:if not="mhs:authorOrder"><dc:creator rdf:for="dc:creator">${foaf:surname}, ${foaf:givenNames}</dc:creator></rdf:if>
+    <dc:date>${dc:isPartOf/mhs:publicationDate}</dc:date>
+    <dc:publisher rdf:content="dc:isPartOf/mhs:isIssueOf/dc:publisher/foaf:name" />
+    <rdf:for each="dc:subject(mhs:label#comparable-lv)"><dc:subject rdf:content="mhs:label#lcsh-cleanup" /></rdf:for>
+</oai_dc:dc>

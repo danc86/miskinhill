@@ -11,28 +11,20 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.apache.commons.io.IOUtils;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.io.DOMWriter;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
-
-import au.com.miskinhill.schema.oaidc.AbstractElement;
-import au.com.miskinhill.schema.oaidc.Creator;
-import au.com.miskinhill.schema.oaidc.Date;
-import au.com.miskinhill.schema.oaidc.Description;
-import au.com.miskinhill.schema.oaidc.Identifier;
-import au.com.miskinhill.schema.oaidc.Language;
-import au.com.miskinhill.schema.oaidc.OaiDc;
-import au.com.miskinhill.schema.oaidc.Source;
-import au.com.miskinhill.schema.oaidc.Subject;
-import au.com.miskinhill.schema.oaidc.Title;
-import au.com.miskinhill.schema.oaidc.Type;
+import org.w3c.dom.Element;
 
 public class OAIPMHMarshallTest {
 
 	private static final JAXBContext jc;
 	static {
 		try {
-			jc = JAXBContext.newInstance("au.com.miskinhill.schema.oaipmh:au.com.miskinhill.schema.oaidc");
+			jc = JAXBContext.newInstance("au.com.miskinhill.schema.oaipmh");
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
 		}
@@ -50,19 +42,22 @@ public class OAIPMHMarshallTest {
 
 	@Test
 	public void shouldMarshallGetRecordResponse() throws Exception {
-        OaiDc oaidc = new OaiDc(
-                new Title("Using Structural Metadata to Localize Experience of Digital Content"),
-                new Creator("Dushay, Naomi"),
-                new Subject("Digital Libraries"),
-                new Description("With the increasing technical sophistication of " + 
-                		"both information consumers and providers, there is " + 
-                		"increasing demand for more meaningful experiences of digital " + 
-                		"information. We present a framework that separates digital " + 
-                		"object experience, or rendering, from digital object storage " + 
-                		"and manipulation, so the rendering can be tailored to " + 
-                		"particular communities of users."),
-                new Description("Comment: 23 pages including 2 appendices, 8 figures"),
-                new Date(new DateTime(2001, 12, 14, 1, 2, 3, 0, DateTimeZone.UTC)));
+        Element oaidc = domElementFromString("<oai_dc:dc " +
+                "xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\" " + 
+                "xmlns:dc=\"http://purl.org/dc/elements/1.1/\">" +
+                "<dc:title>Using Structural Metadata to Localize Experience of Digital Content</dc:title>" +
+                "<dc:creator>Dushay, Naomi</dc:creator>" +
+                "<dc:subject>Digital Libraries</dc:subject>" +
+                "<dc:description>With the increasing technical sophistication of " + 
+                "both information consumers and providers, there is " + 
+                "increasing demand for more meaningful experiences of digital " + 
+                "information. We present a framework that separates digital " + 
+                "object experience, or rendering, from digital object storage " + 
+                "and manipulation, so the rendering can be tailored to " + 
+                "particular communities of users.</dc:description>" +
+                "<dc:description>Comment: 23 pages including 2 appendices, 8 figures</dc:description>" +
+                "<dc:date>2001-12-14T01:02:03Z</dc:date>" +
+                "</oai_dc:dc>");
         Record record = new Record(
                 new RecordHeader("oai:arXiv.org:cs/0112017",
                         new DateTime(2001, 12, 14, 1, 2, 3, 0, DateTimeZone.UTC),
@@ -148,25 +143,31 @@ public class OAIPMHMarshallTest {
 	            new Record(
                     new RecordHeader("oai:perseus:Perseus:text:1999.02.0084",
                         new DateTime(2002, 5, 1, 14, 16, 12, 0, DateTimeZone.UTC)),
-                    new Metadata(new OaiDc(Arrays.<AbstractElement<?>>asList(
-                        new Title("Opera Minora"),
-                        new Creator("Cornelius Tacitus"),
-                        new Type("text"),
-                        new Source("Opera Minora. Cornelius Tacitus. Henry Furneaux. Clarendon Press. Oxford. 1900."),
-                        new Language("latin"),
-                        new Identifier("http://www.perseus.tufts.edu/cgi-bin/ptext?doc=Perseus:text:1999.02.0084"))))),
+                    new Metadata(domElementFromString("<oai_dc:dc " +
+                            "xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\" " + 
+                            "xmlns:dc=\"http://purl.org/dc/elements/1.1/\">" +
+                            "<dc:title>Opera Minora</dc:title>" +
+                            "<dc:creator>Cornelius Tacitus</dc:creator>" +
+                            "<dc:type>text</dc:type>" +
+                            "<dc:source>Opera Minora. Cornelius Tacitus. Henry Furneaux. Clarendon Press. Oxford. 1900.</dc:source>" +
+                            "<dc:language>latin</dc:language>" +
+                            "<dc:identifier>http://www.perseus.tufts.edu/cgi-bin/ptext?doc=Perseus:text:1999.02.0084</dc:identifier>" +
+                            "</oai_dc:dc>"))),
                 new Record(
                     new RecordHeader("oai:perseus:Perseus:text:1999.02.0083",
                         new DateTime(2002, 5, 1, 14, 20, 55, 0, DateTimeZone.UTC)),
-                    new Metadata(new OaiDc(Arrays.<AbstractElement<?>>asList(
-                        new Title("Germany and its Tribes"),
-                        new Creator("Tacitus"),
-                        new Type("text"),
-                        new Source("Complete Works of Tacitus. Tacitus. Alfred John Church. " + 
-                        		"William Jackson Brodribb. Lisa Cerrato. edited for Perseus. " + 
-                        		"New York: Random House, Inc. Random House, Inc. reprinted 1942."),
-                        new Language("english"),
-                        new Identifier("http://www.perseus.tufts.edu/cgi-bin/ptext?doc=Perseus:text:1999.02.0083")))))));
+                    new Metadata(domElementFromString("<oai_dc:dc " +
+                            "xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\" " + 
+                            "xmlns:dc=\"http://purl.org/dc/elements/1.1/\">" +
+                            "<dc:title>Germany and its Tribes</dc:title>" +
+                            "<dc:creator>Tacitus</dc:creator>" +
+                            "<dc:type>text</dc:type>" +
+                            "<dc:source>Complete Works of Tacitus. Tacitus. Alfred John Church. " +
+                            "William Jackson Brodribb. Lisa Cerrato. edited for Perseus. " +
+                            "New York: Random House, Inc. Random House, Inc. reprinted 1942.</dc:source>" +
+                            "<dc:language>english</dc:language>" +
+                            "<dc:identifier>http://www.perseus.tufts.edu/cgi-bin/ptext?doc=Perseus:text:1999.02.0083</dc:identifier>" +
+                            "</oai_dc:dc>")))));
 	    OAIPMH<ListRecordsResponse> oaipmh = new OAIPMH<ListRecordsResponse>(
 	            new DateTime(2002, 6, 1, 19, 20, 30, 0, DateTimeZone.UTC),
 	            new Request.Builder(URI.create("http://www.perseus.tufts.edu/cgi-bin/pdataprov")).forVerb(Verb.LIST_RECORDS)
@@ -184,8 +185,11 @@ public class OAIPMHMarshallTest {
 	            new Set("music", "Music collection"),
 	            new Set("music:(muzak)", "Muzak collection"),
 	            new Set("music:(elec)", "Electronic Music Collection", Arrays.asList(
-                    new SetDescription(new OaiDc(Arrays.<AbstractElement<?>>asList(
-                        new Description("This set contains metadata describing electronic music recordings made during the 1950ies")))))),
+                    new SetDescription(domElementFromString("<oai_dc:dc " +
+                            "xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\" " + 
+                            "xmlns:dc=\"http://purl.org/dc/elements/1.1/\">" +
+                            "<dc:description>This set contains metadata describing electronic music recordings made during the 1950ies</dc:description>" +
+                            "</oai_dc:dc>")))),
                 new Set("video", "Video Collection")));
 	    OAIPMH<ListSetsResponse> oaipmh = new OAIPMH<ListSetsResponse>(
 	            new DateTime(2002, 8, 11, 7, 21, 33, 0, DateTimeZone.UTC),
@@ -203,6 +207,10 @@ public class OAIPMHMarshallTest {
 	            Arrays.asList(new Error(ErrorCode.NO_SET_HIERARCHY, "This repository does not support sets")));
         String expected = IOUtils.toString(this.getClass().getResourceAsStream("error-example.xml"), "UTF-8");
         assertMarshalled(expected, oaipmh);
+	}
+	
+	private Element domElementFromString(String xml) throws DocumentException {
+	    return new DOMWriter().write(DocumentHelper.parseText(xml)).getDocumentElement();
 	}
 
 }

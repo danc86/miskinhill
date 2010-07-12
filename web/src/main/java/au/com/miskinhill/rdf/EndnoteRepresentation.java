@@ -2,6 +2,7 @@ package au.com.miskinhill.rdf;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,8 @@ import au.com.miskinhill.rdf.vocabulary.MHS;
 @Component
 public class EndnoteRepresentation implements Representation {
     
-    private static final MediaType CONTENT_TYPE = new MediaType("application", "x-endnote-refer");
+    private final MediaType contentType = new MediaType("application", "x-endnote-refer");
+    private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.HTMLAnchors, ShownIn.HTMLLinks, ShownIn.AtomLinks, ShownIn.Unapi);
     private final Set<Resource> types = Collections.singleton(MHS.Article);
     private final SelectorFactory selectorFactory;
     
@@ -35,7 +37,7 @@ public class EndnoteRepresentation implements Representation {
 
     @Override
     public MediaType getContentType() {
-        return CONTENT_TYPE;
+        return contentType;
     }
     
     @Override
@@ -56,6 +58,11 @@ public class EndnoteRepresentation implements Representation {
     @Override
     public String getDocs() {
         return "http://www.harzing.com/pophelp/exporting.htm";
+    }
+    
+    @Override
+    public boolean isShownIn(ShownIn place) {
+        return shownIn.contains(place);
     }
 
     @Override

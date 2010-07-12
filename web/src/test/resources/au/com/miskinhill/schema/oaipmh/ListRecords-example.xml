@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <responseDate>2002-06-01T19:20:30Z</responseDate>
     <request verb="ListRecords" metadataPrefix="oai_dc" from="2002-05-01T14:15:00Z" until="2002-05-01T14:20:00Z">http://www.perseus.tufts.edu/cgi-bin/pdataprov</request>
     <ListRecords>
@@ -9,7 +9,7 @@
                 <datestamp>2002-05-01T14:16:12Z</datestamp>
             </header>
             <metadata>
-                <oai_dc:dc>
+                <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
                     <dc:title>Opera Minora</dc:title>
                     <dc:creator>Cornelius Tacitus</dc:creator>
                     <dc:type>text</dc:type>
@@ -25,7 +25,7 @@
                 <datestamp>2002-05-01T14:20:55Z</datestamp>
             </header>
             <metadata>
-                <oai_dc:dc>
+                <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
                     <dc:title>Germany and its Tribes</dc:title>
                     <dc:creator>Tacitus</dc:creator>
                     <dc:type>text</dc:type>

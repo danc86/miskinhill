@@ -18,7 +18,7 @@ public class GreaterThanMatcher<T extends Comparable<T>> extends TypeSafeMatcher
 
     @Override
     public void describeTo(Description desc) {
-        desc.appendText("greater than");
+        desc.appendText("greater than ");
         desc.appendValue(target);
     }
 

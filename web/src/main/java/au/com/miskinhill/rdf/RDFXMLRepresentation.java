@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RDFXMLRepresentation extends AbstractRDFRepresentation {
     
-    private static final MediaType CONTENT_TYPE = new MediaType("application", "rdf+xml");
+    private final MediaType contentType = new MediaType("application", "rdf+xml");
     
     @Autowired
     public RDFXMLRepresentation(Model bareModel) {
@@ -25,7 +25,7 @@ public class RDFXMLRepresentation extends AbstractRDFRepresentation {
 
     @Override
     public MediaType getContentType() {
-        return CONTENT_TYPE;
+        return contentType;
     }
 
     @Override

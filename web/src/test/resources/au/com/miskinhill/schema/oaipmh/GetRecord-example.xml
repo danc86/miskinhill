@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <responseDate>2002-02-08T08:55:46Z</responseDate>
     <request verb="GetRecord" identifier="oai:arXiv.org:cs/0112017" metadataPrefix="oai_dc">http://arXiv.org/oai2</request>
     <GetRecord>
@@ -11,7 +11,7 @@
                 <setSpec>math</setSpec>
             </header>
             <metadata>
-                <oai_dc:dc>
+                <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/">
                     <dc:title>Using Structural Metadata to Localize Experience of Digital Content</dc:title>
                     <dc:creator>Dushay, Naomi</dc:creator>
                     <dc:subject>Digital Libraries</dc:subject>

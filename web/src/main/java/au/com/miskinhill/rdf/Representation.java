@@ -27,6 +27,11 @@ public interface Representation {
     /** URL of a document describing the format. Required by unapi. */
     String getDocs();
     
+    public enum ShownIn {
+        HTMLAnchors, HTMLLinks, Unapi, AtomLinks, OAIPMH
+    }
+    boolean isShownIn(ShownIn place);
+    
     String render(Resource resource);
 
 }

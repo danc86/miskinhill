@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import au.id.djc.rdftemplate.XMLStream;
 import au.id.djc.rdftemplate.selector.AbstractAdaptation;
 
+import au.com.miskinhill.rdf.Representation.ShownIn;
+
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class RepresentationLinksAdaptation extends AbstractAdaptation<XMLStream, Resource> {
@@ -40,7 +42,7 @@ public class RepresentationLinksAdaptation extends AbstractAdaptation<XMLStream,
         List<Representation> representations = representationFactory.getRepresentationsForResource(resource);
         List<XMLEvent> events = new ArrayList<XMLEvent>();
         for (Representation representation: representations) {
-            if (representation.getFormat().equals("html"))
+            if (!representation.isShownIn(ShownIn.HTMLLinks))
                 continue;
             HashSet<Attribute> attributes = new HashSet<Attribute>();
             attributes.add(eventFactory.createAttribute(new QName("rel"), "alternate"));

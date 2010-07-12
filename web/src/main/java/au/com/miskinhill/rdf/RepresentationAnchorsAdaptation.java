@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import au.id.djc.rdftemplate.XMLStream;
 import au.id.djc.rdftemplate.selector.AbstractAdaptation;
 
+import au.com.miskinhill.rdf.Representation.ShownIn;
+
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class RepresentationAnchorsAdaptation extends AbstractAdaptation<XMLStream, Resource> {
@@ -41,7 +43,7 @@ public class RepresentationAnchorsAdaptation extends AbstractAdaptation<XMLStrea
         List<XMLEvent> events = new ArrayList<XMLEvent>();
         boolean first = true;
         for (Representation representation: representations) {
-            if (representation.getFormat().equals("html"))
+            if (!representation.isShownIn(ShownIn.HTMLAnchors))
                 continue;
             if (!first)
                 events.add(eventFactory.createCharacters(", "));

@@ -2,6 +2,7 @@ package au.com.miskinhill.rdf;
 
 import java.io.InputStreamReader;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
 
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -16,7 +17,8 @@ import au.com.miskinhill.rdf.vocabulary.MHS;
 @Component
 public class MARCXMLRepresentation implements Representation {
     
-    private static final MediaType CONTENT_TYPE = new MediaType("application", "marcxml+xml");
+    private final MediaType contentType = new MediaType("application", "marcxml+xml");
+    private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.HTMLAnchors, ShownIn.HTMLLinks, ShownIn.AtomLinks, ShownIn.Unapi, ShownIn.OAIPMH);
     private final Set<Resource> types = Collections.singleton(MHS.Journal);
     private final TemplateInterpolator templateInterpolator;
     
@@ -32,7 +34,7 @@ public class MARCXMLRepresentation implements Representation {
 
     @Override
     public MediaType getContentType() {
-        return CONTENT_TYPE;
+        return contentType;
     }
     
     @Override
@@ -53,6 +55,11 @@ public class MARCXMLRepresentation implements Representation {
     @Override
     public String getDocs() {
         return "http://www.loc.gov/standards/marcxml/";
+    }
+    
+    @Override
+    public boolean isShownIn(ShownIn place) {
+        return shownIn.contains(place);
     }
 
     @Override

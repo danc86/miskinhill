@@ -4,6 +4,7 @@ import static java.lang.Math.*;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,7 +26,8 @@ import au.com.miskinhill.rdf.vocabulary.MHS;
 @Component
 public class BibtexRepresentation implements Representation {
     
-    private static final MediaType CONTENT_TYPE = new MediaType("text", "x-bibtex");
+    private final MediaType contentType = new MediaType("text", "x-bibtex");
+    private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.HTMLAnchors, ShownIn.HTMLLinks, ShownIn.AtomLinks, ShownIn.Unapi);
     private final Set<Resource> types = Collections.singleton(MHS.Article);
     private final SelectorFactory selectorFactory;
     
@@ -41,7 +43,7 @@ public class BibtexRepresentation implements Representation {
 
     @Override
     public MediaType getContentType() {
-        return CONTENT_TYPE;
+        return contentType;
     }
     
     @Override
@@ -62,6 +64,11 @@ public class BibtexRepresentation implements Representation {
     @Override
     public String getDocs() {
         return "http://en.wikipedia.org/wiki/BibTeX";
+    }
+    
+    @Override
+    public boolean isShownIn(ShownIn place) {
+        return shownIn.contains(place);
     }
 
     @Override

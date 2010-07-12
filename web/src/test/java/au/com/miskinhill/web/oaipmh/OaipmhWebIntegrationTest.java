@@ -5,7 +5,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.dom4j.Document;
@@ -193,9 +193,120 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(error.getText(), equalTo("Metadata prefix asdf is not supported"));
     }
     
+    @Test
+    public void testGetRecordWithoutIdentifierOrMetadataPrefix() {
+        Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=GetRecord"), Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("GetRecord"));
+        assertThat(request.attributeValue("identifier"), nullValue());
+        assertThat(request.attributeValue("metadataPrefix"), nullValue());
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("badArgument"));
+        assertThat(error.getText(), equalTo("identifier parameter missing"));
+    }
+    
+    @Test
+    public void testGetRecordWithoutIdentifier() {
+        Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=GetRecord&metadataPrefix=oai_dc"), Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("GetRecord"));
+        assertThat(request.attributeValue("identifier"), nullValue());
+        assertThat(request.attributeValue("metadataPrefix"), equalTo("oai_dc"));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("badArgument"));
+        assertThat(error.getText(), equalTo("identifier parameter missing"));
+    }
+    
+    @Test
+    public void testGetRecordWithoutMetadataPrefix() {
+        String articleUri = "http://miskinhill.com.au/journals/asees/22:1-2/post-soviet-boevik";
+        Document doc = restTemplate.getForObject(
+                BASE.resolve("/oaipmh?verb=GetRecord&identifier=" + ProperURLCodec.encodeUrl(articleUri)),
+                Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("GetRecord"));
+        assertThat(request.attributeValue("identifier"), equalTo(articleUri));
+        assertThat(request.attributeValue("metadataPrefix"), nullValue());
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("badArgument"));
+        assertThat(error.getText(), equalTo("metadataPrefix parameter missing"));
+    }
+    
+    @Test
+    public void testGetRecordForNonsenseMetadataPrefix() {
+        String articleUri = "http://miskinhill.com.au/journals/asees/22:1-2/post-soviet-boevik";
+        Document doc = restTemplate.getForObject(
+                BASE.resolve("/oaipmh?verb=GetRecord&metadataPrefix=asdf&identifier=" + ProperURLCodec.encodeUrl(articleUri)),
+                Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("GetRecord"));
+        assertThat(request.attributeValue("identifier"), equalTo(articleUri));
+        assertThat(request.attributeValue("metadataPrefix"), equalTo("asdf"));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("cannotDisseminateFormat"));
+        assertThat(error.getText(), equalTo("Metadata prefix asdf is not supported"));
+    }
+    
+    @Test
+    public void testGetRecordForNonexistentId() {
+        Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=GetRecord&metadataPrefix=oai_dc&identifier=asdf"), Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("GetRecord"));
+        assertThat(request.attributeValue("identifier"), equalTo("asdf"));
+        assertThat(request.attributeValue("metadataPrefix"), equalTo("oai_dc"));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("idDoesNotExist"));
+        assertThat(error.getText(), equalTo("Identifier asdf is not known to this repository"));
+    }
+    
+    @Test
+    public void testGetRecord() {
+        String articleUri = "http://miskinhill.com.au/journals/asees/22:1-2/post-soviet-boevik";
+        Document doc = restTemplate.getForObject(
+                BASE.resolve("/oaipmh?verb=GetRecord&metadataPrefix=oai_dc&identifier=" + ProperURLCodec.encodeUrl(articleUri)),
+                Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("GetRecord"));
+        assertThat(request.attributeValue("identifier"), equalTo(articleUri));
+        assertThat(request.attributeValue("metadataPrefix"), equalTo("oai_dc"));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        @SuppressWarnings("unchecked")
+        List<Element> records = (List<Element>) xpath("/oai:OAI-PMH/oai:GetRecord/oai:record").selectNodes(doc);
+        assertThat(records.size(), equalTo(1));
+        Element record = records.get(0);
+        assertThat((Element) xpath("./oai:header").selectSingleNode(record), new HeaderMatcher(articleUri));
+        assertThat(xpath("./oai:metadata/oai_dc:dc/*").selectNodes(record).size(), greaterThan(0));
+    }
+    
     private static XPath xpath(String expression) { // ugh
         XPath xpath = DocumentHelper.createXPath(expression);
-        xpath.setNamespaceURIs(Collections.singletonMap("oai", "http://www.openarchives.org/OAI/2.0/"));
+        HashMap<String, String> namespaces = new HashMap<String, String>();
+        namespaces.put("oai", "http://www.openarchives.org/OAI/2.0/");
+        namespaces.put("oai_dc", "http://www.openarchives.org/OAI/2.0/oai_dc/");
+        xpath.setNamespaceURIs(namespaces);
         return xpath;
     }
 

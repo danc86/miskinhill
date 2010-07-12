@@ -24,21 +24,19 @@ import au.id.djc.rdftemplate.XMLStream;
 import au.com.miskinhill.rdf.vocabulary.MHS;
 
 @Component
-public class MODSRepresentation implements XMLStreamRepresentation {
+public class OAIDCRepresentation implements XMLStreamRepresentation {
     
-    private final MediaType contentType = new MediaType("application", "mods+xml");
-    private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.HTMLAnchors, ShownIn.HTMLLinks, ShownIn.AtomLinks, ShownIn.Unapi, ShownIn.OAIPMH);
+    private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.Unapi, ShownIn.OAIPMH);
     private final Map<Resource, String> typeTemplates = new HashMap<Resource, String>();
     private final TemplateInterpolator templateInterpolator;
     private final XMLOutputFactory outputFactory;
     
     @Autowired
-    public MODSRepresentation(TemplateInterpolator templateInterpolator, XMLOutputFactory outputFactory) {
+    public OAIDCRepresentation(TemplateInterpolator templateInterpolator, XMLOutputFactory outputFactory) {
         this.templateInterpolator = templateInterpolator;
         this.outputFactory = outputFactory;
         
-        typeTemplates.put(MHS.Journal, "template/mods/Journal.xml");
-        typeTemplates.put(MHS.Article, "template/mods/Article.xml");
+        typeTemplates.put(MHS.Article, "template/oai_dc/Article.xml");
     }
     
     @Override
@@ -49,27 +47,27 @@ public class MODSRepresentation implements XMLStreamRepresentation {
 
     @Override
     public MediaType getContentType() {
-        return contentType;
+        return MediaType.TEXT_XML;
     }
     
     @Override
     public String getFormat() {
-        return "mods";
+        return "oai_dc";
     }
     
     @Override
     public int getOrder() {
-        return 3;
+        return 8;
     }
     
     @Override
     public String getLabel() {
-        return "MODS";
+        return "OAI Dublin Core";
     }
     
     @Override
     public String getDocs() {
-        return "http://www.loc.gov/standards/mods/mods-userguide.html";
+        return "http://www.openarchives.org/OAI/openarchivesprotocol.html#dublincore";
     }
     
     @Override
