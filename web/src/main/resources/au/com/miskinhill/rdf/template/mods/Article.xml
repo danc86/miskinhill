@@ -6,9 +6,7 @@
 
 <mods>
     <titleInfo>
-        <!-- XXX nonSort -->
         <title>${dc:title#string-lv}</title>
-        <!-- XXX subtitle -->
     </titleInfo>
     <location>
         <url displayLabel="HTML version" access="object in context" usage="primary display">${#uri}</url>
@@ -29,7 +27,6 @@
     <genre authority="marcgt">periodical</genre>
     <physicalDescription>
         <form authority="marcform">electronic</form>
-        <!-- XXX this is lame (just look at Content-Type response header!), but is required by Aquifer guidelines?? -->
         <internetMediaType>text/html</internetMediaType>
         <internetMediaType>application/pdf</internetMediaType>
     </physicalDescription>
