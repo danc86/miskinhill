@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<OAI-PMH xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:oai_id="http://www.openarchives.org/OAI/2.0/oai-identifier" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <responseDate>2002-02-08T12:00:01Z</responseDate>
     <request verb="Identify">http://memory.loc.gov/cgi-bin/oai</request>
     <Identify>
@@ -12,5 +12,13 @@
         <deletedRecord>transient</deletedRecord>
         <granularity>YYYY-MM-DDThh:mm:ssZ</granularity>
         <compression>deflate</compression>
+        <description>
+            <oai_id:oai-identifier>
+                <oai_id:scheme>oai</oai_id:scheme>
+                <oai_id:repositoryIdentifier>lcoa1.loc.gov</oai_id:repositoryIdentifier>
+                <oai_id:delimiter>:</oai_id:delimiter>
+                <oai_id:sampleIdentifier>oai:lcoa1.loc.gov:loc.music/musdi.002</oai_id:sampleIdentifier>
+            </oai_id:oai-identifier>
+        </description>
     </Identify>
 </OAI-PMH>

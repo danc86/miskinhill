@@ -9,4 +9,5 @@
     <dc:date>${dc:isPartOf/mhs:publicationDate}</dc:date>
     <dc:publisher rdf:content="dc:isPartOf/mhs:isIssueOf/dc:publisher/foaf:name" />
     <rdf:for each="dc:subject(mhs:label#comparable-lv)"><dc:subject rdf:content="mhs:label#lcsh-cleanup" /></rdf:for>
+    <dc:identifier rdf:content="#uri" />
 </oai_dc:dc>

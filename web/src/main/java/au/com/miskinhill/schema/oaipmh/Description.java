@@ -7,15 +7,15 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType
-public class SetDescription {
+public class Description {
 
     @XmlAnyElement(lax = true)
     private Object any;
     
-    protected SetDescription() {
+    protected Description() {
     }
     
-    public SetDescription(Object any) {
+    public Description(Object any) {
         this.any = any;
     }
 

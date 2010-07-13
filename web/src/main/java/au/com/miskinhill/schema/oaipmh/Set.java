@@ -21,7 +21,7 @@ public class Set {
     @XmlElement(required = true, name = "setName")
     private String name;
     @XmlElement(name = "setDescription")
-    private List<SetDescription> descriptions;
+    private List<Description> descriptions;
     
     protected Set() {
     }
@@ -32,7 +32,7 @@ public class Set {
         this.descriptions = Collections.emptyList();
     }
     
-    public Set(String setSpec, String name, List<SetDescription> descriptions) {
+    public Set(String setSpec, String name, List<Description> descriptions) {
         this.setSpec = setSpec;
         this.name = name;
         this.descriptions = descriptions;
@@ -46,7 +46,7 @@ public class Set {
         return name;
     }
     
-    public List<SetDescription> getDescriptions() {
+    public List<Description> getDescriptions() {
         return descriptions;
     }
 

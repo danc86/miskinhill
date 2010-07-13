@@ -62,7 +62,8 @@ public class GetRecordHandler implements VerbHandler<GetRecordResponse> {
         if (resource == null)
             throw new ErrorResponseException(ErrorCode.ID_DOES_NOT_EXIST,
                     "Identifier " + request.getIdentifier() + " is not known to this repository");
-        RecordHeader header = new RecordHeader(resource.getURI(), timestampDeterminer.determineTimestamp(resource, representation));
+        RecordHeader header = new RecordHeader(repository.getIdentifierForResource(resource),
+                timestampDeterminer.determineTimestamp(resource, representation));
         return new GetRecordResponse(new Record(header, new Metadata(representation.renderXMLStream(resource))));
     }
 

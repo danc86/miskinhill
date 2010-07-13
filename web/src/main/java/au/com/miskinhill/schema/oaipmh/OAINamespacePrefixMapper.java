@@ -11,6 +11,7 @@ public class OAINamespacePrefixMapper extends NamespacePrefixMapper {
     
     public OAINamespacePrefixMapper() {
         prefixes.put("http://www.openarchives.org/OAI/2.0/oai_dc/", "oai_dc");
+        prefixes.put("http://www.openarchives.org/OAI/2.0/oai-identifier", "oai_id");
         prefixes.put("http://purl.org/dc/elements/1.1/", "dc");
         prefixes.put("http://www.w3.org/2001/XMLSchema-instance", "xsi");
         prefixes.put("http://www.w3.org/XML/1998/namespace", "xml");

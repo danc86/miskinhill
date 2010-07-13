@@ -72,7 +72,7 @@ public class ListIdentifiersHandler implements VerbHandler<ListIdentifiersRespon
                 continue;
             if (request.getUntil() != null && request.getUntil().isBefore(timestamp))
                 continue;
-            headers.add(new RecordHeader(resource.getURI(), timestamp));
+            headers.add(new RecordHeader(repository.getIdentifierForResource(resource), timestamp));
         }
         if (headers.isEmpty())
             throw new ErrorResponseException(ErrorCode.NO_RECORDS_MATCH, "Filter criteria yielded empty result set");

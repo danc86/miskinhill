@@ -80,7 +80,7 @@
         <property name="contextPath" value="au.com.miskinhill.schema.sitemaps" />
     </bean>
     <bean id="oaipmhMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-        <property name="contextPath" value="au.com.miskinhill.schema.oaipmh" />
+        <property name="contextPath" value="au.com.miskinhill.schema.oaipmh:au.com.miskinhill.schema.oaiidentifier" />
         <property name="marshallerProperties">
             <util:map>
                 <entry key="com.sun.xml.bind.namespacePrefixMapper">

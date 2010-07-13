@@ -8,7 +8,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import au.com.miskinhill.schema.oaiidentifier.OaiIdentifier;
 import au.com.miskinhill.schema.oaipmh.DeletedRecordSupport;
+import au.com.miskinhill.schema.oaipmh.Description;
 import au.com.miskinhill.schema.oaipmh.Granularity;
 import au.com.miskinhill.schema.oaipmh.IdentifyResponse;
 import au.com.miskinhill.schema.oaipmh.Request;
@@ -44,9 +46,13 @@ public class IdentifyHandler implements VerbHandler<IdentifyResponse> {
     
     @Override
     public IdentifyResponse handle(Request request) {
+        Description identifierDescription = new Description(new OaiIdentifier(
+                "oai", "miskinhill.com.au", ":", "oai:miskinhill.com.au:/journals/asees/22:1-2/post-soviet-boevik"));
         return new IdentifyResponse(repositoryName, OaipmhController.REPOSITORY_BASE,
                 timestampDeterminer.getEarliestResourceTimestamp(),
-                adminEmails, DeletedRecordSupport.NO, Granularity.DATE_TIME, Collections.<String>emptyList());
+                adminEmails, DeletedRecordSupport.NO, Granularity.DATE_TIME,
+                Collections.<String>emptyList(),
+                Arrays.asList(identifierDescription));
     }
 
 }

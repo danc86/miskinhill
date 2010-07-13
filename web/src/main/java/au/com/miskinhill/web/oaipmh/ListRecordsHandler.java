@@ -76,7 +76,7 @@ public class ListRecordsHandler implements VerbHandler<ListRecordsResponse> {
             if (request.getUntil() != null && request.getUntil().isBefore(timestamp))
                 continue;
             records.add(new Record(
-                    new RecordHeader(resource.getURI(), timestamp),
+                    new RecordHeader(repository.getIdentifierForResource(resource), timestamp),
                     new Metadata(representation.renderXMLStream(resource))));
         }
         if (records.isEmpty())

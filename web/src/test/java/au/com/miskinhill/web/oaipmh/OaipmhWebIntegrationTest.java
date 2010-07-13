@@ -177,15 +177,15 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
     
     @Test
     public void testListMetadataFormatsForId() {
-        String articleUri = "http://miskinhill.com.au/journals/asees/22:1-2/post-soviet-boevik";
+        String articleIdentifier = "oai:miskinhill.com.au:/journals/asees/22:1-2/post-soviet-boevik";
         Document doc = restTemplate.getForObject(
-                BASE.resolve("/oaipmh?verb=ListMetadataFormats&identifier=" + ProperURLCodec.encodeUrl(articleUri)),
+                BASE.resolve("/oaipmh?verb=ListMetadataFormats&identifier=" + ProperURLCodec.encodeUrl(articleIdentifier)),
                 Document.class);
         assertResponseDate(doc);
         
         Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
         assertThat(request.attributeValue("verb"), equalTo("ListMetadataFormats"));
-        assertThat(request.attributeValue("identifier"), equalTo(articleUri));
+        assertThat(request.attributeValue("identifier"), equalTo(articleIdentifier));
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
@@ -193,7 +193,10 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(formats, hasItems(
                 new MetadataFormatMatcher("oai_dc",
                         "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
-                "http://www.openarchives.org/OAI/2.0/oai_dc/")));
+                        "http://www.openarchives.org/OAI/2.0/oai_dc/"),
+                new MetadataFormatMatcher("mods",
+                        "http://www.loc.gov/standards/mods/v3/mods-3-4.xsd",
+                        "http://www.loc.gov/mods/v3")));
     }
     
     @Test
@@ -223,7 +226,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         @SuppressWarnings("unchecked")
         List<Element> headers = (List<Element>) xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
         assertThat(headers.size(), greaterThan(MIN_EXPECTED_RECORDS));
-        assertThat(headers, hasItem(new HeaderMatcher("http://miskinhill.com.au/journals/asees/22:1-2/post-soviet-boevik")));
+        assertThat(headers, hasItem(new HeaderMatcher("oai:miskinhill.com.au:/journals/asees/22:1-2/post-soviet-boevik")));
     }
     
     @Test
@@ -513,15 +516,15 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
     
     @Test
     public void testGetRecord() {
-        String articleUri = "http://miskinhill.com.au/journals/asees/22:1-2/post-soviet-boevik";
+        String articleIdentifier = "oai:miskinhill.com.au:/journals/asees/22:1-2/post-soviet-boevik";
         Document doc = restTemplate.getForObject(
-                BASE.resolve("/oaipmh?verb=GetRecord&metadataPrefix=oai_dc&identifier=" + ProperURLCodec.encodeUrl(articleUri)),
+                BASE.resolve("/oaipmh?verb=GetRecord&metadataPrefix=oai_dc&identifier=" + ProperURLCodec.encodeUrl(articleIdentifier)),
                 Document.class);
         assertResponseDate(doc);
         
         Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
         assertThat(request.attributeValue("verb"), equalTo("GetRecord"));
-        assertThat(request.attributeValue("identifier"), equalTo(articleUri));
+        assertThat(request.attributeValue("identifier"), equalTo(articleIdentifier));
         assertThat(request.attributeValue("metadataPrefix"), equalTo("oai_dc"));
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
@@ -529,7 +532,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         List<Element> records = (List<Element>) xpath("/oai:OAI-PMH/oai:GetRecord/oai:record").selectNodes(doc);
         assertThat(records.size(), equalTo(1));
         Element record = records.get(0);
-        assertThat((Element) xpath("./oai:header").selectSingleNode(record), new HeaderMatcher(articleUri));
+        assertThat((Element) xpath("./oai:header").selectSingleNode(record), new HeaderMatcher(articleIdentifier));
         assertThat(xpath("./oai:metadata/oai_dc:dc/*").selectNodes(record).size(), greaterThan(0));
     }
     

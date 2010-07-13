@@ -19,12 +19,14 @@ import org.joda.time.DateTimeZone;
 import org.junit.Test;
 import org.w3c.dom.Element;
 
+import au.com.miskinhill.schema.oaiidentifier.OaiIdentifier;
+
 public class OAIPMHMarshallTest {
 
 	private static final JAXBContext jc;
 	static {
 		try {
-			jc = JAXBContext.newInstance("au.com.miskinhill.schema.oaipmh");
+			jc = JAXBContext.newInstance("au.com.miskinhill.schema.oaipmh:au.com.miskinhill.schema.oaiidentifier");
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
 		}
@@ -74,14 +76,17 @@ public class OAIPMHMarshallTest {
 	
 	@Test
 	public void shouldMarshallIdentifyResponse() throws Exception {
-	    IdentifyResponse identify = new IdentifyResponse(
+	    Description identifierDescription = new Description(new OaiIdentifier(
+	            "oai", "lcoa1.loc.gov", ":", "oai:lcoa1.loc.gov:loc.music/musdi.002"));
+        IdentifyResponse identify = new IdentifyResponse(
 	            "Library of Congress Open Archive Initiative Repository 1",
 	            URI.create("http://memory.loc.gov/cgi-bin/oai"),
 	            new DateTime(1990, 2, 1, 12, 0, 0, 0, DateTimeZone.UTC),
 	            Arrays.asList("somebody@loc.gov", "anybody@loc.gov"),
 	            DeletedRecordSupport.TRANSIENT,
 	            Granularity.DATE_TIME,
-	            Arrays.asList("deflate"));
+	            Arrays.asList("deflate"),
+	            Arrays.asList(identifierDescription));
 	    OAIPMH<IdentifyResponse> oaipmh = new OAIPMH<IdentifyResponse>(
 	            new DateTime(2002, 2, 8, 12, 0, 1, 0, DateTimeZone.UTC),
 	            new Request.Builder(URI.create("http://memory.loc.gov/cgi-bin/oai")).forVerb(Verb.IDENTIFY).build(),
@@ -185,7 +190,7 @@ public class OAIPMHMarshallTest {
 	            new Set("music", "Music collection"),
 	            new Set("music:(muzak)", "Muzak collection"),
 	            new Set("music:(elec)", "Electronic Music Collection", Arrays.asList(
-                    new SetDescription(domElementFromString("<oai_dc:dc " +
+                    new Description(domElementFromString("<oai_dc:dc " +
                             "xmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\" " + 
                             "xmlns:dc=\"http://purl.org/dc/elements/1.1/\">" +
                             "<dc:description>This set contains metadata describing electronic music recordings made during the 1950ies</dc:description>" +

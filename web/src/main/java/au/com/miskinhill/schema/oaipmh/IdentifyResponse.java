@@ -1,7 +1,6 @@
 package au.com.miskinhill.schema.oaipmh;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -47,14 +46,14 @@ public class IdentifyResponse extends Response {
     @XmlElement
     private List<String> compression;
     @XmlElement
-    private List<SetDescription> description;
+    private List<Description> description;
     
     protected IdentifyResponse() {
         super(Verb.IDENTIFY);
     }
     
     public IdentifyResponse(String repositoryName, URI baseURL, DateTime earliestDatestamp, List<String> adminEmail,
-            DeletedRecordSupport deletedRecord, Granularity granularity, List<String> compression) {
+            DeletedRecordSupport deletedRecord, Granularity granularity, List<String> compression, List<Description> descriptions) {
         super(Verb.IDENTIFY);
         this.repositoryName = repositoryName;
         this.baseURL = baseURL.toString();
@@ -63,7 +62,7 @@ public class IdentifyResponse extends Response {
         this.deletedRecord = deletedRecord;
         this.granularity = granularity;
         this.compression = compression;
-        this.description = Collections.emptyList();
+        this.description = descriptions;
     }
 
     public String getRepositoryName() {
@@ -98,7 +97,7 @@ public class IdentifyResponse extends Response {
         return compression;
     }
 
-    public List<SetDescription> getDescription() {
+    public List<Description> getDescription() {
         return description;
     }
 
