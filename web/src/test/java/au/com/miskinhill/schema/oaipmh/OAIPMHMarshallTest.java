@@ -26,7 +26,7 @@ public class OAIPMHMarshallTest {
 	private static final JAXBContext jc;
 	static {
 		try {
-			jc = JAXBContext.newInstance("au.com.miskinhill.schema.oaipmh:au.com.miskinhill.schema.oaiidentifier");
+			jc = JAXBContext.newInstance("au.com.miskinhill.schema.oaipmh");
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
 		}
@@ -77,7 +77,7 @@ public class OAIPMHMarshallTest {
 	@Test
 	public void shouldMarshallIdentifyResponse() throws Exception {
 	    Description identifierDescription = new Description(new OaiIdentifier(
-	            "oai", "lcoa1.loc.gov", ":", "oai:lcoa1.loc.gov:loc.music/musdi.002"));
+	            "oai", "lcoa1.loc.gov", ":", "oai:lcoa1.loc.gov:loc.music/musdi.002").toDom());
         IdentifyResponse identify = new IdentifyResponse(
 	            "Library of Congress Open Archive Initiative Repository 1",
 	            URI.create("http://memory.loc.gov/cgi-bin/oai"),

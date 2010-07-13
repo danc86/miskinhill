@@ -47,7 +47,7 @@ public class IdentifyHandler implements VerbHandler<IdentifyResponse> {
     @Override
     public IdentifyResponse handle(Request request) {
         Description identifierDescription = new Description(new OaiIdentifier(
-                "oai", "miskinhill.com.au", ":", "oai:miskinhill.com.au:/journals/asees/22:1-2/post-soviet-boevik"));
+                "oai", "miskinhill.com.au", ":", "oai:miskinhill.com.au:/journals/asees/22:1-2/post-soviet-boevik").toDom());
         return new IdentifyResponse(repositoryName, OaipmhController.REPOSITORY_BASE,
                 timestampDeterminer.getEarliestResourceTimestamp(),
                 adminEmails, DeletedRecordSupport.NO, Granularity.DATE_TIME,

@@ -79,7 +79,6 @@
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>jaxen</groupId>
