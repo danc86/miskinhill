@@ -9,16 +9,29 @@ import javax.xml.bind.annotation.XmlType;
 public enum Verb {
 
     @XmlEnumValue("Identify")
-    IDENTIFY,
+    IDENTIFY("Identify"),
     @XmlEnumValue("ListMetadataFormats")
-    LIST_METADATA_FORMATS,
+    LIST_METADATA_FORMATS("ListMetadataFormats"),
     @XmlEnumValue("ListSets")
-    LIST_SETS,
+    LIST_SETS("ListSets"),
     @XmlEnumValue("GetRecord")
-    GET_RECORD,
+    GET_RECORD("GetRecord"),
     @XmlEnumValue("ListIdentifiers")
-    LIST_IDENTIFIERS,
+    LIST_IDENTIFIERS("ListIdentifiers"),
     @XmlEnumValue("ListRecords")
-    LIST_RECORDS;
+    LIST_RECORDS("ListRecords");
+    
+    private final String protocolValue;
+    
+    private Verb(String protocolValue) {
+        this.protocolValue = protocolValue;
+    }
+    
+    public static Verb forProtocolValue(String protocolValue) {
+        for (Verb verb: values())
+            if (verb.protocolValue.equals(protocolValue))
+                return verb;
+        return null;
+    }
 
 }

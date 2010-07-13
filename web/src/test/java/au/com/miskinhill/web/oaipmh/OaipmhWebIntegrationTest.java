@@ -78,6 +78,49 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
     }
     
     @Test
+    public void testNonsenseParam() {
+        Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=Identify&test=test"), Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("Identify"));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("badArgument"));
+        assertThat(error.getText(), equalTo("Unexpected parameter test"));
+    }
+    
+    @Test
+    public void testDuplicateParam() {
+        Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=ListMetadataFormats&identifier=asdf&identifier=xyz"), Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("badArgument"));
+        assertThat(error.getText(), equalTo("identifier parameter has multiple values"));
+    }
+    
+    @Test
+    public void testBadResumptionToken() {
+        Document doc = restTemplate.getForObject(
+                BASE.resolve("/oaipmh?verb=ListIdentifiers&metadataPrefix=oai_dc&resumptionToken=asdf"),
+                Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("ListIdentifiers"));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("badResumptionToken"));
+        assertThat(error.getText(), equalTo("Unexpected resumption token"));
+    }
+    
+    @Test
     public void testIdentify() {
         Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=Identify"), Document.class);
         assertResponseDate(doc);
@@ -274,6 +317,25 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
     }
     
     @Test
+    public void testListIdentifiersFromFuture() {
+        String future = DATE_TIME_FORMAT.print(new DateTime().plusYears(1).toDateTime(DateTimeZone.UTC));
+        Document doc = restTemplate.getForObject(
+                BASE.resolve("/oaipmh?verb=ListIdentifiers&metadataPrefix=oai_dc&from=" + future),
+                Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("ListIdentifiers"));
+        assertThat(request.attributeValue("metadataPrefix"), equalTo("oai_dc"));
+        assertThat(request.attributeValue("from"), equalTo(future));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("noRecordsMatch"));
+        assertThat(error.getText(), equalTo("Filter criteria yielded empty result set"));
+    }
+    
+    @Test
     public void testListIdentifiersUntilFuture() {
         String future = DATE_TIME_FORMAT.print(new DateTime().toDateTime(DateTimeZone.UTC).plusYears(1));
         Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=ListIdentifiers&metadataPrefix=oai_dc&until=" + future), Document.class);
@@ -348,6 +410,24 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
     }
     
     @Test
+    public void testListIdentifiersUntilPast() {
+        Document doc = restTemplate.getForObject(
+                BASE.resolve("/oaipmh?verb=ListIdentifiers&metadataPrefix=oai_dc&until=2000-01-01T00:00:00Z"),
+                Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("ListIdentifiers"));
+        assertThat(request.attributeValue("metadataPrefix"), equalTo("oai_dc"));
+        assertThat(request.attributeValue("until"), equalTo("2000-01-01T00:00:00Z"));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("noRecordsMatch"));
+        assertThat(error.getText(), equalTo("Filter criteria yielded empty result set"));
+    }
+    
+    @Test
     public void testGetRecordWithoutIdentifierOrMetadataPrefix() {
         Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=GetRecord"), Document.class);
         assertResponseDate(doc);
@@ -371,7 +451,6 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
         assertThat(request.attributeValue("verb"), equalTo("GetRecord"));
         assertThat(request.attributeValue("identifier"), nullValue());
-        assertThat(request.attributeValue("metadataPrefix"), equalTo("oai_dc"));
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
@@ -389,7 +468,6 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         
         Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
         assertThat(request.attributeValue("verb"), equalTo("GetRecord"));
-        assertThat(request.attributeValue("identifier"), equalTo(articleUri));
         assertThat(request.attributeValue("metadataPrefix"), nullValue());
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
@@ -597,6 +675,23 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
     }
     
     @Test
+    public void testListRecordsFromFuture() {
+        String future = DATE_TIME_FORMAT.print(new DateTime().toDateTime(DateTimeZone.UTC).plusYears(1));
+        Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=ListRecords&metadataPrefix=oai_dc&from=" + future), Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("ListRecords"));
+        assertThat(request.attributeValue("metadataPrefix"), equalTo("oai_dc"));
+        assertThat(request.attributeValue("from"), equalTo(future));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("noRecordsMatch"));
+        assertThat(error.getText(), equalTo("Filter criteria yielded empty result set"));
+    }
+    
+    @Test
     public void testListRecordsUntilFuture() {
         String future = DATE_TIME_FORMAT.print(new DateTime().toDateTime(DateTimeZone.UTC).plusYears(1));
         Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=ListRecords&metadataPrefix=oai_dc&until=" + future), Document.class);
@@ -668,6 +763,24 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
         assertThat(error.attributeValue("code"), equalTo("badArgument"));
         assertThat(error.getText(), equalTo("until parameter was not in UTC"));
+    }
+    
+    @Test
+    public void testListRecordsUntilPast() {
+        Document doc = restTemplate.getForObject(
+                BASE.resolve("/oaipmh?verb=ListRecords&metadataPrefix=oai_dc&until=2000-01-01T00:00:00Z"),
+                Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("ListRecords"));
+        assertThat(request.attributeValue("metadataPrefix"), equalTo("oai_dc"));
+        assertThat(request.attributeValue("until"), equalTo("2000-01-01T00:00:00Z"));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        Element error = (Element) xpath("/oai:OAI-PMH/oai:error").selectSingleNode(doc);
+        assertThat(error.attributeValue("code"), equalTo("noRecordsMatch"));
+        assertThat(error.getText(), equalTo("Filter criteria yielded empty result set"));
     }
     
     @Test
