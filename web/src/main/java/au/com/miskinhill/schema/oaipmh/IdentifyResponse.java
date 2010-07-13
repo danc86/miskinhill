@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(propOrder = {
@@ -57,7 +58,7 @@ public class IdentifyResponse extends Response {
         super(Verb.IDENTIFY);
         this.repositoryName = repositoryName;
         this.baseURL = baseURL.toString();
-        this.earliestDatestamp = earliestDatestamp;
+        this.earliestDatestamp = earliestDatestamp.toDateTime(DateTimeZone.UTC);
         this.adminEmail = adminEmail;
         this.deletedRecord = deletedRecord;
         this.granularity = granularity;

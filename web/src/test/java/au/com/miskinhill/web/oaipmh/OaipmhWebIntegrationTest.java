@@ -89,9 +89,10 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(xpath("/oai:OAI-PMH/oai:Identify/oai:repositoryName").selectSingleNode(doc).getText(), containsString("Miskin Hill"));
         assertThat(xpath("/oai:OAI-PMH/oai:Identify/oai:baseURL").selectSingleNode(doc).getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         assertThat(xpath("/oai:OAI-PMH/oai:Identify/oai:protocolVersion").selectSingleNode(doc).getText(), equalTo("2.0"));
-        assertTrue(DATE_TIME_FORMAT.parseDateTime(
-                xpath("/oai:OAI-PMH/oai:Identify/oai:earliestDatestamp").selectSingleNode(doc).getText())
-                .isBeforeNow());
+        DateTime earliestDatestamp = DATE_TIME_FORMAT.parseDateTime(
+                xpath("/oai:OAI-PMH/oai:Identify/oai:earliestDatestamp").selectSingleNode(doc).getText());
+        assertThat(earliestDatestamp.getZone(), equalTo(DateTimeZone.UTC));
+        assertTrue(earliestDatestamp.isBeforeNow());
         assertThat(xpath("/oai:OAI-PMH/oai:Identify/oai:deletedRecord").selectSingleNode(doc).getText(), equalTo("no"));
         assertThat(xpath("/oai:OAI-PMH/oai:Identify/oai:granularity").selectSingleNode(doc).getText(), equalTo("YYYY-MM-DDThh:mm:ssZ"));
     }
