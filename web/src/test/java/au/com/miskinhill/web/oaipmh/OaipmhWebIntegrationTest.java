@@ -156,7 +156,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
                     "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
                     "http://www.openarchives.org/OAI/2.0/oai_dc/"),
                 new MetadataFormatMatcher("mods",
-                    "http://www.loc.gov/standards/mods/v3/mods-3-3.xsd",
+                    "http://www.loc.gov/standards/mods/v3/mods-3-4.xsd",
                     "http://www.loc.gov/mods/v3")));
     }
     
