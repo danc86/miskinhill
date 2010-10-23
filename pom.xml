@@ -24,8 +24,8 @@
     </modules>
         
     <properties>
-        <contentPath>/var/www/miskinhill.com.au/content</contentPath>
-        <indexPath>/var/www/miskinhill.com.au/index-data</indexPath>
+        <contentPath>/home/dan/websites/miskinhill.com.au/content</contentPath>
+        <indexPath>/home/dan/websites/miskinhill.com.au/index-data</indexPath>
         <spring.version>3.0.3.RELEASE</spring.version>
     </properties>
     
