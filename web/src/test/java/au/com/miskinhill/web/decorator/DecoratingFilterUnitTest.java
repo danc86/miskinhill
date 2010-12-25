@@ -37,7 +37,7 @@ public class DecoratingFilterUnitTest {
         String dummy = IOUtils.toString(this.getClass().getResourceAsStream("dummy.xml"), "UTF-8");
         CharSequence result = filter.postprocessResponse(dummy);
         assertThat(result.toString(), not(containsString("<title>Some title</title>")));
-        assertThat(result.toString(), containsString("<link rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\"/></head>"));
+        assertThat(result.toString(), containsString("<link rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\"/>"));
     }
     
     @Test
