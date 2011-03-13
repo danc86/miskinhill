@@ -56,4 +56,5 @@ def articles_from_issue(path, issue_filename):
 #articles_from_issue('journals/asees/20:1-2/', 'final/ASEES 2006final.pdf')
 #articles_from_issue('journals/asees/21:1-2/', 'final/asees07.pdf')
 #articles_from_issue('journals/asees/22:1-2/', 'final/asees08.pdf')
-articles_from_issue('journals/asees/23:1-2/', 'work/asees09.pdf')
+articles_from_issue('journals/asees/23:1-2/', 'final/asees09.pdf')
+articles_from_issue('journals/asees/24:1-2/', 'final/asees10.pdf')
