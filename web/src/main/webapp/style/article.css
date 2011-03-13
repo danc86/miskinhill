@@ -61,9 +61,19 @@ table th {
     text-align: left;
 }
 table.data {
-    margin: 1.5em;
+    margin: 1.5em 3em;
     border-collapse: collapse;
 }
+
+/* beware of table-caption-outside.js hackery which applies here */
+table.data caption {
+    caption-side: top-outside;
+    margin: 1.5em 3em;
+}
+div.hacked-data-caption {
+    margin: 1.5em 3em;
+}
+
 table.data thead {
     border-top: 2px solid #aaa;
 }

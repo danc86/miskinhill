@@ -9,6 +9,7 @@
     <script type="text/javascript" src="/script/jquery.scrollTo-1.4.2.js" />
     <script type="text/javascript" src="/script/footnote.js" />
     <script type="text/javascript" src="/script/citation.js" />
+    <script type="text/javascript" src="/script/table-caption-outside.js" />
     
     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
     <meta name="DC.title" content="${dc:title#string-lv}" />
