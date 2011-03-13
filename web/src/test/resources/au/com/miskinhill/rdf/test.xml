@@ -106,7 +106,7 @@
     <dc:subject rdf:resource="http://miskinhill.com.au/subjects/lcsh/sh85087440" />
   </mhs:Article>
   <mhs:Subject rdf:about="http://miskinhill.com.au/subjects/lcsh/sh85087440">
-    <mhs:label>Moscow (Russia)--History</mhs:label>
+    <mhs:label>Makine, Andreï, 1957---Criticism and interpretation</mhs:label>
   </mhs:Subject>
   <rdf:Description rdf:about="http://miskinhill.com.au/authors/test-author">
     <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Author"/>

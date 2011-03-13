@@ -58,7 +58,8 @@ public class OAIDCRepresentationTest {
     @Test
     public void shouldIncludeCleanedUpLCSHAsSubject() throws Exception {
         Document doc = renderArticle();
-        assertThat(xpath("/oai_dc:dc/dc:subject").selectSingleNode(doc).getText(), equalTo("Moscow (Russia) – History"));
+        assertThat(xpath("/oai_dc:dc/dc:subject").selectSingleNode(doc).getText(),
+                equalTo("Makine, Andreï, 1957- – Criticism and interpretation"));
     }
     
     private Document renderArticle() throws DocumentException {

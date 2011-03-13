@@ -213,6 +213,14 @@ public class HTMLRepresentationTest {
     }
     
     @Test
+    public void articleSubjectListingShouldHandleTripleHyphen() throws Exception {
+        String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/article"));
+        Document doc = DocumentHelper.parseText(result);
+        assertThat(xpath("//html:div[@class='subjects']/html:ul/html:li[1]").selectSingleNode(doc).getText(),
+                equalTo("Makine, Andreï, 1957- – Criticism and interpretation"));
+    }
+    
+    @Test
     public void testObituary() throws Exception {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe"));
         String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Obituary.out.xml"), "UTF-8");
