@@ -23,6 +23,9 @@ img {
 q {
     quotes: none;
 }
+q::before, q::after {
+    content: none;
+}
 p, li, caption, .figure {
     line-height: 2.8ex;
 }
