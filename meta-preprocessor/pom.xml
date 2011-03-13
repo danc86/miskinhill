@@ -6,7 +6,7 @@
 	<packaging>jar</packaging>
 	<parent>
         <groupId>au.com.miskinhill</groupId>
-        <artifactId>miskinhill-master</artifactId>
+        <artifactId>miskinhill</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 	<name>Metadata Preprocessor</name>

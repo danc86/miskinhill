@@ -7,7 +7,7 @@
   <url>http://maven.apache.org</url>
   <parent>
     <groupId>au.com.miskinhill</groupId>
-    <artifactId>miskinhill-master</artifactId>
+    <artifactId>miskinhill</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <dependencies>
