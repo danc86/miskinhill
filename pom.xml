@@ -26,7 +26,7 @@
     <properties>
         <contentPath>/home/dan/websites/miskinhill.com.au/content</contentPath>
         <indexPath>/home/dan/websites/miskinhill.com.au/index-data</indexPath>
-        <spring.version>3.0.3.RELEASE</spring.version>
+        <spring.version>3.0.5.RELEASE</spring.version>
     </properties>
     
     <repositories>
