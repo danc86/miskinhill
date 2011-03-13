@@ -7,8 +7,10 @@ def tex2html(s, type):
     # nbsp
     s = re.sub(r'\~', '&nbsp;', s)
 
-    # ampersands
+    # XML syntax
     s = re.sub(r'\\&', '&amp;', s)
+    s = re.sub(r'<', '&lt;', s)
+    s = re.sub(r'>', '&gt;', s)
 
     # spaces
     s = re.sub(r'\\ ', ' ', s)
@@ -16,10 +18,18 @@ def tex2html(s, type):
 
     # emphasis
     s = re.compile(r'\\ru\{\\textit\{([^}]+)\}\}', re.M).sub(r'<em lang="ru">\1</em>', s)
+    s = re.compile(r'\\textit\{\\ru\{([^}]+)\}\}', re.M).sub(r'<em lang="ru">\1</em>', s)
+    s = re.compile(r'\\de\{\\textit\{([^}]+)\}\}', re.M).sub(r'<em lang="de">\1</em>', s)
+    s = re.compile(r'\\textit\{\\de\{([^}]+)\}\}', re.M).sub(r'<em lang="de">\1</em>', s)
+    s = re.compile(r'\\fr\{\\textit\{([^}]+)\}\}', re.M).sub(r'<em lang="fr">\1</em>', s)
+    s = re.compile(r'\\textit\{\\fr\{([^}]+)\}\}', re.M).sub(r'<em lang="fr">\1</em>', s)
     s = re.compile(r'\\textit\{([^}]+)\}', re.M).sub(r'<em>\1</em>', s)
+    s = re.compile(r'\\textbf\{([^}]+)\}', re.M).sub(r'<strong>\1</strong>', s)
 
     # languages
     s = re.compile(r'\\ru\{([^}]+)\}', re.M).sub(r'<span lang="ru">\1</span>', s)
+    s = re.compile(r'\\fr\{([^}]+)\}', re.M).sub(r'<span lang="fr">\1</span>', s)
+    s = re.compile(r'\\de\{([^}]+)\}', re.M).sub(r'<span lang="de">\1</span>', s)
 
     # quotes
     s = re.sub(r'\\begin{quote}', '<q>', s)
