@@ -5,8 +5,8 @@
     <link href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe.xml" type="application/rdf+xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" rel="alternate" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe.ttl"/>
     <link rel="stylesheet" type="text/css" href="/style/article.css"/>
     <link rel="stylesheet" type="text/css" href="/style/obituary.css"/>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"/>
-    <script type="text/javascript" src="/script/jquery.scrollTo-1.4.1.js"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"/>
+    <script type="text/javascript" src="/script/jquery.scrollTo-1.4.2.js"/>
     <script type="text/javascript" src="/script/footnote.js"/>
     <script type="text/javascript" src="/script/citation.js"/>
         
