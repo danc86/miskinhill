@@ -47,7 +47,7 @@ public class DecoratingFilter extends HttpResponseBufferingFilter {
                     throw new RuntimeException(e);
                 }
             }
-        };
+        }
     };
     
     public DecoratingFilter() {

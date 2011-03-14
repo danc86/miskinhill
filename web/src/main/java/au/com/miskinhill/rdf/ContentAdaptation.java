@@ -68,7 +68,7 @@ public class ContentAdaptation extends AbstractAdaptation<XMLStream, Resource> {
                     default:
                         events.add(event);
                 }
-            };
+            }
             List<XMLEvent> eventsWithCitations = Citation.embedInDocument(URI.create(resource.getURI()), events.iterator());
             return new XMLStream(eventsWithCitations);
         } catch (XMLStreamException e) {

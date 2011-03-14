@@ -25,6 +25,6 @@ public class HTMLCompatibilityFilter extends HttpResponseBufferingFilter {
         responseBody = SELF_CLOSING_A_PATTERN.matcher(responseBody).replaceAll("<a$1></a>");
         responseBody = SELF_CLOSING_TEXTAREA_PATTERN.matcher(responseBody).replaceAll("<textarea$1></textarea>");
         return responseBody;
-    };
+    }
 
 }
