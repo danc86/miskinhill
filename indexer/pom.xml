@@ -20,7 +20,7 @@
   		<artifactId>lucene-core</artifactId>
   	</dependency>
   	<dependency>
-  		<groupId>au.com.miskinhill.jena</groupId>
+  		<groupId>au.id.djc.jena</groupId>
   		<artifactId>jena</artifactId>
   	</dependency>
   	<dependency>
