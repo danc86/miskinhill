@@ -65,6 +65,8 @@ public class BookLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNode> 
                 .withResultType(String.class).result(node));
         String oclcnum = oneOrNull(selectorFactory.get("dc:identifier[uri-prefix='info:oclcnum/']#uri-slice(13)")
                 .withResultType(String.class).result(node));
+        String openLibraryId = oneOrNull(selectorFactory.get("owl:sameAs[uri-prefix='http://openlibrary.org/books/']#uri-slice(29)")
+                .withResultType(String.class).result(node));
         
         if (asin != null) {
             String domain = "com";
@@ -80,8 +82,10 @@ public class BookLinksAdaptation extends AbstractAdaptation<XMLStream, RDFNode> 
             links.add(new Link("http://www.ozon.ru/?context=search&text=" + query(title + " " + responsibility, "CP1251"), "Ozon.ru"));
         }
         
-        if (isbn != null) {
-            links.add(new Link("http://openlibrary.org/search?q=isbn_13:" + query(isbn, "UTF-8"), "Open Library"));
+        if (openLibraryId != null) {
+            links.add(new Link("http://openlibrary.org/books/" + query(openLibraryId, "UTF-8"), "Open Library"));
+        } else if (isbn != null) {
+            links.add(new Link("http://openlibrary.org/search?q=isbn:" + query(isbn, "UTF-8"), "Open Library"));
         }
         
         if (gbooksId != null) {
