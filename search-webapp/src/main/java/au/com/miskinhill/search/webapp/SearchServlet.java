@@ -1,9 +1,9 @@
 package au.com.miskinhill.search.webapp;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.FSDirectory;
 
-import au.com.miskinhill.search.analysis.MHAnalyzer;
+import au.com.miskinhill.search.analysis.MHAnalyzers;
 
 public class SearchServlet extends HttpServlet {
 
@@ -41,7 +41,7 @@ public class SearchServlet extends HttpServlet {
         }
 		try {
             // Lucene index
-            index = IndexReader.open(FSDirectory.getDirectory(indexPath), /* read-only */ true);
+            index = IndexReader.open(FSDirectory.open(new File(indexPath)), /* read-only */ true);
             fieldsToSearch = determineFieldsToSearch();
 
             SimpleTemplateEngine engine = new SimpleTemplateEngine();
@@ -57,10 +57,9 @@ public class SearchServlet extends HttpServlet {
         }
 	}
     
-    @SuppressWarnings("unchecked")
     private String[] determineFieldsToSearch() {
         ArrayList<String> interestingFields = new ArrayList<String>();
-        for (String fieldName: (Collection<String>) index.getFieldNames(FieldOption.INDEXED)) {
+        for (String fieldName: index.getFieldNames(FieldOption.INDEXED)) {
             if (!fieldName.equals("url") && !fieldName.equals("type"))
                 interestingFields.add(fieldName);
         }
@@ -78,7 +77,7 @@ public class SearchServlet extends HttpServlet {
 			}
 			
 			IndexSearcher searcher = new IndexSearcher(index);
-			Query query = MultilingualQueryParser.parse(q, new MHAnalyzer(), fieldsToSearch);
+			Query query = MultilingualQueryParser.parse(q, MHAnalyzers.getAnalyzerMap(), fieldsToSearch);
 			SearchResults results = SearchResults.build(searcher.search(query, 50), index);
 
             Map<String, Object> context = new HashMap<String, Object>();

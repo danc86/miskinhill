@@ -7,18 +7,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.WhitespaceTokenizer;
+import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.BooleanClause.Occur;
 
-import au.com.miskinhill.search.analysis.PerLanguageAnalyzerWrapper;
+import au.com.miskinhill.search.analysis.Analyzer;
+import au.com.miskinhill.search.analysis.PerLanguageAnalyzerMap;
 import au.com.miskinhill.search.analysis.PreprocFilterReader;
 
 /**
@@ -29,10 +29,10 @@ import au.com.miskinhill.search.analysis.PreprocFilterReader;
  */
 public class MultilingualQueryParser {
 
-	public static Query parse(String q, PerLanguageAnalyzerWrapper analyzer, 
+	public static Query parse(String q, PerLanguageAnalyzerMap analyzerMap, 
 			String[] fieldsToSearch) throws IOException {
 		BooleanQuery query = new BooleanQuery();
-		List<Analyzer> subAnalyzers = analyzer.getAnalyzers();
+		List<Analyzer> subAnalyzers = analyzerMap.getAnalyzers();
 		for (String token: consumeTokens(new WhitespaceTokenizer(new StringReader(q)))) {
 		    /*
              * It is unlikely that any document would match more than one
@@ -49,9 +49,10 @@ public class MultilingualQueryParser {
                  */
                 Set<List<String>> analyzedTokensSet = new HashSet<List<String>>();
                 for (Analyzer subAnalyzer: subAnalyzers) {
-                    analyzedTokensSet.add(consumeTokens(
-                            subAnalyzer.tokenStream(field, 
-                                new PreprocFilterReader(new StringReader(token)))));
+                    TokenStream tokenStream = subAnalyzer.applyFilters(
+                            subAnalyzer.tokenizer(
+                                new PreprocFilterReader(new StringReader(token))));
+                    analyzedTokensSet.add(consumeTokens(tokenStream));
                 }
                 for (List<String> analyzedTokens: analyzedTokensSet) {
 					switch (analyzedTokens.size()) {
@@ -85,9 +86,8 @@ public class MultilingualQueryParser {
 	
 	private static List<String> consumeTokens(TokenStream stream) throws IOException {
 		List<String> tokens = new ArrayList<String>();
-		Token tok = new Token();
-		while ((tok = stream.next(tok)) != null) {
-			tokens.add(tok.term());
+		while (stream.incrementToken()) {
+		    tokens.add(stream.getAttribute(TermAttribute.class).term());
 		}
 		return tokens;
 	}

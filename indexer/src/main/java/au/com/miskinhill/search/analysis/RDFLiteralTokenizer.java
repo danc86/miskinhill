@@ -1,45 +1,46 @@
 package au.com.miskinhill.search.analysis;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.StringReader;
 
-import org.apache.lucene.analysis.TokenStream;
+import javax.xml.stream.XMLStreamException;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.XSD;
+import org.apache.lucene.analysis.TokenStream;
 
 public abstract class RDFLiteralTokenizer extends TokenStream {
 
-	public static class UnknownLiteralTypeException extends Exception {
-		private static final long serialVersionUID = 3417574009217953585L;
+    private static final String XML_LITERAL = (RDF.getURI() + "XMLLiteral").intern();
+    private static final String XSD_DATE = "http://www.w3.org/TR/xmlschema-2/#date";
+    private static final String XSD_INTEGER = XSD.integer.getURI().intern();
 
-		public UnknownLiteralTypeException(String type) {
-			super("Could not resolve literal type <" + type
-					+ "> to an RDFLiteralTokenizer subclass");
-		}
-	}
+    public static class UnknownLiteralTypeException extends Exception {
+        private static final long serialVersionUID = 3417574009217953585L;
 
-	private static Map<String, Class<? extends RDFLiteralTokenizer>> types = 
-			new HashMap<String, Class<? extends RDFLiteralTokenizer>>();
-	static {
-		types.put(null /* no type means plain string */, StringLiteralTokenizer.class);
-		types.put(XSD.integer.getURI(), IntegerLiteralTokenizer.class);
-		types.put("http://www.w3.org/TR/xmlschema-2/#date", StringLiteralTokenizer.class); // XXX use something better?
-		types.put(RDF.getURI() + "XMLLiteral", XMLLiteralTokenizer.class);
-	}
+        public UnknownLiteralTypeException(String type) {
+            super("Could not resolve literal type <" + type
+                    + "> to an RDFLiteralTokenizer subclass");
+        }
+    }
 
-	public static RDFLiteralTokenizer fromLiteral(Literal literal) 
-			throws UnknownLiteralTypeException {
-		Class<? extends RDFLiteralTokenizer> tokenizerClass = 
-				types.get(literal.getDatatypeURI());
-		if (tokenizerClass == null)
-			throw new UnknownLiteralTypeException(literal.getDatatypeURI());
-		try {
-			return tokenizerClass.getConstructor(Literal.class).newInstance(literal);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public static TokenStream fromLiteral(Literal literal) 
+            throws UnknownLiteralTypeException, XMLStreamException {
+        String type = literal.getDatatypeURI();
+        if (type != null) type = type.intern();
+        if (type == null /* no type means plain string */ ||
+                XSD_DATE == type /* XXX use something better? */) {
+            Analyzer analyzer = MHAnalyzers.getAnalyzerMap().getAnalyzer(literal.getLanguage());
+            return analyzer.applyFilters(analyzer.tokenizer(
+                    new StringReader(literal.getString())));
+        } else if (XSD_INTEGER == type) {
+            return new IntegerLiteralTokenStream(literal);
+        } else if (XML_LITERAL == type) {
+            return new XMLTokenizer(new StringReader(literal.getString()),
+                    MHAnalyzers.getAnalyzerMap());
+        } else {
+            throw new UnknownLiteralTypeException(type);
+        }
+    }
 
 }

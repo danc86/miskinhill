@@ -1,20 +1,17 @@
 package au.com.miskinhill.domain;
 
+import static au.com.miskinhill.domain.FieldMatcher.*;
 import static org.easymock.EasyMock.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 
 import java.io.ByteArrayInputStream;
-import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.easymock.IMocksControl;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,52 +71,10 @@ public class ArticleUnitTest {
 		article.addFieldsToDocument("", doc);
 		mockControl.verify();
 		
-		assertThat((List<Field>) doc.getFields(), hasItems(
-				new BaseMatcher<Field>() {
-					@Override
-					public boolean matches(Object field_) {
-						Field field = (Field) field_;
-						return (field.name().equals("content") &&
-								// XXX assert content?
-								!field.isStored() &&
-								field.isIndexed());
-					}
-
-					@Override
-					public void describeTo(Description description) {
-						description.appendText("content field");
-					}
-				}, 
-                new BaseMatcher<Field>() {
-                    @Override
-                    public boolean matches(Object field_) {
-                        Field field = (Field) field_;
-                        return (field.name().equals("type") &&
-                                field.stringValue().equals("http://miskinhill.com.au/rdfschema/1.0/Article") &&
-                                field.isStored() &&
-                                field.isIndexed());
-                    }
-
-                    @Override
-                    public void describeTo(Description description) {
-                        description.appendText("type field");
-                    }
-                }, 
-                new BaseMatcher<Field>() {
-                    @Override
-                    public boolean matches(Object field_) {
-                        Field field = (Field) field_;
-                        return (field.name().equals("url") &&
-                                field.stringValue().equals("http://miskinhill.com.au/journals/test/1:1/test-article") &&
-                                field.isStored() &&
-                                field.isIndexed());
-                    }
-
-                    @Override
-                    public void describeTo(Description description) {
-                        description.appendText("url field");
-                    }
-                }));
+		assertThat(doc.getFields(), hasItems(
+		        indexedUnstoredFieldWithName("content"), // XXX assert content?
+		        storedIndexedFieldWithNameAndValue("type", "http://miskinhill.com.au/rdfschema/1.0/Article"),
+		        storedIndexedFieldWithNameAndValue("url", "http://miskinhill.com.au/journals/test/1:1/test-article")));
 	}
 
     @Test

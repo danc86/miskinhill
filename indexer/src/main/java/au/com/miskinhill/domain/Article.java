@@ -16,9 +16,9 @@ import org.apache.lucene.document.Field;
 
 import au.com.miskinhill.domain.fulltext.FulltextFetcher;
 import au.com.miskinhill.rdf.vocabulary.MHS;
-import au.com.miskinhill.search.analysis.MHAnalyzer;
-import au.com.miskinhill.search.analysis.XMLTokenizer;
+import au.com.miskinhill.search.analysis.MHAnalyzers;
 import au.com.miskinhill.search.analysis.RDFLiteralTokenizer.UnknownLiteralTypeException;
+import au.com.miskinhill.search.analysis.XMLTokenizer;
 
 public class Article extends GenericResource {
     
@@ -52,7 +52,7 @@ public class Article extends GenericResource {
                     new SequenceInputStream(
                             new ByteArrayInputStream(XHTML_STRICT_DTD_DECL),
                             content),
-                    new MHAnalyzer())));
+                    MHAnalyzers.getAnalyzerMap())));
         }
 	}
 	

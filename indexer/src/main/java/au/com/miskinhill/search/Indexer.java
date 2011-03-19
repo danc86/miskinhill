@@ -27,7 +27,7 @@ public class Indexer {
     
     private static final Logger LOG = Logger.getLogger(Indexer.class.getName());
 
-    private static void writeIndex(final String contentPath, final String indexPath) 
+    private static void writeIndex(final String contentPath, final File indexPath) 
             throws Exception {
         
         XMLTokenizer.getXMLInputFactory().setXMLResolver(new XhtmlEntityResolver());
@@ -35,7 +35,7 @@ public class Indexer {
         Model model = ModelFactory.createDefaultModel();
         model.read(new FileInputStream(new File(contentPath + "/meta.xml")), "", "RDF/XML");
         
-        IndexWriter iw = new IndexWriter(FSDirectory.getDirectory(indexPath), 
+        IndexWriter iw = new IndexWriter(FSDirectory.open(indexPath), 
                 NullAnalyzer.INSTANCE, 
                 /* create */ true, 
                 MaxFieldLength.UNLIMITED);
@@ -67,7 +67,8 @@ public class Indexer {
 	public static void main(String[] args) throws Exception {
 		Properties props = new Properties();
 		props.load(Indexer.class.getResourceAsStream("paths.properties"));
-        writeIndex(props.getProperty("contentPath"), props.getProperty("indexPath"));
+        writeIndex(props.getProperty("contentPath"),
+                new File(props.getProperty("indexPath")));
 	}
 	
 }

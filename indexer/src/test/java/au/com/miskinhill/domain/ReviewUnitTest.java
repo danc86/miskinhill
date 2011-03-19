@@ -7,12 +7,10 @@ import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 
 import java.io.ByteArrayInputStream;
-import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +62,7 @@ public class ReviewUnitTest {
 		review.addFieldsToDocument("", doc);
 		mockControl.verify();
 		
-		assertThat((List<Field>) doc.getFields(), hasItems(
+		assertThat(doc.getFields(), hasItems(
 		        indexedUnstoredFieldWithName("content"),
 		        storedIndexedFieldWithNameAndValue("type", "http://miskinhill.com.au/rdfschema/1.0/Review"),
 		        storedIndexedFieldWithNameAndValue("url", "http://miskinhill.com.au/journals/test/1:1/reviews/test-review"),

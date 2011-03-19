@@ -1,9 +1,7 @@
 package au.com.miskinhill.domain;
 
+import org.apache.lucene.document.Fieldable;
 import org.hamcrest.Description;
-
-import org.apache.lucene.document.Field;
-
 import org.junit.internal.matchers.TypeSafeMatcher;
 
 public final class FieldMatcher {
@@ -11,7 +9,7 @@ public final class FieldMatcher {
     private FieldMatcher() {
     }
     
-    private static final class IndexedUnstoredWithName extends TypeSafeMatcher<Field> {
+    private static final class IndexedUnstoredWithName extends TypeSafeMatcher<Fieldable> {
         
         private final String name;
         
@@ -20,7 +18,7 @@ public final class FieldMatcher {
         }
         
         @Override
-        public boolean matchesSafely(Field field) {
+        public boolean matchesSafely(Fieldable field) {
             return field.name().equals(name) && !field.isStored() && field.isIndexed();
         }
 
@@ -31,7 +29,7 @@ public final class FieldMatcher {
         
     }
     
-    private static final class StoredIndexedWithNameAndValue extends TypeSafeMatcher<Field> {
+    private static final class StoredIndexedWithNameAndValue extends TypeSafeMatcher<Fieldable> {
         
         private final String name;
         private final String value;
@@ -42,7 +40,7 @@ public final class FieldMatcher {
         }
         
         @Override
-        public boolean matchesSafely(Field field) {
+        public boolean matchesSafely(Fieldable field) {
             return field.name().equals(name) && field.stringValue().equals(value) && field.isStored() && field.isIndexed();
         }
         
