@@ -32,7 +32,7 @@ public class Inferrer {
         LOG.info("Applying transitive superclasses");
         Map<Resource, Set<Resource>> transitiveSuperclasses = transitiveSuperclasses();
         for (Statement stmt: m.listStatements(null, RDF.type, (RDFNode) null).toList()) {
-            for (Resource superclass: transitiveSuperclasses.get((Resource) stmt.getObject()))
+            for (Resource superclass: transitiveSuperclasses.get(stmt.getObject()))
                 destination.add(ResourceFactory.createStatement(stmt.getSubject(), RDF.type, superclass));
         }
         LOG.info("Destination model contains " + destination.getGraph().size() + " triples");
@@ -84,7 +84,7 @@ public class Inferrer {
             if (!result.containsKey(stmt.getPredicate())) {
                 Set<Property> superProperties = new HashSet<Property>();
                 for (Resource superProperty: transitiveObjects(stmt.getPredicate(), RDFS.subPropertyOf))
-                    superProperties.add((Property) superProperty.as(Property.class));
+                    superProperties.add(superProperty.as(Property.class));
                 result.put(stmt.getPredicate(), superProperties);
             }
         }
@@ -95,8 +95,8 @@ public class Inferrer {
         Map<Property, Set<Property>> result = new HashMap<Property, Set<Property>>();
         for (StmtIterator it = m.listStatements(null, OWL.inverseOf, (RDFNode) null); it.hasNext(); ) {
             Statement stmt = it.nextStatement();
-            Property p1 = (Property) stmt.getSubject().as(Property.class);
-            Property p2 = (Property) stmt.getObject().as(Property.class);
+            Property p1 = stmt.getSubject().as(Property.class);
+            Property p2 = stmt.getObject().as(Property.class);
             if (!result.containsKey(p1))
                 result.put(p1, new HashSet<Property>());
             if (!result.containsKey(p2))

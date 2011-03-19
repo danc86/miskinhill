@@ -180,7 +180,7 @@ public abstract class HttpResponseBufferingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        BufferingHttpServletResponse wrappedResponse = new BufferingHttpServletResponse((HttpServletResponse) response);
+        BufferingHttpServletResponse wrappedResponse = new BufferingHttpServletResponse(response);
         filterChain.doFilter(request, wrappedResponse);
         String bufferedResponse = wrappedResponse.getBufferedResponse();
         if (bufferedResponse != null) {

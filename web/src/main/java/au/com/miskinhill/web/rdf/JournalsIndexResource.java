@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import au.com.miskinhill.web.TrailingSlash;
+import au.com.miskinhill.web.TrailingSlashInterceptor;
 
 @Controller
 public class JournalsIndexResource {
     
+    /**
+     * @param request is needed for {@link TrailingSlashInterceptor}
+     */
     @RequestMapping(value = {"/journals", "/journals/"}, method = RequestMethod.GET)
     @TrailingSlash
     public ModelAndView getJournalsIndex(HttpServletRequest request) {

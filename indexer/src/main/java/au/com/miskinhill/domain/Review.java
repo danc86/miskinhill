@@ -63,7 +63,7 @@ public class Review extends GenericResource {
 		Property dcdate = rdfResource.getModel().createProperty(DCTerms.NS, "date");
 		List<String> anchors = new ArrayList<String>();
 	    for (Resource reviewed: findReviewed()) {
-	        anchors.add(toHTML(((Resource) reviewed.getRequiredProperty(dccreator).getObject().as(Resource.class))
+	        anchors.add(toHTML((reviewed.getRequiredProperty(dccreator).getObject().as(Resource.class))
                         .getRequiredProperty(FOAF.name).getLiteral()) + ", <em>" + 
     		        toHTML(reviewed.getRequiredProperty(dctitle).getLiteral()) + "</em> (" + 
     		        reviewed.getRequiredProperty(dcdate).getString().substring(0, 4) + ")");
@@ -87,7 +87,7 @@ public class Review extends GenericResource {
         if (!i.hasNext())
             throw new IllegalArgumentException("Review does not review anything");
         while (i.hasNext())
-            result.add((Resource) i.nextStatement().getObject().as(Resource.class));
+            result.add(i.nextStatement().getObject().as(Resource.class));
         return result;
     }
 

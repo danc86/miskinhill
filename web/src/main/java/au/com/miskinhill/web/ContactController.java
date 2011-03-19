@@ -42,6 +42,9 @@ public class ContactController {
         this.templateMessage = templateMessage;
     }
     
+    /**
+     * @param request is needed for {@link TrailingSlashInterceptor}
+     */
     @RequestMapping(value = {"/contact", "/contact/"}, method = RequestMethod.GET)
     @TrailingSlash
     public ModelAndView getForm(HttpServletRequest request,

@@ -150,7 +150,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> formats = (List<Element>) xpath("/oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat").selectNodes(doc);
+        List<Element> formats = xpath("/oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat").selectNodes(doc);
         assertThat(formats, hasItems(
                 new MetadataFormatMatcher("oai_dc",
                     "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
@@ -189,7 +189,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> formats = (List<Element>) xpath("/oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat").selectNodes(doc);
+        List<Element> formats = xpath("/oai:OAI-PMH/oai:ListMetadataFormats/oai:metadataFormat").selectNodes(doc);
         assertThat(formats, hasItems(
                 new MetadataFormatMatcher("oai_dc",
                         "http://www.openarchives.org/OAI/2.0/oai_dc.xsd",
@@ -224,7 +224,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> headers = (List<Element>) xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
+        List<Element> headers = xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
         assertThat(headers.size(), greaterThan(MIN_EXPECTED_RECORDS));
         assertThat(headers, hasItem(new HeaderMatcher("oai:miskinhill.com.au:/journals/asees/22:1-2/post-soviet-boevik")));
     }
@@ -259,7 +259,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> records = (List<Element>) xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
+        List<Element> records = xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
         assertThat(records.size(), greaterThan(MIN_EXPECTED_RECORDS));
     }
     
@@ -283,7 +283,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> recordHeaders = (List<Element>) xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
+        List<Element> recordHeaders = xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
         assertThat(recordHeaders, not(hasItem(new HeaderMatcher(headerIdentifier))));
     }
     
@@ -352,7 +352,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> records = (List<Element>) xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
+        List<Element> records = xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
         assertThat(records.size(), greaterThan(MIN_EXPECTED_RECORDS));
     }
     
@@ -376,7 +376,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> recordHeaders = (List<Element>) xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
+        List<Element> recordHeaders = xpath("/oai:OAI-PMH/oai:ListIdentifiers/oai:header").selectNodes(doc);
         assertThat(recordHeaders, not(hasItem(new HeaderMatcher(headerIdentifier))));
     }
     
@@ -529,7 +529,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> records = (List<Element>) xpath("/oai:OAI-PMH/oai:GetRecord/oai:record").selectNodes(doc);
+        List<Element> records = xpath("/oai:OAI-PMH/oai:GetRecord/oai:record").selectNodes(doc);
         assertThat(records.size(), equalTo(1));
         Element record = records.get(0);
         assertThat((Element) xpath("./oai:header").selectSingleNode(record), new HeaderMatcher(articleIdentifier));
@@ -593,7 +593,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> records = (List<Element>) xpath("/oai:OAI-PMH/oai:ListRecords/oai:record").selectNodes(doc);
+        List<Element> records = xpath("/oai:OAI-PMH/oai:ListRecords/oai:record").selectNodes(doc);
         assertThat(records.size(), greaterThan(MIN_EXPECTED_RECORDS));
         for (Element record: records) {
             assertThat(xpath("./oai:header/oai:identifier").selectSingleNode(record), not(nullValue()));
@@ -617,7 +617,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> records = (List<Element>) xpath("/oai:OAI-PMH/oai:ListRecords/oai:record").selectNodes(doc);
+        List<Element> records = xpath("/oai:OAI-PMH/oai:ListRecords/oai:record").selectNodes(doc);
         assertThat(records.size(), greaterThan(MIN_EXPECTED_RECORDS));
     }
     
@@ -641,7 +641,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> recordHeaders = (List<Element>) xpath("/oai:OAI-PMH/oai:ListRecords/oai:record/oai:header").selectNodes(doc);
+        List<Element> recordHeaders = xpath("/oai:OAI-PMH/oai:ListRecords/oai:record/oai:header").selectNodes(doc);
         assertThat(recordHeaders, not(hasItem(new HeaderMatcher(recordIdentifier))));
     }
     
@@ -708,7 +708,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> records = (List<Element>) xpath("/oai:OAI-PMH/oai:ListRecords/oai:record").selectNodes(doc);
+        List<Element> records = xpath("/oai:OAI-PMH/oai:ListRecords/oai:record").selectNodes(doc);
         assertThat(records.size(), greaterThan(MIN_EXPECTED_RECORDS));
     }
     
@@ -732,7 +732,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
         
         @SuppressWarnings("unchecked")
-        List<Element> recordHeaders = (List<Element>) xpath("/oai:OAI-PMH/oai:ListRecords/oai:record/oai:header").selectNodes(doc);
+        List<Element> recordHeaders = xpath("/oai:OAI-PMH/oai:ListRecords/oai:record/oai:header").selectNodes(doc);
         assertThat(recordHeaders, not(hasItem(new HeaderMatcher(recordIdentifier))));
     }
     

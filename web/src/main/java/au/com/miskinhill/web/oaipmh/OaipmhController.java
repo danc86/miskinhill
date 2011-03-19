@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.xml.stream.XMLOutputFactory;
-
-import com.hp.hpl.jena.rdf.model.Model;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
@@ -23,14 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import au.com.miskinhill.rdf.RepresentationFactory;
 import au.com.miskinhill.schema.oaipmh.ErrorCode;
 import au.com.miskinhill.schema.oaipmh.OAIPMH;
 import au.com.miskinhill.schema.oaipmh.Request;
 import au.com.miskinhill.schema.oaipmh.Request.Builder;
 import au.com.miskinhill.schema.oaipmh.Response;
 import au.com.miskinhill.schema.oaipmh.Verb;
-import au.com.miskinhill.web.rdf.TimestampDeterminer;
 
 @Controller
 public class OaipmhController {
@@ -41,9 +36,7 @@ public class OaipmhController {
     private final EnumMap<Verb, VerbHandler<?>> verbHandlers;
     
     @Autowired
-    public OaipmhController(Set<VerbHandler<?>> verbHandlers,
-            Model model, TimestampDeterminer timestampDeterminer, RepresentationFactory representationFactory,
-            XMLOutputFactory outputFactory) {
+    public OaipmhController(Set<VerbHandler<?>> verbHandlers) {
         this.verbHandlers = new EnumMap<Verb, VerbHandler<?>>(Verb.class);
         for (VerbHandler<?> verbHandler: verbHandlers)
             this.verbHandlers.put(verbHandler.getHandledVerb(), verbHandler);

@@ -58,7 +58,7 @@ public class SitemapController {
 			urlset.add(new Url(loc));
 		}
 		for (ResIterator i = model.listSubjects(); i.hasNext();) {
-			Resource res = (Resource) i.next();
+			Resource res = i.next();
 			if (res.getURI() != null && OUR_URLS.matcher(res.getURI()).matches()) {
                 for (Representation representation: representationFactory.getRepresentationsForResource(res)) {
                     String loc;

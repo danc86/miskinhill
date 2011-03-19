@@ -29,7 +29,7 @@ public class Book extends GenericResource {
         
         Property dccreator = rdfResource.getModel().createProperty(DCTerms.NS, "creator");
         for (StmtIterator it = rdfResource.listProperties(dccreator); it.hasNext(); ) {
-            Resource creator = (Resource) it.nextStatement().getObject().as(Resource.class);
+            Resource creator = it.nextStatement().getObject().as(Resource.class);
             GenericResource.fromRDF(creator, fulltextFetcher).addFieldsToDocument(
                     fieldNamePrefix + dccreator.getURI() + " ", doc);
         }

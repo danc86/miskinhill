@@ -108,7 +108,7 @@ public class HTMLRepresentationTest {
         assertThat(Arrays.asList(profile.getValue().split("\\s")), hasItem("http://dublincore.org/documents/2008/08/04/dc-html/"));
         Element dcTitle = (Element) xpath("//html:head/html:meta[@name='DC.title']").selectSingleNode(doc);
         assertThat(dcTitle.getText() /* commonwrapper XSLT fixes this up */, equalTo("Review of Slovenia: evolving loyalties"));
-        List<Element> dcCreators = (List<Element>) xpath("//html:head/html:meta[@name='DC.creator']").selectNodes(doc);
+        List<Element> dcCreators = xpath("//html:head/html:meta[@name='DC.creator']").selectNodes(doc);
         assertThat(dcCreators.size(), equalTo(1));
         assertThat(dcCreators.get(0).attributeValue("content"), equalTo("Test Author"));
         Element dcDate = (Element) xpath("//html:head/html:meta[@name='DC.date']").selectSingleNode(doc);
@@ -166,7 +166,7 @@ public class HTMLRepresentationTest {
         assertThat(Arrays.asList(profile.getValue().split("\\s")), hasItem("http://dublincore.org/documents/2008/08/04/dc-html/"));
         Element dcTitle = (Element) xpath("//html:head/html:meta[@name='DC.title']").selectSingleNode(doc);
         assertThat(dcTitle.attributeValue("content"), equalTo("Moscow 1937: the interpreter’s story"));
-        List<Element> dcCreators = (List<Element>) xpath("//html:head/html:meta[@name='DC.creator']").selectNodes(doc);
+        List<Element> dcCreators = xpath("//html:head/html:meta[@name='DC.creator']").selectNodes(doc);
         assertThat(dcCreators.size(), equalTo(1));
         assertThat(dcCreators.get(0).attributeValue("content"), equalTo("Test Author"));
         Element dcDate = (Element) xpath("//html:head/html:meta[@name='DC.date']").selectSingleNode(doc);
@@ -236,7 +236,7 @@ public class HTMLRepresentationTest {
         assertThat(Arrays.asList(profile.getValue().split("\\s")), hasItem("http://dublincore.org/documents/2008/08/04/dc-html/"));
         Element dcTitle = (Element) xpath("//html:head/html:meta[@name='DC.title']").selectSingleNode(doc);
         assertThat(dcTitle.attributeValue("content"), equalTo("In memoriam John Doe"));
-        List<Element> dcCreators = (List<Element>) xpath("//html:head/html:meta[@name='DC.creator']").selectNodes(doc);
+        List<Element> dcCreators = xpath("//html:head/html:meta[@name='DC.creator']").selectNodes(doc);
         assertThat(dcCreators.size(), equalTo(1));
         assertThat(dcCreators.get(0).attributeValue("content"), equalTo("Test Author"));
         Element dcDate = (Element) xpath("//html:head/html:meta[@name='DC.date']").selectSingleNode(doc);

@@ -42,7 +42,7 @@ public abstract class GenericResource {
 		StmtIterator i = rdfResource.listProperties(RDF.type);
 		while (i.hasNext()) {
 			final Statement stmt = i.nextStatement();
-			Resource type = (Resource) stmt.getObject().as(Resource.class);
+			Resource type = stmt.getObject().as(Resource.class);
 			if (TYPES.containsKey(type)) {
 				try {
 					return TYPES.get(type).getConstructor(Resource.class, FulltextFetcher.class)
@@ -71,14 +71,14 @@ public abstract class GenericResource {
 			if (stmt.getObject().isLiteral()) {
 				doc.add(new Field(fieldNamePrefix + stmt.getPredicate().getURI(), 
 						RDFLiteralTokenizer.fromLiteral(
-							(Literal) stmt.getObject().as(Literal.class))));
+							stmt.getObject().as(Literal.class))));
 			} else if (stmt.getObject().isAnon()) {
                 /*
                  * We attach blank nodes to this document because they won't
                  * appear anywhere else.
                  */
                 GenericResource o = GenericResource.fromRDF(
-                        (Resource) stmt.getObject().as(Resource.class), fulltextFetcher);
+                        stmt.getObject().as(Resource.class), fulltextFetcher);
                 if (o != null)
                     o.addFieldsToDocument(fieldNamePrefix + stmt.getPredicate().getURI() + " ", doc);
             }

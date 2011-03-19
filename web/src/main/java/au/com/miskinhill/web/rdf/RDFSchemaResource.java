@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import au.com.miskinhill.web.TrailingSlash;
+import au.com.miskinhill.web.TrailingSlashInterceptor;
 
 @Controller
 public class RDFSchemaResource {
     
+    /**
+     * @param request is needed for {@link TrailingSlashInterceptor}
+     */
     @RequestMapping(value = {"/rdfschema/1.0", "/rdfschema/1.0/"}, method = RequestMethod.GET)
     @TrailingSlash
     public ModelAndView getSchemaIndex(HttpServletRequest request) {

@@ -51,9 +51,9 @@ public class Validator {
         LOG.info("Validating domain constraints");
         for (StmtIterator it = m.listStatements(null, RDFS.domain, (RDFNode) null); it.hasNext(); ) {
             Statement domainConstraint = it.nextStatement();
-            if (DOMAIN_OBJECT_EXCEPTIONS.contains((Resource) domainConstraint.getObject()))
+            if (DOMAIN_OBJECT_EXCEPTIONS.contains(domainConstraint.getObject()))
                 continue;
-            for (StmtIterator jt = m.listStatements(null, (Property) domainConstraint.getSubject().as(Property.class), (RDFNode) null); jt.hasNext(); ) {
+            for (StmtIterator jt = m.listStatements(null, domainConstraint.getSubject().as(Property.class), (RDFNode) null); jt.hasNext(); ) {
                 Statement stmt = jt.nextStatement();
                 if (!RDFUtil.getTypes(stmt.getSubject()).contains(domainConstraint.getObject()))
                     throw new Failure("Property " + domainConstraint.getSubject() + " on " + stmt.getSubject() +
@@ -65,19 +65,19 @@ public class Validator {
         LOG.info("Validating range constraints");
         for (StmtIterator it = m.listStatements(null, RDFS.range, (RDFNode) null); it.hasNext(); ) {
             Statement rangeConstraint = it.nextStatement();
-            if (RANGE_PROPERTY_EXCEPTIONS.contains((Property) rangeConstraint.getSubject().as(Property.class)) ||
-                    RANGE_OBJECT_EXCEPTIONS.contains((Resource) rangeConstraint.getObject()))
+            if (RANGE_PROPERTY_EXCEPTIONS.contains(rangeConstraint.getSubject().as(Property.class)) ||
+                    RANGE_OBJECT_EXCEPTIONS.contains(rangeConstraint.getObject()))
                 continue;
             if (rangeConstraint.getObject().equals(RDFS.Literal) ||
                     rangeConstraint.getObject().equals(ResourceFactory.createResource(RDF.getURI() + "Literal"))) {
-                for (StmtIterator jt = m.listStatements(null, (Property) rangeConstraint.getSubject().as(Property.class), (RDFNode) null); jt.hasNext(); ) {
+                for (StmtIterator jt = m.listStatements(null, rangeConstraint.getSubject().as(Property.class), (RDFNode) null); jt.hasNext(); ) {
                     Statement stmt = jt.nextStatement();
                     if (!stmt.getObject().isLiteral())
                         throw new Failure("Property " + rangeConstraint.getSubject() + " to " + stmt.getObject() +
                                 " violates rdfs:range literal constraint");
                 }
             } else {
-                for (StmtIterator jt = m.listStatements(null, (Property) rangeConstraint.getSubject().as(Property.class), (RDFNode) null); jt.hasNext(); ) {
+                for (StmtIterator jt = m.listStatements(null, rangeConstraint.getSubject().as(Property.class), (RDFNode) null); jt.hasNext(); ) {
                     Statement stmt = jt.nextStatement();
                     if (!RDFUtil.getTypes((Resource) stmt.getObject()).contains(rangeConstraint.getObject()))
                         throw new Failure("Property " + rangeConstraint.getSubject() + " to " + stmt.getObject() +
