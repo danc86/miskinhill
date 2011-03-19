@@ -63,16 +63,20 @@
               <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
     		</configuration>
     	</plugin>
-    	<plugin>
-    		<groupId>org.mortbay.jetty</groupId>
-    		<artifactId>jetty-maven-plugin</artifactId>
-    		<version>7.0.0.pre5</version>
-    		<configuration>
-              <webAppConfig>
-                <contextPath>/</contextPath>
-              </webAppConfig>
-    		</configuration>
-    	</plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>tomcat-maven-plugin</artifactId>
+            <version>1.2-DANC-SNAPSHOT</version>
+            <configuration>
+                <path>/</path>
+                <port>8080</port>
+                <systemProperties>
+                    <java.util.logging.config.file>${project.basedir}/logging.properties</java.util.logging.config.file>
+                </systemProperties>
+                <uriEncoding>UTF-8</uriEncoding>
+                <accessLogPattern>%h %l %u %t %r %s %b %{User-Agent}i %{Referer}i %{X-Forwarded-For}i</accessLogPattern>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
 </project>
