@@ -113,7 +113,7 @@
             <dependency>
                 <groupId>au.id.djc</groupId>
                 <artifactId>lucene-multilingual</artifactId>
-                <version>1.1-SNAPSHOT</version>
+                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>au.id.djc</groupId>
@@ -153,7 +153,7 @@
             <dependency>
                 <groupId>au.id.djc.jena</groupId>
                 <artifactId>jena</artifactId>
-                <version>2.6.4.1-SNAPSHOT</version>
+                <version>2.6.4.1</version>
                 <exclusions>
                     <exclusion>
                         <groupId>org.slf4j</groupId>
