@@ -90,6 +90,12 @@
     <mhs:onlinePublicationDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">2008-03-01</mhs:onlinePublicationDate>
     <mhs:cover rdf:resource="http://miskinhill.com.au/journals/test/1:1/cover.jpg"/>
     <mhs:coverThumbnail rdf:resource="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg"/>
+    <mhs:editor rdf:resource="http://miskinhill.com.au/authors/cox-j-k" />
+    <mhs:hasEditorialBoard>
+      <mhs:EditorialBoard>
+        <foaf:member rdf:resource="http://miskinhill.com.au/authors/another-author" />
+      </mhs:EditorialBoard>
+    </mhs:hasEditorialBoard>
   </rdf:Description>
     <mhs:ContentsSection rdf:about="http://miskinhill.com.au/journals/test/1:1/#articles">
         <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/" />
@@ -136,12 +142,26 @@
     <foaf:name>Another Author</foaf:name>
     <foaf:surname>Author</foaf:surname>
     <foaf:givenNames>Another</foaf:givenNames>
+    <foaf:title>Prof.</foaf:title>
+    <mhs:isAffiliatedWith rdf:resource="http://somewhere.edu/" />
   </mhs:Author>
   <mhs:Author rdf:about="http://miskinhill.com.au/authors/cox-j-k">
     <foaf:name>John K. Cox</foaf:name>
     <foaf:surname>Cox</foaf:surname>
     <foaf:givenNames>John K.</foaf:givenNames>
+    <foaf:title>Dr.</foaf:title>
+    <mhs:isAffiliatedWith rdf:resource="http://somewhere.edu/" />
   </mhs:Author>
+  <mhs:Author rdf:about="http://miskinhill.com.au/authors/doe-j">
+    <foaf:name>John Doe</foaf:name>
+    <foaf:surname>Doe</foaf:surname>
+    <foaf:givenNames>John</foaf:givenNames>
+    <foaf:title>Assoc. Prof.</foaf:title>
+    <mhs:isAffiliatedWith rdf:resource="http://somewhere.edu/" />
+  </mhs:Author>
+  <mhs:Institution rdf:about="http://somewhere.edu/">
+    <foaf:name>Fake University</foaf:name>
+  </mhs:Institution>
   <mhs:Book rdf:about="http://miskinhill.com.au/cited/books/test">
     <dc:identifier rdf:resource="urn:isbn:9780415274319"/>
     <dc:identifier rdf:resource="urn:asin:0415274311"/>

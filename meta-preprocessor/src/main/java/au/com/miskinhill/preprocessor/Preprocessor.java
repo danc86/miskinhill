@@ -133,7 +133,7 @@ public class Preprocessor {
                             else if (rel.equals("translator"))
                                 m.add(m.createStatement(stmt.getSubject(), MHS.translator, href));
                             else if (rel.equals("editor"))
-                                m.add(m.createStatement(stmt.getSubject(), m.createProperty(DCTerms.NS + "creator"), href));
+                                m.add(m.createStatement(stmt.getSubject(), MHS.editor, href));
                             else
                                 throw new AssertionError("Unknown responsibility rel value [" + rel + "]");
                         }

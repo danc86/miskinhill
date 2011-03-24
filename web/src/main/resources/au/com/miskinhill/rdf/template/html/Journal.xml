@@ -35,6 +35,20 @@
     </div>
 </div>
 
+<p id="editors">
+    Editors:
+    <rdf:join each="!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)[0]/mhs:editor" separator=" and ">
+        <a class="name" href="${#uri}">${foaf:title} ${foaf:name}</a>
+    </rdf:join>
+    <br />
+    <rdf:if test="!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)[0]/mhs:reviewsEditor">
+        Reviews editor:
+        <rdf:join each="!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)[0]/mhs:reviewsEditor" separator=" and ">
+            <a class="name" href="${#uri}">${foaf:title} ${foaf:name}</a>
+        </rdf:join>
+    </rdf:if>
+</p>
+
 <h3>Issues available online</h3>
 <ul>
     <li rdf:for="!mhs:isIssueOf[uri-prefix='http://miskinhill.com.au/journals/'](~mhs:publicationDate#comparable-lv)">
@@ -48,6 +62,13 @@
 
 <h3>About this journal</h3>
 <div rdf:content="dc:description" />
+
+<h3>Editorial board</h3>
+<ul id="editorial-board">
+    <li rdf:for="!mhs:isIssueOf(~mhs:publicationDate#comparable-lv)[0]/mhs:hasEditorialBoard/foaf:member(foaf:surname#comparable-lv)">
+        <a class="name" href="${#uri}">${foaf:title} ${foaf:name}</a> (${mhs:isAffiliatedWith/foaf:name})
+    </li>
+</ul>
 
 </body>
 </html>

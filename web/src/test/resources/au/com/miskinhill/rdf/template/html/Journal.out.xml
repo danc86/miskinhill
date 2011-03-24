@@ -34,6 +34,15 @@
     </div>
 </div>
 
+<p id="editors">
+    Editors:
+    
+        <a class="name" href="http://miskinhill.com.au/authors/cox-j-k">Dr. John K. Cox</a>
+    
+    <br/>
+    
+</p>
+
 <h3>Issues available online</h3>
 <ul>
     <li>
@@ -47,6 +56,13 @@
 
 <h3>About this journal</h3>
 <div xml:lang="en" lang="en">A journal, you know, with some stuff in it</div>
+
+<h3>Editorial board</h3>
+<ul id="editorial-board">
+    <li>
+        <a class="name" href="http://miskinhill.com.au/authors/another-author">Prof. Another Author</a> (Fake University)
+    </li>
+</ul>
 
 </body>
 </html>
