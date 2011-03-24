@@ -34,6 +34,7 @@ public class Indexer {
         
         Model model = ModelFactory.createDefaultModel();
         model.read(new FileInputStream(new File(contentPath + "/meta.xml")), "", "RDF/XML");
+        model.read(new FileInputStream(new File(contentPath + "/meta-inferred.xml")), "", "RDF/XML");
         
         IndexWriter iw = new IndexWriter(FSDirectory.open(indexPath), 
                 NullAnalyzer.INSTANCE, 
