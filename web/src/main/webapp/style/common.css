@@ -85,6 +85,9 @@ p, li, caption, .figure {
     border: 1px solid #BFA860;
     background: #FFEBAD;
 }
+.name {
+    white-space: nowrap;
+}
 
 /* Breadcrumbs */
 #breadcrumbs {

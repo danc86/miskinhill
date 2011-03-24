@@ -55,7 +55,7 @@
                 </div>
 
 <p class="author">
-    <a href="http://miskinhill.com.au/authors/test-author">Test Author</a>
+    <a class="name" href="http://miskinhill.com.au/authors/test-author">Test Author</a>
 </p>
 
 </body>

@@ -32,6 +32,10 @@
         <h4>Issue details</h4>
         <p class="cover"><a href="${mhs:cover#uri}"><img src="${mhs:coverThumbnail#uri}" alt="" /></a></p>
         <p>Published ${mhs:publicationDate#formatted-dt('d MMMM yyyy')}</p>
+        <p class="editors">
+            Editors:
+            <rdf:join each="mhs:editor(foaf:surname#comparable-lv)" separator=", "><a class="name" href="${#uri}">${foaf:title} ${foaf:name}</a></rdf:join>
+        </p>
         <p class="metadata-links">Metadata: ${#representation-anchors}</p>
     </div>
 </div>
@@ -49,9 +53,9 @@
                 <div class="author">
                     <rdf:if test="mhs:reviews">Reviewed</rdf:if>
                     by
-                    <rdf:if test="mhs:authorOrder"><rdf:join each="mhs:authorOrder" separator=", "><a href="${#uri}" rdf:content="foaf:name" /></rdf:join></rdf:if>
-                    <rdf:if not="mhs:authorOrder"><rdf:join each="dc:creator" separator=", "><a href="${#uri}" rdf:content="foaf:name" /></rdf:join></rdf:if>
-                    <rdf:if test="mhs:translator">(translated by <a href="${mhs:translator#uri}" rdf:content="mhs:translator/foaf:name" />)</rdf:if>
+                    <rdf:if test="mhs:authorOrder"><rdf:join each="mhs:authorOrder" separator=", "><a class="name" href="${#uri}" rdf:content="foaf:name" /></rdf:join></rdf:if>
+                    <rdf:if not="mhs:authorOrder"><rdf:join each="dc:creator" separator=", "><a class="name" href="${#uri}" rdf:content="foaf:name" /></rdf:join></rdf:if>
+                    <rdf:if test="mhs:translator">(translated by <a class="name" href="${mhs:translator#uri}" rdf:content="mhs:translator/foaf:name" />)</rdf:if>
                 </div>
             </li>
         </rdf:for>

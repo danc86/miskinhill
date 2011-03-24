@@ -60,7 +60,7 @@
 </div>
 
 <p>
-    by <rdf:join separator=", " each="dc:creator"><a href="${#uri}" class="fn" rdf:content="foaf:name" /></rdf:join>
+    by <rdf:join separator=", " each="dc:creator"><a href="${#uri}" class="name fn" rdf:content="foaf:name" /></rdf:join>
 </p>
 
 ${#content}

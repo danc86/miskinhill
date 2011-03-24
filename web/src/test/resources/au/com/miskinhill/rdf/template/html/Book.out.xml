@@ -50,7 +50,7 @@
     <h3>Reviews</h3>
     <ul class="reviews">
         <li>
-            <div class="review"><a href="http://miskinhill.com.au/journals/test/1:1/reviews/review">Review</a> by Test Author</div>
+            <div class="review"><a href="http://miskinhill.com.au/journals/test/1:1/reviews/review">Review</a> by <span class="name">Test Author</span></div>
             <div class="issue">in <em>Test Journal of Good Stuff</em> Vol. 1, No. 1 (2007)</div>
         </li>
     </ul>

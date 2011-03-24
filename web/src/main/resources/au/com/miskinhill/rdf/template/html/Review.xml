@@ -53,7 +53,7 @@
 </div>
 
 <p class="reviewer vcard">
-    by <a href="${dc:creator#uri}" class="fn" rdf:content="dc:creator/foaf:name" />
+    by <a href="${dc:creator#uri}" class="name fn" rdf:content="dc:creator/foaf:name" />
 </p>
 
 <rdf:for each="mhs:reviews(dc:title#comparable-lv)">${#html}</rdf:for>

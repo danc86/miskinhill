@@ -45,7 +45,7 @@
 ${#content}
 
 <p class="author">
-    <a href="${dc:creator#uri}" rdf:content="dc:creator/foaf:name" />
+    <a class="name" href="${dc:creator#uri}" rdf:content="dc:creator/foaf:name" />
 </p>
 
 </body>

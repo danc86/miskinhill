@@ -31,6 +31,10 @@
         <h4>Issue details</h4>
         <p class="cover"><a href="http://miskinhill.com.au/journals/test/1:1/cover.jpg"><img src="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg" alt=""/></a></p>
         <p>Published 1 February 2008</p>
+        <p class="editors">
+            Editors:
+            <a class="name" href="http://miskinhill.com.au/authors/cox-j-k">Dr. John K. Cox</a>
+        </p>
         <p class="metadata-links">Metadata: <a href="http://miskinhill.com.au/journals/test/1:1/.xml" rel="alternate">RDF/XML</a>, <a href="http://miskinhill.com.au/journals/test/1:1/.ttl" rel="alternate">Turtle</a></p>
     </div>
 </div>
@@ -49,7 +53,7 @@
                     
                     by
                     
-                    <a href="http://miskinhill.com.au/authors/test-author">Test Author</a>
+                    <a class="name" href="http://miskinhill.com.au/authors/test-author">Test Author</a>
                     
                 </div>
             </li>
@@ -69,7 +73,7 @@
                     
                     by
                     
-                    <a href="http://miskinhill.com.au/authors/test-author">Test Author</a>
+                    <a class="name" href="http://miskinhill.com.au/authors/test-author">Test Author</a>
                     
                 </div>
             </li>
@@ -89,7 +93,7 @@
                     Reviewed
                     by
                     
-                    <a href="http://miskinhill.com.au/authors/test-author">Test Author</a>
+                    <a class="name" href="http://miskinhill.com.au/authors/test-author">Test Author</a>
                     
                 </div>
             </li>

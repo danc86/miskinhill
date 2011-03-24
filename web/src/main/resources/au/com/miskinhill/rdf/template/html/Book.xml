@@ -17,7 +17,7 @@ ${#html}
     <h3>Reviews</h3>
     <ul class="reviews">
         <li rdf:for="!mhs:reviews(~dc:isPartOf/mhs:publicationDate#comparable-lv)">
-            <div class="review"><a href="${#uri}">Review</a> by ${dc:creator/foaf:name}</div>
+            <div class="review"><a href="${#uri}">Review</a> by <span class="name">${dc:creator/foaf:name}</span></div>
             <div class="issue">in <em>${dc:isPartOf/mhs:isIssueOf/dc:title}</em> Vol. ${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number} (${dc:isPartOf/dc:coverage})</div>
         </li>
     </ul>
