@@ -31,13 +31,13 @@ public class SearchServlet extends HttpServlet {
     private Template resultsTemplate;
 	private IndexReader index;
 
-    public static final String INDEX_PATH_PARAM = "au.com.miskinhill.search.indexPath";
+    public static final String INDEX_PATH_PROPERTY = "au.com.miskinhill.indexPath";
 
     @Override
     public void init() throws ServletException {
-        final String indexPath = getServletContext().getInitParameter(INDEX_PATH_PARAM);
+        final String indexPath = System.getProperty(INDEX_PATH_PROPERTY);
         if (indexPath == null) {
-            throw new ServletException("Parameter " + INDEX_PATH_PARAM + " not set");
+            throw new ServletException("System property " + INDEX_PATH_PROPERTY + " not set");
         }
 		try {
             // Lucene index

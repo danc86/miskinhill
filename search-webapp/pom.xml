@@ -60,7 +60,7 @@
     		<artifactId>maven-war-plugin</artifactId>
             <version>2.1-alpha-2</version>
     		<configuration>
-              <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+              <filteringDeploymentDescriptors>false</filteringDeploymentDescriptors>
     		</configuration>
     	</plugin>
         <plugin>
@@ -72,6 +72,7 @@
                 <port>8080</port>
                 <systemProperties>
                     <java.util.logging.config.file>${project.basedir}/logging.properties</java.util.logging.config.file>
+                    <au.com.miskinhill.indexPath>${au.com.miskinhill.indexPath}</au.com.miskinhill.indexPath>
                 </systemProperties>
                 <uriEncoding>UTF-8</uriEncoding>
                 <accessLogPattern>%h %l %u %t %r %s %b %{User-Agent}i %{Referer}i %{X-Forwarded-For}i</accessLogPattern>

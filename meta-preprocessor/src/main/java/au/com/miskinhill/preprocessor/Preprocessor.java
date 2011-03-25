@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -64,9 +63,7 @@ public class Preprocessor {
     }
     
     public static void main(String[] args) throws Exception {
-        Properties paths = new Properties();
-        paths.load(Preprocessor.class.getResourceAsStream("paths.properties"));
-        File contentRoot = new File(paths.getProperty("contentPath"));
+        File contentRoot = new File(System.getProperty("au.com.miskinhill.contentPath"));
         
         JenaParameters.enableEagerLiteralValidation = true;
         Model model = load(contentRoot, Collections.singleton("thirdparty"));

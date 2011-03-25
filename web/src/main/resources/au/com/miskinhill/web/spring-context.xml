@@ -19,23 +19,23 @@
 
     <!-- models are lazy because we need Jena static data type registration to happen first -->
     <bean id="bareModel" class="au.com.miskinhill.rdf.ModelFactory" factory-method="load" lazy-init="true">
-        <constructor-arg value="${contentPath}/meta.xml" />
+        <constructor-arg value="${au.com.miskinhill.contentPath}/meta.xml" />
     </bean>
     <bean id="inferredModel" class="au.com.miskinhill.rdf.ModelFactory" factory-method="load" lazy-init="true">
-        <constructor-arg value="${contentPath}/meta-inferred.xml" />
+        <constructor-arg value="${au.com.miskinhill.contentPath}/meta-inferred.xml" />
     </bean>
     <bean id="model" class="au.com.miskinhill.rdf.ModelFactory" factory-method="createUnion" lazy-init="true">
         <constructor-arg ref="bareModel" />
         <constructor-arg ref="inferredModel" />
     </bean>
     <bean id="modelTimestamp" class="au.com.miskinhill.web.util.FileModificationTimeFactory" factory-method="getModificationTimeForPath">
-        <constructor-arg value="${contentPath}/meta-inferred.xml" />
+        <constructor-arg value="${au.com.miskinhill.contentPath}/meta-inferred.xml" />
     </bean>
     <bean id="fulltextFetcher" class="au.com.miskinhill.domain.fulltext.FileFulltextFetcher">
-        <constructor-arg value="${contentPath}" />
+        <constructor-arg value="${au.com.miskinhill.contentPath}" />
     </bean>
     <bean id="pdfFulltextBase" class="java.lang.String">
-        <constructor-arg value="${contentPath}" />
+        <constructor-arg value="${au.com.miskinhill.contentPath}" />
     </bean>
         
     <bean class="javax.xml.stream.XMLEventFactory" factory-method="newInstance" />

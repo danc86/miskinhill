@@ -148,8 +148,8 @@
                 <configuration>
                     <systemProperties>
                         <property>
-                            <name>contentPath</name>
-                            <value>${contentPath}</value>
+                            <name>au.com.miskinhill.contentPath</name>
+                            <value>${au.com.miskinhill.contentPath}</value>
                         </property>
                     </systemProperties>
                     <excludes>
@@ -173,7 +173,7 @@
                         <port>8082</port>
                         <systemProperties>
                             <java.util.logging.config.file>${project.basedir}/logging.properties</java.util.logging.config.file>
-                            <contentPath>${contentPath}</contentPath>
+                            <au.com.miskinhill.contentPath>${au.com.miskinhill.contentPath}</au.com.miskinhill.contentPath>
                         </systemProperties>
                         <uriEncoding>UTF-8</uriEncoding>
                         <accessLogPattern>%h %l %u %t %r %s %b %{User-Agent}i %{Referer}i %{X-Forwarded-For}i</accessLogPattern>

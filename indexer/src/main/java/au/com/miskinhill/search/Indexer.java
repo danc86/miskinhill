@@ -3,7 +3,6 @@ package au.com.miskinhill.search;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,11 +64,9 @@ public class Indexer {
         }
     }
 	
-	public static void main(String[] args) throws Exception {
-		Properties props = new Properties();
-		props.load(Indexer.class.getResourceAsStream("paths.properties"));
-        writeIndex(props.getProperty("contentPath"),
-                new File(props.getProperty("indexPath")));
-	}
+    public static void main(String[] args) throws Exception {
+        writeIndex(System.getProperty("au.com.miskinhill.contentPath"),
+                new File(System.getProperty("au.com.miskinhill.indexPath")));
+    }
 	
 }
