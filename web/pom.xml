@@ -129,6 +129,10 @@
         </dependency>
         <dependency>
             <groupId>au.id.djc</groupId>
+            <artifactId>jena-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>au.id.djc</groupId>
             <artifactId>stringtemplate-spring</artifactId>
         </dependency>
 	</dependencies>

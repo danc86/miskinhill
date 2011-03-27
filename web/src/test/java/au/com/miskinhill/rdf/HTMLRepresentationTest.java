@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.vocabulary.DCTerms;
+import com.hp.hpl.jena.vocabulary.RDF;
 import org.apache.commons.io.IOUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -21,6 +24,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import au.com.miskinhill.rdf.vocabulary.MHS;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/au/com/miskinhill/web/test-spring-context-with-fake-model.xml")
@@ -90,6 +95,19 @@ public class HTMLRepresentationTest {
         String result = representation.render(model.getResource("http://miskinhill.com.au/cited/books/test"));
         String expected = IOUtils.toString(this.getClass().getResourceAsStream("template/html/Book.out.xml"), "UTF-8");
         assertEquals(expected.trim(), result.trim());
+    }
+    
+    @Test
+    public void book_should_not_have_nested_hyperlinks() throws Exception {
+        Resource book = model.createResource("http://miskinhill.com.au/cited/books/nested-hyperlinks");
+        model.add(book, RDF.type, MHS.Book);
+        String title = "<span xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\">" +
+                "this has a <a href=\"http://elsewhere.invalid\">nested anchor</a></span>";
+        model.addLiteral(book, DCTerms.title, model.createLiteral(title, true));
+        model.add(book, MHS.availableFrom, model.createResource("http://nowhere.invalid/the-book"));
+        String result = representation.render(book);
+        Document doc = DocumentHelper.parseText(result);
+        assertThat(xpath("count(//html:a[@href]//html:a[@href])").numberValueOf(doc).intValue(), equalTo(0));
     }
     
     @Test

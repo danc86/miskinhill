@@ -47,7 +47,9 @@ public final class MHS {
 	        NS_URI, "issueNumber");
 	public static final Property isIssueOf = ResourceFactory.createProperty(
 	        NS_URI, "isIssueOf");
-	
+    public static final Property availableFrom = ResourceFactory.createProperty(
+            NS_URI, "availableFrom");
+
 	///CLOVER:OFF
 	private MHS() {
     }

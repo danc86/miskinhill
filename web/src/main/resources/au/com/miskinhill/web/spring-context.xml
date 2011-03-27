@@ -62,6 +62,7 @@
     </bean>
     <bean class="au.id.djc.rdftemplate.TemplateInterpolator">
         <constructor-arg ref="selectorFactory" />
+        <constructor-arg value="true" type="boolean" /> <!-- htmlCompatible -->
     </bean>
 
     <bean class="org.springframework.mail.javamail.JavaMailSenderImpl">
