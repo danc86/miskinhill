@@ -43,6 +43,7 @@ p, li, caption, .figure {
 #banner {
     width: 770px;
     height: 158px;
+    background-color: black;
     background-image: url(../images/banner_bg.jpg);
     margin: 1em auto 0 auto;
     text-align: right;
