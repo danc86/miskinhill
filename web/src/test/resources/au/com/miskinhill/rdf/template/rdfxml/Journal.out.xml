@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rdf:RDF
+    xmlns:lvont="http://lexvo.org/ontology#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:foaf="http://xmlns.com/foaf/0.1/"
     xmlns:contact="http://www.w3.org/2000/10/swap/pim/contact#"
@@ -7,7 +8,6 @@
     xmlns:mhs="http://miskinhill.com.au/rdfschema/1.0/"
     xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns:dc="http://purl.org/dc/terms/"
-    xmlns:lingvoj="http://www.lingvoj.org/ontology#"
     xmlns:geonames="http://www.geonames.org/ontology#"
     xmlns:sioc="http://rdfs.org/sioc/ns#"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
@@ -22,8 +22,8 @@
     </dc:publisher>
     <dc:identifier rdf:resource="urn:issn:12345678"/>
     <dc:description xml:lang="en">A journal, you know, with some stuff in it</dc:description>
-    <dc:language rdf:resource="http://www.lingvoj.org/lang/en"/>
-    <dc:language rdf:resource="http://www.lingvoj.org/lang/ru"/>
+    <dc:language rdf:resource="http://lexvo.org/id/iso639-3/eng"/>
+    <dc:language rdf:resource="http://lexvo.org/id/iso639-3/rus"/>
     <mhs:beginningDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date"
     >1987</mhs:beginningDate>
   </mhs:Journal>

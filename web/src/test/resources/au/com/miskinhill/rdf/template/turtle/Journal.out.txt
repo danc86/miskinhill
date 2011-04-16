@@ -1,8 +1,8 @@
 @prefix dc:      <http://purl.org/dc/terms/> .
 @prefix sioc:    <http://rdfs.org/sioc/ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix lvont:   <http://lexvo.org/ontology#> .
 @prefix foaf:    <http://xmlns.com/foaf/0.1/> .
-@prefix lingvoj:  <http://www.lingvoj.org/ontology#> .
 @prefix awol:    <http://bblfish.net/work/atom-owl/2006-06-06/#> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -15,7 +15,7 @@
       mhs:beginningDate "1987"^^<http://www.w3.org/TR/xmlschema-2/#date> ;
       dc:description "A journal, you know, with some stuff in it"@en ;
       dc:identifier <urn:issn:12345678> ;
-      dc:language <http://www.lingvoj.org/lang/ru> , <http://www.lingvoj.org/lang/en> ;
+      dc:language <http://lexvo.org/id/iso639-3/rus> , <http://lexvo.org/id/iso639-3/eng> ;
       dc:publisher
               [ a       mhs:Publisher ;
                 contact:address <http://sws.geonames.org/2150650/> ;

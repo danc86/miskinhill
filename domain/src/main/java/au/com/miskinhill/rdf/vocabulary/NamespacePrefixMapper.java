@@ -31,7 +31,7 @@ public final class NamespacePrefixMapper extends HashMap<String, String> {
         put("geonames", "http://www.geonames.org/ontology#");
         put("sioc", "http://rdfs.org/sioc/ns#");
         put("awol", "http://bblfish.net/work/atom-owl/2006-06-06/#");
-        put("lingvoj", "http://www.lingvoj.org/ontology#");
+        put("lvont", "http://lexvo.org/ontology#");
         put("prism", "http://prismstandard.org/namespaces/1.2/basic/");
         put("owl", OWL.NS);
         put("rev", "http://purl.org/stuff/rev#");

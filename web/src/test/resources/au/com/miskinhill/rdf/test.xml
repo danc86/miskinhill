@@ -4,7 +4,7 @@
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
          xmlns:contact="http://www.w3.org/2000/10/swap/pim/contact#"
          xmlns:geonames="http://www.geonames.org/ontology#"
-         xmlns:lingvoj="http://www.lingvoj.org/ontology#"
+         xmlns:lvont="http://lexvo.org/ontology#"
          xmlns:mhs="http://miskinhill.com.au/rdfschema/1.0/"
          xmlns:sioc="http://rdfs.org/sioc/ns#"
          xmlns:awol="http://bblfish.net/work/atom-owl/2006-06-06/#"
@@ -56,20 +56,27 @@
     <dc:publisher rdf:nodeID="pub"/>
     <dc:identifier rdf:resource="urn:issn:12345678"/>
     <dc:description xml:lang="en">A journal, you know, with some stuff in it</dc:description>
-    <dc:language rdf:resource="http://www.lingvoj.org/lang/en" />
-    <dc:language rdf:resource="http://www.lingvoj.org/lang/ru" />
+    <dc:language rdf:resource="http://lexvo.org/id/iso639-3/eng" />
+    <dc:language rdf:resource="http://lexvo.org/id/iso639-3/rus" />
     <mhs:beginningDate rdf:datatype="http://www.w3.org/TR/xmlschema-2/#date">1987</mhs:beginningDate>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.lingvoj.org/lang/en">
-    <rdf:type rdf:resource="http://www.lingvoj.org/ontology#Lingvo" />
-    <lingvoj:iso1>en</lingvoj:iso1>
-    <lingvoj:iso2b>eng</lingvoj:iso2b>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.lingvoj.org/lang/ru">
-    <rdf:type rdf:resource="http://www.lingvoj.org/ontology#Lingvo" />
-    <lingvoj:iso1>ru</lingvoj:iso1>
-    <lingvoj:iso2b>rus</lingvoj:iso2b>
-  </rdf:Description>
+  <lvont:Language rdf:about="http://lexvo.org/id/iso639-3/eng">
+    <lvont:iso6392BCode>eng</lvont:iso6392BCode>
+    <lvont:iso6392TCode>eng</lvont:iso6392TCode>
+    <lvont:iso639P1Code>en</lvont:iso639P1Code>
+    <lvont:iso639P3PCode>eng</lvont:iso639P3PCode>
+    <lvont:marcCode>eng</lvont:marcCode>
+    <rdfs:label xml:lang="en">English</rdfs:label>
+  </lvont:Language>
+  <lvont:Language rdf:about="http://lexvo.org/id/iso639-3/rus">
+    <lvont:iso6392BCode>rus</lvont:iso6392BCode>
+    <lvont:iso6392TCode>rus</lvont:iso6392TCode>
+    <lvont:iso639P1Code>ru</lvont:iso639P1Code>
+    <lvont:iso639P3PCode>rus</lvont:iso639P3PCode>
+    <lvont:marcCode>rus</lvont:marcCode>
+    <rdfs:label xml:lang="en">Russian</rdfs:label>
+    <rdfs:label xml:lang="ru">Русский язык</rdfs:label>
+  </lvont:Language>
   <rdf:Description rdf:nodeID="pub">
     <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Publisher"/>
     <foaf:name xml:lang="en">Awesome Publishing House</foaf:name>

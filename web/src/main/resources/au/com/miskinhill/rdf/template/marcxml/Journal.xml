@@ -12,7 +12,7 @@
     <subfield code="a">Miskin Hill Academic Publishing</subfield>
 </datafield>
 <datafield tag="041" ind1=" " ind2=" ">
-    <subfield code="a" rdf:for="dc:language(lingvoj:iso2b#comparable-lv)">${lingvoj:iso2b}</subfield>
+    <subfield code="a" rdf:for="dc:language(lvont:marcCode#comparable-lv)">${lvont:marcCode}</subfield>
 </datafield>
 <datafield tag="245" ind1="0" ind2="0">
     <subfield code="a">${dc:title}</subfield>

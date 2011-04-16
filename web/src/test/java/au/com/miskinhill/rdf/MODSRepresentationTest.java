@@ -66,10 +66,10 @@ public class MODSRepresentationTest {
     
     @Test
     public void articleShouldSpecifyLanguageFromJournal() throws Exception {
-        List<Element> langs = xpath("/mods:modsCollection/mods:mods/mods:language/mods:languageTerm[@type='code' and @authority='rfc3066']").selectNodes(renderArticle());
+        List<Element> langs = xpath("/mods:modsCollection/mods:mods/mods:language/mods:languageTerm[@type='code' and @authority='iso639-2b']").selectNodes(renderArticle());
         assertThat(langs.size(), equalTo(2));
-        assertThat(langs.get(0).getText(), equalTo("en"));
-        assertThat(langs.get(1).getText(), equalTo("ru"));
+        assertThat(langs.get(0).getText(), equalTo("eng"));
+        assertThat(langs.get(1).getText(), equalTo("rus"));
     }
     
     @Test
@@ -92,10 +92,10 @@ public class MODSRepresentationTest {
     
     @Test
     public void journalShouldContainLanguages() throws Exception {
-        List<Element> langs = xpath("/mods:modsCollection/mods:mods/mods:language/mods:languageTerm[@type='code' and @authority='rfc3066']").selectNodes(renderJournal());
+        List<Element> langs = xpath("/mods:modsCollection/mods:mods/mods:language/mods:languageTerm[@type='code' and @authority='iso639-2b']").selectNodes(renderJournal());
         assertThat(langs.size(), equalTo(2));
-        assertThat(langs.get(0).getText(), equalTo("en"));
-        assertThat(langs.get(1).getText(), equalTo("ru"));
+        assertThat(langs.get(0).getText(), equalTo("eng"));
+        assertThat(langs.get(1).getText(), equalTo("rus"));
     }
     
     private Document renderArticle() throws DocumentException {
