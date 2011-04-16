@@ -1,3 +1,5 @@
+* Internet Archive identifiers/links
+* Open Library identifiers/links
 * support other IssueContent besides Articles in OAI-PMH
 * record/infer language for each IssueContent, and put it everywhere (esp. MODS and OAI-DC)
 
@@ -18,6 +20,7 @@ eventually:
     - limit to journal/issue
 * get into Goog Scholar, UQ catalogue, UQ's III federated search thingy?
 * online ordering of back issues
+* EPUB per issue
 * subjects:
     - show in issue contents?
     - link subjects to ll01.nla.gov.au search, also user's library? 
