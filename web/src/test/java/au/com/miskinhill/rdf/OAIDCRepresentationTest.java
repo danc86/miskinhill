@@ -62,6 +62,13 @@ public class OAIDCRepresentationTest {
                 equalTo("Makine, Andreï, 1957- – Criticism and interpretation"));
     }
     
+    @Test
+    public void shouldIncludeLanguage() throws Exception {
+        Document doc = renderArticle();
+        assertThat(xpath("/oai_dc:dc/dc:language").selectSingleNode(doc).getText(),
+                equalTo("eng"));
+    }
+    
     private Document renderArticle() throws DocumentException {
         String result = representation.render(model.getResource("http://miskinhill.com.au/journals/test/1:1/article"));
         return DocumentHelper.parseText(result);

@@ -117,6 +117,7 @@
     <mhs:endPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">35</mhs:endPage>
     <mhs:inSection rdf:resource="http://miskinhill.com.au/journals/test/1:1/#articles" />
     <dc:subject rdf:resource="http://miskinhill.com.au/subjects/lcsh/sh85087440" />
+    <dc:language rdf:resource="http://lexvo.org/id/iso639-3/eng" />
   </mhs:Article>
   <mhs:Subject rdf:about="http://miskinhill.com.au/subjects/lcsh/sh85087440">
     <mhs:label>Makine, Andreï, 1957---Criticism and interpretation</mhs:label>

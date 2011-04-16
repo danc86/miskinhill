@@ -10,4 +10,5 @@
     <dc:publisher rdf:content="dc:isPartOf/mhs:isIssueOf/dc:publisher/foaf:name" />
     <rdf:for each="dc:subject(mhs:label#comparable-lv)"><dc:subject rdf:content="mhs:label#lcsh-cleanup" /></rdf:for>
     <dc:identifier rdf:content="#uri" />
+    <rdf:for each="dc:language(lvont:iso6392BCode#comparable-lv)"><dc:language rdf:content="lvont:iso6392BCode" /></rdf:for>
 </oai_dc:dc>

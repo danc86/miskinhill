@@ -13,7 +13,7 @@
         <url displayLabel="Original print version" access="raw object">${#uri}.pdf</url>
     </location>
     <language>
-        <languageTerm rdf:for="dc:isPartOf/mhs:isIssueOf/dc:language(lvont:iso6392BCode#comparable-lv)" type="code" authority="iso639-2b">${lvont:iso6392BCode}</languageTerm>
+        <languageTerm rdf:for="dc:language(lvont:iso6392BCode#comparable-lv)" type="code" authority="iso639-2b">${lvont:iso6392BCode}</languageTerm>
     </language>
     <name type="personal" rdf:for="dc:creator">
         <displayForm>${foaf:name}</displayForm>

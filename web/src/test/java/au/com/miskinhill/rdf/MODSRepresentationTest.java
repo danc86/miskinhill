@@ -65,11 +65,10 @@ public class MODSRepresentationTest {
     }
     
     @Test
-    public void articleShouldSpecifyLanguageFromJournal() throws Exception {
+    public void articleShouldContainLanguage() throws Exception {
         List<Element> langs = xpath("/mods:modsCollection/mods:mods/mods:language/mods:languageTerm[@type='code' and @authority='iso639-2b']").selectNodes(renderArticle());
-        assertThat(langs.size(), equalTo(2));
+        assertThat(langs.size(), equalTo(1));
         assertThat(langs.get(0).getText(), equalTo("eng"));
-        assertThat(langs.get(1).getText(), equalTo("rus"));
     }
     
     @Test

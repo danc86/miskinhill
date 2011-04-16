@@ -18,9 +18,14 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 
 import com.hp.hpl.jena.datatypes.xsd.impl.XMLLiteralType;
 import com.hp.hpl.jena.rdf.model.Literal;
@@ -40,6 +45,7 @@ import org.dom4j.Element;
 import org.dom4j.XPath;
 
 import au.com.miskinhill.citation.Citation;
+import au.com.miskinhill.rdf.LanguageUtil;
 import au.com.miskinhill.rdf.RDFUtil;
 import au.com.miskinhill.rdf.vocabulary.MHS;
 import au.com.miskinhill.rdf.vocabulary.NamespacePrefixMapper;
@@ -48,9 +54,10 @@ import au.com.miskinhill.xhtmldtd.XhtmlEntityResolver;
 public class Preprocessor {
     
     private static final Logger LOG = Logger.getLogger(Preprocessor.class.getName());
+    private static final String XHTML_NS_URI = "http://www.w3.org/1999/xhtml";
     private static final XPath A_XPATH = DocumentFactory.getInstance().createXPath("//html:a");
     static {
-        A_XPATH.setNamespaceURIs(Collections.singletonMap("html", "http://www.w3.org/1999/xhtml"));
+        A_XPATH.setNamespaceURIs(Collections.singletonMap("html", XHTML_NS_URI));
     }
     private static final byte[] XHTML_STRICT_DTD_DECL = 
             ("<!DOCTYPE html " +
@@ -68,7 +75,7 @@ public class Preprocessor {
         JenaParameters.enableEagerLiteralValidation = true;
         Model model = load(contentRoot, Collections.singleton("thirdparty"));
         extractResponsibility(model);
-        extractCitations(model, contentRoot);
+        processContent(model, contentRoot);
         Model inferredModel = load(new File(contentRoot, "thirdparty"), Collections.<String>emptySet());
         Model union = ModelFactory.createUnion(model, inferredModel);
         new Inferrer(union).apply(inferredModel);
@@ -141,8 +148,8 @@ public class Preprocessor {
         LOG.info("Model contains " + m.getGraph().size() + " triples");
     }
     
-    private static void extractCitations(Model m, File contentRoot) throws XMLStreamException, IOException {
-        LOG.info("Extracting citation metadata");
+    private static void processContent(Model m, File contentRoot) throws XMLStreamException, IOException {
+        LOG.info("Processing content");
         Iterator<Resource> it = m.listSubjectsWithProperty(RDF.type, MHS.Article)
                 .andThen(m.listSubjectsWithProperty(RDF.type, MHS.Review))
                 .andThen(m.listSubjectsWithProperty(RDF.type, MHS.Obituary));
@@ -157,12 +164,38 @@ public class Preprocessor {
                 XMLEventReader contentReader = inputFactory.createXMLEventReader(new SequenceInputStream(
                         new ByteArrayInputStream(XHTML_STRICT_DTD_DECL),
                         new FileInputStream(content)));
-                for (Citation citation: Citation.fromDocument(URI.create(item.getURI()), contentReader))
-                    for (Statement stmt: citation.toRDF())
-                        m.add(stmt);
+                extractCitations(m, item, contentReader);
+                contentReader = inputFactory.createXMLEventReader(new SequenceInputStream(
+                        new ByteArrayInputStream(XHTML_STRICT_DTD_DECL),
+                        new FileInputStream(content)));
+                extractLanguages(m, item, contentReader);
             }
         }
         LOG.info("Model contains " + m.getGraph().size() + " triples");
+    }
+
+    private static void extractCitations(Model model, Resource item, XMLEventReader content) {
+        for (Citation citation: Citation.fromDocument(URI.create(item.getURI()), content))
+            for (Statement stmt: citation.toRDF())
+                model.add(stmt);
+    }
+    
+    private static void extractLanguages(Model model, Resource item, XMLEventReader content) throws XMLStreamException {
+        while (content.hasNext()) {
+            XMLEvent event = content.nextEvent();
+            switch (event.getEventType()) {
+                case XMLEvent.START_ELEMENT:
+                    StartElement startElement = event.asStartElement();
+                    String lang = getLang(startElement);
+                    if (lang == null)
+                        throw new AssertionError("lang attribute missing from root element of " + item);
+                    model.add(item, DCTerms.language, LanguageUtil.lookupLanguage(model, lang));
+                    return;
+                default:
+                    // continue
+            }
+        }
+        throw new AssertionError("No start element found for " + item);
     }
     
     private static void writeResult(Model model, Model inferredModel) throws IOException {
@@ -173,6 +206,23 @@ public class Preprocessor {
         File inferredModelFile = new File("meta-inferred.xml");
         LOG.info("Writing inferred model to " + inferredModelFile.getAbsolutePath());
         inferredModel.write(new BufferedOutputStream(new FileOutputStream(inferredModelFile)), "RDF/XML");
+    }
+    
+    // ugh
+    private static String getLang(StartElement se) {
+        // xml:lang takes precedence
+        QName xmlLangQName = new QName(
+                se.getNamespaceURI("") == XMLConstants.XML_NS_URI ? "" : XMLConstants.XML_NS_URI, "lang");
+        Attribute xmlLang = se.getAttributeByName(xmlLangQName);
+        if (xmlLang != null)
+            return xmlLang.getValue();
+
+        QName xhtmlLangQName = new QName(se.getNamespaceURI("") == XHTML_NS_URI ? "" : XHTML_NS_URI, "lang");
+        Attribute xhtmlLang = se.getAttributeByName(xhtmlLangQName);
+        if (xhtmlLang != null)
+            return xhtmlLang.getValue();
+
+        return null;
     }
     
 }
