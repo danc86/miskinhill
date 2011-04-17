@@ -2,8 +2,8 @@
 
 <head>
     <title>Test Journal of Good Stuff Vol. 1, No. 1</title>
-    <link type="application/rdf+xml" title="RDF/XML" href="http://miskinhill.com.au/journals/test/1:1/.xml" rel="alternate"/><link type="application/x-turtle" href="http://miskinhill.com.au/journals/test/1:1/.ttl" rel="alternate" title="Turtle"/>
-    <link rel="stylesheet" type="text/css" href="/style/issue.css"/>
+    <link rel="alternate" type="application/rdf+xml" title="RDF/XML" href="http://miskinhill.com.au/journals/test/1:1/.xml" /><link rel="alternate" type="application/x-turtle" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/.ttl" />
+    <link rel="stylesheet" type="text/css" href="/style/issue.css" />
 </head>
 
 <body>
@@ -16,26 +16,26 @@
 <h2>
     <span class="journal-title" xml:lang="en" lang="en">Test Journal of Good Stuff</span>
     <span class="issue">Vol. 1, No. 1 (2007)</span>
-    <abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/"/>
+    <abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/" />
 </h2>
 
 <div class="metabox-container">
         <div class="searchbox metabox">
         <h4>Search this issue</h4>
         <form method="get" action="http://search.miskinhill.com.au/search">
-            <p><input type="text" name="q"/> <button type="submit">Go</button></p>
+            <p><input type="text" name="q" /> <button type="submit">Go</button></p>
         </form>
     </div>
 
     <div class="issue-meta metabox">
         <h4>Issue details</h4>
-        <p class="cover"><a href="http://miskinhill.com.au/journals/test/1:1/cover.jpg"><img src="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg" alt=""/></a></p>
+        <p class="cover"><a href="http://miskinhill.com.au/journals/test/1:1/cover.jpg"><img src="http://miskinhill.com.au/journals/test/1:1/cover.thumb.jpg" alt="" /></a></p>
         <p>Published 1 February 2008</p>
         <p class="editors">
             Editors:
             <a class="name" href="http://miskinhill.com.au/authors/cox-j-k">Dr. John K. Cox</a>
         </p>
-        <p class="metadata-links">Metadata: <a href="http://miskinhill.com.au/journals/test/1:1/.xml" rel="alternate">RDF/XML</a>, <a href="http://miskinhill.com.au/journals/test/1:1/.ttl" rel="alternate">Turtle</a></p>
+        <p class="metadata-links">Metadata: <a rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/.xml">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/.ttl">Turtle</a></p>
     </div>
 </div>
 

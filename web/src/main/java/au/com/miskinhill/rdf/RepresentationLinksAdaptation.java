@@ -2,6 +2,7 @@ package au.com.miskinhill.rdf;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -44,7 +45,7 @@ public class RepresentationLinksAdaptation extends AbstractAdaptation<XMLStream,
         for (Representation representation: representations) {
             if (!representation.isShownIn(ShownIn.HTMLLinks))
                 continue;
-            HashSet<Attribute> attributes = new HashSet<Attribute>();
+            HashSet<Attribute> attributes = new LinkedHashSet<Attribute>();
             attributes.add(eventFactory.createAttribute(new QName("rel"), "alternate"));
             attributes.add(eventFactory.createAttribute(new QName("type"), representation.getContentType().toString()));
             attributes.add(eventFactory.createAttribute(new QName("title"), representation.getLabel()));

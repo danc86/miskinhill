@@ -32,7 +32,8 @@
 		</dependency>
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
-            <artifactId>woodstox-core-asl</artifactId>
+            <artifactId>wstx-asl</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>jaxen</groupId>

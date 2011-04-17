@@ -2,8 +2,8 @@
 
 <head>
     <title>Book - RDF Schema</title>
-    <link href="http://miskinhill.com.au/rdfschema/1.0/Book.xml" type="application/rdf+xml" title="RDF/XML" rel="alternate"/><link href="http://miskinhill.com.au/rdfschema/1.0/Book.ttl" type="application/x-turtle" rel="alternate" title="Turtle"/>
-    <link rel="stylesheet" type="text/css" href="/style/rdfschema.css"/>
+    <link rel="alternate" type="application/rdf+xml" title="RDF/XML" href="http://miskinhill.com.au/rdfschema/1.0/Book.xml" /><link rel="alternate" type="application/x-turtle" title="Turtle" href="http://miskinhill.com.au/rdfschema/1.0/Book.ttl" />
+    <link rel="stylesheet" type="text/css" href="/style/rdfschema.css" />
 </head>
 
 <body>
@@ -17,7 +17,7 @@
 <div class="metabox-container">
     <div class="rdfschema-meta metabox">
         <h4>Other formats</h4>
-        <p><a href="http://miskinhill.com.au/rdfschema/1.0/Book.xml" rel="alternate">RDF/XML</a>, <a href="http://miskinhill.com.au/rdfschema/1.0/Book.ttl" rel="alternate">Turtle</a></p>
+        <p><a rel="alternate" href="http://miskinhill.com.au/rdfschema/1.0/Book.xml">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/rdfschema/1.0/Book.ttl">Turtle</a></p>
     </div>
 </div>
 
@@ -26,14 +26,14 @@
         <tr><th>URI</th><td><code>http://miskinhill.com.au/rdfschema/1.0/Book</code></td></tr>
         <tr><th>Type</th><td>
             
-                <a href="http://www.w3.org/2000/01/rdf-schema#Class"><code>http://www.w3.org/2000/01/rdf-schema#Class</code></a><br/>
+                <a href="http://www.w3.org/2000/01/rdf-schema#Class"><code>http://www.w3.org/2000/01/rdf-schema#Class</code></a><br />
             
         </td></tr>
         <tr>
             <th>Subclass of</th>
             <td>
                 
-                    <a href="http://purl.org/dc/terms/BibliographicResource"><code>http://purl.org/dc/terms/BibliographicResource</code></a><br/>
+                    <a href="http://purl.org/dc/terms/BibliographicResource"><code>http://purl.org/dc/terms/BibliographicResource</code></a><br />
                 
             </td>
         </tr>

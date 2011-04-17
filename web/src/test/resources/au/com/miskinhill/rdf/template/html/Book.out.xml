@@ -2,37 +2,39 @@
 
 <head>
     <title>Slovenia: evolving loyalties</title>
-    <link type="application/rdf+xml" title="RDF/XML" rel="alternate" href="http://miskinhill.com.au/cited/books/test.xml"/><link href="http://miskinhill.com.au/cited/books/test.ttl" type="application/x-turtle" rel="alternate" title="Turtle"/>
-    <link rel="stylesheet" type="text/css" href="/style/cited.css"/>
+    <link rel="alternate" type="application/rdf+xml" title="RDF/XML" href="http://miskinhill.com.au/cited/books/test.xml" /><link rel="alternate" type="application/x-turtle" title="Turtle" href="http://miskinhill.com.au/cited/books/test.ttl" />
+    <link rel="stylesheet" type="text/css" href="/style/cited.css" />
 </head>
 
 <body>
 
-<h2>Book<abbr class="unapi-id" title="http://miskinhill.com.au/cited/books/test"/></h2>
+<h2>Book<abbr class="unapi-id" title="http://miskinhill.com.au/cited/books/test" /></h2>
 
 <div class="bookinfo item">
 
 
 
-    <p class="cover"><img src="http://images.amazon.com/images/P/0415274311.01.MZZZZZZZ.jpg" alt=""/></p>
+    <p class="cover"><img src="http://images.amazon.com/images/P/0415274311.01.MZZZZZZZ.jpg" alt="" /></p>
 
 
 <div class="beside">
     <p class="main">
         
         <em class="title fn" xml:lang="en" lang="en">Slovenia: evolving loyalties</em>
-        <br/>
-        <span class="responsibility"><span>edited by
-        <a href="http://miskinhill.com.au/authors/cox-j-k" rel="editor">John K. Cox</a></span></span>
+        <br />
+        <span class="responsibility">
+        <span>edited by
+        <a href="http://miskinhill.com.au/authors/cox-j-k" rel="editor">John K. Cox</a></span>
+    </span>
     </p>
     <p class="publication">
         Published by Routledge, 2005
         
         
-        <br/>
+        <br />
         ISBN 9780415274319
     </p>
-    <p class="links">Find this book online:<br/>
+    <p class="links">Find this book online:<br />
         <a href="http://www.amazon.com/dp/0415274311/?tag=mishil-20">Amazon.com</a>,
 <a href="http://openlibrary.org/search?q=isbn:9780415274319">Open Library</a>,
 <a href="http://books.google.com/books?vid=ISBN9780415274319">Google Book Search</a>,

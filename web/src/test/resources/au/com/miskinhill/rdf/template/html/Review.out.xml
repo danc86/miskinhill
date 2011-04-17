@@ -2,30 +2,30 @@
 
 <head profile="http://microformats.org/wiki/hreview-profile http://microformats.org/profile/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
     <title>Review of Slovenia: evolving loyalties - Test Journal of Good Stuff Vol. 1, No. 1</title>
-    <link href="http://miskinhill.com.au/journals/test/1:1/reviews/review.xml" type="application/rdf+xml" title="RDF/XML" rel="alternate"/><link type="application/x-turtle" rel="alternate" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.ttl"/>
-    <link rel="stylesheet" type="text/css" href="/style/article.css"/>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"/>
-    <script type="text/javascript" src="/script/jquery.scrollTo-1.4.2.js"/>
-    <script type="text/javascript" src="/script/footnote.js"/>
-    <script type="text/javascript" src="/script/citation.js"/>
+    <link rel="alternate" type="application/rdf+xml" title="RDF/XML" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.xml" /><link rel="alternate" type="application/x-turtle" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.ttl" />
+    <link rel="stylesheet" type="text/css" href="/style/article.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" />
+    <script type="text/javascript" src="/script/jquery.scrollTo-1.4.2.js" />
+    <script type="text/javascript" src="/script/footnote.js" />
+    <script type="text/javascript" src="/script/citation.js" />
     
-    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
+    <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
     <meta name="DC.title">Review of Slovenia: evolving loyalties</meta>
-    <meta name="DC.creator" content="Test Author"/>
-    <meta name="DC.date" content="2008-02-01"/>
+    <meta name="DC.creator" content="Test Author" />
+    <meta name="DC.date" content="2008-02-01" />
     
     <meta name="citation_title">Review of Slovenia: evolving loyalties</meta>
     
     <meta name="citation_authors">Test Author</meta>
-    <meta name="citation_pdf_url" content="http://miskinhill.com.au/journals/test/1:1/reviews/review.pdf"/>
-    <meta name="citation_firstpage" content="115"/>
-    <meta name="citation_lastpage" content="116"/>
-    <meta name="citation_volume" content="1"/>
-    <meta name="citation_issue" content="1"/>
-    <meta name="citation_date" content="2008-02-01"/>
-    <meta name="citation_issn" content="12345678"/>
-    <meta name="citation_journal_title" content="Test Journal of Good Stuff"/>
-    <meta name="citation_publisher" content="Awesome Publishing House"/>
+    <meta name="citation_pdf_url" content="http://miskinhill.com.au/journals/test/1:1/reviews/review.pdf" />
+    <meta name="citation_firstpage" content="115" />
+    <meta name="citation_lastpage" content="116" />
+    <meta name="citation_volume" content="1" />
+    <meta name="citation_issue" content="1" />
+    <meta name="citation_date" content="2008-02-01" />
+    <meta name="citation_issn" content="12345678" />
+    <meta name="citation_journal_title" content="Test Journal of Good Stuff" />
+    <meta name="citation_publisher" content="Awesome Publishing House" />
 </head>
 
 <body class="hreview">
@@ -36,18 +36,18 @@
     <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, No. 1</a> >
 </div>
 
-<h2>Book review<abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/reviews/review"/></h2>
+<h2>Book review<abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/reviews/review" /></h2>
 
 <div class="metabox-container">
     <div class="review-meta metabox">
         <h4>Review details</h4>
         <p>
-            Published <span class="date">1 February 2008</span><br/>
-            in <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, No. 1</a> of<br/>
+            Published <span class="date">1 February 2008</span><br />
+            in <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, No. 1</a> of<br />
             <a href="http://miskinhill.com.au/journals/test/"><em xml:lang="en" lang="en">Test Journal of Good Stuff</em></a>
         </p>
         <p><a href="http://miskinhill.com.au/journals/test/1:1/reviews/review.pdf">Original print version</a></p>
-        <p class="metadata-links">Metadata: <a href="http://miskinhill.com.au/journals/test/1:1/reviews/review.xml" rel="alternate">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.ttl">Turtle</a></p>
+        <p class="metadata-links">Metadata: <a rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.xml">RDF/XML</a>, <a rel="alternate" href="http://miskinhill.com.au/journals/test/1:1/reviews/review.ttl">Turtle</a></p>
     </div>
 </div>
 
@@ -59,25 +59,27 @@
 
 
 
-    <p class="cover"><img src="http://images.amazon.com/images/P/0415274311.01.MZZZZZZZ.jpg" alt=""/></p>
+    <p class="cover"><img src="http://images.amazon.com/images/P/0415274311.01.MZZZZZZZ.jpg" alt="" /></p>
 
 
 <div class="beside">
     <p class="main">
         
         <em class="title fn" xml:lang="en" lang="en">Slovenia: evolving loyalties</em>
-        <br/>
-        <span class="responsibility"><span>edited by
-        <a href="http://miskinhill.com.au/authors/cox-j-k" rel="editor">John K. Cox</a></span></span>
+        <br />
+        <span class="responsibility">
+        <span>edited by
+        <a href="http://miskinhill.com.au/authors/cox-j-k" rel="editor">John K. Cox</a></span>
+    </span>
     </p>
     <p class="publication">
         Published by Routledge, 2005
         
         
-        <br/>
+        <br />
         ISBN 9780415274319
     </p>
-    <p class="links">Find this book online:<br/>
+    <p class="links">Find this book online:<br />
         <a href="http://www.amazon.com/dp/0415274311/?tag=mishil-20">Amazon.com</a>,
 <a href="http://openlibrary.org/search?q=isbn:9780415274319">Open Library</a>,
 <a href="http://books.google.com/books?vid=ISBN9780415274319">Google Book Search</a>,
@@ -91,7 +93,9 @@
 
 </div>
 
-<div class="body-text" lang="en">
+
+
+                <div class="body-text" lang="en">
                 <h3>1. Introduction</h3>
                 <p>An important and complex area of stress in Russian, which has to date received 
                 insufficient attention, is variation in stress. By variation in stress is meant
@@ -101,8 +105,9 @@
                 </p>
                 <h3>Footnotes</h3>
                 <div id="fn-1" class="footnote"><p><span class="footnote-number">1</span> <span class="citation book"><span class="au">Yuri Andrukhovych</span>, <em lang="uk" class="btitle">Perverziia: Roman</em> (<span class="place">Ivano-Frankivs′k</span>: <span class="pub">Vydavnytstvo 
-                “Lileia-NV”</span>, <span class="date">1997</span>), <span class="spage                  epage">6</span><span class="cites" title="books/andrukhovych-1997"/> <span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft.genre=book&amp;rft_val_format=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.au=Yuri+Andrukhovych&amp;rft.btitle=Perverziia%3A+Roman&amp;rft.place=Ivano-Frankivs%E2%80%B2k&amp;rft.pub=Vydavnytstvo+%E2%80%9CLileia-NV%E2%80%9D&amp;rft.date=1997&amp;rft.spage=6&amp;rft.epage=6"/><a class="citation-link" href="http://miskinhill.com.au/cited/books/andrukhovych-1997"><img src="/images/silk/world_link.png" width="16" height="16" alt="[Citation details]"/></a></span>.</p></div>
+                “Lileia-NV”</span>, <span class="date">1997</span>), <span class="spage                  epage">6</span><span class="cites" title="books/andrukhovych-1997" /> <span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft.genre=book&amp;rft_val_format=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.au=Yuri+Andrukhovych&amp;rft.btitle=Perverziia%3A+Roman&amp;rft.place=Ivano-Frankivs%E2%80%B2k&amp;rft.pub=Vydavnytstvo+%E2%80%9CLileia-NV%E2%80%9D&amp;rft.date=1997&amp;rft.spage=6&amp;rft.epage=6" /><a class="citation-link" href="http://miskinhill.com.au/cited/books/andrukhovych-1997"><img src="/images/silk/world_link.png" width="16" height="16" alt="[Citation details]" /></a></span>.</p></div>
                 </div>
+            
 
 </body>
 </html>
