@@ -44,7 +44,7 @@
             <bean class="au.com.miskinhill.xhtmldtd.XhtmlEntityResolver" />
         </property>
     </bean>
-    <bean class="javax.xml.stream.XMLOutputFactory" factory-method="newInstance" />
+    <bean class="au.com.miskinhill.web.util.ConfigurableXMLOutputFactory" />
 
     <context:component-scan base-package="au.id.djc.rdftemplate.datatype" />
     <context:component-scan base-package="au.com.miskinhill.rdf" />
