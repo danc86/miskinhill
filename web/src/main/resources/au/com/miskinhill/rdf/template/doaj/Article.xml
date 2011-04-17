@@ -1,0 +1,26 @@
+<record xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
+    <language rdf:content="dc:language/lvont:iso6392BCode" />
+    <publisher rdf:content="dc:isPartOf/mhs:isIssueOf/dc:publisher/foaf:name" />
+    <journalTitle rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" />
+    <issn rdf:content="dc:isPartOf/mhs:isIssueOf/dc:identifier[uri-prefix='urn:issn:']#uri-slice(9)" />
+    <publicationDate rdf:content="dc:isPartOf/mhs:publicationDate#formatted-dt('yyyy-MM-dd')" />
+    <volume rdf:content="dc:isPartOf/mhs:volume" />
+    <issue rdf:content="dc:isPartOf/mhs:issueNumber" />
+    <startPage rdf:content="mhs:startPage" />
+    <endPage rdf:content="mhs:endPage" />
+    <documentType>article</documentType>
+    <title rdf:content="dc:title#string-lv" language="${dc:language/lvont:iso6392BCode}" />
+    <authors>
+        <rdf:if test="mhs:authorOrder">
+            <author rdf:for="mhs:authorOrder">
+                <name rdf:content="foaf:name" />
+            </author>
+        </rdf:if>
+        <rdf:if not="mhs:authorOrder">
+            <author rdf:for="dc:creator">
+                <name rdf:content="foaf:name" />
+            </author>
+        </rdf:if>
+    </authors>
+    <fullTextUrl format="html">${#uri}</fullTextUrl>
+</record>
