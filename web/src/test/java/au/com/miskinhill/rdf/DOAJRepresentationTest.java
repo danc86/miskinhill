@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.util.Collections;
+import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import org.dom4j.Document;
@@ -145,11 +146,10 @@ public class DOAJRepresentationTest {
                 equalTo("http://miskinhill.com.au/journals/test/1:1/article"));
     }
     
-    @SuppressWarnings("unchecked")
     @Test
     public void should_strip_out_xmllang_attributes() throws Exception {
         Document doc = renderJournal();
-        assertThat(xpath("//*[@xml:lang]").selectNodes(doc),
+        assertThat((List<Element>) xpath("//*[@xml:lang]").selectNodes(doc),
                 equalTo(Collections.<Element>emptyList()));
     }
     
