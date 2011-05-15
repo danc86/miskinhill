@@ -1,6 +1,5 @@
 package au.com.miskinhill.rdf;
 
-import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
@@ -64,7 +63,7 @@ public class AtomRepresentation implements Representation {
     @Override
     public String render(Resource resource) {
         return templateInterpolator.interpolate(
-                new InputStreamReader(this.getClass().getResourceAsStream("template/atom/Forum.xml")),
+                this.getClass().getResourceAsStream("template/atom/Forum.xml"),
                 resource);
     }
 

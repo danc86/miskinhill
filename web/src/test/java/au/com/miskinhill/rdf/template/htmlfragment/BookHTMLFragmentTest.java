@@ -3,7 +3,6 @@ package au.com.miskinhill.rdf.template.htmlfragment;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.Collections;
 
@@ -142,7 +141,7 @@ public class BookHTMLFragmentTest {
     
     private Document interpolate(RDFNode node) throws DocumentException {
         String result = templateInterpolator.interpolate(
-                new InputStreamReader(this.getClass().getResourceAsStream("Book.xml")),
+                this.getClass().getResourceAsStream("Book.xml"),
                 node);
         return DocumentHelper.parseText(result);
     }

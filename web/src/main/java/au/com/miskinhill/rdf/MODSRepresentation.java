@@ -1,6 +1,5 @@
 package au.com.miskinhill.rdf;
 
-import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
@@ -126,7 +125,7 @@ public class MODSRepresentation implements XMLStreamRepresentation {
             String templatePath = typeTemplates.get(type);
             if (templatePath != null) {
                 templateInterpolator.interpolate(
-                        new InputStreamReader(this.getClass().getResourceAsStream(templatePath)),
+                        this.getClass().getResourceAsStream(templatePath),
                         resource, destination);
                 return;
             }

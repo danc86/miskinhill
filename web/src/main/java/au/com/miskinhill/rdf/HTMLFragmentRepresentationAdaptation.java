@@ -1,6 +1,5 @@
 package au.com.miskinhill.rdf;
 
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +51,7 @@ public class HTMLFragmentRepresentationAdaptation extends AbstractAdaptation<XML
         
         List<XMLEvent> destination = new ArrayList<XMLEvent>();
         templateInterpolator.interpolate(
-                new InputStreamReader(this.getClass().getResourceAsStream(templatePath)),
+                this.getClass().getResourceAsStream(templatePath),
                 node, destination);
         if (destination.get(0).isStartDocument() && destination.get(destination.size() - 1).isEndDocument()) {
             destination.remove(destination.size() - 1);

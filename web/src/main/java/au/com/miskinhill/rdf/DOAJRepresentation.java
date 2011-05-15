@@ -1,6 +1,5 @@
 package au.com.miskinhill.rdf;
 
-import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
@@ -151,8 +150,8 @@ public class DOAJRepresentation implements XMLStreamRepresentation {
         for (RDFNode article:
                 selectorFactory.get("!mhs:isIssueOf/!dc:isPartOf[type=mhs:Article]")
                     .withResultType(RDFNode.class).result(resource)) {
-            templateInterpolator.interpolate(new InputStreamReader(this.getClass()
-                    .getResourceAsStream("template/doaj/Article.xml")),
+            templateInterpolator.interpolate(
+                    this.getClass().getResourceAsStream("template/doaj/Article.xml"),
                     article, new XMLEventFilter(destination));
         }
         destination.add(eventFactory.createEndElement(RECORDS, null));

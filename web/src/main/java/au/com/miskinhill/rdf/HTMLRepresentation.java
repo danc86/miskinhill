@@ -1,6 +1,5 @@
 package au.com.miskinhill.rdf;
 
-import java.io.InputStreamReader;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,7 +91,7 @@ public class HTMLRepresentation implements Representation {
                 templatePath = typeTemplates.get(type);
             if (templatePath != null) {
                 return templateInterpolator.interpolate(
-                        new InputStreamReader(this.getClass().getResourceAsStream(templatePath)),
+                        this.getClass().getResourceAsStream(templatePath),
                         resource);
             }
         }

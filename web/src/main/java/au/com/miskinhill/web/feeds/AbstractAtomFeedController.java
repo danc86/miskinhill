@@ -1,6 +1,5 @@
 package au.com.miskinhill.web.feeds;
 
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -102,7 +101,7 @@ public abstract class AbstractAtomFeedController {
             }
         };
         templateInterpolator.interpolate(
-                new InputStreamReader(this.getClass().getResourceAsStream(templatePath)),
+                this.getClass().getResourceAsStream(templatePath),
                 resource, destination);
         if (events.get(0).isStartDocument() && events.get(events.size() - 1).isEndDocument()) {
             events.remove(events.size() - 1);
