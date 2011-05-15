@@ -204,7 +204,7 @@
                         <id>start-container</id>
                         <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>run</goal>
+                            <goal>run-war-only</goal>
                         </goals>
                         <configuration>
                             <fork>true</fork>
