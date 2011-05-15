@@ -142,9 +142,37 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-		<plugins>
+        <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IntegrationTest.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.8.1</version>
                 <configuration>
                     <systemProperties>
                         <property>
@@ -160,74 +188,31 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.2-DANC-SNAPSHOT</version>
+                <configuration>
+                    <path>/</path>
+                    <port>8082</port>
+                    <systemProperties>
+                        <java.util.logging.config.file>${project.basedir}/logging.properties</java.util.logging.config.file>
+                        <au.com.miskinhill.contentPath>${au.com.miskinhill.contentPath}</au.com.miskinhill.contentPath>
+                    </systemProperties>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <accessLogPattern>%h %l %u %t %r %s %b %{User-Agent}i %{Referer}i %{X-Forwarded-For}i</accessLogPattern>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-container</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <fork>true</fork>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
-		</plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>tomcat-maven-plugin</artifactId>
-                    <version>1.2-DANC-SNAPSHOT</version>
-                    <configuration>
-                        <path>/</path>
-                        <port>8082</port>
-                        <systemProperties>
-                            <java.util.logging.config.file>${project.basedir}/logging.properties</java.util.logging.config.file>
-                            <au.com.miskinhill.contentPath>${au.com.miskinhill.contentPath}</au.com.miskinhill.contentPath>
-                        </systemProperties>
-                        <uriEncoding>UTF-8</uriEncoding>
-                        <accessLogPattern>%h %l %u %t %r %s %b %{User-Agent}i %{Referer}i %{X-Forwarded-For}i</accessLogPattern>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        </plugins>
 	</build>
 
-    <profiles>
-        <profile>
-            <id>inttests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>tomcat-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>start-container</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                                <configuration>
-                                    <fork>true</fork>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>integration-tests</id>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>test</goal>
-                                </goals>
-                                <configuration>
-                                    <skip>false</skip>
-                                    <excludes>
-                                        <exclude>none</exclude>
-                                    </excludes>
-                                    <includes>
-                                        <include>**/*IntegrationTest.java</include>
-                                    </includes>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
