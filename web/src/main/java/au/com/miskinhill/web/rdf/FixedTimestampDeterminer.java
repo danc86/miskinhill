@@ -7,7 +7,10 @@ import java.util.logging.Logger;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -65,7 +68,18 @@ public class FixedTimestampDeterminer implements TimestampDeterminer {
         String buildTimestamp = buildProperties.getProperty("Build-Timestamp");
         if (buildTimestamp == null)
             throw new IllegalStateException("Build-Timestamp not found in build.properties");
-        return new DateTime(buildTimestamp);
+        try {
+            return new DateTime(buildTimestamp);
+        } catch (IllegalArgumentException e) {
+            /*
+             * Probably means we are in Jenkins and maven.build.timestamp.format 
+             * is being ignored, see https://issues.jenkins-ci.org/browse/JENKINS-9693
+             * XXX delete this code when Jenkins is fixed!
+             */
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYYMMDD-HHmm")
+                    .withZone(DateTimeZone.forID("Australia/Brisbane")); // Jenkins builds are always in Brisbane
+            return formatter.parseDateTime(buildTimestamp);
+        }
     }
     
     public static <T extends ReadableInstant> T maxInstant(T left, T right) {
