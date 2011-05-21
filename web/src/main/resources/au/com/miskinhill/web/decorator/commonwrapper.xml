@@ -79,7 +79,6 @@
             <div id="feedback"><a href="/contact/" title="Report a problem or make a suggestion about this page">Feedback</a></div>
             <xsl:apply-templates select="*" />
             <div id="footer">
-                Hosted by <a href="http://www.sjkwi.com.au/">SJK Web Industries</a>.
                 Content copyright the publishers and each contributor.
                 <a href="http://code.miskinhill.com.au/">Code</a> copyright Miskin Hill Academic Publishing.
                 Metadata is free!
