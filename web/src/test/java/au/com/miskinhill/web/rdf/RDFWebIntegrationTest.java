@@ -59,6 +59,21 @@ public class RDFWebIntegrationTest extends AbstractWebIntegrationTest {
     }
     
     @Test
+    public void should_favour_more_specific_types_over_plain_xml() throws Exception {
+        // Yahoo! sends this:
+        // text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+        // but we want to give them HTML, not OAI-DC
+        checkContentTypeForPathAndAccept("/journals/asees/22:1-2/post-soviet-boevik",
+                "text/xml, application/xml, application/xhtml+xml",
+                MediaType.TEXT_HTML);
+        // Fairly sure I have seen this kind of header produced by
+        // Internet Explorer with some Office crap installed, though I can't find the details
+        checkContentTypeForPathAndAccept("/journals/asees/22:1-2/post-soviet-boevik",
+                "text/xml, application/xml, text/html; q=0.9",
+                MediaType.TEXT_HTML);
+    }
+    
+    @Test
     public void shouldGive404ForInapplicableFormatInExtension() throws Exception {
         assertHttpError(BASE.resolve("/journals/asees/.end"), HttpStatus.NOT_FOUND);
     }

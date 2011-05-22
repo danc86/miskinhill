@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -111,12 +112,15 @@ public class RDFRequestHandler implements HttpRequestHandler {
     }
     
     private Representation negotiate(List<Representation> candidates, String acceptHeader) {
-        List<String> candidateContentTypes = new ArrayList<String>(candidates.size());
+        if (acceptHeader == null)
+            return candidates.get(0);
+        List<MediaType> candidateContentTypes = new ArrayList<MediaType>(candidates.size());
         for (Representation representation: candidates) {
-            candidateContentTypes.add(representation.getContentType().toString());
+            candidateContentTypes.add(representation.getContentType());
+            candidateContentTypes.addAll(representation.getContentTypeAliases());
         }
         AcceptHeader accept = AcceptHeader.parse(acceptHeader);
-        String bestMatch = accept.bestMatch(candidateContentTypes);
+        MediaType bestMatch = accept.bestMatch(candidateContentTypes);
         if (bestMatch != null) {
             return representationFactory.getRepresentationByContentType(bestMatch);
         } else {

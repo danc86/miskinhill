@@ -57,8 +57,8 @@ public class RepresentationFactory {
         return byFormat.get(format);
     }
     
-    public Representation getRepresentationByContentType(String contentType) {
-        return byContentType.get(MediaType.valueOf(contentType));
+    public Representation getRepresentationByContentType(MediaType contentType) {
+        return byContentType.get(contentType);
     }
     
     public Set<String> getAllFormats() {
