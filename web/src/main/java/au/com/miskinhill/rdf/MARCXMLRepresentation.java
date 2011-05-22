@@ -1,5 +1,6 @@
 package au.com.miskinhill.rdf;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
@@ -34,6 +35,11 @@ public class MARCXMLRepresentation implements Representation {
     @Override
     public MediaType getContentType() {
         return contentType;
+    }
+    
+    @Override
+    public Collection<MediaType> getContentTypeAliases() {
+        return Collections.emptySet();
     }
     
     @Override

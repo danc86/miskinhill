@@ -1,6 +1,7 @@
 package au.com.miskinhill.rdf;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -38,6 +39,11 @@ public class EndnoteRepresentation implements Representation {
     @Override
     public MediaType getContentType() {
         return contentType;
+    }
+    
+    @Override
+    public Collection<MediaType> getContentTypeAliases() {
+        return Collections.emptySet();
     }
     
     @Override

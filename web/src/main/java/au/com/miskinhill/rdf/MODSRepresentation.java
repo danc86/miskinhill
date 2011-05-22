@@ -3,6 +3,8 @@ package au.com.miskinhill.rdf;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +54,11 @@ public class MODSRepresentation implements XMLStreamRepresentation {
     @Override
     public MediaType getContentType() {
         return contentType;
+    }
+    
+    @Override
+    public Collection<MediaType> getContentTypeAliases() {
+        return Collections.emptySet();
     }
     
     @Override

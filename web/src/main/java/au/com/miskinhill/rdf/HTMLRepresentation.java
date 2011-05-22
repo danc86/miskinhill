@@ -1,5 +1,7 @@
 package au.com.miskinhill.rdf;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +56,11 @@ public class HTMLRepresentation implements Representation {
     @Override
     public MediaType getContentType() {
         return MediaType.TEXT_HTML;
+    }
+    
+    @Override
+    public Collection<MediaType> getContentTypeAliases() {
+        return Collections.singleton(MediaType.APPLICATION_XHTML_XML);
     }
     
     @Override

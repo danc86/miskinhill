@@ -3,6 +3,8 @@ package au.com.miskinhill.rdf;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -40,6 +42,7 @@ public class DOAJRepresentation implements XMLStreamRepresentation {
     protected static final QName LANGUAGE = new QName("", "language");
     protected static final QName XML_LANG = new QName(XMLConstants.XML_NS_URI, "lang");
     
+    private final MediaType contentType = new MediaType("application", "doaj+xml");
     private final EnumSet<ShownIn> shownIn = EnumSet.of(ShownIn.Unapi);
     private final URI xsd = URI.create("http://www.doaj.org/schemas/doajArticles.xsd");
     private final TemplateInterpolator templateInterpolator;
@@ -65,7 +68,12 @@ public class DOAJRepresentation implements XMLStreamRepresentation {
 
     @Override
     public MediaType getContentType() {
-        return MediaType.TEXT_XML;
+        return contentType;
+    }
+    
+    @Override
+    public Collection<MediaType> getContentTypeAliases() {
+        return Collections.emptySet();
     }
     
     @Override

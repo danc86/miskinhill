@@ -30,6 +30,8 @@ public class RepresentationFactory {
         for (Representation representation: representations) {
             byFormat.put(representation.getFormat(), representation);
             byContentType.put(representation.getContentType(), representation);
+            for (MediaType alias: representation.getContentTypeAliases())
+                byContentType.put(alias, representation);
         }
     }
     

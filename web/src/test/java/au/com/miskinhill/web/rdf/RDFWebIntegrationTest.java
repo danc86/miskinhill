@@ -54,6 +54,11 @@ public class RDFWebIntegrationTest extends AbstractWebIntegrationTest {
     }
     
     @Test
+    public void should_return_html_for_application_xhtml_xml() throws Exception {
+        checkContentTypeForPathAndAccept("/journals/asees/", "application/xhtml+xml, application/mods+xml", MediaType.TEXT_HTML);
+    }
+    
+    @Test
     public void shouldGive404ForInapplicableFormatInExtension() throws Exception {
         assertHttpError(BASE.resolve("/journals/asees/.end"), HttpStatus.NOT_FOUND);
     }

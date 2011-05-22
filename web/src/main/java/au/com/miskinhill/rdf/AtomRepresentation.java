@@ -1,5 +1,6 @@
 package au.com.miskinhill.rdf;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
@@ -33,6 +34,11 @@ public class AtomRepresentation implements Representation {
     @Override
     public MediaType getContentType() {
         return MediaType.APPLICATION_ATOM_XML;
+    }
+    
+    @Override
+    public Collection<MediaType> getContentTypeAliases() {
+        return Collections.emptySet();
     }
     
     @Override

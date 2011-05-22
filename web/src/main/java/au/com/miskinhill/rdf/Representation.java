@@ -1,5 +1,6 @@
 package au.com.miskinhill.rdf;
 
+import java.util.Collection;
 import java.util.Comparator;
 
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -17,6 +18,8 @@ public interface Representation {
     boolean canRepresent(Resource resource);
     
     MediaType getContentType();
+    
+    Collection<MediaType> getContentTypeAliases();
     
     String getFormat();
     

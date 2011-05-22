@@ -1,6 +1,8 @@
 package au.com.miskinhill.rdf;
 
 import java.io.StringWriter;
+import java.util.Collection;
+import java.util.Collections;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
@@ -26,6 +28,11 @@ public class RDFXMLRepresentation extends AbstractRDFRepresentation {
     @Override
     public MediaType getContentType() {
         return contentType;
+    }
+    
+    @Override
+    public Collection<MediaType> getContentTypeAliases() {
+        return Collections.emptySet();
     }
 
     @Override

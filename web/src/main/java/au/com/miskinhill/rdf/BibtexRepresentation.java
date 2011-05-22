@@ -47,6 +47,11 @@ public class BibtexRepresentation implements Representation {
     }
     
     @Override
+    public Collection<MediaType> getContentTypeAliases() {
+        return Collections.emptySet();
+    }
+    
+    @Override
     public String getFormat() {
         return "bib";
     }
