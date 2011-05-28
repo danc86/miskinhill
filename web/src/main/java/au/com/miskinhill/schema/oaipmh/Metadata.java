@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.dom.DOMResult;
@@ -60,8 +61,27 @@ public class Metadata {
         Document document = DOCUMENT_BUILDER.newDocument();
         DOMResult result = new DOMResult(document);
         XMLEventWriter eventWriter = OUTPUT_FACTORY.createXMLEventWriter(result);
-        for (XMLEvent event: stream)
-            eventWriter.add(event);
+        long depth = 0;
+        for (XMLEvent event: stream) {
+            // DOM stuff explodes if we write characters outside the root element,
+            // so have to filter those out
+            switch (event.getEventType()) {
+                case XMLStreamConstants.CHARACTERS:
+                    if (depth > 0)
+                        eventWriter.add(event);
+                    break;
+                case XMLStreamConstants.START_ELEMENT:
+                    depth ++;
+                    eventWriter.add(event);
+                    break;
+                case XMLStreamConstants.END_ELEMENT:
+                    depth --;
+                    eventWriter.add(event);
+                    break;
+                default:
+                    eventWriter.add(event);
+            }
+        }
         return document.getDocumentElement();
     }
 

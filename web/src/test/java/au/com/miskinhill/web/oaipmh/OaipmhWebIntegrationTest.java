@@ -158,6 +158,8 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
                 new MetadataFormatMatcher("mods",
                     "http://www.loc.gov/standards/mods/v3/mods-3-4.xsd",
                     "http://www.loc.gov/mods/v3")));
+                // N.B. if adding more formats, add a test below
+                // to make sure they can be rendered in ListRecords responses!
     }
     
     @Test
@@ -583,7 +585,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
     }
     
     @Test
-    public void testListAllRecords() {
+    public void test_list_all_records_as_OAI_DC() {
         Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=ListRecords&metadataPrefix=oai_dc"), Document.class);
         assertResponseDate(doc);
         
@@ -599,6 +601,26 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
             assertThat(xpath("./oai:header/oai:identifier").selectSingleNode(record), not(nullValue()));
             assertThat(xpath("./oai:header/oai:datestamp").selectSingleNode(record), not(nullValue()));
             assertThat(xpath("./oai:metadata/oai_dc:dc/*").selectNodes(record).size(), greaterThan(0));
+        }
+    }
+    
+    @Test
+    public void test_list_all_records_as_MODS() {
+        Document doc = restTemplate.getForObject(BASE.resolve("/oaipmh?verb=ListRecords&metadataPrefix=mods"), Document.class);
+        assertResponseDate(doc);
+        
+        Element request = (Element) xpath("/oai:OAI-PMH/oai:request").selectSingleNode(doc);
+        assertThat(request.attributeValue("verb"), equalTo("ListRecords"));
+        assertThat(request.attributeValue("metadataPrefix"), equalTo("mods"));
+        assertThat(request.getText(), equalTo("http://miskinhill.com.au/oaipmh"));
+        
+        @SuppressWarnings("unchecked")
+        List<Element> records = xpath("/oai:OAI-PMH/oai:ListRecords/oai:record").selectNodes(doc);
+        assertThat(records.size(), greaterThan(MIN_EXPECTED_RECORDS));
+        for (Element record: records) {
+            assertThat(xpath("./oai:header/oai:identifier").selectSingleNode(record), not(nullValue()));
+            assertThat(xpath("./oai:header/oai:datestamp").selectSingleNode(record), not(nullValue()));
+            assertThat(xpath("./oai:metadata/mods:modsCollection/mods:mods").selectNodes(record).size(), greaterThan(0));
         }
     }
     
@@ -805,6 +827,7 @@ public class OaipmhWebIntegrationTest extends AbstractWebIntegrationTest {
         HashMap<String, String> namespaces = new HashMap<String, String>();
         namespaces.put("oai", "http://www.openarchives.org/OAI/2.0/");
         namespaces.put("oai_dc", "http://www.openarchives.org/OAI/2.0/oai_dc/");
+        namespaces.put("mods", "http://www.loc.gov/mods/v3");
         xpath.setNamespaceURIs(namespaces);
         return xpath;
     }
