@@ -1,10 +1,27 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 import os, cgi, subprocess, shutil, tempfile
-import rdfob
-from viewutils import striptags
+from itertools import ifilter
+from rdflib import RDF
+from rdflib.graph import Graph
+from rdflib.term import URIRef
+from rdflib.namespace import Namespace
+import rdflib.term
+from genshi import XML, Markup, Stream
 
-graph = rdfob.Graph('meta.xml')
+DC = Namespace('http://purl.org/dc/terms/')
+FOAF = Namespace('http://xmlns.com/foaf/0.1/')
+MHS = Namespace('http://miskinhill.com.au/rdfschema/1.0/')
+
+graph = Graph()
+graph.parse('meta.xml', format='xml')
+rdflib.term.bind(RDF.XMLLiteral, XML)
+
+def striptags(x):
+    if isinstance(x, (Stream, Markup)):
+        return Markup(x).striptags()
+    else:
+        return x
 
 def entities(s):
     return cgi.escape(s).encode('ascii', 'xmlcharrefreplace')
@@ -24,37 +41,41 @@ def generate_pdf(source, output, start_page, end_page, title, author):
         raise StandardError(retcode)
     shutil.copy(f.name + '.meta', output)
 
+def has_type(resource, type_):
+    return (resource.identifier, RDF.type, type_) in resource.graph
+
 def articles_from_issue(path, issue_filename):
-    issue = graph[rdfob.Uri('http://miskinhill.com.au/' + path)]
-    for article in issue.reflexive('dc:isPartOf', type='mhs:Article'):
-        assert unicode(article.uri).startswith(unicode(issue.uri)), unicode(article.uri)
+    issue = graph.resource(URIRef(u'http://miskinhill.com.au/' + path))
+    for article in ifilter(lambda r: has_type(r, MHS.Article), issue.subjects(DC.isPartOf)):
+        assert article.identifier.startswith(issue.identifier), article.identifier
         generate_pdf(os.path.join(path, issue_filename),
-                os.path.join(path, unicode(article.uri).rsplit('/', 1)[1] + '.pdf'), 
-                article['mhs:startPage'] + issue['mhs:frontMatterExtent'], 
-                article['mhs:endPage'] + issue['mhs:frontMatterExtent'], 
-                entities(striptags(article['dc:title'])), 
-                entities('; '.join(c['foaf:name'] for c in article.getall('dc:creator'))))
-    for review in issue.reflexive('dc:isPartOf', type='mhs:Review'):
-        assert unicode(review.uri).startswith(unicode(issue.uri) + 'reviews/'), unicode(review.uri)
+                os.path.join(path, article.identifier.rsplit('/', 1)[1] + '.pdf'),
+                article.value(MHS.startPage).toPython() + issue.value(MHS.frontMatterExtent).toPython(),
+                article.value(MHS.endPage).toPython() + issue.value(MHS.frontMatterExtent).toPython(),
+                entities(striptags(article.value(DC.title).toPython())),
+                entities('; '.join(c.value(FOAF.name).toPython() for c in article.objects(DC.creator))))
+    for review in ifilter(lambda r: has_type(r, MHS.Review), issue.subjects(DC.isPartOf)):
+        assert review.identifier.startswith(issue.identifier + 'reviews/'), review.identifier
         generate_pdf(os.path.join(path, issue_filename),
-                os.path.join(path, 'reviews', unicode(review.uri).rsplit('/', 1)[1] + '.pdf'), 
-                review['mhs:startPage'] + issue['mhs:frontMatterExtent'], 
-                review['mhs:endPage'] + issue['mhs:frontMatterExtent'], 
-                entities('Review of ' + ' and '.join(striptags(b['dc:title']) for b in review.getall('mhs:reviews'))), 
-                entities('; '.join(c['foaf:name'] for c in review.getall('dc:creator'))))
-    for obituary in issue.reflexive('dc:isPartOf', type='mhs:Obituary'):
-        assert unicode(obituary.uri).startswith(unicode(issue.uri)), unicode(obituary.uri)
+                os.path.join(path, 'reviews', review.identifier.rsplit('/', 1)[1] + '.pdf'),
+                review.value(MHS.startPage).toPython() + issue.value(MHS.frontMatterExtent).toPython(),
+                review.value(MHS.endPage).toPython() + issue.value(MHS.frontMatterExtent).toPython(),
+                entities('Review of ' + ' and '.join(striptags(b.value(DC.title).toPython() for b in review.objects(MHS.reviews)))),
+                entities('; '.join(c.value(FOAF.name).toPython() for c in review.objects(DC.creator))))
+    for obituary in ifilter(lambda r: has_type(r, MHS.Obituary), issue.subjects(DC.isPartOf)):
+        assert obituary.identifier.startswith(issue.identifier), obituary.identifier
         generate_pdf(os.path.join(path, issue_filename),
-                os.path.join(path, unicode(obituary.uri).rsplit('/', 1)[1] + '.pdf'), 
-                obituary['mhs:startPageInFrontMatter'],
-                obituary['mhs:endPageInFrontMatter'], 
-                entities(striptags(obituary['dc:title'])), 
-                entities('; '.join(c['foaf:name'] for c in obituary.getall('dc:creator'))))
+                os.path.join(path, obituary.identifier.rsplit('/', 1)[1] + '.pdf'),
+                obituary.value(MHS.startPageInFrontMatter).toPython(),
+                obituary.value(MHS.endPageInFrontMatter).toPython(),
+                entities(striptags(obituary.value(DC.title).toPython())),
+                entities('; '.join(c.value(FOAF.name).toPython() for c in obituary.objects(DC.creator))))
 
 #articles_from_issue('journals/asees/18:1-2/', 'final/ASEES 2004.pdf')
 #articles_from_issue('journals/asees/19:1-2/', 'final/ASEESVol 19finalversion05.pdf')
 #articles_from_issue('journals/asees/20:1-2/', 'final/ASEES 2006final.pdf')
 #articles_from_issue('journals/asees/21:1-2/', 'final/asees07.pdf')
 #articles_from_issue('journals/asees/22:1-2/', 'final/asees08.pdf')
-articles_from_issue('journals/asees/23:1-2/', 'final/asees09.pdf')
-articles_from_issue('journals/asees/24:1-2/', 'final/asees10.pdf')
+#articles_from_issue('journals/asees/23:1-2/', 'final/asees09.pdf')
+#articles_from_issue('journals/asees/24:1-2/', 'final/asees10.pdf')
+articles_from_issue('journals/asees/25:1-2/', 'work/asees11.pdf')
