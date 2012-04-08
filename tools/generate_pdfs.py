@@ -60,7 +60,7 @@ def articles_from_issue(path, issue_filename):
                 os.path.join(path, 'reviews', review.identifier.rsplit('/', 1)[1] + '.pdf'),
                 review.value(MHS.startPage).toPython() + issue.value(MHS.frontMatterExtent).toPython(),
                 review.value(MHS.endPage).toPython() + issue.value(MHS.frontMatterExtent).toPython(),
-                entities('Review of ' + ' and '.join(striptags(b.value(DC.title).toPython() for b in review.objects(MHS.reviews)))),
+                entities('Review of ' + ' and '.join(striptags(b.value(DC.title).toPython()) for b in review.objects(MHS.reviews))),
                 entities('; '.join(c.value(FOAF.name).toPython() for c in review.objects(DC.creator))))
     for obituary in ifilter(lambda r: has_type(r, MHS.Obituary), issue.subjects(DC.isPartOf)):
         assert obituary.identifier.startswith(issue.identifier), obituary.identifier
@@ -82,4 +82,4 @@ def articles_from_issue(path, issue_filename):
 #articles_from_issue('journals/asees/22:1-2/', 'final/asees08.pdf')
 #articles_from_issue('journals/asees/23:1-2/', 'final/asees09.pdf')
 #articles_from_issue('journals/asees/24:1-2/', 'final/asees10.pdf')
-articles_from_issue('journals/asees/25:1-2/', 'work/asees11.pdf')
+articles_from_issue('journals/asees/25:1-2/', 'final/asees11.pdf')
