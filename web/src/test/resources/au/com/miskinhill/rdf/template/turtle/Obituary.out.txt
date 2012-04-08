@@ -21,5 +21,4 @@
               ] ;
       mhs:startPage -1 ;
       dc:creator <http://miskinhill.com.au/authors/test-author> ;
-      dc:isPartOf <http://miskinhill.com.au/journals/test/1:1/> ;
-      dc:title "In memoriam John Doe"@en .
+      dc:isPartOf <http://miskinhill.com.au/journals/test/1:1/> .

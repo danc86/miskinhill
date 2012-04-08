@@ -201,7 +201,6 @@
     </mhs:ContentsSection>
   <rdf:Description rdf:about="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe">
     <rdf:type rdf:resource="http://miskinhill.com.au/rdfschema/1.0/Obituary"/>
-    <dc:title xml:lang="en">In memoriam John Doe</dc:title>
     <dc:isPartOf rdf:resource="http://miskinhill.com.au/journals/test/1:1/"/>
     <mhs:inSection rdf:resource="http://miskinhill.com.au/journals/test/1:1/#obituary"/>
     <mhs:startPage rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">-1</mhs:startPage>

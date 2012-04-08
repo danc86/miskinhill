@@ -47,7 +47,8 @@
             <li>
                 <div class="title">
                     
-                    <a href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe" xml:lang="en" lang="en">In memoriam John Doe</a>
+                    
+                    <a href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe">In memoriam John Doe</a>
                 </div>
                 <div class="author">
                     
@@ -68,6 +69,7 @@
                 <div class="title">
                     
                     <a href="http://miskinhill.com.au/journals/test/1:1/article"><span lang="en"><em>Moscow 1937</em>: the interpreter’s story</span></a>
+                    
                 </div>
                 <div class="author">
                     

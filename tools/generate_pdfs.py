@@ -64,11 +64,15 @@ def articles_from_issue(path, issue_filename):
                 entities('; '.join(c.value(FOAF.name).toPython() for c in review.objects(DC.creator))))
     for obituary in ifilter(lambda r: has_type(r, MHS.Obituary), issue.subjects(DC.isPartOf)):
         assert obituary.identifier.startswith(issue.identifier), obituary.identifier
+        if obituary.value(DC.title):
+            title = striptags(obituary.value(DC.title).toPython())
+        else:
+            title = 'In memoriam %s' % obituary.value(MHS.obituaryOf).value(FOAF.name).toPython()
         generate_pdf(os.path.join(path, issue_filename),
                 os.path.join(path, obituary.identifier.rsplit('/', 1)[1] + '.pdf'),
                 obituary.value(MHS.startPageInFrontMatter).toPython(),
                 obituary.value(MHS.endPageInFrontMatter).toPython(),
-                entities(striptags(obituary.value(DC.title).toPython())),
+                entities(title),
                 entities('; '.join(c.value(FOAF.name).toPython() for c in obituary.objects(DC.creator))))
 
 #articles_from_issue('journals/asees/18:1-2/', 'final/ASEES 2004.pdf')

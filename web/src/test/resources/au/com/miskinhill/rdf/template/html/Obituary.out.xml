@@ -1,7 +1,10 @@
 <?xml version='1.0'?><html xmlns="http://www.w3.org/1999/xhtml">
 
 <head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
-    <title>In memoriam John Doe - Test Journal of Good Stuff Vol. 1, No. 1</title>
+    
+    
+        <title>In memoriam John Doe - Test Journal of Good Stuff Vol. 1, No. 1</title>
+    
     <link rel="alternate" type="application/rdf+xml" title="RDF/XML" href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe.xml" /><link rel="alternate" type="application/x-turtle" title="Turtle" href="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe.ttl" />
     <link rel="stylesheet" type="text/css" href="/style/article.css" />
     <link rel="stylesheet" type="text/css" href="/style/obituary.css" />
@@ -11,7 +14,10 @@
     <script type="text/javascript" src="/script/citation.js" />
         
     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
-    <meta name="DC.title" content="In memoriam John Doe" />
+    
+    
+        <meta name="DC.title" content="In memoriam John Doe" />
+    
     <meta name="DC.creator" content="Test Author" />
     <meta name="DC.date" content="2008-02-01" />
 </head>
@@ -24,7 +30,10 @@
     <a href="http://miskinhill.com.au/journals/test/1:1/">Vol. 1, No. 1</a> >
 </div>
 
-<h2>John Doe (1 January 1990 – 31 December 1991)<abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe" /></h2>
+
+
+    <h2>John Doe (1 January 1990 – 31 December 1991)<abbr class="unapi-id" title="http://miskinhill.com.au/journals/test/1:1/in-memoriam-john-doe" /></h2>
+
 
 <div class="metabox-container">
     <div class="obituary-meta metabox">
@@ -39,7 +48,9 @@
     </div>
 </div>
 
-<h3><em lang="la">In memoriam</em></h3>
+
+    <h3><em lang="la">In memoriam</em></h3>
+
 
 
 

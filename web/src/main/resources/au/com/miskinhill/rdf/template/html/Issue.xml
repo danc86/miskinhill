@@ -49,6 +49,7 @@
                 <div class="title">
                     <rdf:if test="mhs:reviews"><a href="${#uri}"><rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></rdf:if>
                     <rdf:if test="dc:title"><a href="${#uri}" rdf:content="dc:title" /></rdf:if>
+                    <rdf:if not="dc:title"><rdf:if test="mhs:obituaryOf"><a href="${#uri}">In memoriam ${mhs:obituaryOf/foaf:name}</a></rdf:if></rdf:if>
                 </div>
                 <div class="author">
                     <rdf:if test="mhs:reviews">Reviewed</rdf:if>

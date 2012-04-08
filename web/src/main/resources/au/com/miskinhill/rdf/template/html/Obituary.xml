@@ -2,7 +2,12 @@
       xmlns:rdf="http://code.miskinhill.com.au/rdftemplate/">
 
 <head profile="http://dublincore.org/documents/2008/08/04/dc-html/">
-    <title>${dc:title#string-lv} - ${dc:isPartOf/mhs:isIssueOf/dc:title} Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</title>
+    <rdf:if test="dc:title">
+        <title>${dc:title#string-lv} - ${dc:isPartOf/mhs:isIssueOf/dc:title} Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</title>
+    </rdf:if>
+    <rdf:if not="dc:title">
+        <title>In memoriam ${mhs:obituaryOf/foaf:name} - ${dc:isPartOf/mhs:isIssueOf/dc:title} Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</title>
+    </rdf:if>
     ${#representation-links}
     <link rel="stylesheet" type="text/css" href="/style/article.css" />
     <link rel="stylesheet" type="text/css" href="/style/obituary.css" />
@@ -12,7 +17,12 @@
     <script type="text/javascript" src="/script/citation.js" />
         
     <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
-    <meta name="DC.title" content="${dc:title#string-lv}" />
+    <rdf:if test="dc:title">
+        <meta name="DC.title" content="${dc:title#string-lv}" />
+    </rdf:if>
+    <rdf:if not="dc:title">
+        <meta name="DC.title" content="In memoriam ${mhs:obituaryOf/foaf:name}" />
+    </rdf:if>
     <meta rdf:for="dc:creator" name="DC.creator" content="${foaf:name#string-lv}" />
     <meta name="DC.date" content="${dc:isPartOf/mhs:publicationDate}" />
 </head>
@@ -25,7 +35,12 @@
     <a href="${dc:isPartOf#uri}">Vol.&#160;${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number}</a> &gt;
 </div>
 
-<h2>${mhs:obituaryOf/foaf:name} (${mhs:obituaryOf/mhs:dateOfBirth#formatted-dt('d MMMM yyyy')} – ${mhs:obituaryOf/mhs:dateOfDeath#formatted-dt('d MMMM yyyy')})<abbr class="unapi-id" title="${#uri}" /></h2>
+<rdf:if test="dc:title">
+    <h2>${dc:title}<abbr class="unapi-id" title="${#uri}" /></h2>
+</rdf:if>
+<rdf:if not="dc:title">
+    <h2>${mhs:obituaryOf/foaf:name} (${mhs:obituaryOf/mhs:dateOfBirth#formatted-dt('d MMMM yyyy')} – ${mhs:obituaryOf/mhs:dateOfDeath#formatted-dt('d MMMM yyyy')})<abbr class="unapi-id" title="${#uri}" /></h2>
+</rdf:if>
 
 <div class="metabox-container">
     <div class="obituary-meta metabox">
@@ -40,11 +55,13 @@
     </div>
 </div>
 
-<h3><em lang="la">In memoriam</em></h3>
+<rdf:if not="dc:title">
+    <h3><em lang="la">In memoriam</em></h3>
+</rdf:if>
 
 ${#content}
 
-<p class="author">
+<p class="author" rdf:if="dc:creator">
     <a class="name" href="${dc:creator#uri}" rdf:content="dc:creator/foaf:name" />
 </p>
 
