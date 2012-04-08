@@ -7,6 +7,9 @@ def tex2html(s, type):
     # nbsp
     s = re.sub(r'\~', '&nbsp;', s)
 
+    # shy
+    s = re.sub(r'\\-', '', s)
+
     # XML syntax
     s = re.sub(r'\\&', '&amp;', s)
     s = re.sub(r'<', '&lt;', s)
