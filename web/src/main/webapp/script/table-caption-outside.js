@@ -8,8 +8,8 @@ var caption_outside_supported = function () {
 
 if (!caption_outside_supported()) {
 	$(function () {
-		$('table.data caption').each(function (i, caption) {
-			$('<div class="hacked-data-caption" />').append($(caption).contents()).insertBefore(caption.parentNode);
+		$('table caption').each(function (i, caption) {
+			$('<div class="hacked-table-caption" />').append($(caption).contents()).insertBefore(caption.parentNode);
 			$(caption).remove();
 		});
 	});

@@ -60,24 +60,23 @@ table th, table td {
 table th {
     text-align: left;
 }
-table.data {
+table {
     margin: 1.5em 3em;
     border-collapse: collapse;
 }
 
 /* beware of table-caption-outside.js hackery which applies here */
-table.data caption {
+table caption {
     caption-side: top-outside;
-    margin: 1.5em 3em;
 }
-div.hacked-data-caption {
+div.hacked-table-caption {
     margin: 1.5em 3em;
 }
 
-table.data thead {
+table thead {
     border-top: 2px solid #aaa;
 }
-table.data tbody {
+table tbody {
     border-top: 1px solid #777;
     border-bottom: 2px solid #aaa;
 }
@@ -93,4 +92,12 @@ table.data td + td {
 }
 table.data .total {
     border-top: 1px solid #777;
+}
+
+/* "tabular" as in, not really a table, just using it to achieve a tabular layout */
+table.tabular {
+    margin: 1.5em 0;
+}
+table.tabular tbody {
+    border: none;
 }

@@ -29,6 +29,10 @@ q::before, q::after {
 p, li, caption, .figure {
     line-height: 2.8ex;
 }
+sup {
+    font-size: 0.8em;
+    line-height: 0;
+}
 
 #bodywrapper {
     padding: 15px;
