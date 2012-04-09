@@ -41,7 +41,7 @@
     <h4>Reviews</h4>
     <ul class="reviews">
         <li rdf:for="!dc:creator[type=mhs:Review and uri-prefix='http://miskinhill.com.au/journals/'](~dc:isPartOf/mhs:publicationDate#comparable-lv,mhs:startPage#comparable-lv)">
-            <div class="book"><a href="${#uri}"><rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></div>
+                <div class="book"><a href="${#uri}"><rdf:join each="mhs:reviews" separator="; "><rdf:if test="dc:creator"><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, </rdf:if><em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></div>
             <div class="issue">in <em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /> Vol. ${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number} (${dc:isPartOf/dc:coverage})</div>
         </li>
     </ul>
@@ -69,7 +69,7 @@
                 <div class="author">by <a href="${dc:creator#uri}" rdf:content="dc:creator/foaf:name" /></div>
             </rdf:if>
             <rdf:if test="mhs:reviews">
-                <div class="book"><a href="${#uri}">Review of <rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></div>
+                <div class="book"><a href="${#uri}">Review of <rdf:join each="mhs:reviews" separator="; "><rdf:if test="dc:creator"><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, </rdf:if><em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></div>
                 <div class="reviewed-by">Reviewed by <a href="${dc:creator#uri}" rdf:content="dc:creator/foaf:name" /></div>
             </rdf:if>
             <div class="issue">in <em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /> Vol. ${dc:isPartOf/mhs:volume}, ${dc:isPartOf#issue-number} (${dc:isPartOf/dc:coverage})</div>
@@ -109,7 +109,7 @@
             <div class="issue">in <em rdf:content="dc:isPartOf/mhs:isIssueOf/dc:title" /> <rdf:if test="dc:isPartOf/mhs:volume">Vol. ${dc:isPartOf/mhs:volume}</rdf:if><rdf:if test="dc:isPartOf/mhs:issueNumber">, ${dc:isPartOf#issue-number}</rdf:if> <rdf:if test="dc:isPartOf/dc:coverage">(${dc:isPartOf/dc:coverage})</rdf:if></div>
         </li>
         <li rdf:for="!mhs:translator[type=mhs:Book and uri-prefix='http://miskinhill.com.au/cited/'](#uri)">
-            <div class="book"><a href="${#uri}"><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</a></div>
+            <div class="book"><a href="${#uri}"><rdf:if test="dc:creator"><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, </rdf:if><em rdf:content="dc:title" /> (${dc:date#year})</a></div>
         </li>
     </ul>
 </rdf:if>

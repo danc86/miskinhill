@@ -47,11 +47,11 @@
         <rdf:for each="!mhs:inSection(mhs:startPage#comparable-lv)">
             <li>
                 <div class="title">
-                    <rdf:if test="mhs:reviews"><a href="${#uri}"><rdf:join each="mhs:reviews" separator="; "><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, <em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></rdf:if>
+                    <rdf:if test="mhs:reviews"><a href="${#uri}"><rdf:join each="mhs:reviews" separator="; "><rdf:if test="dc:creator"><rdf:join each="dc:creator" separator=", ">${foaf:name}</rdf:join>, </rdf:if><em rdf:content="dc:title" /> (${dc:date#year})</rdf:join></a></rdf:if>
                     <rdf:if test="dc:title"><a href="${#uri}" rdf:content="dc:title" /></rdf:if>
                     <rdf:if not="dc:title"><rdf:if test="mhs:obituaryOf"><a href="${#uri}">In memoriam ${mhs:obituaryOf/foaf:name}</a></rdf:if></rdf:if>
                 </div>
-                <div class="author">
+                <div class="author" rdf:if="dc:creator">
                     <rdf:if test="mhs:reviews">Reviewed</rdf:if>
                     by
                     <rdf:if test="mhs:authorOrder"><rdf:join each="mhs:authorOrder" separator=", "><a class="name" href="${#uri}" rdf:content="foaf:name" /></rdf:join></rdf:if>

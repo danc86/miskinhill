@@ -63,10 +63,18 @@ public class Review extends GenericResource {
 		Property dcdate = rdfResource.getModel().createProperty(DCTerms.NS, "date");
 		List<String> anchors = new ArrayList<String>();
 	    for (Resource reviewed: findReviewed()) {
-	        anchors.add(toHTML((reviewed.getRequiredProperty(dccreator).getObject().as(Resource.class))
-                        .getRequiredProperty(FOAF.name).getLiteral()) + ", <em>" + 
-    		        toHTML(reviewed.getRequiredProperty(dctitle).getLiteral()) + "</em> (" + 
-    		        reviewed.getRequiredProperty(dcdate).getString().substring(0, 4) + ")");
+                StringBuilder anchor = new StringBuilder();
+                Resource creator = reviewed.getPropertyResourceValue(dccreator);
+                if (creator != null) {
+                    anchor.append(toHTML(creator.getRequiredProperty(FOAF.name).getLiteral()));
+                    anchor.append(", ");
+                }
+                anchor.append("<em>");
+                anchor.append(toHTML(reviewed.getRequiredProperty(dctitle).getLiteral()));
+                anchor.append("</em> (");
+                anchor.append(reviewed.getRequiredProperty(dcdate).getString().substring(0, 4));
+                anchor.append(")");
+                anchors.add(anchor.toString());
 	    }
 	    return StringUtils.join(anchors, "; ");
 	}
